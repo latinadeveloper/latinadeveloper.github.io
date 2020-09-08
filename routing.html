@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rails Routing Desde el Exterior Hacia Adentro — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Rails Routing Desde el Exterior Hacia Adentro — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Rails Routing Desde el Exterior Hacia AdentroEsta guía cubre las funciones orientadas al usuario del enrutamiento Rails.Después de leer esta guía, sabrá: Cómo interpretar el código en config/routes.rb. Cómo construir sus propias rutas, usando el estilo ingenioso preferido o el método match. Cómo declarar los parámetros de ruta, que se pasan a las acciones del controlador. Cómo crear automáticamente rutas y URL usando ayudantes de ruta. Técnicas avanzadas como la creación de restricciones y el montaje de extremos de Rack." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Rails Routing Desde el Exterior Hacia AdentroEsta guía cubre las funciones orientadas al usuario del enrutamiento Rails.Después de leer esta guía, sabrá: Cómo interpretar el código en config/routes.rb. Cómo construir sus propias rutas, usando el estilo ingenioso preferido o el método match. Cómo declarar los parámetros de ruta, que se pasan a las acciones del controlador. Cómo crear automáticamente rutas y URL usando ayudantes de ruta. Técnicas avanzadas como la creación de restricciones y el montaje de extremos de Rack." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">The Asset Pipeline (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</a></dd>
+                  <dd><a href="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</a></dd>
+                  <dd><a href="api_app.html">Using Rails for API-only Applications (necesita traducción)</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">The Asset Pipeline (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</option>
+                  <option value="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</option>
+                  <option value="api_app.html">Using Rails for API-only Applications (necesita traducción)</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Rails Routing Desde el Exterior Hacia Adentro</h2><p>Esta guía cubre las funciones orientadas al usuario del enrutamiento Rails.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Cómo interpretar el código en <code>config/routes.rb</code>.</li>
+<li>Cómo construir sus propias rutas, usando el estilo ingenioso preferido o el método <code>match</code>.</li>
+<li>Cómo declarar los parámetros de ruta, que se pasan a las acciones del controlador.</li>
+<li>Cómo crear automáticamente rutas y URL usando ayudantes de ruta.</li>
+<li>Técnicas avanzadas como la creación de restricciones y el montaje de extremos de Rack.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li>
+<a href="#the-purpose-of-the-rails-router">The Purpose of the Rails Router</a>
+
+<ul>
+<li><a href="#connecting-urls-to-code">Connecting URLs to Code</a></li>
+<li><a href="#generating-paths-and-urls-from-code">Generating Paths and URLs from Code</a></li>
+<li><a href="#configuring-the-rails-router">Configuring the Rails Router</a></li>
+</ul>
+</li>
+<li>
+<a href="#resource-routing-the-rails-default">Resource Routing: the Rails Default</a>
+
+<ul>
+<li><a href="#resources-on-the-web">Resources on the Web</a></li>
+<li><a href="#crud-verbs-and-actions">CRUD, Verbs, and Actions</a></li>
+<li><a href="#path-and-url-helpers">Path and URL Helpers</a></li>
+<li><a href="#defining-multiple-resources-at-the-same-time">Defining Multiple Resources at the Same Time</a></li>
+<li><a href="#singular-resources">Singular Resources</a></li>
+<li><a href="#controller-namespaces-and-routing">Controller Namespaces and Routing</a></li>
+<li><a href="#nested-resources">Nested Resources</a></li>
+<li><a href="#routing-concerns">Routing Concerns</a></li>
+<li><a href="#creating-paths-and-urls-from-objects">Creating Paths and URLs from Objects</a></li>
+<li><a href="#adding-more-restful-actions">Adding More RESTful Actions</a></li>
+</ul>
+</li>
+<li>
+<a href="#non-resourceful-routes">Non-Resourceful Routes</a>
+
+<ul>
+<li><a href="#bound-parameters">Bound Parameters</a></li>
+<li><a href="#dynamic-segments">Dynamic Segments</a></li>
+<li><a href="#static-segments">Static Segments</a></li>
+<li><a href="#the-query-string">The Query String</a></li>
+<li><a href="#defining-defaults">Defining Defaults</a></li>
+<li><a href="#naming-routes">Naming Routes</a></li>
+<li><a href="#http-verb-constraints">HTTP Verb Constraints</a></li>
+<li><a href="#segment-constraints">Segment Constraints</a></li>
+<li><a href="#request-based-constraints">Request-Based Constraints</a></li>
+<li><a href="#advanced-constraints">Advanced Constraints</a></li>
+<li><a href="#route-globbing-and-wildcard-segments">Route Globbing and Wildcard Segments</a></li>
+<li><a href="#redirection">Redirection</a></li>
+<li><a href="#routing-to-rack-applications">Routing to Rack Applications</a></li>
+<li><a href="#using-root">Using <code>root</code></a></li>
+<li><a href="#unicode-character-routes">Unicode Character Routes</a></li>
+<li><a href="#direct-routes">Direct Routes</a></li>
+<li><a href="#using-resolve">Using <code>resolve</code></a></li>
+</ul>
+</li>
+<li>
+<a href="#customizing-resourceful-routes">Customizing Resourceful Routes</a>
+
+<ul>
+<li><a href="#specifying-a-controller-to-use">Specifying a Controller to Use</a></li>
+<li><a href="#specifying-constraints">Specifying Constraints</a></li>
+<li><a href="#overriding-the-named-route-helpers">Overriding the Named Route Helpers</a></li>
+<li><a href="#overriding-the-new-and-edit-segments">Overriding the <code>new</code> and <code>edit</code> Segments</a></li>
+<li><a href="#prefixing-the-named-route-helpers">Prefixing the Named Route Helpers</a></li>
+<li><a href="#restricting-the-routes-created">Restricting the Routes Created</a></li>
+<li><a href="#translated-paths">Translated Paths</a></li>
+<li><a href="#overriding-the-singular-form">Overriding the Singular Form</a></li>
+<li><a href="#using-as-in-nested-resources">Using <code>:as</code> in Nested Resources</a></li>
+<li><a href="#overriding-named-route-parameter">Overriding Named Route Parameter</a></li>
+</ul>
+</li>
+<li>
+<a href="#breaking-up-very-large-route-file-into-multiple-small-ones">Breaking up <em>very</em> large route file into multiple small ones:</a>
+
+<ul>
+<li><a href="#when-to-use-and-not-use-this-feature">When to use and not use this feature</a></li>
+</ul>
+</li>
+<li>
+<a href="#inspecting-and-testing-routes">Inspecting and Testing Routes</a>
+
+<ul>
+<li><a href="#listing-existing-routes">Listing Existing Routes</a></li>
+<li><a href="#testing-routes">Testing Routes</a></li>
+</ul>
+</li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="the-purpose-of-the-rails-router"><a class="anchorlink" href="#the-purpose-of-the-rails-router">1 The Purpose of the Rails Router</a></h3><p>El enrutador Rails reconoce las URL y las envía a la acción de un controlador o a una aplicación de Rack. También puede generar rutas y URL, evitando la necesidad de codificar cadenas en sus vistas.</p><h4 id="connecting-urls-to-code"><a class="anchorlink" href="#connecting-urls-to-code">1.1 Connecting URLs to Code</a></h4><p>Cuando su aplicación Rails recibe una solicitud entrante para:</p><div class="code_container">
+<pre><code class="language-plain">GET /patients/17
+</code></pre>
+</div>
+<p>le pide al enrutador que lo haga coincidir con una acción del controlador. Si la primera ruta coincidente es:</p><div class="code_container">
+<pre><code class="language-ruby">get '/patients/:id', to: 'patients#show'
+</code></pre>
+</div>
+<p>la solicitud se envía a la acción <code>show</code> del controlador de <code>patients</code> con <code>{id: '17'}</code> en <code>params</code>.</p><div class="note"><p>Rails usa snake_case para los nombres de los controladores aquí, si tiene un controlador de varias palabras como <code>MonsterTrucksController</code>, desea usar <code>monster_trucks#show</code>, por ejemplo.</p></div><h4 id="generating-paths-and-urls-from-code"><a class="anchorlink" href="#generating-paths-and-urls-from-code">1.2 Generating Paths and URLs from Code</a></h4><p>También puede generar rutas y URL. Si la ruta anterior se modifica para ser:</p><div class="code_container">
+<pre><code class="language-ruby">get '/patients/:id', to: 'patients#show', as: 'patient'
+</code></pre>
+</div>
+<p>y su aplicación contiene este código en el controlador:</p><div class="code_container">
+<pre><code class="language-ruby">@patient = Patient.find(params[:id])
+</code></pre>
+</div>
+<p>y esto en la vista correspondiente:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Patient Record', patient_path(@patient) %&gt;
+</code></pre>
+</div>
+<p>entonces el enrutador generará la ruta <code>/pacientes/17</code>. Esto reduce la fragilidad de su vista y hace que su código sea más fácil de entender. Tenga en cuenta que no es necesario especificar la identificación en el asistente de ruta.</p><h4 id="configuring-the-rails-router"><a class="anchorlink" href="#configuring-the-rails-router">1.3 Configuring the Rails Router</a></h4><p>Las rutas para su aplicación o motor se encuentran en el archivo <code>config/routes.rb</code> y normalmente se ven así:</p><div class="code_container">
+<pre><code class="language-ruby">Rails.application.routes.draw do
+  resources :brands, only: [:index, :show] do
+    resources :products, only: [:index, :show]
+  end
+
+  resource :basket, only: [:show, :update, :destroy]
+
+  resolve("Basket") { route_for(:basket) }
+end
+</code></pre>
+</div>
+<p>Dado que este es un archivo fuente normal de Ruby, puede usar todas sus características para ayudarlo a definir sus rutas, pero tenga cuidado con los nombres de las variables, ya que pueden entrar en conflicto con los métodos DSL del enrutador.</p><div class="note"><p>El bloque <code>Rails.application.routes.draw do ... end</code> que envuelve las definiciones de ruta es necesario para establecer el alcance del enrutador DSL y no debe eliminarse.</p></div><h3 id="resource-routing-the-rails-default"><a class="anchorlink" href="#resource-routing-the-rails-default">2 Resource Routing: the Rails Default</a></h3><p>El enrutamiento de recursos le permite declarar rápidamente todas las rutas comunes para un controlador con recursos dado. En lugar de declarar rutas separadas para sus acciones de <code>index</code>,<code>show</code>, <code>new</code>,<code>edit</code>, <code>create</code>,<code>update</code> y <code>destroy</code>, una ruta ingeniosa las declara en una sola línea de código.</p><h4 id="resources-on-the-web"><a class="anchorlink" href="#resources-on-the-web">2.1 Resources on the Web</a></h4><p>Los navegadores solicitan páginas de Rails solicitando una URL mediante un método HTTP específico, como <code>GET</code>,<code>POST</code>, <code>PATCH</code>,<code>PUT</code> y <code>DELETE</code>. Cada método es una solicitud para realizar una operación en el recurso. Una ruta de recursos mapea una serie de solicitudes relacionadas con acciones en un solo controlador.</p><p>Cuando su aplicación Rails recibe una solicitud entrante para:</p><div class="code_container">
+<pre><code class="language-plain">DELETE /photos/17
+</code></pre>
+</div>
+<p>le pide al enrutador que lo asigne a una acción de controlador. Si la primera ruta coincidente es:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos
+</code></pre>
+</div>
+<p>Rails enviaría esa solicitud a la acción <code>destroy</code> en el controlador<code>photos</code> con <code>{id: '17'}</code> en <code>params</code>.</p><h4 id="crud-verbs-and-actions"><a class="anchorlink" href="#crud-verbs-and-actions">2.2 CRUD, Verbs, and Actions</a></h4><p>En Rails, una ruta ingeniosa proporciona un mapeo entre verbos HTTP y URL para
+acciones del controlador. Por convención, cada acción también se asigna a un CRUD específico
+operación en una base de datos. Una sola entrada en el archivo de enrutamiento, como:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos
+</code></pre>
+</div>
+<p>crea siete rutas diferentes en su aplicación, todas asignadas al controlador <code>Photos</code>:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/photos</td>
+<td>photos#index</td>
+<td>display a list of all photos</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/new</td>
+<td>photos#new</td>
+<td>return an HTML form for creating a new photo</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/photos</td>
+<td>photos#create</td>
+<td>create a new photo</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id</td>
+<td>photos#show</td>
+<td>display a specific photo</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id/edit</td>
+<td>photos#edit</td>
+<td>return an HTML form for editing a photo</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/photos/:id</td>
+<td>photos#update</td>
+<td>update a specific photo</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/photos/:id</td>
+<td>photos#destroy</td>
+<td>delete a specific photo</td>
+</tr>
+</tbody>
+</table>
+<div class="note"><p>Debido a que el enrutador usa el verbo HTTP y la URL para hacer coincidir las solicitudes entrantes, cuatro URL se asignan a siete acciones diferentes.</p></div><div class="note"><p>Las rutas de los rieles coinciden en el orden en que se especifican, por lo que si tiene un <code>resources: photos</code> encima de un<code>get 'photos/poll'</code>, la ruta de la acción <code>show</code> para la línea<code>resources</code> coincidirá antes que la línea <code>get</code>. Para solucionar este problema, mueva la línea <code>get</code> ** encima de ** la línea <code>resources</code> para que coincida primero.</p></div><h4 id="path-and-url-helpers"><a class="anchorlink" href="#path-and-url-helpers">2.3 Path and URL Helpers</a></h4><p>La creación de una ruta ingeniosa también expondrá una serie de ayudantes a los controladores de su aplicación. En el caso de `resources :photos:</p>
+<ul>
+<li>
+<code>photos_path</code> devuelve <code>/photos</code>
+</li>
+<li>
+<code>new_photo_path</code> devuelve <code>/photos/new</code>
+</li>
+<li>
+<code>edit_photo_path(:id)</code> devuelve <code>/photos/:id/edit</code> (por ejemplo, <code>edit_photo_path(10)</code> por ejemplo <code>/photos/10/edit</code>)</li>
+<li>
+<code>photo_path(:id)</code> devuelve <code>/photos/:id</code> (por ejemplo, <code>photo_path(10)</code> por ejemplo <code>/photos/10</code>)</li>
+</ul>
+<p>Cada uno de estos ayudantes tiene un ayudante <code>_url</code> correspondiente (como<code>photos_url</code>) que devuelve la misma ruta con el prefijo actual de host, puerto y ruta.</p><h4 id="defining-multiple-resources-at-the-same-time"><a class="anchorlink" href="#defining-multiple-resources-at-the-same-time">2.4 Defining Multiple Resources at the Same Time</a></h4><p>Si necesita crear rutas para más de un recurso, puede ahorrar un poco de escritura definiéndolas todas con una sola llamada a <code>resources</code>:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, :books, :videos
+</code></pre>
+</div>
+<p>Esto funciona exactamente igual que:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos
+resources :books
+resources :videos
+</code></pre>
+</div>
+<h4 id="singular-resources"><a class="anchorlink" href="#singular-resources">2.5 Singular Resources</a></h4><p>A veces, tiene un recurso que los clientes siempre buscan sin hacer referencia a una identificación. Por ejemplo, le gustaría que <code>/profile</code> muestre siempre el perfil del usuario actualmente conectado. En este caso, puede usar un recurso singular para mapear <code>/profile</code> (en lugar de<code>/profile/:id</code>) a la acción <code>show</code>:</p><div class="code_container">
+<pre><code class="language-ruby">get 'profile', to: 'users#show'
+</code></pre>
+</div>
+<p>Pasar una <code>String</code> a <code>to:</code> esperará un formato de <code>controller#action</code>. Cuando se usa un <code>Symbol</code>, la opción<code>to:</code> debe reemplazarse por<code>acción:</code>. Cuando se usa un <code>String</code> sin un <code>#</code>, la opción<code>to:</code> debe reemplazarse por <code>controller:</code>:</p><div class="code_container">
+<pre><code class="language-ruby">get 'profile', action: :show, controller: 'users'
+</code></pre>
+</div>
+<p>Esta ruta ingeniosa:</p><div class="code_container">
+<pre><code class="language-ruby">resource :geocoder
+resolve('Geocoder') { [:geocoder] }
+</code></pre>
+</div>
+<p>crea seis rutas diferentes en su aplicación, todas asignadas al controlador <code>Geocoders</code>:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/geocoder/new</td>
+<td>geocoders#new</td>
+<td>return an HTML form for creating the geocoder</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/geocoder</td>
+<td>geocoders#create</td>
+<td>create the new geocoder</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/geocoder</td>
+<td>geocoders#show</td>
+<td>display the one and only geocoder resource</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/geocoder/edit</td>
+<td>geocoders#edit</td>
+<td>return an HTML form for editing the geocoder</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/geocoder</td>
+<td>geocoders#update</td>
+<td>update the one and only geocoder resource</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/geocoder</td>
+<td>geocoders#destroy</td>
+<td>delete the geocoder resource</td>
+</tr>
+</tbody>
+</table>
+<div class="note"><p>Debido a que es posible que desee utilizar el mismo controlador para una ruta singular (<code>/ account</code>) y una ruta plural (<code>/ accounts / 45</code>), los recursos singulares se asignan a controladores plurales. De modo que, por ejemplo, <code>resource: photo</code> y<code>resources: photos</code> crea rutas tanto en singular como en plural que se asignan al mismo controlador (<code>PhotosController</code>).</p></div><p>Una ruta de recursos singular genera estas ayudantes:</p>
+<ul>
+<li>
+<code>new_geocoder_path</code> regresa <code>/geocoder/new</code>
+</li>
+<li>
+<code>edit_geocoder_path</code> regresa <code>/geocoder/edit</code>
+</li>
+<li>
+<code>geocoder_path</code> regresa <code>/geocoder</code>
+</li>
+</ul>
+<p>Al igual que con los recursos plurales, los mismos ayudantes que terminan en <code>_url</code> también incluirán el prefijo de host, puerto y ruta.</p><h4 id="controller-namespaces-and-routing"><a class="anchorlink" href="#controller-namespaces-and-routing">2.6 Controller Namespaces and Routing</a></h4><p>Es posible que desee organizar grupos de controladores en un espacio de nombres. Lo más común es agrupar varios controladores administrativos en un espacio de nombres <code>Admin::</code>. Colocaría estos controladores en el directorio <code>app/controllers/admin</code>, y puede agruparlos en su enrutador:</p><div class="code_container">
+<pre><code class="language-ruby">namespace :admin do
+  resources :articles, :comments
+end
+</code></pre>
+</div>
+<p>Esto creará una serie de rutas para cada uno de los controladores <code>artcicles</code> y <code>comments</code>. Para <code>Admin::ArticlesController</code>, Rails creará:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/admin/articles</td>
+<td>admin/articles#index</td>
+<td>admin_articles_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/new</td>
+<td>admin/articles#new</td>
+<td>new_admin_article_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/admin/articles</td>
+<td>admin/articles#create</td>
+<td>admin_articles_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/:id</td>
+<td>admin/articles#show</td>
+<td>admin_article_path(:id)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/:id/edit</td>
+<td>admin/articles#edit</td>
+<td>edit_admin_article_path(:id)</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/admin/articles/:id</td>
+<td>admin/articles#update</td>
+<td>admin_article_path(:id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/admin/articles/:id</td>
+<td>admin/articles#destroy</td>
+<td>admin_article_path(:id)</td>
+</tr>
+</tbody>
+</table>
+<p>Si desea enrutar <code>/articles</code> (sin el prefijo <code>/admin</code>) a <code>Admin::ArticlesController</code>, puede usar:</p><div class="code_container">
+<pre><code class="language-ruby">scope module: 'admin' do
+  resources :articles, :comments
+end
+</code></pre>
+</div>
+<p>o, para un solo caso:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles, module: 'admin'
+</code></pre>
+</div>
+<p>Si desea enrutar <code>/admin/articles</code> a <code>ArticlesController</code> (sin el prefijo del módulo <code>Admin::</code>), puede usar:</p><div class="code_container">
+<pre><code class="language-ruby">scope '/admin' do
+  resources :articles, :comments
+end
+</code></pre>
+</div>
+<p>o, para un solo caso:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles, path: '/admin/articles'
+</code></pre>
+</div>
+<p>En cada uno de estos casos, las rutas nombradas siguen siendo las mismas que si no usara <code>scope</code>. En el último caso, las siguientes rutas se asignan a <code>ArticlesController</code>:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/admin/articles</td>
+<td>articles#index</td>
+<td>articles_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/new</td>
+<td>articles#new</td>
+<td>new_article_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/admin/articles</td>
+<td>articles#create</td>
+<td>articles_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/:id</td>
+<td>articles#show</td>
+<td>article_path(:id)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/articles/:id/edit</td>
+<td>articles#edit</td>
+<td>edit_article_path(:id)</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/admin/articles/:id</td>
+<td>articles#update</td>
+<td>article_path(:id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/admin/articles/:id</td>
+<td>articles#destroy</td>
+<td>article_path(:id)</td>
+</tr>
+</tbody>
+</table>
+<div class="info"><p><em>Si necesita usar un espacio de nombres de controlador diferente dentro de un bloque <code>namespace</code>, puede especificar una ruta de controlador absoluta, por ejemplo: <code>get '/foo', to: '/foo#index'</code>.</em></p></div><h4 id="nested-resources"><a class="anchorlink" href="#nested-resources">2.7 Nested Resources</a></h4><p>Es común tener recursos que lógicamente son hijos de otros recursos. Por ejemplo, suponga que su aplicación incluye estos modelos:</p><div class="code_container">
+<pre><code class="language-ruby">class Magazine &lt; ApplicationRecord
+  has_many :ads
+end
+
+class Ad &lt; ApplicationRecord
+  belongs_to :magazine
+end
+</code></pre>
+</div>
+<p>Las rutas anidadas le permiten capturar esta relación en su ruta. En este caso, podría incluir esta declaración de ruta:</p><div class="code_container">
+<pre><code class="language-ruby">resources :magazines do
+  resources :ads
+end
+</code></pre>
+</div>
+<p>Además de las rutas para revistas, esta declaración también enrutará anuncios a un <code>AdsController</code>. Las URL de los anuncios requieren una revista:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/magazines/:magazine_id/ads</td>
+<td>ads#index</td>
+<td>display a list of all ads for a specific magazine</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/magazines/:magazine_id/ads/new</td>
+<td>ads#new</td>
+<td>return an HTML form for creating a new ad belonging to a specific magazine</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/magazines/:magazine_id/ads</td>
+<td>ads#create</td>
+<td>create a new ad belonging to a specific magazine</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/magazines/:magazine_id/ads/:id</td>
+<td>ads#show</td>
+<td>display a specific ad belonging to a specific magazine</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/magazines/:magazine_id/ads/:id/edit</td>
+<td>ads#edit</td>
+<td>return an HTML form for editing an ad belonging to a specific magazine</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/magazines/:magazine_id/ads/:id</td>
+<td>ads#update</td>
+<td>update a specific ad belonging to a specific magazine</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/magazines/:magazine_id/ads/:id</td>
+<td>ads#destroy</td>
+<td>delete a specific ad belonging to a specific magazine</td>
+</tr>
+</tbody>
+</table>
+<p>Esto también creará ayudantes de enrutamiento como <code>magazine_ads_url</code> y <code>edit_magazine_ad_path</code>. Estos ayudantes toman una instancia de Magazine como primer parámetro (<code>magazine_ads_url(@magazine)</code>).</p><h5 id="limits-to-nesting"><a class="anchorlink" href="#limits-to-nesting">2.7.1 Limits to Nesting</a></h5><p>Puede anidar recursos dentro de otros recursos anidados si lo desea. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :publishers do
+  resources :magazines do
+    resources :photos
+  end
+end
+</code></pre>
+</div>
+<p>Los recursos profundamente anidados se vuelven rápidamente engorrosos. En este caso, por ejemplo, la aplicación reconocería rutas como:</p><div class="code_container">
+<pre><code class="language-plain">/publishers/1/magazines/2/photos/3
+</code></pre>
+</div>
+<p>The corresponding route helper would be <code>publisher_magazine_photo_url</code>, requiring you to specify objects at all three levels. Indeed, this situation is confusing enough that a popular <a href="http://weblog.jamisbuck.org/2007/2/5/nesting-resources">article</a> by Jamis Buck proposes a rule of thumb for good Rails design:</p><div class="info"><p>_Los recursos nunca deben anidarse a más de 1 nivel de profundidad.</p></div><h5 id="shallow-nesting"><a class="anchorlink" href="#shallow-nesting">2.7.2 Shallow Nesting</a></h5><p>Una forma de evitar la anidación profunda (como se recomendó anteriormente) es generar las acciones de colección dentro del ámbito del padre, para tener una idea de la jerarquía, pero no anidar las acciones de los miembros. En otras palabras, para construir solo rutas con la mínima cantidad de información para identificar de forma única el recurso, así:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles do
+  resources :comments, only: [:index, :new, :create]
+end
+resources :comments, only: [:show, :edit, :update, :destroy]
+</code></pre>
+</div>
+<p>Esta idea logra un equilibrio entre rutas descriptivas y anidación profunda. Existe una sintaxis abreviada para lograr precisamente eso, a través de la opción <code>:shallow</code>:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles do
+  resources :comments, shallow: true
+end
+</code></pre>
+</div>
+<p>Esto generará exactamente las mismas rutas que el primer ejemplo. También puede especificar la opción <code>:shallow</code> en el recurso principal, en cuyo caso todos los recursos anidados serán poco profundos:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles, shallow: true do
+  resources :comments
+  resources :quotes
+  resources :drafts
+end
+</code></pre>
+</div>
+<p>El método <code>shallow</code> del DSL crea un alcance dentro del cual cada anidamiento es superficial. Esto genera las mismas rutas que el ejemplo anterior:</p><div class="code_container">
+<pre><code class="language-ruby">shallow do
+  resources :articles do
+    resources :comments
+    resources :quotes
+    resources :drafts
+  end
+end
+</code></pre>
+</div>
+<p>Existen dos opciones para <code>scope</code> para personalizar rutas poco profundas. <code>:shallow_path</code> antepone las rutas de miembros con el parámetro especificado:</p><div class="code_container">
+<pre><code class="language-ruby">scope shallow_path: "sekret" do
+  resources :articles do
+    resources :comments, shallow: true
+  end
+end
+</code></pre>
+</div>
+<p>El recurso de comentarios aquí tendrá las siguientes rutas generadas para él:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/articles/:article_id/comments(.:format)</td>
+<td>comments#index</td>
+<td>article_comments_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/articles/:article_id/comments(.:format)</td>
+<td>comments#create</td>
+<td>article_comments_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/articles/:article_id/comments/new(.:format)</td>
+<td>comments#new</td>
+<td>new_article_comment_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/sekret/comments/:id/edit(.:format)</td>
+<td>comments#edit</td>
+<td>edit_comment_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/sekret/comments/:id(.:format)</td>
+<td>comments#show</td>
+<td>comment_path</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/sekret/comments/:id(.:format)</td>
+<td>comments#update</td>
+<td>comment_path</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/sekret/comments/:id(.:format)</td>
+<td>comments#destroy</td>
+<td>comment_path</td>
+</tr>
+</tbody>
+</table>
+<p>La opción <code>:shallow_prefix</code> agrega el parámetro especificado a los ayudantes de ruta nombrados:</p><div class="code_container">
+<pre><code class="language-ruby">scope shallow_prefix: "sekret" do
+  resources :articles do
+    resources :comments, shallow: true
+  end
+end
+</code></pre>
+</div>
+<p>El recurso de comentarios aquí tendrá las siguientes rutas generadas para él:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/articles/:article_id/comments(.:format)</td>
+<td>comments#index</td>
+<td>article_comments_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/articles/:article_id/comments(.:format)</td>
+<td>comments#create</td>
+<td>article_comments_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/articles/:article_id/comments/new(.:format)</td>
+<td>comments#new</td>
+<td>new_article_comment_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/comments/:id/edit(.:format)</td>
+<td>comments#edit</td>
+<td>edit_sekret_comment_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/comments/:id(.:format)</td>
+<td>comments#show</td>
+<td>sekret_comment_path</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/comments/:id(.:format)</td>
+<td>comments#update</td>
+<td>sekret_comment_path</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/comments/:id(.:format)</td>
+<td>comments#destroy</td>
+<td>sekret_comment_path</td>
+</tr>
+</tbody>
+</table>
+<h4 id="routing-concerns"><a class="anchorlink" href="#routing-concerns">2.8 Routing Concerns</a></h4><p>Las preocupaciones sobre el enrutamiento le permiten declarar rutas comunes que se pueden reutilizar dentro de otros recursos y rutas. Para definir una preocupación:</p><div class="code_container">
+<pre><code class="language-ruby">concern :commentable do
+  resources :comments
+end
+
+concern :image_attachable do
+  resources :images, only: :index
+end
+</code></pre>
+</div>
+<p>Estas preocupaciones se pueden utilizar en los recursos para evitar la duplicación de código y compartir el comportamiento entre rutas:</p><div class="code_container">
+<pre><code class="language-ruby">resources :messages, concerns: :commentable
+
+resources :articles, concerns: [:commentable, :image_attachable]
+</code></pre>
+</div>
+<p>Lo anterior es equivalente a:</p><div class="code_container">
+<pre><code class="language-ruby">resources :messages do
+  resources :comments
+end
+
+resources :articles do
+  resources :comments
+  resources :images, only: :index
+end
+</code></pre>
+</div>
+<p>También puede usarlos en cualquier lugar que desee dentro de las rutas, por ejemplo, en una llamada a <code>scope</code> o <code>namespace</code>:</p><div class="code_container">
+<pre><code class="language-ruby">namespace :articles do
+  concerns :commentable
+end
+</code></pre>
+</div>
+<h4 id="creating-paths-and-urls-from-objects"><a class="anchorlink" href="#creating-paths-and-urls-from-objects">2.9 Creating Paths and URLs from Objects</a></h4><p>Además de utilizar los ayudantes de enrutamiento, Rails también puede crear rutas y URL a partir de una serie de parámetros. Por ejemplo, suponga que tiene este conjunto de rutas:</p><div class="code_container">
+<pre><code class="language-ruby">resources :magazines do
+  resources :ads
+end
+</code></pre>
+</div>
+<p>Al usar <code>magazine_ad_path</code>, puede pasar instancias de <code>Magazine</code> y <code>Ad</code> en lugar de los ID numéricos:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %&gt;
+</code></pre>
+</div>
+<p>También puede usar <code>url_for</code> con un conjunto de objetos, y Rails determinará automáticamente qué ruta desea:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Ad details', url_for([@magazine, @ad]) %&gt;
+</code></pre>
+</div>
+<p>En este caso, Rails verá que <code>@magazine</code> es una<code>Magazine</code> y <code>@ad</code> es un <code>Ad</code> y, por lo tanto, usará el ayudante <code>magazine_ad_path</code>. En ayudantes como <code>link_to</code>, puedes especificar solo el objeto en lugar de la llamada completa a <code>url_for</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Ad details', [@magazine, @ad] %&gt;
+</code></pre>
+</div>
+<p>Si desea vincular solo a una revista:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Magazine details', @magazine %&gt;
+</code></pre>
+</div>
+<p>Para otras acciones, solo necesita insertar el nombre de la acción como el primer elemento de la matriz:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= link_to 'Edit Ad', [:edit, @magazine, @ad] %&gt;
+</code></pre>
+</div>
+<p>Esto le permite tratar las instancias de sus modelos como URL y es una ventaja clave para usar el estilo ingenioso.</p><h4 id="adding-more-restful-actions"><a class="anchorlink" href="#adding-more-restful-actions">2.10 Adding More RESTful Actions</a></h4><p>No está limitado a las siete rutas que el enrutamiento RESTful crea de forma predeterminada. Si lo desea, puede agregar rutas adicionales que se apliquen a la colección o miembros individuales de la colección.</p><h5 id="adding-member-routes"><a class="anchorlink" href="#adding-member-routes">2.10.1 Adding Member Routes</a></h5><p>Para agregar una ruta miembro, simplemente agregue un bloque <code>member</code> en el bloque de recursos:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos do
+  member do
+    get 'preview'
+  end
+end
+</code></pre>
+</div>
+<p>Esto reconocerá <code>/photos/1/preview</code> con GET, y se dirigirá a la acción <code>preview</code> de <code>PhotosController</code>, con el valor de id de recurso pasado en <code>params[:id]</code>. También creará los ayudantes <code>preview_photo_url</code> y <code>preview_photo_path</code>.</p><p>Dentro del bloque de rutas miembro, cada nombre de ruta especifica el verbo HTTP que
+será reconocido. Puede usar <code>get</code>,<code>patch</code>, <code>put</code>,<code>post</code> o <code>delete</code> aquí
+. Si no tiene varias rutas <code>member</code>, también puede pasar <code>:on</code> a un
+ruta, eliminando el bloque:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos do
+  get 'preview', on: :member
+end
+</code></pre>
+</div>
+<p>Puede omitir la opción <code>:on</code>, esto creará la misma ruta de miembro excepto que el valor de id del recurso estará disponible en <code>params[:photo_id]</code>en lugar de<code>params [: id]</code>. Los asistentes de ruta también cambiarán de nombre de <code>preview_photo_url</code> y <code>preview_photo_path</code> a <code>photo_preview_url</code> y <code>photo_preview_path</code>.</p><h5 id="adding-collection-routes"><a class="anchorlink" href="#adding-collection-routes">2.10.2 Adding Collection Routes</a></h5><p>Para agregar una ruta a la colección</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos do
+  collection do
+    get 'search'
+  end
+end
+</code></pre>
+</div>
+<p>Esto permitirá a Rails reconocer rutas como <code>/photos/search</code> con GET, y dirigirse a la acción de <code>search</code> de <code>PhotosController</code>. También creará los ayudantes de ruta <code>search_photos_url</code> y <code>search_photos_path</code>.</p><p>Al igual que con las rutas de miembros, puede pasar <code>:on</code> a una ruta:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos do
+  get 'search', on: :collection
+end
+</code></pre>
+</div>
+<div class="note"><p>Si está definiendo rutas de recursos adicionales con un símbolo como primer argumento posicional, tenga en cuenta que no es equivalente a usar una cadena. Los símbolos infieren acciones del controlador mientras que las cadenas infieren rutas.</p></div><h5 id="adding-routes-for-additional-new-actions"><a class="anchorlink" href="#adding-routes-for-additional-new-actions">2.10.3 Adding Routes for Additional New Actions</a></h5><p>Para agregar una nueva acción alternativa usando el atajo <code>:on</code>:</p><div class="code_container">
+<pre><code class="language-ruby">resources :comments do
+  get 'preview', on: :new
+end
+</code></pre>
+</div>
+<p>Esto permitirá a Rails reconocer rutas como <code>/comments/new/preview</code> con GET, y dirigirse a la acción de <code>preview</code> de <code>CommentsController</code>. También creará los ayudantes de ruta <code>preview_new_comment_url</code> y <code>preview_new_comment_path</code>.</p><div class="info"><p>si se encuentra agregando muchas acciones adicionales a una ruta ingeniosa, es hora de detenerse y preguntarse si está ocultando la presencia de otro recurso.</p></div><h3 id="non-resourceful-routes"><a class="anchorlink" href="#non-resourceful-routes">3 Non-Resourceful Routes</a></h3><p>Además del enrutamiento de recursos, Rails tiene un poderoso soporte para enrutar URL arbitrarias a acciones. Aquí, no obtiene grupos de rutas generados automáticamente por enrutamiento ingenioso. En su lugar, configura cada ruta por separado dentro de su aplicación.</p><p>Si bien generalmente debe utilizar un enrutamiento ingenioso, todavía hay muchos lugares donde el enrutamiento más simple es más apropiado. No es necesario tratar de calzar hasta la última pieza de su aplicación en un marco ingenioso si no es una buena opción.</p><p>En particular, el enrutamiento simple hace que sea muy fácil asignar URL heredadas a nuevas acciones de Rails.</p><h4 id="bound-parameters"><a class="anchorlink" href="#bound-parameters">3.1 Bound Parameters</a></h4><p>Cuando configuras una ruta regular, proporcionas una serie de símbolos que Rails asigna a partes de una solicitud HTTP entrante. Por ejemplo, considere esta ruta:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos(/:id)', to: 'photos#display'
+</code></pre>
+</div>
+<p>Si una solicitud entrante de <code>/photos/1</code> es procesada por esta ruta (porque no ha coincidido con ninguna ruta anterior en el archivo), el resultado será invocar la acción <code>display</code> del <code>PhotosController</code>, y para que el parámetro final <code>"1"</code> esté disponible como <code>params[:id]</code>. Esta ruta también enrutará la solicitud entrante de <code>/photos</code> a<code>PhotosController#display</code>, ya que <code>:id</code> es un parámetro opcional, indicado entre paréntesis.</p><h4 id="dynamic-segments"><a class="anchorlink" href="#dynamic-segments">3.2 Dynamic Segments</a></h4><p>Puede configurar tantos segmentos dinámicos dentro de una ruta regular como desee. Cualquier segmento estará disponible para la acción como parte de "params". Si configura esta ruta:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id/:user_id', to: 'photos#show'
+</code></pre>
+</div>
+<p>Se enviará una ruta entrante de <code>/photos/1/2</code> a la acción <code>show</code> del <code>PhotosController</code>. <code>params[:id]</code> será <code>"1"</code>, y <code>params[:user_id]</code> será <code>"2"</code>.</p><p>SUGERENCIA: De forma predeterminada, los segmentos dinámicos no aceptan puntos; esto se debe a que el punto se usa como separador para rutas formateadas. Si necesita usar un punto dentro de un segmento dinámico, agregue una restricción que anule esto, por ejemplo,  <code>id: /[^\/]+/</code> permite cualquier cosa excepto una barra.</p><h4 id="static-segments"><a class="anchorlink" href="#static-segments">3.3 Static Segments</a></h4><p>Puede especificar segmentos estáticos al crear una ruta sin anteponer dos puntos a un fragmento:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id/with_user/:user_id', to: 'photos#show'
+</code></pre>
+</div>
+<p>Esta ruta respondería a rutas como <code>/photos/1/with_user/2</code>. En este caso, <code>params</code> sería <code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p><h4 id="the-query-string"><a class="anchorlink" href="#the-query-string">3.4 The Query String</a></h4><p>Los <code>params</code> también incluirán cualquier parámetro de la cadena de consulta. Por ejemplo, con esta ruta:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show'
+</code></pre>
+</div>
+<p>Una ruta entrante de <code>/photos/1? User_id=2</code> será enviada a la acción <code>show</code> del controlador <code>Photos</code>. <code>params</code> será<code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p><h4 id="defining-defaults"><a class="anchorlink" href="#defining-defaults">3.5 Defining Defaults</a></h4><p>Puede definir valores predeterminados en una ruta proporcionando un hash para la opción <code>:defaults</code>. Esto incluso se aplica a los parámetros que no especifica como segmentos dinámicos. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
+</code></pre>
+</div>
+<p>Rails haría coincidir <code>photos/12</code> con la acción<code>show</code> de <code>PhotosController</code>, y establecería <code>params[:format]</code> en <code>"jpg"</code>.</p><p>También puede utilizar <code>defaults</code> en un formato de bloque para definir los valores predeterminados para varios elementos:</p><div class="code_container">
+<pre><code class="language-ruby">defaults format: :json do
+  resources :photos
+end
+</code></pre>
+</div>
+<div class="note"><p>No puede anular los valores predeterminados mediante los parámetros de consulta, esto es por razones de seguridad. Los únicos valores predeterminados que se pueden anular son los segmentos dinámicos mediante sustitución en la ruta de la URL.</p></div><h4 id="naming-routes"><a class="anchorlink" href="#naming-routes">3.6 Naming Routes</a></h4><p>Puede especificar un nombre para cualquier ruta usando la opción <code>:as</code>:</p><div class="code_container">
+<pre><code class="language-ruby">get 'exit', to: 'sessions#destroy', as: :logout
+</code></pre>
+</div>
+<p>Esto creará <code>logout_path</code> y <code>logout_url</code> como ayudantes de ruta con nombre en su aplicación. Llamar a <code>logout_path</code> devolverá <code>/exit</code></p><p>También puede usar esto para anular los métodos de enrutamiento definidos por los recursos, como este:</p><div class="code_container">
+<pre><code class="language-ruby">get ':username', to: 'users#show', as: :user
+</code></pre>
+</div>
+<p>Esto definirá un método <code>user_path</code> que estará disponible en controladores, ayudantes y vistas que irán a una ruta como <code>/bob</code>. Dentro de la acción <code>show</code> de <code>UsersController</code>, <code>params [:username]</code> contendrá el nombre de usuario del usuario. Cambie <code>:username</code> en la definición de ruta si no desea que el nombre de su parámetro sea <code>:username</code>.</p><h4 id="http-verb-constraints"><a class="anchorlink" href="#http-verb-constraints">3.7 HTTP Verb Constraints</a></h4><p>En general, debes usar los métodos <code>get</code>,<code>post</code>, <code>put</code>, <code>patch</code> y <code>delete</code> para restringir una ruta a un verbo en particular. Puede usar el método <code>match</code> con la opción <code>:via</code> para hacer coincidir varios verbos a la vez:</p><div class="code_container">
+<pre><code class="language-ruby">match 'photos', to: 'photos#show', via: [:get, :post]
+</code></pre>
+</div>
+<p>Puede hacer coincidir todos los verbos con una ruta en particular usando <code>via: :all</code>:</p><div class="code_container">
+<pre><code class="language-ruby">match 'photos', to: 'photos#show', via: :all
+</code></pre>
+</div>
+<div class="note"><p>Enrutar las solicitudes <code>GET</code> y <code>POST</code> a una sola acción tiene implicaciones de seguridad. En general, debe evitar enrutar todos los verbos a una acción a menos que tenga una buena razón para hacerlo.</p></div><div class="note"><p><code>GET</code> en Rails no buscará el token CSRF. Nunca debe escribir en la base de datos desde solicitudes <code>GET</code>. Para obtener más información, consulte la <a href="security.html#csrf-countermeasures">security guide</a> sobre las contramedidas CSRF.</p></div><h4 id="segment-constraints"><a class="anchorlink" href="#segment-constraints">3.8 Segment Constraints</a></h4><p>Puede utilizar la opción <code>:constraints</code> para imponer un formato para un segmento dinámico:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
+</code></pre>
+</div>
+<p>Esta ruta coincidiría con rutas como <code>/photos/A12345</code>, pero no con <code>/photos/893</code>. Puede expresar más sucintamente la misma ruta de esta manera:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
+</code></pre>
+</div>
+<p><code>:constraints</code> toma expresiones regulares con la restricción de que los anclajes de expresiones regulares no se pueden usar. Por ejemplo, la siguiente ruta no funcionará:</p><div class="code_container">
+<pre><code class="language-ruby">get '/:id', to: 'articles#show', constraints: { id: /^\d/ }
+</code></pre>
+</div>
+<p>Sin embargo, tenga en cuenta que no es necesario utilizar anclajes porque todas las rutas están ancladas al principio.</p><p>Por ejemplo, las siguientes rutas permitirían <code>articles</code> con valores <code>to_param</code> como <code>1-hello-world</code> que siempre comienzan con un número y <code>users</code> con valores <code>to_param</code> como <code>david</code> que nunca comienzan con un número para compartir el espacio de nombres raíz:</p><div class="code_container">
+<pre><code class="language-ruby">get '/:id', to: 'articles#show', constraints: { id: /\d.+/ }
+get '/:username', to: 'users#show'
+</code></pre>
+</div>
+<h4 id="request-based-constraints"><a class="anchorlink" href="#request-based-constraints">3.9 Request-Based Constraints</a></h4><p>También puede restringir una ruta en función de cualquier método en el <a href="action_controller_overview.html#the-request-object">Request object</a> que devuelve una <code>String</code>.</p><p>Especifica una restricción basada en solicitud de la misma manera que especifica una restricción de segmento:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos', to: 'photos#index', constraints: { subdomain: 'admin' }
+</code></pre>
+</div>
+<p>También puede especificar restricciones en forma de bloque:</p><div class="code_container">
+<pre><code class="language-ruby">namespace :admin do
+  constraints subdomain: 'admin' do
+    resources :photos
+  end
+end
+</code></pre>
+</div>
+<div class="note"><p>Las restricciones de solicitud funcionan llamando a un método en el <a href="action_controller_overview.html#the-request-object">Request object</a>  con el mismo nombre que la clave hash y luego compare el valor de retorno con el valor hash. Por lo tanto, los valores de restricción deben coincidir con el tipo de retorno del método de objeto Request correspondiente. Por ejemplo: <code>constraints: {subdomain: 'api'}</code> coincidirá con un subdominio <code>api</code> como se esperaba, sin embargo, usando un símbolo<code>constraints: {subdominio: :api}</code>no lo hará, porque <code>request.subdomain</code> devuelve <code>'api'</code> como una cadena.</p></div><div class="note"><p>Hay una excepción para la restricción <code>format</code>: si bien es un método en el objeto Request, también es un parámetro opcional implícito en cada ruta. Las restricciones de segmento tienen prioridad y la restricción de "formato" solo se aplica como tal cuando se aplica mediante un hash. Por ejemplo, <code>get 'foo', las restricciones: {formato: 'json'}</code> coincidirá con <code>GET/foo</code> porque el formato es opcional por defecto. Sin embargo, puede  <a href="#advanced-constraints">use a lambda</a> como en <code>get 'foo', constraints: lambda { |req| req.format == :json }</code> y la ruta solo coincidirá con solicitudes JSON explícitas.</p></div><h4 id="advanced-constraints"><a class="anchorlink" href="#advanced-constraints">3.10 Advanced Constraints</a></h4><p>Si tiene una restricción más avanzada, puede proporcionar un objeto que responda a "¿coincidencias?" Que Rails debería usar. Supongamos que desea enrutar a todos los usuarios de una lista restringida al <code>RestrictedListController</code>. Podrías hacerlo:</p><div class="code_container">
+<pre><code class="language-ruby">class RestrictedListConstraint
+  def initialize
+    @ips = RestrictedList.retrieve_ips
+  end
+
+  def matches?(request)
+    @ips.include?(request.remote_ip)
+  end
+end
+
+Rails.application.routes.draw do
+  get '*path', to: 'restricted_list#index',
+    constraints: RestrictedListConstraint.new
+end
+</code></pre>
+</div>
+<p>También puede especificar restricciones como lambda:</p><div class="code_container">
+<pre><code class="language-ruby">Rails.application.routes.draw do
+  get '*path', to: 'restricted_list#index',
+    constraints: lambda { |request| RestrictedList.retrieve_ips.include?(request.remote_ip) }
+end
+</code></pre>
+</div>
+<p>Tanto el método <code>matches?</code> Como el lambda obtienen el objeto <code>request</code> como argumento</p><h4 id="route-globbing-and-wildcard-segments"><a class="anchorlink" href="#route-globbing-and-wildcard-segments">3.11 Route Globbing and Wildcard Segments</a></h4><p>El globbing de ruta es una forma de especificar que un parámetro particular debe coincidir con todas las partes restantes de una ruta. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">get 'photos/*other', to: 'photos#unknown'
+</code></pre>
+</div>
+<p>Esta ruta coincidiría con <code>photos/12</code> o <code>/photos/long/path/to/12</code>, estableciendo <code>params[:other]</code> en <code>"12"</code> o <code>"long/path/to/12"</code>. Los fragmentos precedidos de una estrella se denominan "segmentos comodín".</p><p>Los segmentos comodín pueden aparecer en cualquier lugar de una ruta. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">get 'books/*section/:title', to: 'books#show'
+</code></pre>
+</div>
+<p>coincidiría <code>books/some/section/last-words-a-memoir</code> con <code>params[:section]</code> es igual a <code>'some/section'</code>, y <code>params[:title]</code> es igual a <code>'last-words-a-memoir'</code>.</p><p>Técnicamente, una ruta puede tener incluso más de un segmento comodín. El comparador asigna segmentos a parámetros de forma intuitiva. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">get '*a/foo/*b', to: 'test#index'
+</code></pre>
+</div>
+<p>coincidiría <code>zoo/woo/foo/bar/baz</code> con <code>params[:a]</code> es igual a  <code>'zoo/woo'</code>, y <code>params[:b]</code> es igual a  <code>'bar/baz'</code>.</p><div class="note"><p>Al solicitar <code>'/foo/bar.json'</code>, sus <code>params[:pages]</code>serán iguales a <code>'foo/bar'</code> con el formato de solicitud JSON. Si desea recuperar el antiguo comportamiento de 3.0.x, puede proporcionar <code>format: false</code> como este:</p></div><div class="code_container">
+<pre><code class="language-ruby">get '*pages', to: 'pages#show', format: false
+</code></pre>
+</div>
+<div class="note"><p>Si desea que el segmento de formato sea obligatorio, por lo que no se puede omitir, puede proporcionar <code>format: true</code> así:</p></div><div class="code_container">
+<pre><code class="language-ruby">get '*pages', to: 'pages#show', format: true
+</code></pre>
+</div>
+<h4 id="redirection"><a class="anchorlink" href="#redirection">3.12 Redirection</a></h4><p>Puede redirigir cualquier ruta a otra ruta usando el ayudante <code>redirect</code> en su enrutador:</p><div class="code_container">
+<pre><code class="language-ruby">get '/stories', to: redirect('/articles')
+</code></pre>
+</div>
+<p>También puede reutilizar segmentos dinámicos de la coincidencia en la ruta para redirigir a:</p><div class="code_container">
+<pre><code class="language-ruby">get '/stories/:name', to: redirect('/articles/%{name}')
+</code></pre>
+</div>
+<p>También puede proporcionar un bloque para redirigir, que recibe los parámetros de ruta simbolizados y el objeto de solicitud:</p><div class="code_container">
+<pre><code class="language-ruby">get '/stories/:name', to: redirect { |path_params, req| "/articles/#{path_params[:name].pluralize}" }
+get '/stories', to: redirect { |path_params, req| "/articles/#{req.subdomain}" }
+</code></pre>
+</div>
+<p>Tenga en cuenta que la redirección predeterminada es una redirección 301 "Movido permanentemente". Tenga en cuenta que algunos navegadores web o servidores proxy almacenarán en caché este tipo de redireccionamiento, haciendo que la página anterior sea inaccesible. Puede utilizar la opción <code>:status</code> para cambiar el estado de la respuesta:</p><div class="code_container">
+<pre><code class="language-ruby">get '/stories/:name', to: redirect('/articles/%{name}', status: 302)
+</code></pre>
+</div>
+<p>En todos estos casos, si no proporciona el host principal (<code>http://www.example.com</code>), Rails tomará esos detalles de la solicitud actual.</p><h4 id="routing-to-rack-applications"><a class="anchorlink" href="#routing-to-rack-applications">3.13 Routing to Rack Applications</a></h4><p>En lugar de una cadena como <code>'articles#index'</code>, que corresponde a la acción <code>index</code> en el <code>ArticlesController</code>, puedes especificar cualquier <a href="rails_on_rack.html">Rack application</a> como el punto final para un comparador:</p><div class="code_container">
+<pre><code class="language-ruby">match '/application.js', to: MyRackApp, via: :all
+</code></pre>
+</div>
+<p>Mientras <code>MyRackApp</code> responda a <code>call</code> y devuelva un <code>[status, headers, body]</code>, el enrutador no reconocerá la diferencia entre la aplicación Rack y una acción. Este es un uso apropiado de <code>via: :all</code>, ya que querrá permitir que su aplicación Rack maneje todos los verbos como lo considere apropiado.</p><div class="note"><p>Para los curiosos, <code>'articles#index'</code> en realidad se expande a <code>ArticlesController.action(:index)</code>, que devuelve una aplicación Rack válida.</p></div><p>Si especifica una aplicación Rack como el punto final para un comparador, recuerde que
+la ruta no se modificará en la aplicación receptora. Con lo siguiente
+route su aplicación Rack debe esperar que la ruta sea <code>/admin</code>:</p><div class="code_container">
+<pre><code class="language-ruby">match '/admin', to: AdminApp, via: :all
+</code></pre>
+</div>
+<p>Si prefiere que su aplicación Rack reciba solicitudes en la raíz
+ruta en su lugar, use <code>mount</code>:</p><div class="code_container">
+<pre><code class="language-ruby">mount AdminApp, at: '/admin'
+</code></pre>
+</div>
+<h4 id="using-root"><a class="anchorlink" href="#using-root">3.14 Using <code>root</code></a></h4><p>Puede especificar a qué Rails debe enrutar <code>'/'</code> con el método <code>root</code>:</p><div class="code_container">
+<pre><code class="language-ruby">root to: 'pages#main'
+root 'pages#main' # shortcut for the above
+</code></pre>
+</div>
+<p>Debe colocar la ruta <code>root</code> en la parte superior del archivo, porque es la ruta más popular y debe coincidir primero.</p><div class="note"><p>La ruta <code>root</code> solo enruta las solicitudes <code>GET</code> a la acción.</p></div><p>También puede utilizar la raíz dentro de espacios de nombres y ámbitos. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">namespace :admin do
+  root to: "admin#index"
+end
+
+root to: "home#index"
+</code></pre>
+</div>
+<h4 id="unicode-character-routes"><a class="anchorlink" href="#unicode-character-routes">3.15 Unicode Character Routes</a></h4><p>Puede especificar rutas de caracteres Unicode directamente. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">get 'こんにちは', to: 'welcome#index'
+</code></pre>
+</div>
+<h4 id="direct-routes"><a class="anchorlink" href="#direct-routes">3.16 Direct Routes</a></h4><p>Puede crear ayudantes de URL personalizados directamente. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">direct :homepage do
+  "http://www.rubyonrails.org"
+end
+
+# &gt;&gt; homepage_url
+# =&gt; "http://www.rubyonrails.org"
+</code></pre>
+</div>
+<p>El valor de retorno del bloque debe ser un argumento válido para el método <code>url_for</code>. Por lo tanto, puede pasar una URL de cadena válida, Hash, Array, una instancia de modelo activo o una clase de modelo activo.</p><div class="code_container">
+<pre><code class="language-ruby">direct :commentable do |model|
+  [ model, anchor: model.dom_id ]
+end
+
+direct :main do
+  { controller: 'pages', action: 'index', subdomain: 'www' }
+end
+</code></pre>
+</div>
+<h4 id="using-resolve"><a class="anchorlink" href="#using-resolve">3.17 Using <code>resolve</code></a></h4><p>El método <code>resolve</code> permite personalizar el mapeo polimórfico de modelos. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resource :basket
+
+resolve("Basket") { [:basket] }
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @basket do |form| %&gt;
+  &lt;!-- basket form --&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Esto generará la URL singular <code>/basket</code> en lugar de la habitual <code>/baskets/:id</code>.</p><h3 id="customizing-resourceful-routes"><a class="anchorlink" href="#customizing-resourceful-routes">4 Customizing Resourceful Routes</a></h3><p>Si bien las rutas predeterminadas y los ayudantes generados por <code>resources :articles</code> generalmente le servirán bien, es posible que desee personalizarlos de alguna manera. Rails le permite personalizar prácticamente cualquier parte genérica de los ayudantes ingeniosos.</p><h4 id="specifying-a-controller-to-use"><a class="anchorlink" href="#specifying-a-controller-to-use">4.1 Specifying a Controller to Use</a></h4><p>La opción <code>:controller</code> le permite especificar explícitamente un controlador para usar para el recurso. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, controller: 'images'
+</code></pre>
+</div>
+<p>reconocerá las rutas entrantes que comienzan con <code>/photos</code> pero se dirigirán al controlador<code>Images</code>:</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/photos</td>
+<td>images#index</td>
+<td>photos_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/new</td>
+<td>images#new</td>
+<td>new_photo_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/photos</td>
+<td>images#create</td>
+<td>photos_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id</td>
+<td>images#show</td>
+<td>photo_path(:id)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id/edit</td>
+<td>images#edit</td>
+<td>edit_photo_path(:id)</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/photos/:id</td>
+<td>images#update</td>
+<td>photo_path(:id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/photos/:id</td>
+<td>images#destroy</td>
+<td>photo_path(:id)</td>
+</tr>
+</tbody>
+</table>
+<div class="note"><p>Utilice <code>photos_path</code>, <code>new_photo_path</code>, etc. para generar rutas para este recurso.</p></div><p>Para los controladores de espacio de nombres, puede utilizar la notación de directorio. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :user_permissions, controller: 'admin/user_permissions'
+</code></pre>
+</div>
+<p>Esto se enrutará al controlador <code>Admin::UserPermissions</code>.</p><div class="note"><p>Solo se admite la notación de directorio. Especificando el
+controlador con notación constante de Ruby (por ejemplo, <code>controller: 'Admin::UserPermissions'</code>)
+puede conducir a problemas de enrutamiento y resulta en
+una advertencia.</p></div><h4 id="specifying-constraints"><a class="anchorlink" href="#specifying-constraints">4.2 Specifying Constraints</a></h4><p>Puede usar la opción <code>: constraints</code> para especificar un formato requerido en el<code>id</code> implícito. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, constraints: { id: /[A-Z][A-Z][0-9]+/ }
+</code></pre>
+</div>
+<p>Esta declaración restringe el parámetro <code>:id</code> para que coincida con la expresión regular proporcionada. Entonces, en este caso, el enrutador ya no coincidirá con <code>/ photos / 1</code> con esta ruta. En cambio, <code>/ photos / RR27</code> coincidiría.</p><p>Puede especificar una única restricción para aplicar a varias rutas utilizando el formulario de bloque:</p><div class="code_container">
+<pre><code class="language-ruby">constraints(id: /[A-Z][A-Z][0-9]+/) do
+  resources :photos
+  resources :accounts
+end
+</code></pre>
+</div>
+<div class="note"><p>Por supuesto, puede utilizar las restricciones más avanzadas disponibles en rutas sin recursos en este contexto.</p></div><div class="info"><p>De forma predeterminada, el parámetro <code>:id</code> no acepta puntos; esto se debe a que el punto se usa como separador para rutas formateadas. Si necesita usar un punto dentro de un <code>:id</code> agregue una restricción que anule esto - por ejemplo, <code>id: /[^\/]+/</code> permite cualquier cosa excepto una barra.</p></div><h4 id="overriding-the-named-route-helpers"><a class="anchorlink" href="#overriding-the-named-route-helpers">4.3 Overriding the Named Route Helpers</a></h4><p>La opción <code>:as</code> le permite anular el nombre normal de los ayudantes de ruta nombrados. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, as: 'images'
+</code></pre>
+</div>
+<p>reconocerá las rutas entrantes que comienzan con <code>/photos</code> y enrutará las solicitudes a <code>PhotosController</code>, pero usará el valor de la opción <code>:as</code> para nombrar los ayudantes.</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/photos</td>
+<td>photos#index</td>
+<td>images_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/new</td>
+<td>photos#new</td>
+<td>new_image_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/photos</td>
+<td>photos#create</td>
+<td>images_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id</td>
+<td>photos#show</td>
+<td>image_path(:id)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/photos/:id/edit</td>
+<td>photos#edit</td>
+<td>edit_image_path(:id)</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/photos/:id</td>
+<td>photos#update</td>
+<td>image_path(:id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/photos/:id</td>
+<td>photos#destroy</td>
+<td>image_path(:id)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="overriding-the-new-and-edit-segments"><a class="anchorlink" href="#overriding-the-new-and-edit-segments">4.4 Overriding the <code>new</code> and <code>edit</code> Segments</a></h4><p>La opción <code>:path_names</code> te permite anular los segmentos <code>new</code> y <code>edit</code> generados automáticamente en las rutas:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, path_names: { new: 'make', edit: 'change' }
+</code></pre>
+</div>
+<p>Esto haría que el enrutamiento reconociera rutas como:</p><div class="code_container">
+<pre><code class="language-plain">/photos/make
+/photos/1/change
+</code></pre>
+</div>
+<div class="note"><p>Esta opción no cambia los nombres reales de las acciones. Las dos rutas mostradas aún se enrutarían a las acciones <code>nuevo</code> y <code>edit</code>.</p></div><div class="info"><p>Si desea cambiar esta opción de manera uniforme para todas sus rutas, puede usar un visor.</p></div><div class="code_container">
+<pre><code class="language-ruby">scope path_names: { new: 'make' } do
+  # rest of your routes
+end
+</code></pre>
+</div>
+<h4 id="prefixing-the-named-route-helpers"><a class="anchorlink" href="#prefixing-the-named-route-helpers">4.5 Prefixing the Named Route Helpers</a></h4><p>Puede usar la opción <code>:as</code> para prefijar los ayudantes de ruta con nombre que Rails genera para una ruta. Utilice esta opción para evitar colisiones de nombres entre rutas utilizando un alcance de ruta. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">scope 'admin' do
+  resources :photos, as: 'admin_photos'
+end
+
+resources :photos
+</code></pre>
+</div>
+<p>Esto proporcionará ayudantes de ruta como <code>admin_photos_path</code>, <code>new_admin_photo_path</code>, etc.</p><p>Para prefijar un grupo de ayudantes de ruta, use <code>:as</code> con <code>scope</code>:</p><div class="code_container">
+<pre><code class="language-ruby">scope 'admin', as: 'admin' do
+  resources :photos, :accounts
+end
+
+resources :photos, :accounts
+</code></pre>
+</div>
+<p>Esto generará rutas como <code>admin_photos_path</code> y <code>admin_accounts_path</code> que se asignan a <code>/admin/photos</code> y <code>/admin/accounts</code> respectivamente.</p><div class="note"><p>El alcance del <code>namespace</code> agregará automáticamente los prefijos <code>: as</code> así como <code>:module</code> y <code>:path</code>.</p></div><p>También puede prefijar rutas con un parámetro con nombre:</p><div class="code_container">
+<pre><code class="language-ruby">scope ':username' do
+  resources :articles
+end
+</code></pre>
+</div>
+<p>Esto le proporcionará URL como <code>/bob/articles/1</code> y le permitirá hacer referencia a la parte del <code>username</code> de la ruta como <code>params[:username]</code> en controladores, ayudantes y vistas.</p><h4 id="restricting-the-routes-created"><a class="anchorlink" href="#restricting-the-routes-created">4.6 Restricting the Routes Created</a></h4><p>De forma predeterminada, Rails crea rutas para las siete acciones predeterminadas (<code>index</code>, <code>show</code>, <code>new</code>, <code>create</code>, <code>edit</code>, <code>update</code>, and <code>destroy</code>) para cada ruta RESTful en su aplicación. Puede utilizar las opciones <code>:only</code> y <code>:except</code> para ajustar este comportamiento. La opción <code>:only</code> le dice a Rails que cree solo las rutas especificadas:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, only: [:index, :show]
+</code></pre>
+</div>
+<p>Ahora, una solicitud <code>GET</code> a <code>/photos</code> tendría éxito, pero una solicitud <code>POST</code> a <code>/photos</code> (que normalmente se enrutaría a la acción <code>create</code>) fallará.</p><p>La opción <code>: except</code> especifica una ruta o lista de rutas que Rails <em>no</em> debería crear:</p><div class="code_container">
+<pre><code class="language-ruby">resources :photos, except: :destroy
+</code></pre>
+</div>
+<p>En este caso, Rails creará todas las rutas normales excepto la ruta para <code>destroy</code> (una solicitud <code>DELETE</code> a <code>/photos/:id</code>).</p><div class="info"><p>Si su aplicación tiene muchas rutas RESTful, usar <code>:only</code> y <code>:except</code> para generar solo las rutas que realmente necesita puede reducir el uso de memoria y acelerar el proceso de enrutamiento.</p></div><h4 id="translated-paths"><a class="anchorlink" href="#translated-paths">4.7 Translated Paths</a></h4><p>Usando <code>scope</code>, podemos alterar los nombres de ruta generados por <code>resources</code>:</p><div class="code_container">
+<pre><code class="language-ruby">scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
+  resources :categories, path: 'kategorien'
+end
+</code></pre>
+</div>
+<p>Rails ahora crea rutas al <code>CategoriesController</code>.</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Path</th>
+<th>Controller#Action</th>
+<th>Named Route Helper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/kategorien</td>
+<td>categories#index</td>
+<td>categories_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/kategorien/neu</td>
+<td>categories#new</td>
+<td>new_category_path</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/kategorien</td>
+<td>categories#create</td>
+<td>categories_path</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/kategorien/:id</td>
+<td>categories#show</td>
+<td>category_path(:id)</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/kategorien/:id/bearbeiten</td>
+<td>categories#edit</td>
+<td>edit_category_path(:id)</td>
+</tr>
+<tr>
+<td>PATCH/PUT</td>
+<td>/kategorien/:id</td>
+<td>categories#update</td>
+<td>category_path(:id)</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/kategorien/:id</td>
+<td>categories#destroy</td>
+<td>category_path(:id)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="overriding-the-singular-form"><a class="anchorlink" href="#overriding-the-singular-form">4.8 Overriding the Singular Form</a></h4><p>Si desea definir la forma singular de un recurso, debe agregar reglas adicionales al <code>Inflector</code>:</p><div class="code_container">
+<pre><code class="language-ruby">ActiveSupport::Inflector.inflections do |inflect|
+  inflect.irregular 'tooth', 'teeth'
+end
+</code></pre>
+</div>
+<h4 id="using-as-in-nested-resources"><a class="anchorlink" href="#using-as-in-nested-resources">4.9 Using <code>:as</code> in Nested Resources</a></h4><p>La opción <code>:as</code> anula el nombre generado automáticamente para el recurso en los ayudantes de ruta anidados. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">resources :magazines do
+  resources :ads, as: 'periodical_ads'
+end
+</code></pre>
+</div>
+<p>Esto creará ayudantes de enrutamiento como <code>magazine_periodical_ads_url</code> y <code>edit_magazine_periodical_ad_path</code>.</p><h4 id="overriding-named-route-parameter"><a class="anchorlink" href="#overriding-named-route-parameter">4.10 Overriding Named Route Parameter</a></h4><p>La opción <code>:param</code> anula el identificador de recurso predeterminado <code>:id</code> (nombre de
+el  <a href="routing.html#dynamic-segments">dynamic segment</a> que se utiliza para generar el
+rutas). Puede acceder a ese segmento desde su controlador usando
+<code>params[&lt;:param&gt;]</code>.</p><div class="code_container">
+<pre><code class="language-ruby">resources :videos, param: :identifier
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-plain">    videos GET  /videos(.:format)                  videos#index
+           POST /videos(.:format)                  videos#create
+ new_video GET  /videos/new(.:format)              videos#new
+edit_video GET  /videos/:identifier/edit(.:format) videos#edit
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby">Video.find_by(identifier: params[:identifier])
+</code></pre>
+</div>
+<p>Puede anular <code>ActiveRecord::Base#to_param</code> de un modelo relacionado para construir
+una URL:</p><div class="code_container">
+<pre><code class="language-ruby">class Video &lt; ApplicationRecord
+  def to_param
+    identifier
+  end
+end
+
+video = Video.find_by(identifier: "Roman-Holiday")
+edit_video_path(video) # =&gt; "/videos/Roman-Holiday/edit"
+</code></pre>
+</div>
+<h3 id="breaking-up-very-large-route-file-into-multiple-small-ones"><a class="anchorlink" href="#breaking-up-very-large-route-file-into-multiple-small-ones">5 Breaking up <em>very</em> large route file into multiple small ones:</a></h3><p>Si trabaja en una gran aplicación con miles de rutas,
+Un solo archivo <code>config/routes.rb</code> puede resultar engorroso y difícil de leer.</p><p>Rails ofrece una manera de dividir un archivo gigantesco único <code>routes.rb</code> en varios pequeños usando la macro <code>draw</code>.</p><div class="code_container">
+<pre><code class="language-ruby"># config/routes.rb
+
+Rails.application.routes.draw do
+  get 'foo', to: 'foo#bar'
+
+  draw(:admin) # Will load another route file located in `config/routes/admin.rb`
+end
+
+# config/routes/admin.rb
+
+namespace :admin do
+  resources :comments
+end
+</code></pre>
+</div>
+<p>Llamar a <code>draw(:admin)</code> dentro del bloque <code>Rails.application.routes.draw</code> intentará cargar una ruta
+archivo que tiene el mismo nombre que el argumento dado (<code>admin.rb</code> en este caso).
+El archivo debe estar ubicado dentro del directorio <code>config/routes</code> o cualquier subdirectorio (es decir, <code>config/routes/admin.rb</code>, <code>config/routes/external/admin.rb</code>).</p><p>Puede usar el DSL de enrutamiento normal dentro del archivo de enrutamiento <code>admin.rb</code>, <strong>sin embargo</strong> no debe rodearlo con el bloque <code>Rails.application.routes.draw</code> como lo hizo en el archivo <code>config/routes.rb</code>.</p><h4 id="when-to-use-and-not-use-this-feature"><a class="anchorlink" href="#when-to-use-and-not-use-this-feature">5.1 When to use and not use this feature</a></h4><p>Dibujar rutas a partir de archivos externos puede resultar muy útil para organizar un gran conjunto de rutas en varias rutas organizadas. Podría tener una ruta <code>admin.rb</code> que contenga todas las rutas para el área de administración, otro archivo <code>api.rb</code> para enrutar los recursos relacionados con la API, etc.</p><p>Sin embargo, no debe abusar de esta función, ya que tener demasiados archivos de ruta dificulta la detección y la comprensión. Dependiendo de la aplicación, puede ser más fácil para los desarrolladores tener un solo archivo de enrutamiento incluso si tiene algunos cientos de rutas. No debe intentar crear un nuevo archivo de enrutamiento para cada categoría (admin, api ...) a toda costa; El DSL de enrutamiento de Rails ya ofrece una forma de romper rutas de manera organizada con <code>namespaces</code> y <code>scopes</code>.</p><h3 id="inspecting-and-testing-routes"><a class="anchorlink" href="#inspecting-and-testing-routes">6 Inspecting and Testing Routes</a></h3><p>Rails ofrece instalaciones para inspeccionar y probar sus rutas.</p><h4 id="listing-existing-routes"><a class="anchorlink" href="#listing-existing-routes">6.1 Listing Existing Routes</a></h4><p>Para obtener una lista completa de las rutas disponibles en su aplicación, visite <code>http://localhost:3000/rails/info/routes</code> in your browser while your server is running in the <strong>development</strong> environment. You can also execute the <code>bin/rails routes</code> command in your terminal to produce the same output. </p><p>Ambos métodos enumerarán todas sus rutas, en el mismo orden en que aparecen en <code>config/routes.rb</code>. Para cada ruta, verá:</p>
+<ul>
+<li>El nombre de la ruta (si corresponde)</li>
+<li>El verbo HTTP utilizado (si la ruta no responde a todos los verbos)</li>
+<li>El patrón de URL para que coincida</li>
+<li>Los parámetros de enrutamiento para la ruta</li>
+</ul>
+<p>Por ejemplo, aquí hay una pequeña sección de la salida de <code>bin/rails route</code> para una ruta RESTful:</p><div class="code_container">
+<pre><code class="language-plain">    users GET    /users(.:format)          users#index
+          POST   /users(.:format)          users#create
+ new_user GET    /users/new(.:format)      users#new
+edit_user GET    /users/:id/edit(.:format) users#edit
+</code></pre>
+</div>
+<p>También puede usar la opción <code>--expanded</code> para activar el modo de formato de tabla expandido.</p><div class="code_container">
+<pre><code class="language-plain">$ bin/rails routes --expanded
+
+--[ Route 1 ]----------------------------------------------------
+Prefix            | users
+Verb              | GET
+URI               | /users(.:format)
+Controller#Action | users#index
+--[ Route 2 ]----------------------------------------------------
+Prefix            |
+Verb              | POST
+URI               | /users(.:format)
+Controller#Action | users#create
+--[ Route 3 ]----------------------------------------------------
+Prefix            | new_user
+Verb              | GET
+URI               | /users/new(.:format)
+Controller#Action | users#new
+--[ Route 4 ]----------------------------------------------------
+Prefix            | edit_user
+Verb              | GET
+URI               | /users/:id/edit(.:format)
+Controller#Action | users#edit
+</code></pre>
+</div>
+<p>Puede buscar en sus rutas con la opción grep: -g. Esto genera cualquier ruta que coincida parcialmente con el nombre del método auxiliar de URL, el verbo HTTP o la ruta URL.</p><div class="code_container">
+<pre><code class="language-plain">$ bin/rails routes -g new_comment
+$ bin/rails routes -g POST
+$ bin/rails routes -g admin
+</code></pre>
+</div>
+<p>Si solo desea ver las rutas que se asignan a un controlador específico, existe la opción -c.</p><div class="code_container">
+<pre><code class="language-plain">$ bin/rails routes -c users
+$ bin/rails routes -c admin/users
+$ bin/rails routes -c Comments
+$ bin/rails routes -c Articles::CommentsController
+</code></pre>
+</div>
+<div class="info"><p>Encontrará que la salida de <code>bin/rails route</code> es mucho más legible si amplía la ventana de su terminal hasta que las líneas de salida no se ajustan.</p></div><h4 id="testing-routes"><a class="anchorlink" href="#testing-routes">6.2 Testing Routes</a></h4><p>Las rutas deben incluirse en su estrategia de prueba (al igual que el resto de su aplicación). Rails ofrece tres <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html">built-in assertions</a> diseñadas para simplificar las rutas de prueba:</p>
+<ul>
+<li><code>assert_generates</code></li>
+<li><code>assert_recognizes</code></li>
+<li><code>assert_routing</code></li>
+</ul>
+<h5 id="the-assert-generates-assertion"><a class="anchorlink" href="#the-assert-generates-assertion">6.2.1 The <code>assert_generates</code> Assertion</a></h5><p><code>assert_generates</code> afirma que un conjunto particular de opciones genera una ruta particular y se puede usar con rutas predeterminadas o rutas personalizadas. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">assert_generates '/photos/1', { controller: 'photos', action: 'show', id: '1' }
+assert_generates '/about', controller: 'pages', action: 'about'
+</code></pre>
+</div>
+<h5 id="the-assert-recognizes-assertion"><a class="anchorlink" href="#the-assert-recognizes-assertion">6.2.2 The <code>assert_recognizes</code> Assertion</a></h5><p><code>assert_recognizes</code> es el inverso de <code>assert_generates</code>. Afirma que se reconoce una ruta determinada y la enruta a un lugar particular en su aplicación. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">assert_recognizes({ controller: 'photos', action: 'show', id: '1' }, '/photos/1')
+</code></pre>
+</div>
+<p>You can supply a <code>:method</code> argument to specify the HTTP verb:</p><div class="code_container">
+<pre><code class="language-ruby">assert_recognizes({ controller: 'photos', action: 'create' }, { path: 'photos', method: :post })
+</code></pre>
+</div>
+<h5 id="the-assert-routing-assertion"><a class="anchorlink" href="#the-assert-routing-assertion">6.2.3 The <code>assert_routing</code> Assertion</a></h5><p>La aserción <code>assert_routing</code> verifica la ruta en ambos sentidos: prueba que la ruta genera las opciones y que las opciones generan la ruta. Por lo tanto, combina las funciones de <code>assert_generates</code> y <code>assert_recognizes</code>:</p><div class="code_container">
+<pre><code class="language-ruby">assert_routing({ path: 'photos', method: :post }, { controller: 'photos', action: 'create' })
+</code></pre>
+</div>
+
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

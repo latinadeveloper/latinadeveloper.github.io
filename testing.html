@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prueba de Aplicaciones de Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Prueba de Aplicaciones de Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Prueba de Aplicaciones de RailsEsta guía cubre los mecanismos integrados en Rails para probar su aplicación.Después de leer esta guía, sabrá: Terminología de prueba de rieles. Cómo escribir pruebas unitarias, funcionales, de integración y de sistema para su aplicación. Otros enfoques de prueba y complementos populares." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Prueba de Aplicaciones de RailsEsta guía cubre los mecanismos integrados en Rails para probar su aplicación.Después de leer esta guía, sabrá: Terminología de prueba de rieles. Cómo escribir pruebas unitarias, funcionales, de integración y de sistema para su aplicación. Otros enfoques de prueba y complementos populares." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">The Asset Pipeline (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</a></dd>
+                  <dd><a href="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</a></dd>
+                  <dd><a href="api_app.html">Using Rails for API-only Applications (necesita traducción)</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">The Asset Pipeline (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</option>
+                  <option value="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</option>
+                  <option value="api_app.html">Using Rails for API-only Applications (necesita traducción)</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Prueba de Aplicaciones de Rails</h2><p>Esta guía cubre los mecanismos integrados en Rails para probar su aplicación.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Terminología de prueba de rieles.</li>
+<li>Cómo escribir pruebas unitarias, funcionales, de integración y de sistema para su aplicación.</li>
+<li>Otros enfoques de prueba y complementos populares.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#why-write-tests-for-your-rails-applications-questionmark">Why Write Tests for your Rails Applications?</a></li>
+<li>
+<a href="#introduction-to-testing">Introduction to Testing</a>
+
+<ul>
+<li><a href="#rails-sets-up-for-testing-from-the-word-go">Rails Sets up for Testing from the Word Go</a></li>
+<li><a href="#the-test-environment">The Test Environment</a></li>
+<li><a href="#rails-meets-minitest">Rails meets Minitest</a></li>
+<li><a href="#available-assertions">Available Assertions</a></li>
+<li><a href="#rails-specific-assertions">Rails Specific Assertions</a></li>
+<li><a href="#a-brief-note-about-test-cases">A Brief Note About Test Cases</a></li>
+<li><a href="#the-rails-test-runner">The Rails Test Runner</a></li>
+</ul>
+</li>
+<li>
+<a href="#parallel-testing">Parallel Testing</a>
+
+<ul>
+<li><a href="#parallel-testing-with-processes">Parallel Testing with Processes</a></li>
+<li><a href="#parallel-testing-with-threads">Parallel Testing with Threads</a></li>
+<li><a href="#testing-parallel-transactions">Testing Parallel Transactions</a></li>
+</ul>
+</li>
+<li>
+<a href="#the-test-database">The Test Database</a>
+
+<ul>
+<li><a href="#maintaining-the-test-database-schema">Maintaining the test database schema</a></li>
+<li><a href="#the-low-down-on-fixtures">The Low-Down on Fixtures</a></li>
+</ul>
+</li>
+<li><a href="#model-testing">Model Testing</a></li>
+<li>
+<a href="#system-testing">System Testing</a>
+
+<ul>
+<li><a href="#changing-the-default-settings">Changing the default settings</a></li>
+<li><a href="#screenshot-helper">Screenshot Helper</a></li>
+<li><a href="#implementing-a-system-test">Implementing a System Test</a></li>
+</ul>
+</li>
+<li>
+<a href="#integration-testing">Integration Testing</a>
+
+<ul>
+<li><a href="#helpers-available-for-integration-tests">Helpers Available for Integration Tests</a></li>
+<li><a href="#implementing-an-integration-test">Implementing an integration test</a></li>
+</ul>
+</li>
+<li>
+<a href="#functional-tests-for-your-controllers">Functional Tests for Your Controllers</a>
+
+<ul>
+<li><a href="#what-to-include-in-your-functional-tests">What to include in your Functional Tests</a></li>
+<li><a href="#available-request-types-for-functional-tests">Available Request Types for Functional Tests</a></li>
+<li><a href="#testing-xhr-ajax-requests">Testing XHR (AJAX) requests</a></li>
+<li><a href="#the-three-hashes-of-the-apocalypse">The Three Hashes of the Apocalypse</a></li>
+<li><a href="#instance-variables-available">Instance Variables Available</a></li>
+<li><a href="#setting-headers-and-cgi-variables">Setting Headers and CGI variables</a></li>
+<li><a href="#testing-flash-notices">Testing <code>flash</code> notices</a></li>
+<li><a href="#putting-it-together">Putting it together</a></li>
+<li><a href="#test-helpers">Test helpers</a></li>
+</ul>
+</li>
+<li><a href="#testing-routes">Testing Routes</a></li>
+<li><a href="#testing-views">Testing Views</a></li>
+<li><a href="#testing-helpers">Testing Helpers</a></li>
+<li>
+<a href="#testing-your-mailers">Testing Your Mailers</a>
+
+<ul>
+<li><a href="#keeping-the-postman-in-check">Keeping the Postman in Check</a></li>
+<li><a href="#unit-testing">Unit Testing</a></li>
+<li><a href="#functional-and-system-testing">Functional and System Testing</a></li>
+</ul>
+</li>
+<li>
+<a href="#testing-jobs">Testing Jobs</a>
+
+<ul>
+<li><a href="#a-basic-test-case">A Basic Test Case</a></li>
+<li><a href="#custom-assertions-and-testing-jobs-inside-other-components">Custom Assertions and Testing Jobs inside Other Components</a></li>
+<li><a href="#asserting-time-arguments-in-jobs">Asserting Time Arguments in Jobs</a></li>
+</ul>
+</li>
+<li>
+<a href="#testing-action-cable">Testing Action Cable</a>
+
+<ul>
+<li><a href="#connection-test-case">Connection Test Case</a></li>
+<li><a href="#channel-test-case">Channel Test Case</a></li>
+<li><a href="#custom-assertions-and-testing-broadcasts-inside-other-components">Custom Assertions And Testing Broadcasts Inside Other Components</a></li>
+</ul>
+</li>
+<li>
+<a href="#additional-testing-resources">Additional Testing Resources</a>
+
+<ul>
+<li><a href="#testing-time-dependent-code">Testing Time-Dependent Code</a></li>
+</ul>
+</li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="why-write-tests-for-your-rails-applications-questionmark"><a class="anchorlink" href="#why-write-tests-for-your-rails-applications-questionmark">1 Why Write Tests for your Rails Applications?</a></h3><p>Rails hace que sea muy fácil escribir sus pruebas. Comienza produciendo un código de prueba esqueleto mientras crea sus modelos y controladores.</p><p>Al ejecutar sus pruebas de Rails, puede asegurarse de que su código se adhiera a la funcionalidad deseada incluso después de una refactorización importante del código.</p><p>Las pruebas de Rails también pueden simular las solicitudes del navegador y, por lo tanto, puede probar la respuesta de su aplicación sin tener que probarla a través de su navegador.</p><h3 id="introduction-to-testing"><a class="anchorlink" href="#introduction-to-testing">2 Introduction to Testing</a></h3><p>El soporte de prueba se tejió en el tejido Rails desde el principio. No fue una epifanía de "¡oh! Vamos a dar soporte a la ejecución de pruebas porque son nuevas y geniales".</p><h4 id="rails-sets-up-for-testing-from-the-word-go"><a class="anchorlink" href="#rails-sets-up-for-testing-from-the-word-go">2.1 Rails Sets up for Testing from the Word Go</a></h4><p>Rails crea un directorio <code>test</code> para usted cuando se crea un proyecto Rails usando <code>rails new</code> <em>application_name</em>. Si enumera el contenido de este directorio, verá:</p><div class="code_container">
+<pre><code class="language-shell-session">$ ls -F test
+application_system_test_case.rb  controllers/                     helpers/                         mailers/                         system/
+channels/                        fixtures/                        integration/                     models/                          test_helper.rb
+</code></pre>
+</div>
+<p>Los directorios <code>helpers</code>, <code>mailers</code> y <code>models</code> están hechos para contener pruebas para los asistentes de vistas, los mailers y los modelos, respectivamente. El directorio de <code>channels</code> está destinado a contener pruebas para la conexión y los canales de Action Cable. El directorio <code>controllers</code> está destinado a contener pruebas para controladores, rutas y vistas. El directorio de <code>integración</code> está destinado a contener pruebas de interacciones entre controladores.</p><p>El directorio de prueba del sistema contiene pruebas del sistema, que se utilizan para la
+prueba de su aplicación en el navegador completo. Las pruebas del sistema le permiten probar su aplicación en
+la forma en que sus usuarios lo experimentan y también lo ayudan a probar su JavaScript.
+Las pruebas del sistema heredan de Capybara y funcionan en las pruebas del navegador para su
+solicitud.</p><p>Los accesorios son una forma de organizar los datos de prueba; residen en el directorio <code>fixtures</code>.</p><p>También se creará un directorio de trabajos cuando se genere por primera vez una prueba asociada.</p><p>El archivo <code>test_helper.rb</code> contiene la configuración predeterminada para sus pruebas.</p><p>El <code>application_system_test_case.rb</code> contiene la configuración predeterminada para su sistema
+pruebas.</p><h4 id="the-test-environment"><a class="anchorlink" href="#the-test-environment">2.2 The Test Environment</a></h4><p>De forma predeterminada, cada aplicación Rails tiene tres entornos: desarrollo, prueba y producción.</p><p>La configuración de cada entorno se puede modificar de manera similar. En este caso, podemos modificar nuestro entorno de prueba cambiando las opciones que se encuentran en <code>config/environment/test.rb</code>.</p><div class="note"><p>Sus pruebas se ejecutan bajo <code>RAILS_ENV=test</code>.</p></div><h4 id="rails-meets-minitest"><a class="anchorlink" href="#rails-meets-minitest">2.3 Rails meets Minitest</a></h4><p>Si recuerda, usamos el comando <code>bin/rails generate model</code> en el guía
+<a href="getting_started.html">Getting Started with Rails</a>. Creamos nuestro primer
+model, y entre otras cosas creó stubs de prueba en el directorio <code>test</code>:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate model article title:string body:text
+...
+create  app/models/article.rb
+create  test/models/article_test.rb
+create  test/fixtures/articles.yml
+...
+</code></pre>
+</div>
+<p>El código auxiliar de prueba predeterminado en <code>test  models/article_test.rb</code> se ve así:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ArticleTest &lt; ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end
+</code></pre>
+</div>
+<p>Un examen línea por línea de este archivo le ayudará a orientarse al código y la terminología de prueba de Rails.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+</code></pre>
+</div>
+<p>Al requerir este archivo, <code>test_helper.rb</code> se carga la configuración predeterminada para ejecutar nuestras pruebas. Incluiremos esto con todas las pruebas que escribamos, por lo que cualquier método agregado a este archivo estará disponible para todas nuestras pruebas.</p><div class="code_container">
+<pre><code class="language-ruby">class ArticleTest &lt; ActiveSupport::TestCase
+</code></pre>
+</div>
+<p>La clase <code>ArticleTest</code> define un <em>caso de prueba</em> porque hereda de <code>ActiveSupport::TestCase</code>. Por tanto, <code>ArticleTest</code> tiene todos los métodos disponibles en <code>ActiveSupport::TestCase</code>. Más adelante en esta guía, veremos algunos de los métodos que nos brinda.</p><p>Cualquier método definido dentro de una clase heredada de <code>Minitest::Test</code>
+(que es la superclase de <code>ActiveSupport::TestCase</code>) que comienza con <code>test</code> simplemente se llama prueba. Por lo tanto, los métodos definidos como <code>test_password</code> y <code>test_valid_password</code> son nombres de prueba legales y se ejecutan automáticamente cuando se ejecuta el caso de prueba.</p><p>Rails también agrega un método de "prueba" que toma un nombre de prueba y un bloque. Genera una prueba <code>Minitest::Unit</code> normal con nombres de métodos con el prefijo <code>test</code>. Entonces no tiene que preocuparse por nombrar los métodos, y puede escribir algo como:</p><div class="code_container">
+<pre><code class="language-ruby">test "the truth" do
+  assert true
+end
+</code></pre>
+</div>
+<p>Que es aproximadamente lo mismo que escribir esto:</p><div class="code_container">
+<pre><code class="language-ruby">def test_the_truth
+  assert true
+end
+</code></pre>
+</div>
+<p>Aunque aún puede usar definiciones de métodos regulares, el uso de la macro <code>test</code> permite un nombre de prueba más legible.</p><div class="note"><p>El nombre del método se genera reemplazando espacios con guiones bajos. Sin embargo, el resultado no necesita ser un identificador Ruby válido, el nombre puede contener caracteres de puntuación, etc. Eso es porque en Ruby técnicamente cualquier cadena puede ser un nombre de método. Esto puede requerir el uso de llamadas <code>define_method</code> y <code>send</code> para funcionar correctamente, pero formalmente hay poca restricción en el nombre.</p></div><p>A continuación, veamos nuestra primera afirmación:</p><div class="code_container">
+<pre><code class="language-ruby">assert true
+</code></pre>
+</div>
+<p>Una aserción es una línea de código que evalúa un objeto (o expresión) para obtener los resultados esperados. Por ejemplo, una afirmación puede verificar:</p>
+<ul>
+<li>¿Este valor = ese valor?</li>
+<li>¿Este objeto es nulo?</li>
+<li>¿Esta línea de código genera una excepción?</li>
+<li>¿La contraseña del usuario tiene más de 5 caracteres?</li>
+</ul>
+<p>Cada prueba puede contener una o más aserciones, sin restricción en cuanto a cuántas aserciones se permiten. Solo cuando todas las afirmaciones sean exitosas, la prueba pasará.</p><h5 id="your-first-failing-test"><a class="anchorlink" href="#your-first-failing-test">2.3.1 Your first failing test</a></h5><p>Para ver cómo se informa una prueba fallida, puede agregar una prueba fallida al caso de prueba <code>article_test.rb</code>.</p><div class="code_container">
+<pre><code class="language-ruby">test "should not save article without title" do
+  article = Article.new
+  assert_not article.save
+end
+</code></pre>
+</div>
+<p>Ejecutemos esta prueba recién agregada (donde <code>6</code> es el número de línea donde se define la prueba).</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb:6
+Run options: --seed 44656
+
+# Running:
+
+F
+
+Failure:
+ArticleTest#test_should_not_save_article_without_title [/path/to/blog/test/models/article_test.rb:6]:
+Expected true to be nil or false
+
+
+rails test test/models/article_test.rb:6
+
+
+
+Finished in 0.023918s, 41.8090 runs/s, 41.8090 assertions/s.
+
+1 runs, 1 assertions, 1 failures, 0 errors, 0 skips
+
+</code></pre>
+</div>
+<p>En la salida, <code>F</code> denota una falla. Puede ver el seguimiento correspondiente que se muestra en <code>Failure</code> junto con el nombre de la prueba que falló. Las siguientes líneas contienen el seguimiento de la pila seguido de un mensaje que menciona el valor real y el valor esperado por la aserción. Los mensajes de afirmación predeterminados proporcionan la información suficiente para ayudar a identificar el error. Para que el mensaje de error de la aserción sea más legible, cada aserción proporciona un parámetro de mensaje opcional, como se muestra aquí:</p><div class="code_container">
+<pre><code class="language-ruby">test "should not save article without title" do
+  article = Article.new
+  assert_not article.save, "Saved the article without a title"
+end
+</code></pre>
+</div>
+<p>La ejecución de esta prueba muestra el mensaje de afirmación más amigable:</p><div class="code_container">
+<pre><code class="language-shell-session">Failure:
+ArticleTest#test_should_not_save_article_without_title [/path/to/blog/test/models/article_test.rb:6]:
+Saved the article without a title
+</code></pre>
+</div>
+<p>Ahora, para que esta prueba pase, podemos agregar una validación de nivel de modelo para el campo <em>title</em>.</p><div class="code_container">
+<pre><code class="language-ruby">class Article &lt; ApplicationRecord
+  validates :title, presence: true
+end
+</code></pre>
+</div>
+<p>Ahora la prueba debería pasar. Verifiquemos ejecutando la prueba nuevamente:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb:6
+Run options: --seed 31252
+
+# Running:
+
+.
+
+Finished in 0.027476s, 36.3952 runs/s, 36.3952 assertions/s.
+
+1 runs, 1 assertions, 0 failures, 0 errors, 0 skips
+</code></pre>
+</div>
+<p>Ahora, si se dio cuenta, primero escribimos una prueba que falla para una
+funcionalidad, luego escribimos un código que agrega la funcionalidad y finalmente
+nos aseguramos de que nuestra prueba pasara. Este enfoque para el desarrollo de software es
+denominado
+<a href="http://c2.com/cgi/wiki?TestDrivenDevelopment"><em>Test-Driven Development</em> (TDD)</a>.</p><h5 id="what-an-error-looks-like"><a class="anchorlink" href="#what-an-error-looks-like">2.3.2 What an Error Looks Like</a></h5><p>Para ver cómo se informa un error, aquí hay una prueba que contiene un error:</p><div class="code_container">
+<pre><code class="language-ruby">test "should report error" do
+  # some_undefined_variable is not defined elsewhere in the test case
+  some_undefined_variable
+  assert true
+end
+</code></pre>
+</div>
+<p>Ahora puede ver aún más resultados en la consola al ejecutar las pruebas:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb
+Run options: --seed 1808
+
+# Running:
+
+.E
+
+Error:
+ArticleTest#test_should_report_error:
+NameError: undefined local variable or method 'some_undefined_variable' for #&lt;ArticleTest:0x007fee3aa71798&gt;
+    test/models/article_test.rb:11:in 'block in &lt;class:ArticleTest&gt;'
+
+
+rails test test/models/article_test.rb:9
+
+
+
+Finished in 0.040609s, 49.2500 runs/s, 24.6250 assertions/s.
+
+2 runs, 1 assertions, 0 failures, 1 errors, 0 skips
+</code></pre>
+</div>
+<p>Observe la 'E' en la salida. Denota una prueba con error.</p><p>NOTA: La ejecución de cada método de prueba se detiene tan pronto como se produce un error o
+se encuentra una falla de aserción y la suite de pruebas continúa con el siguiente
+método. Todos los métodos de prueba se ejecutan en orden aleatorio. Se puede utilizar 
+<a href="configuring.html#configuring-active-support"><code>config.active_support.test_order</code> option</a>
+para configurar el orden de prueba.</p><p>Cuando una prueba falla, se le presenta el rastreo correspondiente. Por defecto
+Filtros de rieles que retroceden y solo imprimirán líneas relevantes para su
+solicitud. Esto elimina el ruido del marco y ayuda a concentrarse en su
+código. Sin embargo, hay situaciones en las que desea ver el
+retroceso. Establezca el argumento <code>-b</code> (o <code>--backtrace</code>) para habilitar este comportamiento:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test -b test/models/article_test.rb
+</code></pre>
+</div>
+<p>Si queremos que esta prueba pase, podemos modificarla para usar <code>assert_raises</code> así:</p><div class="code_container">
+<pre><code class="language-ruby">test "should report error" do
+  # some_undefined_variable is not defined elsewhere in the test case
+  assert_raises(NameError) do
+    some_undefined_variable
+  end
+end
+</code></pre>
+</div>
+<p>Esta prueba debería pasar ahora.</p><h4 id="available-assertions"><a class="anchorlink" href="#available-assertions">2.4 Available Assertions</a></h4><p>A estas alturas ya ha vislumbrado algunas de las afirmaciones que están disponibles. Las afirmaciones son las abejas obreras de la prueba. Ellos son los que realmente realizan las comprobaciones para asegurarse de que las cosas vayan según lo planeado.</p><p>Aquí hay un extracto de las afirmaciones que puede usar con
+ la biblioteca de pruebas predeterminada
+<a href="https://github.com/seattlerb/minitest"><code>Minitest</code></a>,
+utilizado por Rails. El parámetro <code>[msg]</code> es un mensaje de cadena opcional que puede
+especifique para que sus mensajes de error de prueba sean más claros.</p>
+<table>
+<thead>
+<tr>
+<th>Assertion</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assert( test, [msg] )</code></td>
+<td>Asegura que<code>test</code> es verdad</td>
+</tr>
+<tr>
+<td><code>assert_not( test, [msg] )</code></td>
+<td>Asegura que <code>test</code> es falso.</td>
+</tr>
+<tr>
+<td><code>assert_equal( expected, actual, [msg] )</code></td>
+<td>Asegura que <code>expected == actual</code> es verdad.</td>
+</tr>
+<tr>
+<td><code>assert_not_equal( expected, actual, [msg] )</code></td>
+<td>Asegura que <code>expected != actual</code> es verdad.</td>
+</tr>
+<tr>
+<td><code>assert_same( expected, actual, [msg] )</code></td>
+<td>Asegura que <code>expected.equal?(actual)</code> es verdad.</td>
+</tr>
+<tr>
+<td><code>assert_not_same( expected, actual, [msg] )</code></td>
+<td>Asegura que <code>expected.equal?(actual)</code> es falso.</td>
+</tr>
+<tr>
+<td><code>assert_nil( obj, [msg] )</code></td>
+<td>Asegura que <code>obj.nil?</code> es verdad.</td>
+</tr>
+<tr>
+<td><code>assert_not_nil( obj, [msg] )</code></td>
+<td>Asegura que <code>obj.nil?</code> es falso.</td>
+</tr>
+<tr>
+<td><code>assert_empty( obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> es <code>empty?</code>.</td>
+</tr>
+<tr>
+<td><code>assert_not_empty( obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> no es <code>empty?</code>.</td>
+</tr>
+<tr>
+<td><code>assert_match( regexp, string, [msg] )</code></td>
+<td>Asegura que una cadena coincide con la expresión regular.</td>
+</tr>
+<tr>
+<td><code>assert_no_match( regexp, string, [msg] )</code></td>
+<td>Asegura que una cadena no coincide con la expresión regular.</td>
+</tr>
+<tr>
+<td><code>assert_includes( collection, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> esta en <code>collection</code>.</td>
+</tr>
+<tr>
+<td><code>assert_not_includes( collection, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> no esta en <code>collection</code>.</td>
+</tr>
+<tr>
+<td><code>assert_in_delta( expected, actual, [delta], [msg] )</code></td>
+<td>Asegura que los numeros <code>expected</code> y <code>actual</code> esten entre <code>delta</code> el uno del otro.</td>
+</tr>
+<tr>
+<td><code>assert_not_in_delta( expected, actual, [delta], [msg] )</code></td>
+<td>Asegura que los numeros <code>expected</code> y <code>actual</code> no esten entre <code>delta</code> el uno del otro.</td>
+</tr>
+<tr>
+<td><code>assert_in_epsilon ( expected, actual, [epsilon], [msg] )</code></td>
+<td>Asegura que los numeros <code>expected</code> y <code>actual</code> tener un error relativo menor que <code>epsilon</code>.</td>
+</tr>
+<tr>
+<td><code>assert_not_in_epsilon ( expected, actual, [epsilon], [msg] )</code></td>
+<td>Asegura que los numeros <code>expected</code> y <code>actual</code> no tiene un error relativo menor quen <code>epsilon</code>.</td>
+</tr>
+<tr>
+<td><code>assert_throws( symbol, [msg] ) { block }</code></td>
+<td>Asegura que el bloque dado arroja el símbolo.</td>
+</tr>
+<tr>
+<td><code>assert_raises( exception1, exception2, ... ) { block }</code></td>
+<td>Asegura que el bloque dado genera una de las excepciones dadas.</td>
+</tr>
+<tr>
+<td><code>assert_instance_of( class, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> es una instancia de <code>class</code>.</td>
+</tr>
+<tr>
+<td><code>assert_not_instance_of( class, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> no es una instancia de<code>class</code>.</td>
+</tr>
+<tr>
+<td><code>assert_kind_of( class, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> es una instancia de<code>class</code> o desciende de él.</td>
+</tr>
+<tr>
+<td><code>assert_not_kind_of( class, obj, [msg] )</code></td>
+<td>Asegura que <code>obj</code> no es una instancia def <code>class</code> y no o desciende de él.</td>
+</tr>
+<tr>
+<td><code>assert_respond_to( obj, symbol, [msg] )</code></td>
+<td>Asegura que <code>obj</code> responde a<code>symbol</code>.</td>
+</tr>
+<tr>
+<td><code>assert_not_respond_to( obj, symbol, [msg] )</code></td>
+<td>Asegura que <code>obj</code> no responde a <code>symbol</code>.</td>
+</tr>
+<tr>
+<td><code>assert_operator( obj1, operator, [obj2], [msg] )</code></td>
+<td>Asegura que <code>obj1.operator(obj2)</code> es verdad.</td>
+</tr>
+<tr>
+<td><code>assert_not_operator( obj1, operator, [obj2], [msg] )</code></td>
+<td>Asegura que <code>obj1.operator(obj2)</code> es falso.</td>
+</tr>
+<tr>
+<td><code>assert_predicate ( obj, predicate, [msg] )</code></td>
+<td>Asegura que <code>obj.predicate</code> es cierto, por ejemplo <code>assert_predicate str, :empty?</code>
+</td>
+</tr>
+<tr>
+<td><code>assert_not_predicate ( obj, predicate, [msg] )</code></td>
+<td>Asegura que <code>obj.predicate</code> es cierto, por ejemplo<code>assert_not_predicate str, :empty?</code>
+</td>
+</tr>
+<tr>
+<td><code>flunk( [msg] )</code></td>
+<td>Asegura el fracaso. Esto es útil para marcar explícitamente una prueba que aún no ha terminado.</td>
+</tr>
+</tbody>
+</table>
+<p>Los anteriores son un subconjunto de afirmaciones que admite minitest. Para una exhaustiva y
+lista más actualizada, consulte
+<a href="http://docs.seattlerb.org/minitest/">Minitest API documentation</a>, específicamente
+<a href="http://docs.seattlerb.org/minitest/Minitest/Assertions.html"><code>Minitest::Assertions</code></a>.</p><p>Debido a la naturaleza modular del marco de prueba, es posible crear sus propias afirmaciones. De hecho, eso es exactamente lo que hace Rails. Incluye algunas afirmaciones especializadas para facilitarle la vida.</p><div class="note"><p>Crear sus propias afirmaciones es un tema avanzado que no cubriremos en este tutorial.</p></div><h4 id="rails-specific-assertions"><a class="anchorlink" href="#rails-specific-assertions">2.5 Rails Specific Assertions</a></h4><p>Rails agrega algunas afirmaciones personalizadas propias al marco <code>minitest</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Assertion</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_difference"><code>assert_difference(expressions, difference = 1, message = nil) {...}</code></a></td>
+<td>Pruebe la diferencia numérica entre el valor de retorno de una expresión como resultado de lo que se evalúa en el bloque generado.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_difference"><code>assert_no_difference(expressions, message = nil, &amp;block)</code></a></td>
+<td>Afirma que el resultado numérico de evaluar una expresión no se modifica antes y después de invocar el bloque pasado.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_changes"><code>assert_changes(expressions, message = nil, from:, to:, &amp;block)</code></a></td>
+<td>Probar que el resultado de evaluar una expresión se cambia después de invocar el bloque pasado. Verifique que el resultado de evaluar una expresión cambie después de invocar el bloque pasado.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_no_changes"><code>assert_no_changes(expressions, message = nil, &amp;block)</code></a></td>
+<td>Pruebe que el resultado de evaluar una expresión no se cambia después de invocar el bloque pasado.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/Assertions.html#method-i-assert_nothing_raised"><code>assert_nothing_raised { block }</code></a></td>
+<td>Asegura que el bloque dado no genera ninguna excepción.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_recognizes"><code>assert_recognizes(expected_options, path, extras={}, message=nil)</code></a></td>
+<td>Afirma que el enrutamiento de la ruta dada se manejó correctamente y que las opciones analizadas (dadas en el hash de opciones_esperadas) coinciden con la ruta. Básicamente, afirma que Rails reconoce la ruta dada por opciones_esperadas.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html#method-i-assert_generates"><code>assert_generates(expected_path, options, defaults={}, extras = {}, message=nil)</code></a></td>
+<td>Afirma que las opciones proporcionadas se pueden utilizar para generar la ruta proporcionada. Esta es la inversa de assert_recognizes. El parámetro extras se usa para decirle a la solicitud los nombres y valores de los parámetros de solicitud adicionales que estarían en una cadena de consulta. El parámetro de mensaje le permite especificar un mensaje de error personalizado para las fallas de afirmación.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_response"><code>assert_response(type, message = nil)</code></a></td>
+<td>Afirma que la respuesta viene con un código de estado específico. Puede especificar <code>:success</code> para indicar 200-299, <code>:redirect</code> indica 300-399, <code>:missing</code> indica 404, o <code>:error</code> para que coincida con el rango 500-599. También puede pasar un número de estado explícito o su equivalente simbólico. Para más información, ver <a href="http://rubydoc.info/github/rack/rack/master/Rack/Utils#HTTP_STATUS_CODES-constant">full list of status codes</a> y como su <a href="https://rubydoc.info/github/rack/rack/master/Rack/Utils#SYMBOL_TO_STATUS_CODE-constant">mapping</a> trabaja.</td>
+</tr>
+<tr>
+<td><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/ResponseAssertions.html#method-i-assert_redirected_to"><code>assert_redirected_to(options = {}, message=nil)</code></a></td>
+<td>Afirma que las opciones de redireccionamiento pasadas coinciden con las del redireccionamiento llamado en la última acción. Esta coincidencia puede ser parcial, de modo que <code>assert_redirected_to(controller: "weblog")</code> también coincidirá con la redirección de <code>redirect_to(controller: "weblog", action: "show")</code> y así. También puede pasar rutas con nombre como <code>assert_redirected_to root_path</code> y como objetos de Active Record <code>assert_redirected_to @article</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Verá el uso de algunas de estas afirmaciones en el próximo capítulo.</p><h4 id="a-brief-note-about-test-cases"><a class="anchorlink" href="#a-brief-note-about-test-cases">2.6 A Brief Note About Test Cases</a></h4><p>Todas las aserciones básicas como <code>assert_equal</code> definidas en <code>Minitest::Assertions</code> también están disponibles en las clases que usamos en nuestros propios casos de prueba. De hecho, Rails proporciona las siguientes clases para que las herede:</p>
+<ul>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/TestCase.html"><code>ActiveSupport::TestCase</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActionMailer/TestCase.html"><code>ActionMailer::TestCase</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActionView/TestCase.html"><code>ActionView::TestCase</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActiveJob/TestCase.html"><code>ActiveJob::TestCase</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/IntegrationTest.html"><code>ActionDispatch::IntegrationTest</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/SystemTestCase.html"><code>ActionDispatch::SystemTestCase</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/TestCase.html"><code>Rails::Generators::TestCase</code></a></li>
+</ul>
+<p>Cada una de estas clases incluye <code>Minitest::Assertions</code>, lo que nos permite utilizar todas las aserciones básicas en nuestras pruebas.</p><p>NOTA: Para obtener más información sobre <code>Minitest</code>, consulte <a href="http://docs.seattlerb.org/minitest">its
+documentation</a>.</p><h4 id="the-rails-test-runner"><a class="anchorlink" href="#the-rails-test-runner">2.7 The Rails Test Runner</a></h4><p>Podemos ejecutar todas nuestras pruebas a la vez usando el comando <code>bin/rails test</code>.</p><p>O podemos ejecutar un solo archivo de prueba pasando el comando <code>bin/rails test</code> el nombre del archivo que contiene los casos de prueba.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb
+Run options: --seed 1559
+
+# Running:
+
+..
+
+Finished in 0.027034s, 73.9810 runs/s, 110.9715 assertions/s.
+
+2 runs, 3 assertions, 0 failures, 0 errors, 0 skips
+</code></pre>
+</div>
+<p>This will run all test methods from the test case.</p><p>You can also run a particular test method from the test case by providing the
+<code>-n</code> or <code>--name</code> flag and the test's method name.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb -n test_the_truth
+Run options: -n test_the_truth --seed 43583
+
+# Running:
+
+.
+
+Finished tests in 0.009064s, 110.3266 tests/s, 110.3266 assertions/s.
+
+1 tests, 1 assertions, 0 failures, 0 errors, 0 skips
+</code></pre>
+</div>
+<p>También puede ejecutar una prueba en una línea específica proporcionando el número de línea.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/models/article_test.rb:6 # run specific test and line
+</code></pre>
+</div>
+<p>También puede ejecutar un directorio completo de pruebas proporcionando la ruta al directorio.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/controllers # run all tests from specific directory
+</code></pre>
+</div>
+<p>El corredor de pruebas también proporciona muchas otras características, como fallar rápidamente y aplazar la salida de la prueba.
+al final de la ejecución de prueba y así sucesivamente. Consulte la documentación del corredor de pruebas de la siguiente manera:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test -h
+Usage: rails test [options] [files or directories]
+
+You can run a single test by appending a line number to a filename:
+
+    bin/rails test test/models/user_test.rb:27
+
+You can run multiple files and directories at the same time:
+
+    bin/rails test test/controllers test/integration/login_test.rb
+
+By default test failures and errors are reported inline during a run.
+
+minitest options:
+    -h, --help                       Display this help.
+        --no-plugins                 Bypass minitest plugin auto-loading (or set $MT_NO_PLUGINS).
+    -s, --seed SEED                  Sets random seed. Also via env. Eg: SEED=n rake
+    -v, --verbose                    Verbose. Show progress processing files.
+    -n, --name PATTERN               Filter run on /regexp/ or string.
+        --exclude PATTERN            Exclude /regexp/ or string from run.
+
+Known extensions: rails, pride
+    -w, --warnings                   Run with Ruby warnings enabled
+    -e, --environment ENV            Run tests in the ENV environment
+    -b, --backtrace                  Show the complete backtrace
+    -d, --defer-output               Output test failures and errors after the test run
+    -f, --fail-fast                  Abort test run on first failure or error
+    -c, --[no-]color                 Enable color in the output
+    -p, --pride                      Pride. Show your testing pride!
+</code></pre>
+</div>
+<h3 id="parallel-testing"><a class="anchorlink" href="#parallel-testing">3 Parallel Testing</a></h3><p>Las pruebas en paralelo le permiten paralelizar su suite de pruebas. Mientras que los procesos de bifurcación es el
+método predeterminado, también se admiten subprocesos. La ejecución de pruebas en paralelo reduce el tiempo
+necesita todo su conjunto de pruebas para ejecutarse.</p><h4 id="parallel-testing-with-processes"><a class="anchorlink" href="#parallel-testing-with-processes">3.1 Parallel Testing with Processes</a></h4><p>El método de paralelización predeterminado es bifurcar procesos utilizando el sistema DRb de Ruby. Los procesos
+se bifurcan en función del número de trabajadores proporcionados. El número predeterminado es el recuento de núcleos real
+en la máquina en la que se encuentra, pero se puede cambiar mediante el número pasado al método de paralelización.</p><p>Para habilitar la paralelización agregue lo siguiente a su <code>test_helper.rb</code>:</p><div class="code_container">
+<pre><code class="language-ruby">class ActiveSupport::TestCase
+  parallelize(workers: 2)
+end
+</code></pre>
+</div>
+<p>El número de trabajadores aprobados es el número de veces que se bifurcará el proceso. Es posible que desee
+paralelice su conjunto de pruebas local de manera diferente a su CI, por lo que se proporciona una variable de entorno
+para poder cambiar fácilmente la cantidad de trabajadores, una ejecución de prueba debe usar:</p><div class="code_container">
+<pre><code class="language-shell-session">PARALLEL_WORKERS=15 bin/rails test
+</code></pre>
+</div>
+<p>Al paralelizar las pruebas, Active Record maneja automáticamente la creación de una base de datos y carga el esquema en la base de datos para cada
+proceso. Las bases de datos llevarán el sufijo del número correspondiente al trabajador. Por ejemplo, si tu
+si tiene 2 trabajadores, las pruebas crearán <code>test-database-0</code> y <code>test-database-1</code> respectivamente.</p><p>Si el número de trabajadores aprobados es 1 o menos, los procesos no se bifurcarán y las pruebas no
+se paralelizará y las pruebas utilizarán la base de datos original <code>test-database</code>.</p><p>Se proporcionan dos ganchos, uno se ejecuta cuando el proceso se bifurca y el otro se ejecuta antes de que se cierre el proceso bifurcado.
+Estos pueden ser útiles si su aplicación utiliza varias bases de datos o realiza otras tareas que dependen de la cantidad de
+trabajadores.</p><p>El método <code>paralelize_setup</code> se llama justo después de que se bifurcan los procesos. El método <code>paralelize_teardown</code>
+se llama justo antes de que se cierren los procesos.</p><div class="code_container">
+<pre><code class="language-ruby">class ActiveSupport::TestCase
+  parallelize_setup do |worker|
+    # setup databases
+  end
+
+  parallelize_teardown do |worker|
+    # cleanup databases
+  end
+
+  parallelize(workers: :number_of_processors)
+end
+</code></pre>
+</div>
+<p>Estos métodos no son necesarios ni están disponibles cuando se utilizan pruebas paralelas con subprocesos.</p><h4 id="parallel-testing-with-threads"><a class="anchorlink" href="#parallel-testing-with-threads">3.2 Parallel Testing with Threads</a></h4><p>Si prefiere usar subprocesos o está usando JRuby, se proporciona una opción de paralelización de subprocesos. El roscado
+paralelizador está respaldado por <code>Parallel::Executor</code> de Minitest.</p><p>Para cambiar el método de paralelización para usar subprocesos sobre bifurcaciones, coloque lo siguiente en su <code>test_helper.rb</code></p><div class="code_container">
+<pre><code class="language-ruby">class ActiveSupport::TestCase
+  parallelize(workers: :number_of_processors, with: :threads)
+end
+</code></pre>
+</div>
+<p>Las aplicaciones Rails generadas a partir de JRuby o TruffleRuby incluirán automáticamente la opción <code>with: :threads</code>.</p><p>El número de trabajadores pasados ​​para "paralelizar" determina el número de subprocesos que utilizarán las pruebas. Puedes
+desea paralelizar su conjunto de pruebas local de manera diferente a su CI, por lo que se proporciona una variable de entorno
+para poder cambiar fácilmente la cantidad de trabajadores, una ejecución de prueba debe usar:</p><div class="code_container">
+<pre><code class="language-shell-session">PARALLEL_WORKERS=15 bin/rails test
+</code></pre>
+</div>
+<h4 id="testing-parallel-transactions"><a class="anchorlink" href="#testing-parallel-transactions">3.3 Testing Parallel Transactions</a></h4><p>Rails envuelve automáticamente cualquier caso de prueba en una transacción de base de datos que se rueda
+de vuelta después de que se complete la prueba. Esto hace que los casos de prueba sean independientes entre sí.
+y los cambios en la base de datos solo son visibles dentro de una única prueba.</p><p>Cuando desee probar el código que ejecuta transacciones paralelas en subprocesos,
+las transacciones pueden bloquearse entre sí porque ya están anidadas bajo la prueba
+transacción.</p><p>Puede deshabilitar transacciones en una clase de caso de prueba estableciendo
+<code>self.use_transactional_tests = false</code>:</p><div class="code_container">
+<pre><code class="language-ruby">class WorkerTest &lt; ActiveSupport::TestCase
+  self.use_transactional_tests = false
+
+  test "parallel transactions" do
+    # start some threads that create transactions
+  end
+end
+</code></pre>
+</div>
+<div class="note"><p>Con las pruebas transaccionales deshabilitadas, debe limpiar las pruebas de datos
+crear como cambios no se revierten automáticamente una vez finalizada la prueba.</p></div><h3 id="the-test-database"><a class="anchorlink" href="#the-test-database">4 The Test Database</a></h3><p>Casi todas las aplicaciones de Rails interactúan en gran medida con una base de datos y, como resultado, sus pruebas también necesitarán una base de datos para interactuar. Para escribir pruebas eficientes, deberá comprender cómo configurar esta base de datos y completarla con datos de muestra.</p><p>De forma predeterminada, cada aplicación Rails tiene tres entornos: desarrollo, prueba y producción. La base de datos de cada uno de ellos se configura en <code>config/database.yml</code>.</p><p>Una base de datos de prueba dedicada le permite configurar e interactuar con los datos de prueba de forma aislada. De esta manera, sus pruebas pueden manipular los datos de prueba con confianza, sin preocuparse por los datos en las bases de datos de desarrollo o producción.</p><h4 id="maintaining-the-test-database-schema"><a class="anchorlink" href="#maintaining-the-test-database-schema">4.1 Maintaining the test database schema</a></h4><p>Para ejecutar sus pruebas, su base de datos de prueba deberá tener la
+estructura. El asistente de prueba comprueba si su base de datos de prueba tiene alguna pendiente
+migraciones. Intentará cargar su <code>db/schema.rb</code> o <code>db/structure.sql</code>
+en la base de datos de prueba. Si las migraciones aún están pendientes, aparecerá un error.
+elevado. Por lo general, esto indica que su esquema no se ha migrado por completo. Corriendo
+las migraciones contra la base de datos de desarrollo (<code>bin/rails db:migrate</code>)
+actualizar el esquema.</p><div class="note"><p>Si hubo modificaciones en las migraciones existentes, la base de datos de prueba debe
+ser reconstruido. Esto se puede hacer ejecutando <code>bin/rails db:test:prepare</code>.</p></div><h4 id="the-low-down-on-fixtures"><a class="anchorlink" href="#the-low-down-on-fixtures">4.2 The Low-Down on Fixtures</a></h4><p>Para obtener buenas pruebas, deberá pensar un poco en la configuración de datos de prueba.
+En Rails, puede manejar esto definiendo y personalizando accesorios.
+Puede encontrar documentación completa en el <a href="https://edgeapi.rubyonrails.org/classes/ActiveRecord/FixtureSet.html">Fixtures API documentation</a>.</p><h5 id="what-are-fixtures-questionmark"><a class="anchorlink" href="#what-are-fixtures-questionmark">4.2.1 What are Fixtures?</a></h5><p><em>Fixtures</em> es una palabra elegante para datos de muestra. Los accesorios le permiten completar su base de datos de pruebas con datos predefinidos antes de que se ejecuten sus pruebas. Los accesorios son independientes de la base de datos y están escritos en YAML. Hay un archivo por modelo.</p><p>NOTA: Los accesorios no están diseñados para crear todos los objetos que necesitan sus pruebas, y se administran mejor cuando solo se usan para datos predeterminados que se pueden aplicar al caso común.</p><p>Encontrará accesorios en su directorio <code>test/fixtures</code>. Cuando ejecuta <code>bin/rails generate model</code> para crear un nuevo modelo, Rails crea automáticamente stubs de accesorios en este directorio.</p><h5 id="yaml"><a class="anchorlink" href="#yaml">4.2.2 YAML</a></h5><p>Los dispositivos con formato YAML son una forma sencilla de describir sus datos de muestra. Estos tipos de dispositivos tienen la extensión de archivo <strong>.yml</strong> (como en <code>users.yml</code>).</p><p>Aquí hay un archivo de accesorio YAML de muestra:</p><div class="code_container">
+<pre><code class="language-yaml"># lo &amp; behold! I am a YAML comment!
+david:
+  name: David Heinemeier Hansson
+  birthday: 1979-10-15
+  profession: Systems development
+
+steve:
+  name: Steve Ross Kellock
+  birthday: 1974-09-27
+  profession: guy with keyboard
+</code></pre>
+</div>
+<p>A cada dispositivo se le asigna un nombre seguido de una lista con sangría de pares clave / valor separados por dos puntos. Los registros suelen estar separados por una línea en blanco. Puede colocar comentarios en un archivo de accesorios usando el carácter # en la primera columna.</p><p>Si trabaja con <a href="/association_basics.html">associations</a>, puede
+definir un nodo de referencia entre dos dispositivos diferentes. Aquí hay un ejemplo con
+una asociación <code>belongs_to</code>/<code>has_many</code>:</p><div class="code_container">
+<pre><code class="language-yaml"># In fixtures/categories.yml
+about:
+  name: About
+
+# In fixtures/articles.yml
+first:
+  title: Welcome to Rails!
+  body: Hello world!
+  category: about
+</code></pre>
+</div>
+<p>Observe que la clave <code>category</code> del<code>first</code> artículo que se encuentra en <code>fixtures/articles.yml</code> tiene un valor de <code>about</code>. Esto le dice a Rails que cargue la categoría <code>about</code> que se encuentra en <code>fixtures/categories.yml</code>.</p><p>NOTA: Para que las asociaciones se hagan referencia entre sí por su nombre, puede usar el nombre del dispositivo en lugar de especificar el atributo <code>id:</code> en los dispositivos asociados. Los rieles asignarán automáticamente una clave principal para que sea coherente entre las ejecuciones. Para obtener más información sobre el comportamiento de esta asociación, lea la <a href="https://edgeapi.rubyonrails.org/classes/ActiveRecord/FixtureSet.html">Fixtures API documentation</a>.</p><h5 id="erb-in-it-up"><a class="anchorlink" href="#erb-in-it-up">4.2.3 ERB'in It Up</a></h5><p>ERB le permite incrustar código Ruby en plantillas. El formato de dispositivo YAML se procesa previamente con ERB cuando Rails carga dispositivos. Esto le permite usar Ruby para ayudarlo a generar algunos datos de muestra. Por ejemplo, el siguiente código genera mil usuarios:</p><div class="code_container">
+<pre><code class="language-erb">&lt;% 1000.times do |n| %&gt;
+user_&lt;%= n %&gt;:
+  username: &lt;%= "user#{n}" %&gt;
+  email: &lt;%= "user#{n}@example.com" %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<h5 id="fixtures-in-action"><a class="anchorlink" href="#fixtures-in-action">4.2.4 Fixtures in Action</a></h5><p>Rails carga automáticamente todos los dispositivos del directorio <code>test/fixtures</code> por
+defecto. La carga implica tres pasos:</p>
+<ol>
+<li>Elimina cualquier dato existente de la tabla correspondiente al aparato.</li>
+<li>Cargue los datos del aparato en la tabla</li>
+<li>Vierta los datos del dispositivo en un método en caso de que desee acceder a él directamente</li>
+</ol>
+<div class="info"><p>para eliminar datos existentes de la base de datos, Rails intenta deshabilitar los activadores de integridad referencial (como claves externas y restricciones de verificación). Si obtiene molestos errores de permisos al ejecutar pruebas, asegúrese de que el usuario de la base de datos tenga privilegios para desactivar estos activadores en el entorno de prueba. (En PostgreSQL, solo los superusuarios pueden deshabilitar todos los activadores. Lea más sobre los permisos de PostgreSQL <a href="http://blog.endpoint.com/2012/10/postgres-system-triggers-error.html">here</a>).</p></div><h5 id="fixtures-are-active-record-objects"><a class="anchorlink" href="#fixtures-are-active-record-objects">4.2.5 Fixtures are Active Record objects</a></h5><p>Los aparatos son instancias de Active Record. Como se mencionó en el punto # 3 anterior, puede acceder al objeto directamente porque está disponible automáticamente como un método cuyo alcance es local del caso de prueba. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby"># this will return the User object for the fixture named david
+users(:david)
+
+# this will return the property for david called id
+users(:david).id
+
+# one can also access methods available on the User class
+david = users(:david)
+david.call(david.partner)
+</code></pre>
+</div>
+<p>Para obtener varios dispositivos a la vez, puede pasar una lista de nombres de dispositivos. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby"># this will return an array containing the fixtures david and steve
+users(:david, :steve)
+</code></pre>
+</div>
+<h3 id="model-testing"><a class="anchorlink" href="#model-testing">5 Model Testing</a></h3><p>Las pruebas de modelo se utilizan para probar los distintos modelos de su aplicación.</p><p>Las pruebas del modelo Rails se almacenan en el directorio <code>test/models</code>. Rails proporciona
+un generador para crear un modelo de esqueleto de prueba para usted.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate test_unit:model article title:string body:text
+create  test/models/article_test.rb
+create  test/fixtures/articles.yml
+</code></pre>
+</div>
+<p>Las pruebas de modelo no tienen su propia superclase como <code>ActionMailer::TestCase</code> sino que heredan de <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/TestCase.html"> ActiveSupport::TestCase`</a>.</p><h3 id="system-testing"><a class="anchorlink" href="#system-testing">6 System Testing</a></h3><p>Las pruebas del sistema le permiten probar las interacciones del usuario con su aplicación, ejecutando pruebas
+en un navegador real o sin cabeza. Las pruebas del sistema utilizan Capybara debajo del capó.</p><p>Para crear pruebas del sistema Rails, use el directorio <code>test/system</code> en su
+solicitud. Rails proporciona un generador para crear un esqueleto de prueba del sistema para usted.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate system_test users
+      invoke test_unit
+      create test/system/users_test.rb
+</code></pre>
+</div>
+<p>Así es como se ve una prueba de sistema recién generada:</p><div class="code_container">
+<pre><code class="language-ruby">require "application_system_test_case"
+
+class UsersTest &lt; ApplicationSystemTestCase
+  # test "visiting the index" do
+  #   visit users_url
+  #
+  #   assert_selector "h1", text: "Users"
+  # end
+end
+</code></pre>
+</div>
+<p>De forma predeterminada, las pruebas del sistema se ejecutan con el controlador Selenium, utilizando Chrome
+navegador y un tamaño de pantalla de 1400x1400. La siguiente sección explica cómo
+cambiar la configuración predeterminada.</p><h4 id="changing-the-default-settings"><a class="anchorlink" href="#changing-the-default-settings">6.1 Changing the default settings</a></h4><p>Rails hace que cambiar la configuración predeterminada para las pruebas del sistema sea muy simple. Todas
+la configuración se abstrae para que pueda concentrarse en escribir sus pruebas.</p><p>Cuando generas una nueva aplicación o andamio, un archivo <code>application_system_test_case.rb</code>
+se crea en el directorio de prueba. Aquí es donde toda la configuración de su
+las pruebas del sistema deberían estar activas.</p><p>Si desea cambiar la configuración predeterminada, puede cambiar lo que el sistema
+las pruebas son "impulsadas por". Digamos que desea cambiar el controlador de Selenium a
+Duende. Primero agregue la gema <code>poltergeist</code> a su <code>Gemfile</code>. Entonces en tu
+El archivo <code>application_system_test_case.rb</code> haga lo siguiente:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+require "capybara/poltergeist"
+
+class ApplicationSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :poltergeist
+end
+</code></pre>
+</div>
+<p>El nombre del controlador es un argumento obligatorio para <code>drive_by</code>. Los argumentos opcionales
+que se pueden pasar a <code>drive_by</code> son <code>:using</code> para el navegador (esto solo
+ser utilizado por Selenium), <code>:screen_size</code> para cambiar el tamaño de la pantalla para
+capturas de pantalla y <code>:options</code> que se pueden utilizar para configurar las opciones admitidas por
+conductor.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ApplicationSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :firefox
+end
+</code></pre>
+</div>
+<p>Si desea utilizar un navegador sin cabeza, puede usar Chrome sin cabeza o Firefox sin cabeza agregando
+<code>headless_chrome</code> o <code>headless_firefox</code> en el argumento <code>:using</code>.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ApplicationSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :headless_chrome
+end
+</code></pre>
+</div>
+<p>Si su configuración de Capybara requiere más configuración que la proporcionada por Rails, esto
+Se podría agregar configuración adicional en el <code>application_system_test_case.rb</code>
+expediente.</p><p>Consulte la <a href="https://github.com/teamcapybara/capybara#setup">Capybara's documentation</a>
+para configuraciones adicionales.</p><h4 id="screenshot-helper"><a class="anchorlink" href="#screenshot-helper">6.2 Screenshot Helper</a></h4><p>El <code>ScreenshotHelper</code> es un ayudante diseñado para capturar capturas de pantalla de sus pruebas.
+Esto puede ser útil para ver el navegador en el punto en el que falló una prueba, o
+para ver capturas de pantalla más tarde para depurar.</p><p>Se proporcionan dos métodos: <code>take_screenshot</code> y <code>take_failed_screenshot</code>.
+<code>take_failed_screenshot</code> se incluye automáticamente en <code>before_teardown</code> dentro
+Rieles.</p><p>El método auxiliar <code>take_screenshot</code> se puede incluir en cualquier lugar de sus pruebas para
+tomar una captura de pantalla del navegador.</p><h4 id="implementing-a-system-test"><a class="anchorlink" href="#implementing-a-system-test">6.3 Implementing a System Test</a></h4><p>Ahora vamos a agregar una prueba del sistema a nuestra aplicación de blog. Demostraremos
+escribir una prueba del sistema visitando la página de índice y creando un nuevo artículo de blog.</p><p>Si usó el generador de andamios, un esqueleto de prueba del sistema se
+creado para ti. Si no usó el generador de andamios, comience creando un
+esqueleto de prueba del sistema.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate system_test articles
+</code></pre>
+</div>
+<p>Debería habernos creado un marcador de posición de archivo de prueba. Con la salida del
+comando anterior debes</p><div class="code_container">
+<pre><code class="language-shell-session">      invoke  test_unit
+      create    test/system/articles_test.rb
+</code></pre>
+</div>
+<p>Ahora abramos ese archivo y escribamos nuestra primera afirmación:</p><div class="code_container">
+<pre><code class="language-ruby">require "application_system_test_case"
+
+class ArticlesTest &lt; ApplicationSystemTestCase
+  test "viewing the index" do
+    visit articles_path
+    assert_selector "h1", text: "Articles"
+  end
+end
+</code></pre>
+</div>
+<p>La prueba debería ver que hay un <code>h1</code> en la página de índice de artículos y pasar.</p><p>Ejecute las pruebas del sistema.</p><div class="code_container">
+<pre><code class="language-shell-session">bin/rails test:system
+</code></pre>
+</div>
+<div class="note"><p>Por defecto, ejecutar <code>bin/rails test</code> no ejecutará las pruebas de su sistema.
+Asegúrese de ejecutar <code>bin/rails test:system</code> para ejecutarlos.
+También puede ejecutar <code>bin/rails test:all</code> para ejecutar todas las pruebas, incluidas las del sistema.</p></div><h5 id="creating-articles-system-test"><a class="anchorlink" href="#creating-articles-system-test">6.3.1 Creating Articles System Test</a></h5><p>Ahora probemos el flujo para crear un nuevo artículo en nuestro blog.</p><div class="code_container">
+<pre><code class="language-ruby">test "creating an article" do
+  visit articles_path
+
+  click_on "New Article"
+
+  fill_in "Title", with: "Creating an Article"
+  fill_in "Body", with: "Created this article successfully!"
+
+  click_on "Create Article"
+
+  assert_text "Creating an Article"
+end
+</code></pre>
+</div>
+<p>El primer paso es llamar a <code>visit articles_path</code>. Esto llevará la prueba al
+página de índice de artículos.</p><p>Luego, el <code>click_on New Article"</code> encontrará el botón "Nuevo artículo" en el
+Página de inicio. Esto redirigirá el navegador a <code>/articles/new</code>.</p><p>Luego, la prueba completará el título y el cuerpo del artículo con la especificación
+texto. Una vez completados los campos, se hace clic en "Crear artículo", que
+envíe una solicitud POST para crear el nuevo artículo en la base de datos.</p><p>Seremos redirigidos de nuevo a la página de índice de artículos y allí afirmamos
+que el texto del título del nuevo artículo está en la página de índice de artículos.</p><h5 id="testing-for-multiple-screen-sizes"><a class="anchorlink" href="#testing-for-multiple-screen-sizes">6.3.2 Testing for multiple screen sizes</a></h5><p>Si desea probar los tamaños de dispositivos móviles además de las pruebas para computadoras de escritorio,
+puede crear otra clase que herede de SystemTestCase y usar en su
+Banco de pruebas. En este ejemplo se crea un archivo llamado <code>mobile_system_test_case.rb</code>
+en el directorio <code>/test</code> con la siguiente configuración.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class MobileSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :chrome, screen_size: [375, 667]
+end
+</code></pre>
+</div>
+<p>Para usar esta configuración, cree una prueba dentro de <code>test/system</code> que herede de <code>MobileSystemTestCase</code>.
+Ahora puede probar su aplicación utilizando varias configuraciones diferentes.</p><div class="code_container">
+<pre><code class="language-ruby">require "mobile_system_test_case"
+
+class PostsTest &lt; MobileSystemTestCase
+
+  test "visiting the index" do
+    visit posts_url
+    assert_selector "h1", text: "Posts"
+  end
+end
+</code></pre>
+</div>
+<h5 id="implementing-a-system-test-taking-it-further"><a class="anchorlink" href="#implementing-a-system-test-taking-it-further">6.3.3 Taking it further</a></h5><p>La belleza de las pruebas del sistema es que es similar a las pruebas de integración en
+que prueba la interacción del usuario con su controlador, modelo y vista, pero
+La prueba del sistema es mucho más robusta y realmente prueba su aplicación como si
+un usuario real lo estaba usando. En el futuro, puede probar cualquier cosa que el usuario
+ellos mismos harían en su aplicación, como comentar, eliminar artículos,
+publicar borradores de artículos, etc.</p><h3 id="integration-testing"><a class="anchorlink" href="#integration-testing">7 Integration Testing</a></h3><p>Las pruebas de integración se utilizan para probar cómo interactúan varias partes de su aplicación. Generalmente se utilizan para probar flujos de trabajo importantes dentro de nuestra aplicación.</p><p>Para crear pruebas de integración de Rails, usamos el directorio <code>test/integration</code> para nuestra aplicación. Rails proporciona un generador para crear un esqueleto de prueba de integración para nosotros.</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate integration_test user_flows
+      exists  test/integration/
+      create  test/integration/user_flows_test.rb
+</code></pre>
+</div>
+<p>Así es como se ve una prueba de integración recién generada:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class UserFlowsTest &lt; ActionDispatch::IntegrationTest
+  # test "the truth" do
+  #   assert true
+  # end
+end
+</code></pre>
+</div>
+<p>Aquí la prueba hereda de <code>ActionDispatch::IntegrationTest</code>. Esto hace que algunos ayudantes adicionales estén disponibles para que los usemos en nuestras pruebas de integración.</p><h4 id="helpers-available-for-integration-tests"><a class="anchorlink" href="#helpers-available-for-integration-tests">7.1 Helpers Available for Integration Tests</a></h4><p>Además de los ayudantes de prueba estándar, heredando de <code>ActionDispatch::IntegrationTest</code> viene con algunos ayudantes adicionales disponibles al escribir pruebas de integración. Vamos a presentarnos brevemente a las tres categorías de ayudantes entre las que podemos elegir.</p><p>Para tratar con el ejecutor de pruebas de integración, consulte <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Integration/Runner.html"><code>ActionDispatch::Integration::Runner</code></a>.</p><p>Al realizar solicitudes, haremos <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Integration/RequestHelpers.html"><code>ActionDispatch::Integration::RequestHelpers</code></a> disponible para nuestro uso.</p><p>Si necesitamos modificar la sesión o el estado de nuestra prueba de integración, eche un vistazo a <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Integration/Session.html"><code>ActionDispatch::Integration::Session</code></a> para ayuda.</p><h4 id="implementing-an-integration-test"><a class="anchorlink" href="#implementing-an-integration-test">7.2 Implementing an integration test</a></h4><p>Agreguemos una prueba de integración a nuestra aplicación de blog. Comenzaremos con un flujo de trabajo básico de creación de un nuevo artículo de blog, para verificar que todo funcione correctamente.</p><p>Comenzaremos generando nuestro esqueleto de prueba de integración:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate integration_test blog_flow
+</code></pre>
+</div>
+<p>Debería habernos creado un marcador de posición de archivo de prueba. Con la salida del
+comando anterior deberíamos ver:</p><div class="code_container">
+<pre><code class="language-shell-session">      invoke  test_unit
+      create    test/integration/blog_flow_test.rb
+</code></pre>
+</div>
+<p>Ahora abramos ese archivo y escribamos nuestra primera afirmación:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class BlogFlowTest &lt; ActionDispatch::IntegrationTest
+  test "can see the welcome page" do
+    get "/"
+    assert_select "h1", "Welcome#index"
+  end
+end
+</code></pre>
+</div>
+<p>Echaremos un vistazo a <code>assert_select</code> para consultar el HTML resultante de una solicitud en la sección" Vistas de prueba "a continuación. Se utiliza para probar la respuesta de nuestra solicitud al afirmar la presencia de elementos HTML clave y su contenido.</p><p>Cuando visitamos nuestra ruta raíz, deberíamos ver <code>welcome/index.html.erb</code> renderizado para la vista. Entonces esta afirmación debería pasar.</p><h5 id="creating-articles-integration"><a class="anchorlink" href="#creating-articles-integration">7.2.1 Creating articles integration</a></h5><p>¿Qué tal probar nuestra capacidad para crear un artículo nuevo en nuestro blog y ver el artículo resultante?</p><div class="code_container">
+<pre><code class="language-ruby">test "can create an article" do
+  get "/articles/new"
+  assert_response :success
+
+  post "/articles",
+    params: { article: { title: "can create", body: "article successfully." } }
+  assert_response :redirect
+  follow_redirect!
+  assert_response :success
+  assert_select "p", "Title:\n  can create"
+end
+</code></pre>
+</div>
+<p>Analicemos esta prueba para que podamos entenderla.</p><p>Comenzamos llamando a la acción <code>:new</code> en nuestro controlador de Artículos. Esta respuesta debería tener éxito.</p><p>Después de esto, hacemos una solicitud de publicación a la acción <code>:create</code> de nuestro controlador de artículos:</p><div class="code_container">
+<pre><code class="language-ruby">post "/articles",
+  params: { article: { title: "can create", body: "article successfully." } }
+assert_response :redirect
+follow_redirect!
+</code></pre>
+</div>
+<p>Las dos líneas que siguen a la solicitud son para manejar la redirección que configuramos al crear un nuevo artículo.</p><div class="note"><p>No olvide llamar a <code>follow_redirect!</code> Si planea realizar solicitudes posteriores después de realizar una redirección.</p></div><p>Finalmente podemos afirmar que nuestra respuesta fue exitosa y nuestro nuevo artículo se puede leer en la página.</p><h5 id="implementing-an-integration-test-taking-it-further"><a class="anchorlink" href="#implementing-an-integration-test-taking-it-further">7.2.2 Taking it further</a></h5><p>Pudimos probar con éxito un flujo de trabajo muy pequeño para visitar nuestro blog y crear un nuevo artículo. Si quisiéramos llevar esto más lejos, podríamos agregar pruebas para comentar, eliminar artículos o editar comentarios. Las pruebas de integración son un gran lugar para experimentar con todo tipo de casos de uso para nuestras aplicaciones.</p><h3 id="functional-tests-for-your-controllers"><a class="anchorlink" href="#functional-tests-for-your-controllers">8 Functional Tests for Your Controllers</a></h3><p>En Rails, probar las diversas acciones de un controlador es una forma de escribir pruebas funcionales. Recuerde que sus controladores manejan las solicitudes web entrantes a su aplicación y eventualmente responden con una vista renderizada. Al escribir pruebas funcionales, está probando cómo sus acciones manejan las solicitudes y el resultado o respuesta esperados, en algunos casos una vista HTML.</p><h4 id="what-to-include-in-your-functional-tests"><a class="anchorlink" href="#what-to-include-in-your-functional-tests">8.1 What to include in your Functional Tests</a></h4><p>Debes probar cosas como:</p>
+<ul>
+<li>¿La solicitud web se realizó correctamente?</li>
+<li>¿Se redirigió al usuario a la página correcta?</li>
+<li>¿Se autenticó correctamente al usuario?</li>
+<li>¿Se mostró el mensaje apropiado al usuario en la vista?</li>
+<li>¿Se mostró la información correcta en la respuesta?</li>
+</ul>
+<p>La forma más fácil de ver las pruebas funcionales en acción es generar un controlador usando el generador de andamios:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate scaffold_controller article title:string body:text
+...
+create  app/controllers/articles_controller.rb
+...
+invoke  test_unit
+create    test/controllers/articles_controller_test.rb
+...
+</code></pre>
+</div>
+<p>Esto generará el código del controlador y las pruebas para un recurso <code>Article</code>.
+Puede echar un vistazo al archivo <code>articles_controller_test.rb</code> en el directorio <code>test/controllers</code>.</p><p>Si ya tiene un controlador y solo desea generar el código de andamio de prueba para
+cada una de las siete acciones predeterminadas, puede utilizar el siguiente comando:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails generate test_unit:scaffold article
+...
+invoke  test_unit
+create    test/controllers/articles_controller_test.rb
+...
+</code></pre>
+</div>
+<p>Echemos un vistazo a una de esas pruebas, <code>test_should_get_index</code> del archivo <code>articles_controller_test.rb</code>.</p><div class="code_container">
+<pre><code class="language-ruby"># articles_controller_test.rb
+class ArticlesControllerTest &lt; ActionDispatch::IntegrationTest
+  test "should get index" do
+    get articles_url
+    assert_response :success
+  end
+end
+</code></pre>
+</div>
+<p>En la prueba <code>test_should_get_index</code>, Rails simula una solicitud en la acción llamada <code>index</code>, asegurándose de que la solicitud fue exitosa
+y también garantizar que se haya generado el organismo de respuesta adecuado.</p><p>El método <code>get</code> inicia la solicitud web y completa los resultados en la <code>@response</code>. Puede aceptar hasta 6 argumentos:</p>
+<ul>
+<li>El URI de la acción del controlador que está solicitando.
+Esto puede tener la forma de una cadena o un asistente de ruta (por ejemplo, <code>articles_url</code>).</li>
+<li>
+<code>params</code>: opción con un hash de parámetros de solicitud para pasar a la acción
+(por ejemplo, parámetros de cadena de consulta o variables de artículo).</li>
+<li>
+<code>headers</code>: para configurar los encabezados que se pasarán con la solicitud.</li>
+<li>
+<code>env</code>: para personalizar el entorno de solicitud según sea necesario.</li>
+<li>
+<code>xhr</code>: si la solicitud es una solicitud Ajax o no. Se puede establecer en verdadero para marcar la solicitud como Ajax.</li>
+<li>
+<code>as</code>: para codificar la solicitud con un tipo de contenido diferente.</li>
+</ul>
+<p>Todos estos argumentos de palabras clave son opcionales.</p><p>Ejemplo: llamar a la acción <code>:show</code> para el primer<code>Article</code>, pasando un encabezado <code>HTTP_REFERER</code>:</p><div class="code_container">
+<pre><code class="language-ruby">get article_url(Article.first), headers: { "HTTP_REFERER" =&gt; "http://example.com/home" }
+</code></pre>
+</div>
+<p>Otro ejemplo: llamar a la acción <code>:update</code> para el último <code>article</code>, pasando un nuevo texto para el <code>title</code> en <code>params</code>, como una solicitud Ajax:</p><div class="code_container">
+<pre><code class="language-ruby">patch article_url(Article.last), params: { article: { title: "updated" } }, xhr: true
+</code></pre>
+</div>
+<p>Un ejemplo más: llamar a la acción <code>:create</code> para crear un nuevo artículo, pasando
+texto para el <code>título</code> en <code>params</code>, como solicitud JSON:</p><div class="code_container">
+<pre><code class="language-ruby">post articles_path, params: { article: { title: "Ahoy!" } }, as: :json
+</code></pre>
+</div>
+<div class="note"><p>Si intenta ejecutar la prueba <code>test_should_create_article</code> desde <code>articles_controller_test.rb</code>, fallará debido a la validación de nivel de modelo recién agregada y con razón.</p></div><p>Modifiquemos la prueba <code>test_should_create_article</code> en <code>articles_controller_test.rb</code> para que todas nuestras pruebas pasen:</p><div class="code_container">
+<pre><code class="language-ruby">test "should create article" do
+  assert_difference("Article.count") do
+    post articles_url, params: { article: { body: "Rails is awesome!", title: "Hello Rails" } }
+  end
+
+  assert_redirected_to article_path(Article.last)
+end
+</code></pre>
+</div>
+<p>Ahora puede intentar ejecutar todas las pruebas y deberían pasar.</p><div class="note"><p>Si siguió los pasos de la sección <a href="getting_started.html#basic-authentication">Basic Authentication</a>. Deberá agregar autorización a cada encabezado de solicitud para que todas las pruebas pasen:</p></div><div class="code_container">
+<pre><code class="language-ruby">post articles_url, params: { article: { body: "Rails is awesome!", title: "Hello Rails" } }, headers: { Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("dhh", "secret") }
+</code></pre>
+</div>
+<h4 id="available-request-types-for-functional-tests"><a class="anchorlink" href="#available-request-types-for-functional-tests">8.2 Available Request Types for Functional Tests</a></h4><p>Si está familiarizado con el protocolo HTTP, sabrá que <code>get</code> es un tipo de solicitud. Hay 6 tipos de solicitud admitidos en las pruebas funcionales de Rails:</p>
+<ul>
+<li><code>get</code></li>
+<li><code>post</code></li>
+<li><code>patch</code></li>
+<li><code>put</code></li>
+<li><code>head</code></li>
+<li><code>delete</code></li>
+</ul>
+<p>Todos los tipos de solicitud tienen métodos equivalentes que puede utilizar. En un típico C.R.U.D. aplicación que usará <code>get</code>, <code>post</code>, <code>put</code> y <code>delete</code> más a menudo.</p><div class="note"><p>Las pruebas funcionales no verifican si la acción acepta el tipo de solicitud especificado, estamos más preocupados por el resultado. Las pruebas de solicitud existen para este caso de uso para que sus pruebas sean más útiles.</p></div><h4 id="testing-xhr-ajax-requests"><a class="anchorlink" href="#testing-xhr-ajax-requests">8.3 Testing XHR (AJAX) requests</a></h4><p>Para probar las solicitudes AJAX, puede especificar la opción <code>xhr: true</code> en <code>get</code>, <code>post</code>,
+Métodos <code>patch</code>, <code>put</code> y <code>delete</code>. Por ejemplo</p><div class="code_container">
+<pre><code class="language-ruby">test "ajax request" do
+  article = articles(:one)
+  get article_url(article), xhr: true
+
+  assert_equal "hello world", @response.body
+  assert_equal "text/javascript", @response.media_type
+end
+</code></pre>
+</div>
+<h4 id="the-three-hashes-of-the-apocalypse"><a class="anchorlink" href="#the-three-hashes-of-the-apocalypse">8.4 The Three Hashes of the Apocalypse</a></h4><p>Después de que se haya realizado y procesado una solicitud, tendrá 3 objetos Hash listos para usar:</p>
+<ul>
+<li>
+<code>cookies</code> - cualquier cookie que se establezca</li>
+<li>
+<code>flash</code> - cualquier objeto que viva en el flash</li>
+<li>
+<code>session</code> - cualquier objeto que viva en variables de sesión</li>
+</ul>
+<p>Como es el caso de los objetos Hash normales, puede acceder a los valores haciendo referencia a las claves por cadena. También puede hacer referencia a ellos por el nombre del símbolo. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">flash["gordon"]               flash[:gordon]
+session["shmession"]          session[:shmession]
+cookies["are_good_for_u"]     cookies[:are_good_for_u]
+</code></pre>
+</div>
+<h4 id="instance-variables-available"><a class="anchorlink" href="#instance-variables-available">8.5 Instance Variables Available</a></h4><p>También tiene acceso a tres variables de instancia en sus pruebas funcionales, después de que se realiza una solicitud:</p>
+<ul>
+<li>
+<code>@controller</code> - El controlador que procesa la solicitud</li>
+<li>
+<code>@request</code> - El objeto de solicitud</li>
+<li>
+<code>@response</code> - El objeto de respuesta</li>
+</ul>
+<div class="code_container">
+<pre><code class="language-ruby">class ArticlesControllerTest &lt; ActionDispatch::IntegrationTest
+  test "should get index" do
+    get articles_url
+
+    assert_equal "index", @controller.action_name
+    assert_equal "application/x-www-form-urlencoded", @request.media_type
+    assert_match "Articles", @response.body
+  end
+end
+</code></pre>
+</div>
+<h4 id="setting-headers-and-cgi-variables"><a class="anchorlink" href="#setting-headers-and-cgi-variables">8.6 Setting Headers and CGI variables</a></h4><p><a href="https://tools.ietf.org/search/rfc2616#section-5.3">HTTP headers</a>
+y
+<a href="https://tools.ietf.org/search/rfc3875#section-4.1">CGI variables</a>
+se pueden pasar como encabezados:</p><div class="code_container">
+<pre><code class="language-ruby"># setting an HTTP Header
+get articles_url, headers: { "Content-Type": "text/plain" } # simulate the request with custom header
+
+# setting a CGI variable
+get articles_url, headers: { "HTTP_REFERER": "http://example.com/home" } # simulate the request with custom env variable
+</code></pre>
+</div>
+<h4 id="testing-flash-notices"><a class="anchorlink" href="#testing-flash-notices">8.7 Testing <code>flash</code> notices</a></h4><p>Si recuerdas de antes, uno de los Tres Hashes del Apocalipsis fue "flash".</p><p>Queremos agregar un mensaje <code>flash</code> a nuestra aplicación de blog cada vez que alguien
+crea correctamente un nuevo artículo.</p><p>Comencemos agregando esta afirmación a nuestra prueba <code>test_should_create_article</code>:</p><div class="code_container">
+<pre><code class="language-ruby">test "should create article" do
+  assert_difference("Article.count") do
+    post articles_url, params: { article: { title: "Some title" } }
+  end
+
+  assert_redirected_to article_path(Article.last)
+  assert_equal "Article was successfully created.", flash[:notice]
+end
+</code></pre>
+</div>
+<p>Si ejecutamos nuestra prueba ahora, deberíamos ver una falla:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/controllers/articles_controller_test.rb -n test_should_create_article
+Run options: -n test_should_create_article --seed 32266
+
+# Running:
+
+F
+
+Finished in 0.114870s, 8.7055 runs/s, 34.8220 assertions/s.
+
+  1) Failure:
+ArticlesControllerTest#test_should_create_article [/test/controllers/articles_controller_test.rb:16]:
+--- expected
++++ actual
+@@ -1 +1 @@
+-"Article was successfully created."
++nil
+
+1 runs, 4 assertions, 1 failures, 0 errors, 0 skips
+</code></pre>
+</div>
+<p>Implementemos el mensaje flash ahora en nuestro controlador. Nuestra acción <code>:create</code> ahora debería verse así:</p><div class="code_container">
+<pre><code class="language-ruby">def create
+  @article = Article.new(article_params)
+
+  if @article.save
+    flash[:notice] = "Article was successfully created."
+    redirect_to @article
+  else
+    render "new"
+  end
+end
+</code></pre>
+</div>
+<p>Ahora, si ejecutamos nuestras pruebas, deberíamos verlo pasar:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails test test/controllers/articles_controller_test.rb -n test_should_create_article
+Run options: -n test_should_create_article --seed 18981
+
+# Running:
+
+.
+
+Finished in 0.081972s, 12.1993 runs/s, 48.7972 assertions/s.
+
+1 runs, 4 assertions, 0 failures, 0 errors, 0 skips
+</code></pre>
+</div>
+<h4 id="putting-it-together"><a class="anchorlink" href="#putting-it-together">8.8 Putting it together</a></h4><p>En este punto, nuestro controlador de artículos prueba las acciones <code>:index</code> y <code>:new</code> y <code>:create</code>. ¿Qué hay de tratar con datos existentes?</p><p>Escribamos una prueba para la acción <code>:show</code>:</p><div class="code_container">
+<pre><code class="language-ruby">test "should show article" do
+  article = articles(:one)
+  get article_url(article)
+  assert_response :success
+end
+</code></pre>
+</div>
+<p>Recuerde de nuestra discusión anterior sobre accesorios, el método <code>articles()</code> nos dará acceso a nuestros accesorios de Artículos.</p><p>¿Qué tal eliminar un artículo existente?</p><div class="code_container">
+<pre><code class="language-ruby">test "should destroy article" do
+  article = articles(:one)
+  assert_difference("Article.count", -1) do
+    delete article_url(article)
+  end
+
+  assert_redirected_to articles_path
+end
+</code></pre>
+</div>
+<p>También podemos agregar una prueba para actualizar un artículo existente.</p><div class="code_container">
+<pre><code class="language-ruby">test "should update article" do
+  article = articles(:one)
+
+  patch article_url(article), params: { article: { title: "updated" } }
+
+  assert_redirected_to article_path(article)
+  # Reload association to fetch updated data and assert that title is updated.
+  article.reload
+  assert_equal "updated", article.title
+end
+</code></pre>
+</div>
+<p>Observe que estamos comenzando a ver algunas duplicaciones en estas tres pruebas, ambas acceden a los mismos datos de fijación del artículo. Podemos D.R.Y. esto con los métodos <code>setup</code> y<code>teardown</code> proporcionados por <code>ActiveSupport :: Callbacks</code>.</p><p>Nuestra prueba ahora debería tener el siguiente aspecto. Ignore las otras pruebas por ahora, las dejamos fuera por brevedad.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ArticlesControllerTest &lt; ActionDispatch::IntegrationTest
+  # called before every single test
+  setup do
+    @article = articles(:one)
+  end
+
+  # called after every single test
+  teardown do
+    # when controller is using cache it may be a good idea to reset it afterwards
+    Rails.cache.clear
+  end
+
+  test "should show article" do
+    # Reuse the @article instance variable from setup
+    get article_url(@article)
+    assert_response :success
+  end
+
+  test "should destroy article" do
+    assert_difference("Article.count", -1) do
+      delete article_url(@article)
+    end
+
+    assert_redirected_to articles_path
+  end
+
+  test "should update article" do
+    patch article_url(@article), params: { article: { title: "updated" } }
+
+    assert_redirected_to article_path(@article)
+    # Reload association to fetch updated data and assert that title is updated.
+    @article.reload
+    assert_equal "updated", @article.title
+  end
+end
+</code></pre>
+</div>
+<p>De manera similar a otras devoluciones de llamada en Rails, los métodos <code>setup</code> y <code>teardown</code> también se pueden usar pasando un bloque, lambda o nombre de método como símbolo para llamar.</p><h4 id="test-helpers"><a class="anchorlink" href="#test-helpers">8.9 Test helpers</a></h4><p>Para evitar la duplicación de código, puede agregar sus propios ayudantes de prueba.
+El asistente de inicio de sesión puede ser un buen ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby"># test/test_helper.rb
+
+module SignInHelper
+  def sign_in_as(user)
+    post sign_in_url(email: user.email, password: user.password)
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  include SignInHelper
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ProfileControllerTest &lt; ActionDispatch::IntegrationTest
+
+  test "should show profile" do
+    # helper is now reusable from any controller test case
+    sign_in_as users(:david)
+
+    get profile_url
+    assert_response :success
+  end
+end
+</code></pre>
+</div>
+<h5 id="using-separate-files"><a class="anchorlink" href="#using-separate-files">8.9.1 Using Separate Files</a></h5><p>Si encuentra que sus ayudantes están saturando <code>test_helper.rb</code>, puede extraerlos en archivos separados.
+Un buen lugar para almacenarlos es <code>test/lib</code> o <code>test/test_helpers</code>.</p><div class="code_container">
+<pre><code class="language-ruby"># test/test_helpers/multiple_assertions.rb
+module MultipleAssertions
+  def assert_multiple_of_forty_two(number)
+    assert (number % 42 == 0), 'expected #{number} to be a multiple of 42'
+  end
+end
+</code></pre>
+</div>
+<p>Estos ayudantes pueden requerirse explícitamente según sea necesario e incluirse según sea necesario</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+require "test_helpers/multiple_assertions"
+
+class NumberTest &lt; ActiveSupport::TestCase
+  include MultipleAssertions
+
+  test "420 is a multiple of forty two" do
+    assert_multiple_of_forty_two 420
+  end
+end
+</code></pre>
+</div>
+<p>o pueden seguir incluyéndose directamente en las clases principales relevantes</p><div class="code_container">
+<pre><code class="language-ruby"># test/test_helper.rb
+require "test_helpers/sign_in_helper"
+
+class ActionDispatch::IntegrationTest
+  include SignInHelper
+end
+</code></pre>
+</div>
+<h5 id="eagerly-requiring-helpers"><a class="anchorlink" href="#eagerly-requiring-helpers">8.9.2 Eagerly Requiring Helpers</a></h5><p>Puede que le resulte conveniente solicitar ayudantes en <code>test_helper.rb</code> para que sus archivos de prueba tengan acceso implícito a ellos. Esto se puede lograr usando globbing, de la siguiente manera</p><div class="code_container">
+<pre><code class="language-ruby"># test/test_helper.rb
+Dir[Rails.root.join("test", "test_helpers", "**", "*.rb")].each { |file| require file }
+</code></pre>
+</div>
+<p>Esto tiene la desventaja de aumentar el tiempo de inicio, en lugar de requerir manualmente solo los archivos necesarios en sus pruebas individuales.</p><h3 id="testing-routes"><a class="anchorlink" href="#testing-routes">9 Testing Routes</a></h3><p>Como todo lo demás en su aplicación Rails, puede probar sus rutas. Las pruebas de ruta residen en <code>test/controllers/</code> o son parte de las pruebas del controlador.</p><p>NOTA: Si su aplicación tiene rutas complejas, Rails proporciona una serie de ayudantes útiles para probarlas.</p><p>Para obtener más información sobre las aserciones de enrutamiento disponibles en Rails, consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html"><code>ActionDispatch::Assertions::RoutingAssertions</code></a>.</p><h3 id="testing-views"><a class="anchorlink" href="#testing-views">10 Testing Views</a></h3><p>Probar la respuesta a su solicitud afirmando la presencia de elementos HTML clave y su contenido es una forma común de probar las vistas de su aplicación. Al igual que las pruebas de ruta, las pruebas de vista residen en <code>test / controllers /</code> o son parte de las pruebas del controlador. El método <code>assert_select</code> le permite consultar elementos HTML de la respuesta usando una sintaxis simple pero poderosa.</p><p>Hay dos formas de <code>assert_select</code>:</p><p><code>assert_select(selector, [equality], [message])</code> asegura que se cumpla la condición de igualdad en los elementos seleccionados a través del selector. El selector puede ser una expresión de selector de CSS (cadena) o una expresión con valores de sustitución.</p><p><code>assert_select(element, selector, [equality], [message])</code> asegura que se cumpla la condición de igualdad en todos los elementos seleccionados a través del selector comenzando desde el <em>elemento</em> (instancia de <code>Nokogiri::XML::Node</code> or <code>Nokogiri::XML::NodeSet</code>) y sus descendientes.</p><p>Por ejemplo, puede verificar el contenido del elemento del título en su respuesta con:</p><div class="code_container">
+<pre><code class="language-ruby">assert_select "title", "Welcome to Rails Testing Guide"
+</code></pre>
+</div>
+<p>También puede usar bloques anidados <code>assert_select</code> para una investigación más profunda.</p><p>En el siguiente ejemplo, se ejecuta el <code>assert_select</code> interno para <code>li.menu_item</code>
+dentro de la colección de elementos seleccionados por el bloque exterior:</p><div class="code_container">
+<pre><code class="language-ruby">assert_select "ul.navigation" do
+  assert_select "li.menu_item"
+end
+</code></pre>
+</div>
+<p>Se puede iterar una colección de elementos seleccionados de modo que se pueda llamar a <code>assert_select</code> por separado para cada elemento.</p><p>Por ejemplo, si la respuesta contiene dos listas ordenadas, cada una con cuatro elementos de lista anidados, las siguientes pruebas pasarán.</p><div class="code_container">
+<pre><code class="language-ruby">assert_select "ol" do |elements|
+  elements.each do |element|
+    assert_select element, "li", 4
+  end
+end
+
+assert_select "ol" do
+  assert_select "li", 8
+end
+</code></pre>
+</div>
+<p>Esta afirmación es bastante poderosa. Para un uso más avanzado, consulte su <a href="https://github.com/rails/rails-dom-testing/blob/master/lib/rails/dom/testing/assertions/selector_assertions.rb">documentation</a>.</p><h5 id="additional-view-based-assertions"><a class="anchorlink" href="#additional-view-based-assertions">10.1 Additional View-Based Assertions</a></h5><p>Hay más afirmaciones que se utilizan principalmente en las vistas de prueba:</p>
+<table>
+<thead>
+<tr>
+<th>Assertion</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assert_select_email</code></td>
+<td>Le permite hacer afirmaciones en el cuerpo de un correo electrónico</td>
+</tr>
+<tr>
+<td><code>assert_select_encoded</code></td>
+<td>Le permite hacer afirmaciones en HTML codificado. Para ello, descifra el contenido de cada elemento y luego llama al bloque con todos los elementos no codificados.</td>
+</tr>
+<tr>
+<td>
+<code>css_select(selector)</code> or <code>css_select(element, selector)</code>
+</td>
+<td>Devuelve una matriz de todos los elementos seleccionados por el <em>selector</em>. En la segunda variante, primero coincide con el <em>element</em> base e intenta hacer coincidir la expresión <em>selector</em> en cualquiera de sus hijos. Si no hay coincidencias, ambas variantes devuelven una matriz vacía.</td>
+</tr>
+</tbody>
+</table>
+<p>A continuación, se muestra un ejemplo del uso de <code>assert_select_email</code>:</p><div class="code_container">
+<pre><code class="language-ruby">assert_select_email do
+  assert_select "small", "Please click the 'Unsubscribe' link if you want to opt-out."
+end
+</code></pre>
+</div>
+<h3 id="testing-helpers"><a class="anchorlink" href="#testing-helpers">11 Testing Helpers</a></h3><p>Un ayudante es solo un módulo simple donde puede definir métodos que son
+disponible en sus vistas.</p><p>Para probar los ayudantes, todo lo que necesita hacer es verificar que la salida del
+El método auxiliar coincide con lo esperado. Las pruebas relacionadas con los ayudantes son
+ubicado en el directorio <code>test/helpers</code>.</p><p>Dado que tenemos el siguiente ayudante:</p><div class="code_container">
+<pre><code class="language-ruby">module UsersHelper
+  def link_to_user(user)
+    link_to "#{user.first_name} #{user.last_name}", user
+  end
+end
+</code></pre>
+</div>
+<p>Podemos probar la salida de este método de esta manera:</p><div class="code_container">
+<pre><code class="language-ruby">class UsersHelperTest &lt; ActionView::TestCase
+  test "should return the user's full name" do
+    user = users(:david)
+
+    assert_dom_equal %{&lt;a href="/user/#{user.id}"&gt;David Heinemeier Hansson&lt;/a&gt;}, link_to_user(user)
+  end
+end
+</code></pre>
+</div>
+<p>Además, dado que la clase de prueba se extiende desde <code>ActionView::TestCase</code>, tienes
+acceso a los métodos auxiliares de Rails como <code>link_to</code> o <code>pluralize</code>.</p><h3 id="testing-your-mailers"><a class="anchorlink" href="#testing-your-mailers">12 Testing Your Mailers</a></h3><p>Testing mailer classes requires some specific tools to do a thorough job.</p><h4 id="keeping-the-postman-in-check"><a class="anchorlink" href="#keeping-the-postman-in-check">12.1 Keeping the Postman in Check</a></h4><p>Sus clases de correo, como cualquier otra parte de su aplicación Rails, deben probarse para asegurarse de que funcionan como se espera.</p><p>Los objetivos de probar las clases de correo electrónico son garantizar que:</p>
+<ul>
+<li>los correos electrónicos están siendo procesados ​​(creados y enviados)</li>
+<li>el contenido del correo electrónico es correcto (asunto, remitente, cuerpo, etc.)</li>
+<li>los correos electrónicos correctos se envían en el momento adecuado</li>
+</ul>
+<h5 id="from-all-sides"><a class="anchorlink" href="#from-all-sides">12.1.1 From All Sides</a></h5><p>Hay dos aspectos de probar su mailer, las pruebas unitarias y las pruebas funcionales. En las pruebas unitarias, ejecuta el mailer de forma aislada con entradas estrictamente controladas y compara la salida con un valor conocido (un accesorio). En las pruebas funcionales, no prueba tanto los detalles minuciosos producidos por el mailer; en su lugar, probamos que nuestros controladores y modelos estén usando el correo de la manera correcta. Prueba para demostrar que se envió el correo electrónico correcto en el momento correcto.</p><h4 id="unit-testing"><a class="anchorlink" href="#unit-testing">12.2 Unit Testing</a></h4><p>Para probar que su envío de correo funciona como se esperaba, puede usar pruebas unitarias para comparar los resultados reales del envío de correo con ejemplos preescritos de lo que debería producirse.</p><h5 id="revenge-of-the-fixtures"><a class="anchorlink" href="#revenge-of-the-fixtures">12.2.1 Revenge of the Fixtures</a></h5><p>A los efectos de la prueba unitaria de un mailer, los accesorios se utilizan para proporcionar un ejemplo de cómo debería verse la salida. Debido a que estos son correos electrónicos de ejemplo y no datos de Active Record como los otros dispositivos, se guardan en su propio subdirectorio aparte de los otros dispositivos. El nombre del directorio dentro de <code>test/fixtures</code> corresponde directamente al nombre del correo. Entonces, para un mailer llamado <code>UserMailer</code>, los dispositivos deben residir en el directorio <code>test/fixtures/user_mailer</code>.</p><p>Si generó su mailer, el generador no crea accesorios stub para las acciones de mailers. Tendrá que crear esos archivos usted mismo como se describe anteriormente.</p><h5 id="the-basic-test-case"><a class="anchorlink" href="#the-basic-test-case">12.2.2 The Basic Test Case</a></h5><p>Aquí hay una prueba unitaria para probar un correo llamado <code>UserMailer</code> cuya acción <code>invite</code> se usa para enviar una invitación a un amigo. Es una versión adaptada de la prueba base creada por el generador para una acción de <code>invite</code>.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class UserMailerTest &lt; ActionMailer::TestCase
+  test "invite" do
+    # Create the email and store it for further assertions
+    email = UserMailer.create_invite("me@example.com",
+                                     "friend@example.com", Time.now)
+
+    # Send the email, then test that it got queued
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    # Test the body of the sent email contains what we expect it to
+    assert_equal ["me@example.com"], email.from
+    assert_equal ["friend@example.com"], email.to
+    assert_equal "You have been invited by me@example.com", email.subject
+    assert_equal read_fixture("invite").join, email.body.to_s
+  end
+end
+</code></pre>
+</div>
+<p>En la prueba creamos el correo electrónico y almacenamos el objeto devuelto en el <code>email</code>
+variable. Luego nos aseguramos de que se envió (la primera afirmación), luego, en el
+segundo lote de afirmaciones, nos aseguramos de que el correo electrónico realmente contenga lo que
+esperar. El ayudante <code>read_fixture</code> se usa para leer el contenido de este archivo.</p><p>NOTA: <code>email.body.to_s</code> está presente cuando solo hay una parte (HTML o texto) presente.
+Si el correo proporciona ambos, puede probar su accesorio contra partes específicas
+con <code>email.text_part.body.to_s</code> o <code>email.html_part.body.to_s</code>.</p><p>Aquí está el contenido del accesorio de "invitación":</p><div class="code_container">
+<pre><code class="language-plain">Hi friend@example.com,
+
+You have been invited.
+
+Cheers!
+</code></pre>
+</div>
+<p>Este es el momento adecuado para comprender un poco más sobre la redacción de pruebas para su
+mailers. La línea <code>ActionMailer::Base.delivery_method = :test</code> en
+<code>config/environment/test.rb</code> establece el método de entrega en modo de prueba para que
+el correo electrónico no se entregará realmente (útil para evitar enviar spam a sus usuarios mientras
+testing) pero en su lugar se agregará a una matriz
+(<code>ActionMailer::Base.deliveries</code>).</p><p>NOTA: La matriz <code>ActionMailer::Base.deliveries</code> solo se restablece automáticamente en
+Pruebas <code>ActionMailer::TestCase</code> y <code>ActionDispatch::IntegrationTest</code>.
+Si desea tener una pizarra limpia fuera de estos casos de prueba, puede restablecerla
+manualmente con: <code>ActionMailer::Base.deliveries.clear</code></p><h4 id="functional-and-system-testing"><a class="anchorlink" href="#functional-and-system-testing">12.3 Functional and System Testing</a></h4><p>Las pruebas unitarias nos permiten probar los atributos del correo electrónico, mientras que las pruebas funcionales y del sistema nos permiten probar si las interacciones de los usuarios activan adecuadamente el envío del correo electrónico. Por ejemplo, puede verificar que la operación de invitación a un amigo envíe un correo electrónico de manera adecuada:</p><div class="code_container">
+<pre><code class="language-ruby"># Integration Test
+require "test_helper"
+
+class UsersControllerTest &lt; ActionDispatch::IntegrationTest
+  test "invite friend" do
+    # Asserts the difference in the ActionMailer::Base.deliveries
+    assert_emails 1 do
+      post invite_friend_url, params: { email: "friend@example.com" }
+    end
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby"># System Test
+require "test_helper"
+
+class UsersTest &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :headless_chrome
+
+  test "inviting a friend" do
+    visit invite_users_url
+    fill_in "Email", with: "friend@example.com"
+    assert_emails 1 do
+      click_on "Invite"
+    end
+  end
+end
+</code></pre>
+</div>
+<div class="note"><p>El método <code>assert_emails</code> no está vinculado a un método de entrega en particular y funcionará con los correos electrónicos entregados con el método <code>deliver_now</code> o <code>deliver_later</code>. Si queremos afirmar explícitamente que el correo electrónico se ha puesto en cola, podemos usar el método <code>assert_enqueued_emails</code>. Puede encontrar más información en la <a href="https://edgeapi.rubyonrails.org/classes/ActionMailer/TestHelper.html">documentaion here</a>.</p></div><h3 id="testing-jobs"><a class="anchorlink" href="#testing-jobs">13 Testing Jobs</a></h3><p>Dado que sus trabajos personalizados se pueden poner en cola en diferentes niveles dentro de su aplicación,
+deberá probar ambos trabajos por sí mismos (su comportamiento cuando se ponen en cola)
+y que otras entidades los pongan correctamente en cola.</p><h4 id="a-basic-test-case"><a class="anchorlink" href="#a-basic-test-case">13.1 A Basic Test Case</a></h4><p>De forma predeterminada, cuando genere un trabajo, también se generará una prueba asociada
+en el directorio <code>test/jobs</code>. Aquí hay una prueba de ejemplo con un trabajo de facturación:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class BillingJobTest &lt; ActiveJob::TestCase
+  test "that account is charged" do
+    BillingJob.perform_now(account, product)
+    assert account.reload.charged_for?(product)
+  end
+end
+</code></pre>
+</div>
+<p>Esta prueba es bastante simple y solo afirma que el trabajo hizo el trabajo
+como se esperaba.</p><p>De forma predeterminada, <code>ActiveJob::TestCase</code> establecerá el adaptador de cola en <code>:test</code> para que
+sus trabajos se realizan en línea. También se asegurará de que todo lo realizado previamente
+y los trabajos en cola se borran antes de cualquier ejecución de prueba, por lo que puede asumir con seguridad que
+ya no se han ejecutado trabajos en el alcance de cada prueba.</p><h4 id="custom-assertions-and-testing-jobs-inside-other-components"><a class="anchorlink" href="#custom-assertions-and-testing-jobs-inside-other-components">13.2 Custom Assertions and Testing Jobs inside Other Components</a></h4><p>Active Job se envía con un montón de afirmaciones personalizadas que se pueden usar para disminuir la verbosidad de las pruebas. Para obtener una lista completa de las afirmaciones disponibles, consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActiveJob/TestHelper.html"><code>ActiveJob :: TestHelper</code></a>.</p><p>Es una buena práctica asegurarse de que sus trabajos se pongan en cola o se realicen correctamente
+donde sea que los invoque (por ejemplo, dentro de sus controladores). Aquí es precisamente donde
+las afirmaciones personalizadas proporcionadas por Active Job son bastante útiles. Por ejemplo,
+dentro de un modelo:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ProductTest &lt; ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  test "billing job scheduling" do
+    assert_enqueued_with(job: BillingJob) do
+      product.charge(account)
+    end
+  end
+end
+</code></pre>
+</div>
+<h4 id="asserting-time-arguments-in-jobs"><a class="anchorlink" href="#asserting-time-arguments-in-jobs">13.3 Asserting Time Arguments in Jobs</a></h4><p>Al serializar argumentos de trabajo, <code>Time</code>, <code>DateTime</code> y <code>ActiveSupport::TimeWithZone</code> pierden precisión de microsegundos. Esto significa que comparar el tiempo deserializado con el tiempo real no siempre funciona. Para compensar la pérdida de precisión, <code>assert_enqueued_with</code> y <code>assert_performed_with</code> eliminarán microsegundos de los objetos de tiempo en las afirmaciones de los argumentos.</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ProductTest &lt; ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  test "that product is reserved at a given time" do
+    now = Time.now
+    assert_performed_with(job: ReservationJob, args: [product, now]) do
+      product.reserve(now)
+    end
+  end
+end
+</code></pre>
+</div>
+<h3 id="testing-action-cable"><a class="anchorlink" href="#testing-action-cable">14 Testing Action Cable</a></h3><p>Dado que Action Cable se utiliza en diferentes niveles dentro de su aplicación,
+Deberá probar tanto los canales, las clases de conexión en sí mismas y ese otro
+las entidades difunden mensajes correctos.</p><h4 id="connection-test-case"><a class="anchorlink" href="#connection-test-case">14.1 Connection Test Case</a></h4><p>De forma predeterminada, cuando genera una nueva aplicación Rails con Action Cable, también se genera una prueba para la clase de conexión base (<code>ApplicationCable :: Connection</code>) en el directorio<code>test / channels / application_cable</code>.</p><p>Las pruebas de conexión tienen como objetivo comprobar si los identificadores de una conexión se asignan correctamente
+o que cualquier solicitud de conexión incorrecta sea rechazada. Aquí hay un ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">class ApplicationCable::ConnectionTest &lt; ActionCable::Connection::TestCase
+  test "connects with params" do
+    # Simulate a connection opening by calling the `connect` method
+    connect params: { user_id: 42 }
+
+    # You can access the Connection object via `connection` in tests
+    assert_equal connection.user_id, "42"
+  end
+
+  test "rejects connection without params" do
+    # Use `assert_reject_connection` matcher to verify that
+    # connection is rejected
+    assert_reject_connection { connect }
+  end
+end
+</code></pre>
+</div>
+<p>También puede especificar las cookies de solicitud de la misma manera que lo hace en las pruebas de integración:</p><div class="code_container">
+<pre><code class="language-ruby">test "connects with cookies" do
+  cookies.signed[:user_id] = "42"
+
+  connect
+
+  assert_equal connection.user_id, "42"
+end
+</code></pre>
+</div>
+<p>Consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActionCable/Connection/TestCase.html"><code>ActionCable::Connection::TestCase</code></a> <a href="https://edgeapi.rubyonrails.org/classes/ActionCable/Connection/TestCase.html"><code>ActionCable::Connection::TestCase</code></a> más información.</p><h4 id="channel-test-case"><a class="anchorlink" href="#channel-test-case">14.2 Channel Test Case</a></h4><p>De forma predeterminada, cuando genere un canal, también se generará una prueba asociada
+en el directorio <code>test/channels</code>. Aquí hay una prueba de ejemplo con un canal de chat:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ChatChannelTest &lt; ActionCable::Channel::TestCase
+  test "subscribes and stream for room" do
+    # Simulate a subscription creation by calling `subscribe`
+    subscribe room: "15"
+
+    # You can access the Channel object via `subscription` in tests
+    assert subscription.confirmed?
+    assert_has_stream "chat_15"
+  end
+end
+</code></pre>
+</div>
+<p>Esta prueba es bastante simple y solo afirma que el canal suscribe la conexión a una transmisión en particular.</p><p>También puede especificar los identificadores de conexión subyacentes. Aquí hay una prueba de ejemplo con un canal de notificaciones web:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class WebNotificationsChannelTest &lt; ActionCable::Channel::TestCase
+  test "subscribes and stream for user" do
+    stub_connection current_user: users(:john)
+
+    subscribe
+
+    assert_has_stream_for users(:john)
+  end
+end
+</code></pre>
+</div>
+<p>Consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActionCable/Connection/TestCase.html"><code>ActionCable::Connection::TestCase</code></a> <a href="https://edgeapi.rubyonrails.org/classes/ActionCable/Connection/TestCase.html"><code>ActionCable::Connection::TestCase</code></a> más información.</p><h4 id="custom-assertions-and-testing-broadcasts-inside-other-components"><a class="anchorlink" href="#custom-assertions-and-testing-broadcasts-inside-other-components">14.3 Custom Assertions And Testing Broadcasts Inside Other Components</a></h4><p>Action Cable se envía con un montón de afirmaciones personalizadas que se pueden usar para disminuir la verbosidad de las pruebas. Para obtener una lista completa de las afirmaciones disponibles, consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActionCable/TestHelper.html"><code>ActionCable :: TestHelper</code></a>.</p><p>Es una buena práctica asegurarse de que se haya transmitido el mensaje correcto dentro de otros componentes (por ejemplo, dentro de sus controladores). Aquí es precisamente donde
+las afirmaciones personalizadas proporcionadas por Action Cable son bastante útiles. Por ejemplo,
+dentro de un modelo:</p><div class="code_container">
+<pre><code class="language-ruby">require "test_helper"
+
+class ProductTest &lt; ActionCable::TestCase
+  test "broadcast status after charge" do
+    assert_broadcast_on("products:#{product.id}", type: "charged") do
+      product.charge(account)
+    end
+  end
+end
+</code></pre>
+</div>
+<p>Si desea probar la transmisión realizada con <code>Channel.broadcast_to</code>, debe usar
+<code>Channel.broadcasting_for</code> para generar un nombre de transmisión subyacente:</p><div class="code_container">
+<pre><code class="language-ruby"># app/jobs/chat_relay_job.rb
+class ChatRelayJob &lt; ApplicationJob
+  def perform_later(room, message)
+    ChatChannel.broadcast_to room, text: message
+  end
+end
+
+# test/jobs/chat_relay_job_test.rb
+require "test_helper"
+
+class ChatRelayJobTest &lt; ActiveJob::TestCase
+  include ActionCable::TestHelper
+
+  test "broadcast message to room" do
+    room = rooms(:all)
+
+    assert_broadcast_on(ChatChannel.broadcasting_for(room), text: "Hi!") do
+      ChatRelayJob.perform_now(room, "Hi!")
+    end
+  end
+end
+</code></pre>
+</div>
+<h3 id="additional-testing-resources"><a class="anchorlink" href="#additional-testing-resources">15 Additional Testing Resources</a></h3><h4 id="testing-time-dependent-code"><a class="anchorlink" href="#testing-time-dependent-code">15.1 Testing Time-Dependent Code</a></h4><p>Rails proporciona métodos auxiliares integrados que le permiten afirmar que su código sensible al tiempo funciona como se esperaba.</p><p>Aquí hay un ejemplo usando el helper <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html#method-i-travel_to"><code>travel_to</code></a>:</p><div class="code_container">
+<pre><code class="language-ruby"># Lets say that a user is eligible for gifting a month after they register.
+user = User.create(name: "Gaurish", activation_date: Date.new(2004, 10, 24))
+assert_not user.applicable_for_gifting?
+travel_to Date.new(2004, 11, 24) do
+  assert_equal Date.new(2004, 10, 24), user.activation_date # inside the `travel_to` block `Date.current` is mocked
+  assert user.applicable_for_gifting?
+end
+assert_equal Date.new(2004, 10, 24), user.activation_date # The change was visible only inside the `travel_to` block.
+</code></pre>
+</div>
+<p>Veer <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Testing/TimeHelpers.html"><code>ActiveSupport::Testing::TimeHelpers</code> API Documentation</a>
+for in-depth information about the available time helpers.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>
