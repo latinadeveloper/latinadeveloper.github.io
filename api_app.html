@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uso de Rails para Aplicaciones Solo API — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Uso de Rails para Aplicaciones Solo API — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Uso de Rails para Aplicaciones Solo APIEn esta guía aprenderá: Qué proporciona Rails para aplicaciones solo API Cómo configurar Rails para que se inicie sin ninguna función del navegador Cómo decidir qué middleware querrá incluir Cómo decidir qué módulos usar en su controlador" />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Uso de Rails para Aplicaciones Solo APIEn esta guía aprenderá: Qué proporciona Rails para aplicaciones solo API Cómo configurar Rails para que se inicie sin ninguna función del navegador Cómo decidir qué middleware querrá incluir Cómo decidir qué módulos usar en su controlador" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>Uso de Rails para Aplicaciones Solo API</h2><p>En esta guía aprenderá:</p>
+<ul>
+<li>Qué proporciona Rails para aplicaciones solo API</li>
+<li>Cómo configurar Rails para que se inicie sin ninguna función del navegador</li>
+<li>Cómo decidir qué middleware querrá incluir</li>
+<li>Cómo decidir qué módulos usar en su controlador</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#what-is-an-api-application-questionmark">What is an API Application?</a></li>
+<li><a href="#why-use-rails-for-json-apis-questionmark">Why Use Rails for JSON APIs?</a></li>
+<li>
+<a href="#the-basic-configuration">The Basic Configuration</a>
+
+<ul>
+<li><a href="#creating-a-new-application">Creating a new application</a></li>
+<li><a href="#changing-an-existing-application">Changing an existing application</a></li>
+</ul>
+</li>
+<li>
+<a href="#choosing-middleware">Choosing Middleware</a>
+
+<ul>
+<li><a href="#using-the-cache-middleware">Using the Cache Middleware</a></li>
+<li><a href="#using-rack-sendfile">Using Rack::Sendfile</a></li>
+<li><a href="#using-actiondispatch-request">Using ActionDispatch::Request</a></li>
+<li><a href="#using-session-middlewares">Using Session Middlewares</a></li>
+<li><a href="#other-middleware">Other Middleware</a></li>
+<li><a href="#removing-middleware">Removing Middleware</a></li>
+</ul>
+</li>
+<li>
+<a href="#choosing-controller-modules">Choosing Controller Modules</a>
+
+<ul>
+<li><a href="#adding-other-modules">Adding Other Modules</a></li>
+</ul>
+</li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="what-is-an-api-application-questionmark"><a class="anchorlink" href="#what-is-an-api-application-questionmark">1 What is an API Application?</a></h3><p>Tradicionalmente, cuando las personas decían que usaban Rails como una "API", querían decir
+proporcionando una API accesible mediante programación junto con su aplicación web.
+Por ejemplo, GitHub proporciona <a href="https://developer.github.com">una API</a> que usted
+puede utilizar desde sus propios clientes personalizados.</p><p>Con la llegada de los frameworks del lado del cliente, más desarrolladores están usando Rails para
+crear un back-end que se comparta entre su aplicación web y otras aplicaciones nativas
+aplicaciones.</p><p>Por ejemplo, Twitter usa su <a href="https://developer.twitter.com/">API pública</a> en su sitio web.
+aplicación, que se crea como un sitio estático que consume recursos JSON.</p><p>En lugar de usar Rails para generar HTML que se comunica con el servidor
+a través de formularios y enlaces, muchos desarrolladores tratan su aplicación web como
+solo un cliente API entregado como HTML con JavaScript que consume una API JSON.</p><p>Esta guía cubre la creación de una aplicación Rails que proporciona recursos JSON a un
+Cliente API, incluidos los marcos del lado del cliente.</p><h3 id="why-use-rails-for-json-apis-questionmark"><a class="anchorlink" href="#why-use-rails-for-json-apis-questionmark">2 Why Use Rails for JSON APIs?</a></h3><p>La primera pregunta que mucha gente tiene al pensar en construir una API JSON
+usar Rails es: "¿no está usando Rails para escupir un exceso de JSON? ¿No debería
+usar algo como Sinatra? ".</p><p>Para API muy simples, esto puede ser cierto. Sin embargo, incluso en HTML muy pesado
+aplicaciones, la mayor parte de la lógica de una aplicación vive fuera de la vista
+capa.</p><p>La razón por la que la mayoría de la gente usa Rails es que proporciona un conjunto de valores predeterminados que
+permite a los desarrolladores ponerse en marcha rápidamente, sin tener que hacer muchas cosas triviales
+decisiones.</p><p>Echemos un vistazo a algunas de las cosas que proporciona Rails listas para usar que son
+sigue siendo aplicable a las aplicaciones API.</p><p>Manejado en la capa de middleware:</p>
+<ul>
+<li>Recarga: las aplicaciones de rieles admiten la recarga transparente. Esto funciona incluso si
+su aplicación se vuelve grande y reiniciar el servidor para cada solicitud se convierte en
+inviable.</li>
+<li>Modo de desarrollo: las aplicaciones de Rails vienen con valores predeterminados inteligentes para el desarrollo,
+haciendo que el desarrollo sea agradable sin comprometer el rendimiento durante el tiempo de producción.</li>
+<li>Modo de prueba: modo de desarrollo Ditto.</li>
+<li>Registro: las aplicaciones de Rails registran cada solicitud, con un nivel de verbosidad
+apropiado para el modo actual. Los registros de Rails en desarrollo incluyen información
+sobre el entorno de solicitud, las consultas de la base de datos y el rendimiento básico
+información.</li>
+<li>Seguridad: Rails detecta y frustra <a href="https://en.wikipedia.org/wiki/IP_address_spoofing">IP spoofing
+attacks</a> y maneja
+firmas criptográficas en un  <a href="https://en.wikipedia.org/wiki/Timing_attack">timing
+attack</a> forma consciente. No se que
+¿Es un ataque de suplantación de IP o un ataque de tiempo? Exactamente.</li>
+<li>Análisis de parámetros: desea especificar sus parámetros como JSON en lugar de como un
+Cadena codificada en URL? No hay problema. Rails decodificará el JSON por ti y hará
+está disponible en "params". ¿Quiere utilizar parámetros codificados en URL anidados? Ese
+también funciona.</li>
+<li>GET condicionales: Rails maneja <code>GET</code> condicional (<code>ETag</code> y <code>Last-Modified</code>)
+procesar los encabezados de las solicitudes y devolver los encabezados y el estado de respuesta correctos
+código. Todo lo que necesita hacer es usar el
+<a href="https://edgeapi.rubyonrails.org/classes/ActionController/ConditionalGet.html#method-i-stale-3F"><code>stale?</code></a>
+registre su controlador, y Rails manejará todos los detalles HTTP por usted.</li>
+<li>Solicitudes HEAD: Rails convertirá de forma transparente las solicitudes <code>HEAD</code> en<code>GET</code>,
+y devuelva solo los encabezados al salir. Esto hace que "HEAD" funcione de manera confiable en
+todas las API de Rails.</li>
+</ul>
+<p>Si bien, obviamente, podría construirlos en términos de middleware Rack existente,
+esta lista demuestra que la pila de middleware de Rails predeterminada proporciona mucho
+de valor, incluso si "solo está generando JSON".</p><p>Manejado en la capa Action Pack:</p>
+<ul>
+<li>Enrutamiento ingenioso: si está creando una API JSON RESTful, desea ser
+utilizando el enrutador Rails. Mapeo limpio y convencional de HTTP a controladores
+significa no tener que perder tiempo pensando en cómo modelar su API en términos
+de HTTP.</li>
+<li>Generación de URL: la otra cara del enrutamiento es la generación de URL. Una buena API basada
+en HTTP incluye URL (consulte <a href="https://developer.github.com/v3/gists/">the GitHub Gist API</a>
+para un ejemplo).</li>
+<li>Respuestas de encabezado y redirección: <code>head: no_content</code> y
+<code>redirect_to user_url (current_user)</code> es útil. Claro, podrías manualmente
+agregue los encabezados de respuesta, pero ¿por qué?</li>
+<li>Almacenamiento en caché: Rails proporciona almacenamiento en caché de páginas, acciones y fragmentos. Almacenamiento en caché de fragmentos
+es especialmente útil cuando se crea un objeto JSON anidado.</li>
+<li>Autenticación básica, implícita y de token: Rails viene con soporte listo para usar
+para tres tipos de autenticación HTTP.</li>
+<li>Instrumentación: Rails tiene una API de instrumentación que dispara registrados
+controladores para una variedad de eventos, como el procesamiento de acciones, el envío de un archivo o
+consultas de datos, redirección y bases de datos. La carga útil de cada evento viene con
+información relevante (para el evento de procesamiento de acciones, la carga útil incluye
+el controlador, la acción, los parámetros, el formato de solicitud, el método de solicitud y el
+ruta completa de la solicitud).</li>
+<li>Generadores: a menudo es útil generar un recurso y obtener su modelo,
+controlador, stubs de prueba y rutas creadas para usted en un solo comando para
+más ajustes. Lo mismo para migraciones y otros.</li>
+<li>Complementos: muchas bibliotecas de terceros vienen con soporte para Rails que reducen
+o eliminar el costo de configurar y pegar la biblioteca y el
+marco web. Esto incluye cosas como anular los generadores predeterminados, agregar
+Rake tareas y respetando las opciones de Rails (como el registrador y el back-end de caché).</li>
+</ul>
+<p>Por supuesto, el proceso de arranque de Rails también pega todos los componentes registrados.
+Por ejemplo, el proceso de arranque de Rails es lo que usa su archivo <code>config/database.yml</code>
+al configurar Active Record.</p><p><strong>La versión corta es</strong>: es posible que no hayas pensado en qué partes de Rails
+siguen siendo aplicables incluso si elimina la capa de vista, pero la respuesta resulta
+para ser la mayor parte.</p><h3 id="the-basic-configuration"><a class="anchorlink" href="#the-basic-configuration">3 The Basic Configuration</a></h3><p>Si está creando una aplicación Rails, primero será un servidor API y
+sobre todo, puede comenzar con un subconjunto más limitado de rieles y agregar características
+según sea necesario.</p><h4 id="creating-a-new-application"><a class="anchorlink" href="#creating-a-new-application">3.1 Creating a new application</a></h4><p>Puede generar una nueva aplicación api Rails:</p><div class="code_container">
+<pre><code class="language-shell-session">$ rails new my_api --api
+</code></pre>
+</div>
+<p>Esto hará tres cosas principales por ti:</p>
+<ul>
+<li>Configure su aplicación para comenzar con un conjunto más limitado de middleware
+de lo normal. Específicamente, no incluirá ningún middleware principalmente útil.
+para aplicaciones de navegador (como soporte de cookies) de forma predeterminada.</li>
+<li>Hacer que <code>ApplicationController</code> herede de <code>ActionController::API</code> en lugar de
+<code>ActionController::Base</code>. Al igual que con el middleware, esto omitirá cualquier acción.
+Módulos de controlador que proporcionan funcionalidades utilizadas principalmente por el navegador
+aplicaciones.</li>
+<li>Configure los generadores para omitir la generación de vistas, ayudantes y activos cuando
+genera un nuevo recurso.</li>
+</ul>
+<h4 id="changing-an-existing-application"><a class="anchorlink" href="#changing-an-existing-application">3.2 Changing an existing application</a></h4><p>If you want to take an existing application and make it an API one, read the
+following steps.</p><p>In <code>config/application.rb</code> add the following line at the top of the <code>Application</code>
+class definition:</p><div class="code_container">
+<pre><code class="language-ruby">config.api_only = true
+</code></pre>
+</div>
+<p>En <code>config/environment/development.rb</code>, establezca <code>config.debug_exception_response_format</code>
+para configurar el formato utilizado en las respuestas cuando se producen errores en el modo de desarrollo.</p><p>Para representar una página HTML con información de depuración, use el valor <code>:predeterminado</code>.</p><div class="code_container">
+<pre><code class="language-ruby">config.debug_exception_response_format = :default
+</code></pre>
+</div>
+<p>Para renderizar la información de depuración conservando el formato de respuesta, use el valor <code>:api</code>.</p><div class="code_container">
+<pre><code class="language-ruby">config.debug_exception_response_format = :api
+</code></pre>
+</div>
+<p>De forma predeterminada, <code>config.debug_exception_response_format</code> se establece en <code>:api</code>, cuando <code>config.api_only</code> se establece en verdadero.</p><p>Finalmente, dentro de <code>app/controllers/application_controller.rb</code>, en lugar de:</p><div class="code_container">
+<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+end
+</code></pre>
+</div>
+<p>hacer:</p><div class="code_container">
+<pre><code class="language-ruby">class ApplicationController &lt; ActionController::API
+end
+</code></pre>
+</div>
+<h3 id="choosing-middleware"><a class="anchorlink" href="#choosing-middleware">4 Choosing Middleware</a></h3><p>Una aplicación API viene con el siguiente middleware de forma predeterminada:</p>
+<ul>
+<li><code>ActionDispatch::HostAuthorization</code></li>
+<li><code>Rack::Sendfile</code></li>
+<li><code>ActionDispatch::Static</code></li>
+<li><code>ActionDispatch::Executor</code></li>
+<li><code>ActiveSupport::Cache::Strategy::LocalCache::Middleware</code></li>
+<li><code>Rack::Runtime</code></li>
+<li><code>ActionDispatch::RequestId</code></li>
+<li><code>ActionDispatch::RemoteIp</code></li>
+<li><code>Rails::Rack::Logger</code></li>
+<li><code>ActionDispatch::ShowExceptions</code></li>
+<li><code>ActionDispatch::DebugExceptions</code></li>
+<li><code>ActionDispatch::ActionableExceptions</code></li>
+<li><code>ActionDispatch::Reloader</code></li>
+<li><code>ActionDispatch::Callbacks</code></li>
+<li><code>ActiveRecord::Migration::CheckPending</code></li>
+<li><code>Rack::Head</code></li>
+<li><code>Rack::ConditionalGet</code></li>
+<li><code>Rack::ETag</code></li>
+</ul>
+<p>Consulte el <a href="rails_on_rack.html#internal-middleware-stack">internal middleware</a>
+sección de la Guía del bastidor para obtener más información sobre ellos.</p><p>Otros complementos, incluido Active Record, pueden agregar middleware adicional. En
+En general, estos middleware son independientes del tipo de aplicación que está
+construir y tener sentido en una aplicación Rails solo para API.</p><p>Puede obtener una lista de todo el middleware en su aplicación a través de:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails middleware
+</code></pre>
+</div>
+<h4 id="using-the-cache-middleware"><a class="anchorlink" href="#using-the-cache-middleware">4.1 Using the Cache Middleware</a></h4><p>De forma predeterminada, Rails agregará un middleware que proporciona un almacén de caché basado en
+la configuración de su aplicación (memcache por defecto). Esto significa que
+la caché HTTP incorporada se basará en él.</p><p>Por ejemplo, usando el método <code>stale?</code>:</p><div class="code_container">
+<pre><code class="language-ruby">def show
+  @post = Post.find(params[:id])
+
+  if stale?(last_modified: @post.updated_at)
+    render json: @post
+  end
+end
+</code></pre>
+</div>
+<p>La llamada a <code>stale?</code> Comparará el encabezado <code>If-Modified-Since</code> en la solicitud
+con <code>@post.updated_at</code>. Si el encabezado es más nuevo que el último modificado, este
+La acción devolverá una respuesta "304 No modificado". De lo contrario, hará que el
+respuesta e incluir un encabezado "Última modificación" en él.</p><p>Normalmente, este mecanismo se utiliza por cliente. El middleware de caché
+nos permite compartir este mecanismo de almacenamiento en caché entre clientes. Podemos habilitar
+almacenamiento en caché entre clientes en la llamada a <code>stale?</code>:</p><div class="code_container">
+<pre><code class="language-ruby">def show
+  @post = Post.find(params[:id])
+
+  if stale?(last_modified: @post.updated_at, public: true)
+    render json: @post
+  end
+end
+</code></pre>
+</div>
+<p>Esto significa que el middleware de caché almacenará el valor de "Última modificación"
+para una URL en la caché de Rails, y agregue un encabezado <code>If-Modified-Since</code> a cualquier
+solicitudes entrantes posteriores para la misma URL.</p><p>Piense en ello como un almacenamiento en caché de páginas utilizando semántica HTTP.</p><h4 id="using-rack-sendfile"><a class="anchorlink" href="#using-rack-sendfile">4.2 Using Rack::Sendfile</a></h4><p>Cuando usa el método <code>send_file</code> dentro de un controlador Rails, establece el
+Encabezado <code>X-Sendfile</code>. <code>Rack :: Sendfile</code> es responsable de enviar el
+expediente.</p><p>Si su servidor front-end admite el envío acelerado de archivos, <code>Rack :: Sendfile</code>
+descargará el trabajo de envío de archivos real al servidor de aplicaciones para el usuario.</p><p>Puede configurar el nombre del encabezado que utiliza su servidor de aplicaciones para
+este propósito usando <code>config.action_dispatch.x_sendfile_header</code> en el
+archivo de configuración del entorno.</p><p>Puede aprender más sobre cómo usar <code>Rack :: Sendfile</code> con popular
+frontales en  <a href="https://www.rubydoc.info/github/rack/rack/master/Rack/Sendfile">the Rack::Sendfile
+documentation</a>.</p><p>A continuación se muestran algunos valores de este encabezado para algunos servidores populares, una vez que estos servidores estén configurados para admitir
+envío de archivos acelerado:</p><div class="code_container">
+<pre><code class="language-ruby"># Apache and lighttpd
+config.action_dispatch.x_sendfile_header = "X-Sendfile"
+
+# Nginx
+config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
+</code></pre>
+</div>
+<p>Asegúrese de configurar su servidor para que admita estas opciones siguiendo las
+instrucciones en la documentación de <code>Rack::Sendfile</code>.</p><h4 id="using-actiondispatch-request"><a class="anchorlink" href="#using-actiondispatch-request">4.3 Using ActionDispatch::Request</a></h4><p><code>ActionDispatch::Request#params</code> tomará parámetros del cliente en el JSON
+formato y hacerlos disponibles en su controlador dentro de <code>params</code>.</p><p>Para usar esto, su cliente deberá realizar una solicitud con parámetros codificados en JSON
+y especifique el <code>Content-Type</code> como <code>application/json</code>.</p><p>Aquí hay un ejemplo en jQuery:</p><div class="code_container">
+<pre><code class="language-plain">jQuery.ajax({
+  type: 'POST',
+  url: '/people',
+  dataType: 'json',
+  contentType: 'application/json',
+  data: JSON.stringify({ person: { firstName: "Yehuda", lastName: "Katz" } }),
+  success: function(json) { }
+});
+</code></pre>
+</div>
+<p><code>ActionDispatch::Request</code> will see the <code>Content-Type</code> and your parameters
+will be:</p><div class="code_container">
+<pre><code class="language-ruby">{ :person =&gt; { :firstName =&gt; "Yehuda", :lastName =&gt; "Katz" } }
+</code></pre>
+</div>
+<h4 id="using-session-middlewares"><a class="anchorlink" href="#using-session-middlewares">4.4 Using Session Middlewares</a></h4><p>Los siguientes middlewares, que se utilizan para la gestión de sesiones, están excluidos de las aplicaciones API, ya que normalmente no necesitan sesiones. Si uno de sus clientes de API es un navegador, es posible que desee agregar uno de estos nuevamente en:</p>
+<ul>
+<li><code>ActionDispatch::Session::CacheStore</code></li>
+<li><code>ActionDispatch::Session::CookieStore</code></li>
+<li><code>ActionDispatch::Session::MemCacheStore</code></li>
+</ul>
+<p>El truco para volver a agregarlos es que, de forma predeterminada, se pasan <code>session_options</code>
+cuando se agrega (incluida la clave de sesión), por lo que no puede simplemente agregar un inicializador <code>session_store.rb</code>, agregue
+<code>use ActionDispatch::Session::CookieStore</code> y haga que las sesiones funcionen como de costumbre. (Para ser claros: sesiones
+puede funcionar, pero las opciones de sesión se ignorarán, es decir, la clave de sesión será por defecto <code>_session_id</code>)</p><p>En lugar del inicializador, tendrá que configurar las opciones relevantes en algún lugar antes de que su middleware sea
+built (como <code>config/application.rb</code>) y páselos a su middleware preferido, así:</p><div class="code_container">
+<pre><code class="language-ruby">config.session_store :cookie_store, key: '_interslice_session' # &lt;-- this also configures session_options for use below
+config.middleware.use ActionDispatch::Cookies # Required for all session management (regardless of session_store)
+config.middleware.use config.session_store, config.session_options
+</code></pre>
+</div>
+<h4 id="other-middleware"><a class="anchorlink" href="#other-middleware">4.5 Other Middleware</a></h4><p>Rails se envía con una serie de middleware que quizás desee utilizar en un
+Aplicación API, especialmente si uno de sus clientes API es el navegador:</p>
+<ul>
+<li><code>Rack::MethodOverride</code></li>
+<li><code>ActionDispatch::Cookies</code></li>
+<li><code>ActionDispatch::Flash</code></li>
+</ul>
+<p>Cualquiera de estos middleware se puede agregar a través de:</p><div class="code_container">
+<pre><code class="language-ruby">config.middleware.use Rack::MethodOverride
+</code></pre>
+</div>
+<h4 id="removing-middleware"><a class="anchorlink" href="#removing-middleware">4.6 Removing Middleware</a></h4><p>Si no desea utilizar un middleware que se incluye de forma predeterminada en la API solo
+conjunto de middleware, puede eliminarlo con:</p><div class="code_container">
+<pre><code class="language-ruby">config.middleware.delete ::Rack::Sendfile
+</code></pre>
+</div>
+<p>Tenga en cuenta que la eliminación de estos middlewares eliminará el soporte para ciertos
+características en Action Controller.</p><h3 id="choosing-controller-modules"><a class="anchorlink" href="#choosing-controller-modules">5 Choosing Controller Modules</a></h3><p>Una aplicación API (usando <code>ActionController::API</code>) viene con lo siguiente
+módulos de controlador por defecto:</p>
+<ul>
+<li>
+<code>ActionController::UrlFor</code>: Hace que <code>url_for</code> y ayudantes similares estén disponibles.</li>
+<li>
+<code>ActionController::Redirecting</code>: Soporte para <code>redirect_to</code>.</li>
+<li>
+<code>AbstractController::Rendering</code> y <code>ActionController::ApiRendering</code>: Soporte básico para renderizado.</li>
+<li>
+<code>ActionController::Renderers :: All</code>: Soporte para <code>render :json</code> y amigos.</li>
+<li>
+<code>ActionController::ConditionalGet</code>: Soporte para <code>stale?</code>.</li>
+<li>
+<code>ActionController::BasicImplicitRender</code>: Se asegura de devolver una respuesta vacía, si no hay una explícita.</li>
+<li>
+<code>ActionController::StrongParameters</code>: Soporte para filtrado de parámetros en combinación con asignación masiva de Active Model.</li>
+<li>
+<code>ActionController::DataStreaming</code>: Soporte para <code>send_file</code> y <code>send_data</code>.</li>
+<li>
+<code>AbstractController::Callbacks</code>: Soporte para <code>before_action</code> y
+ayudantes similares.</li>
+<li>
+<code>ActionController::Rescue</code>: Soporte para <code>rescue_from</code>.</li>
+<li>
+<code>ActionController::Instrumentation</code>: Soporte para la instrumentación
+ganchos definidos por Action Controller (consulte <a href="active_support_instrumentation.html#action-controller">la instrumentación
+guía</a> para
+más información al respecto).</li>
+<li>
+<code>ActionController::ParamsWrapper</code>: Envuelve el hash de los parámetros en un hash anidado,
+para que no tenga que especificar elementos raíz que envíen solicitudes POST, por ejemplo.</li>
+<li>
+<code>ActionController::Head</code>: Soporte para devolver una respuesta sin contenido, solo encabezados</li>
+</ul>
+<p>Otros complementos pueden agregar módulos adicionales. Puede obtener una lista de todos los módulos
+incluido en <code>ActionController::API</code> en la consola de rails:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails c
+&gt;&gt; ActionController::API.ancestors - ActionController::Metal.ancestors
+=&gt; [ActionController::API,
+    ActiveRecord::Railties::ControllerRuntime,
+    ActionDispatch::Routing::RouteSet::MountedHelpers,
+    ActionController::ParamsWrapper,
+    ... ,
+    AbstractController::Rendering,
+    ActionView::ViewPaths]
+</code></pre>
+</div>
+<h4 id="adding-other-modules"><a class="anchorlink" href="#adding-other-modules">5.1 Adding Other Modules</a></h4><p>Todos los módulos de Action Controller conocen sus módulos dependientes, por lo que puede sentir
+libre de incluir cualquier módulo en sus controladores, y todas las dependencias serán
+incluido y configurado también.</p><p>Algunos módulos comunes que quizás desee agregar:</p>
+<ul>
+<li>
+<code>AbstractController::Translation</code>: Soporte para la localización <code>l</code> y <code>t</code>
+y métodos de traducción.</li>
+<li>Soporte para autenticación HTTP básica, digest o token:
+
+<ul>
+<li>
+<code>ActionController::HttpAuthentication::Basic::ControllerMethods</code>,</li>
+<li>
+<code>ActionController::HttpAuthentication::Digest::ControllerMethods</code>,</li>
+<li><code>ActionController::HttpAuthentication::Token::ControllerMethods</code></li>
+</ul>
+</li>
+<li>
+<code>ActionView::Layouts</code>: Soporte para diseños al renderizar.</li>
+<li>
+<code>ActionController::MimeResponds</code>: Soporte para <code>respond_to</code>.</li>
+<li>
+<code>ActionController::Cookies</code>: Soporte para <code>cookies</code>, que incluye
+soporte para cookies firmadas y encriptadas. Esto requiere el middleware de cookies.</li>
+<li>
+<code>ActionController::Caching</code>: Admite el almacenamiento en caché de vistas para el controlador API. Por favor informa eso
+deberá especificar manualmente el almacén de caché dentro del controlador como:
+```ruby
+class ApplicationController &lt; ActionController::API
+include ::ActionController::Caching
+self.cache_store = :mem_cache_store
+end</li>
+</ul>
+<p>  Rails <em>no</em> pasa esta configuración automáticamente.</p><p>El mejor lugar para agregar un módulo es en su <code>ApplicationController</code>, pero puede
+también agregue módulos a controladores individuales.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

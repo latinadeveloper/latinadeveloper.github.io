@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ruby on Rails Guides</title>
+  <title>Constantes de Autocarga y Recarga (modo clásico) — Ruby on Rails Guides</title>
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
   <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
   <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
@@ -13,9 +13,9 @@
   <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
   <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
   <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
-  <meta property="og:title" content="Ruby on Rails Guides" />
-  <meta name="description" content="" />
-  <meta property="og:description" content="" />
+  <meta property="og:title" content="Constantes de Autocarga y Recarga (modo clásico) — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo clásico)Esta guía cubre la canalización de activos.Después de leer esta guía, sabrá: Qué es la tubería de activos y para qué sirve. Cómo organizar correctamente los activos de su aplicación. Los beneficios de la cartera de activos. Cómo agregar un preprocesador a la tubería. Cómo empaquetar activos con una gema." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo clásico)Esta guía cubre la canalización de activos.Después de leer esta guía, sabrá: Qué es la tubería de activos y para qué sirve. Cómo organizar correctamente los activos de su aplicación. Los beneficios de la cartera de activos. Cómo agregar un preprocesador a la tubería. Cómo empaquetar activos con una gema." />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Ruby on Rails Guides" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
@@ -90,10 +90,10 @@
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
                   <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</a></dd>
-                  <dd><a href="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</a></dd>
-                  <dd><a href="api_app.html">Using Rails for API-only Applications (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
                 </div>
                 <div class="guides-section">
                   <dt>Extending Rails  (toda la sección necesita traducción)</dt>
@@ -141,10 +141,10 @@
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
                   <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
-                  <option value="autoloading_and_reloading_constants.html">Autoloading and Reloading Constants (Zeitwerk Mode) (necesita traducción)</option>
-                  <option value="autoloading_and_reloading_constants_classic_mode.html">Autoloading and Reloading Constants (Classic Mode) (necesita traducción)</option>
-                  <option value="caching_with_rails.html">Caching with Rails An Overview (necesita traducción)</option>
-                  <option value="api_app.html">Using Rails for API-only Applications (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
               </optgroup>
               <optgroup label="Extending Rails  (toda la sección necesita traducción)">
                   <option value="rails_on_rack.html">Rails on Rack</option>
@@ -159,16 +159,44 @@
 
   <div id="feature">
     <div class="wrapper">
-      
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>Constantes de Autocarga y Recarga (modo clásico)</h2><p>Esta guía cubre la canalización de activos.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Qué es la tubería de activos y para qué sirve.</li>
+<li>Cómo organizar correctamente los activos de su aplicación.</li>
+<li>Los beneficios de la cartera de activos.</li>
+<li>Cómo agregar un preprocesador a la tubería.</li>
+<li>Cómo empaquetar activos con una gema.</li>
+</ul>
 
-      
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#what-is-the-asset-pipeline-questionmark">What is the Asset Pipeline?</a></li>
+</ol>
+
+          </div>
+
     </div>
   </div>
 
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>La Canalización de Activos</h2>
+        <h3 id="what-is-the-asset-pipeline-questionmark"><a class="anchorlink" href="#what-is-the-asset-pipeline-questionmark">1 What is the Asset Pipeline?</a></h3><p>La canalización de activos proporciona un marco para concatenar y minificar o comprimir
+Activos de JavaScript y CSS. También agrega la capacidad de escribir estos activos en
+otros lenguajes y preprocesadores como CoffeeScript, Sass y ERB.
+Permite que los activos de su aplicación se combinen automáticamente con los activos.
+de otras gemas.</p><p>La canalización de activos es implementada por la gema
+<a href="https://github.com/rails/sprockets-rails">sprockets-rails</a>
+y está habilitado de forma predeterminada. Puede deshabilitarlo mientras crea una nueva aplicación al
+pasando la opción <code>--skip-sprockets</code>.</p><div class="code_container">
+<pre><code class="language-shell-session">$ rails new appname --skip-sprockets
+</code></pre>
+</div>
+<p>Rails agrega automáticamente los <a href="https://github.com/rails/sass-rails"><code>sass-rails</code></a>
+gem a su <code>Gemfile</code>, que es utilizado por Sprockets para
+Recopilación de <a href="https://sass-lang.com">Sass</a>:</p>
 
         <h3>Comentarios Sobre el Contenido</h3>
         <p>
