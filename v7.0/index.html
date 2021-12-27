@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guías de Ruby on Rails</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Guías de Ruby on Rails" />
+  <meta name="description" content="Guías de Ruby on Rails" />
+  <meta property="og:description" content="Guías de Ruby on Rails" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p>
+  Estas son guías de traducción, basadas en master<a href="https://github.com/rails/rails/tree/v6.0.3.2"></a>.
+</p>
+<p>
+  Si está buscando los de la versión estable, consulte
+  <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a> en su lugar.
+</p>
+
+
+
+      <div id="subCol">
+  <dl>
+    <dt></dt>
+    <dd class="work-in-progress">Actualmente se está trabajando en las guías marcadas con este icono y no estarán disponibles en el menú Índice de guías.</dd>
+  </dl>
+</div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        
+
+
+  <h3>Empieza Aqui</h3>
+  <dl>
+      <dt><a href="getting_started.html">Introducción a Rails</a></dt><dd>
+        <p>Todo lo que necesita saber para instalar Rails y crear su primera aplicación.</p>
+</dd>  </dl>
+  <h3>Modelos</h3>
+  <dl>
+      <dt><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dt><dd>
+        <p>Esta guía lo ayudará a comenzar con los modelos, la persistencia en la base de datos y el patrón y la biblioteca de Active Record.</p>
+</dd>      <dt><a href="active_record_migrations.html">Migraciones de Active Record</a></dt><dd>
+        <p>Esta guía cubre cómo puede utilizar las migraciones de Active Record para modificar su base de datos de una manera estructurada y organizada.</p>
+</dd>      <dt><a href="active_record_validations.html">Validaciones de Active Record</a></dt><dd>
+        <p>Esta guía cubre cómo puede utilizar las validaciones de Active Record.</p>
+</dd>      <dt><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dt><dd>
+        <p>Esta guía cubre cómo puede utilizar las devoluciones de llamada de Active Record.</p>
+</dd>      <dt><a href="association_basics.html">Asociaciones de Active Record</a></dt><dd>
+        <p>Esta guía cubre todas las asociaciones proporcionadas por Active Record.</p>
+</dd>      <dt><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dt><dd>
+        <p>Esta guía cubre la interfaz de consulta de la base de datos proporcionada por Active Record.</p>
+</dd>      <dt><a href="active_model_basics.html">Conceptos Básicos del Active Model</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>Esta guía cubre el uso de clases modelo sin Active Record.</p>
+</dd>  </dl>
+  <h3>Vistas</h3>
+  <dl>
+      <dt><a href="action_view_overview.html">Descripción General de la Action View</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>Esta guía proporciona una introducción a la Vista de acción y presenta algunos de los ayudantes de vista más comunes.</p>
+</dd>      <dt><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dt><dd>
+        <p>Esta guía cubre las características de diseño básicas del controlador de acción y la vista de acción, incluida la representación y la redirección, el uso de content_for bloques y el trabajo con parciales.</p>
+</dd>      <dt><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dt><dd>
+        <p>Guía para el uso de ayudantes de formularios integrados.</p>
+</dd>  </dl>
+  <h3>Controladores</h3>
+  <dl>
+      <dt><a href="action_controller_overview.html">Descripción General de Action Controller</a></dt><dd>
+        <p>Esta guía cubre cómo funcionan los controladores y cómo encajan en el ciclo de solicitud en su aplicación. Incluye sesiones, filtros y cookies, transmisión de datos y manejo de excepciones generadas por una solicitud, entre otros temas.</p>
+</dd>      <dt><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dt><dd>
+        <p>Esta guía cubre las características orientadas al usuario del enrutamiento Rails. Si desea comprender cómo utilizar el enrutamiento en sus propias aplicaciones Rails, comience aquí.</p>
+</dd>  </dl>
+  <h3>Otros Componentes</h3>
+  <dl>
+      <dt><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dt><dd>
+        <p>Esta guía documenta las extensiones principales de Ruby definidas en Active Support.</p>
+</dd>      <dt><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dt><dd>
+        <p>Esta guía describe cómo utilizar Action Mailer para enviar correos electrónicos.</p>
+</dd>      <dt><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>Esta guía describe cómo utilizar Action Mailbox para recibir correos electrónicos.</p>
+</dd>      <dt><a href="action_text_overview.html">Descripción General de Action Text</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>Esta guía describe cómo usar Action Text para manejar contenido de texto enriquecido.</p>
+</dd>      <dt><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dt><dd>
+        <p>Esta guía le proporciona todo lo que necesita para comenzar a crear, poner en cola y ejecutar trabajos en segundo plano.</p>
+</dd>      <dt><a href="active_storage_overview.html">Descripción General de Active Storage</a></dt><dd>
+        <p>Esta guía cubre cómo adjuntar archivos a sus modelos de Active Record.</p>
+</dd>      <dt><a href="action_cable_overview.html">Descripción General de Action Cable</a></dt><dd>
+        <p>Esta guía explica cómo funciona Action Cable y cómo utilizar WebSockets para crear funciones en tiempo real.</p>
+</dd>  </dl>
+  <h3>Temas Avanzados</h3>
+  <dl>
+      <dt><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dt><dd>
+        <p>Esta guía cubre cómo agregar internacionalización a sus aplicaciones. Su aplicación podrá traducir contenido a diferentes idiomas, cambiar las reglas de pluralización, usar formatos de fecha correctos para cada país, etc.</p>
+</dd>      <dt><a href="testing.html">Prueba de Aplicaciones de Rails</a></dt><dd>
+        <p>Esta es una guía bastante completa de las diversas instalaciones de prueba en Rails. Cubre todo, desde &quot;¿Qué es una prueba?&quot; a las pruebas de integración. Disfrutar.</p>
+</dd>      <dt><a href="security.html">Seguridad de Aplicaciones Rails</a></dt><dd>
+        <p>Esta guía describe problemas de seguridad comunes en aplicaciones web y cómo evitarlos con Rails.</p>
+</dd>      <dt><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dt><dd>
+        <p>Esta guía describe cómo depurar aplicaciones Rails. Cubre las diferentes formas de lograr esto y cómo comprender lo que está sucediendo &quot;detrás de escena&quot; de su código.</p>
+</dd>      <dt><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dt><dd>
+        <p>Esta guía cubre los ajustes de configuración básicos para una aplicación Rails.</p>
+</dd>      <dt><a href="command_line.html">La Línea de Comandos de Rails</a></dt><dd>
+        <p>Esta guía cubre las herramientas de línea de comandos proporcionadas por Rails.</p>
+</dd>      <dt><a href="asset_pipeline.html">La Canalización de Activos</a></dt><dd>
+        <p>Esta Guía Documenta La Canalización de Activos.</p>
+</dd>      <dt><a href="working_with_javascript_in_rails.html">Working with JavaScript in Rails (necesita traducción)</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide covers the built-in Ajax/JavaScript functionality of Rails.</p>
+</dd>      <dt><a href="initialization.html">The Rails Initialization Process (necesita traducción)</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide explains the internals of the Rails initialization process.</p>
+</dd>      <dt><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dt><dd>
+        <p>Esta guía documenta cómo funcionan las constantes de carga y carga automáticas (Zeitwerk mode).</p>
+</dd>      <dt><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dt><dd>
+        <p>Esta guía documenta cómo funcionan las constantes de carga automática y recarga (modo clásico).</p>
+</dd>      <dt><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dt><dd>
+        <p>Esta guía es una introducción para acelerar su aplicación Rails con almacenamiento en caché.</p>
+</dd>      <dt><a href="active_support_instrumentation.html">Active Support Instrumentation (necesita traducción)</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide explains how to use the instrumentation API inside of Active Support to measure events inside of Rails and other Ruby code.</p>
+</dd>      <dt><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dt><dd>
+        <p>Esta guía explica cómo utilizar Rails de forma eficaz para desarrollar una aplicación API JSON.</p>
+</dd>      <dt><a href="active_record_postgresql.html">Active Record and PostgreSQL (necesita traducción)</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide covers PostgreSQL specific usage of Active Record.</p>
+</dd>      <dt><a href="active_record_multiple_databases.html">Multiple Databases with Active Record (necesita traducción)</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide covers using multiple databases in your application.</p>
+</dd>  </dl>
+  <h3>Extending Rails  (toda la sección necesita traducción)</h3>
+  <dl>
+      <dt><a href="plugins.html">The Basics of Creating Rails Plugins</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide covers how to build a plugin to extend the functionality of Rails.</p>
+</dd>      <dt><a href="rails_on_rack.html">Rails on Rack</a></dt><dd>
+        <p>This guide covers Rails integration with Rack and interfacing with other Rack components.</p>
+</dd>      <dt><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dt><dd>
+        <p>This guide covers the process of adding a brand new generator to your extension or providing an alternative to an element of a built-in Rails generator (such as providing alternative test stubs for the scaffold generator).</p>
+</dd>      <dt><a href="engines.html">Getting Started with Engines</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide explains how to write a mountable engine.</p>
+</dd>      <dt><a href="threading_and_code_execution.html">Threading and Code Execution in Rails</a></dt><dd class="work-in-progress">trabajo en progreso</dd><dd>
+        <p>This guide describes the considerations needed and tools available when working directly with concurrency in a Rails application.</p>
+</dd>  </dl>
+
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

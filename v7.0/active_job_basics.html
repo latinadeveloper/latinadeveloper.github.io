@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conceptos Básicos de Active Job — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Conceptos Básicos de Active Job — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Conceptos Básicos de Active JobEste guía le proporciona todo lo que necesita para comenzar a crear, poner en cola y ejecutar trabajos en segundo plano.Después de leer esta guía, sabrá: Cómo crear empleo. Cómo poner trabajos en cola. Cómo ejecutar trabajos en segundo plano. Cómo enviar correos electrónicos desde su aplicación de forma asincrónica." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Conceptos Básicos de Active JobEste guía le proporciona todo lo que necesita para comenzar a crear, poner en cola y ejecutar trabajos en segundo plano.Después de leer esta guía, sabrá: Cómo crear empleo. Cómo poner trabajos en cola. Cómo ejecutar trabajos en segundo plano. Cómo enviar correos electrónicos desde su aplicación de forma asincrónica." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Conceptos Básicos de Active Job</h2><p>Este guía le proporciona todo lo que necesita para comenzar a crear,
+poner en cola y ejecutar trabajos en segundo plano.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Cómo crear empleo.</li>
+<li>Cómo poner trabajos en cola.</li>
+<li>Cómo ejecutar trabajos en segundo plano.</li>
+<li>Cómo enviar correos electrónicos desde su aplicación de forma asincrónica.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#what-is-active-job-questionmark">What is Active Job?</a></li>
+<li><a href="#the-purpose-of-active-job">The Purpose of Active Job</a></li>
+<li>
+<a href="#creating-a-job">Creating a Job</a>
+
+<ul>
+<li><a href="#create-the-job">Create the Job</a></li>
+<li><a href="#enqueue-the-job">Enqueue the Job</a></li>
+</ul>
+</li>
+<li>
+<a href="#job-execution">Job Execution</a>
+
+<ul>
+<li><a href="#backends">Backends</a></li>
+<li><a href="#setting-the-backend">Setting the Backend</a></li>
+<li><a href="#starting-the-backend">Starting the Backend</a></li>
+</ul>
+</li>
+<li><a href="#queues">Queues</a></li>
+<li>
+<a href="#callbacks">Callbacks</a>
+
+<ul>
+<li><a href="#available-callbacks">Available callbacks</a></li>
+</ul>
+</li>
+<li><a href="#action-mailer">Action Mailer</a></li>
+<li><a href="#internationalization">Internationalization</a></li>
+<li>
+<a href="#supported-types-for-arguments">Supported types for arguments</a>
+
+<ul>
+<li><a href="#globalid">GlobalID</a></li>
+<li><a href="#serializers">Serializers</a></li>
+</ul>
+</li>
+<li>
+<a href="#exceptions">Exceptions</a>
+
+<ul>
+<li><a href="#retrying-or-discarding-failed-jobs">Retrying or Discarding failed jobs</a></li>
+<li><a href="#deserialization">Deserialization</a></li>
+</ul>
+</li>
+<li><a href="#job-testing">Job Testing</a></li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="what-is-active-job-questionmark"><a class="anchorlink" href="#what-is-active-job-questionmark">1 What is Active Job?</a></h3><p>Active Job es un marco para declarar trabajos y hacer que se ejecuten en una variedad
+de backends de cola. Estos trabajos pueden ser de cualquier cosa, desde ser programas que regularmente
+dan limpiezas, gastos de facturación, envíos postales. Todo lo que pueda cortarse
+en pequeñas unidades de trabajo y ejecutar en paralelo, de verdad.</p><h3 id="the-purpose-of-active-job"><a class="anchorlink" href="#the-purpose-of-active-job">2 The Purpose of Active Job</a></h3><p>El punto principal es garantizar que todas las aplicaciones de Rails tengan una infraestructura de trabajo
+en su lugar. Luego podemos tener características de marco y otras gemas construidas sobre eso,
+sin tener que preocuparse por las diferencias de API entre varios corredores de trabajo, como
+trabajo retrasado y rescates. Elegir su backend de cola se vuelve más como una preocupación operacional.
+Y podrás cambiar entre ellos sin tener que volver a escribir
+sus trabajos.</p><div class="note"><p>Rails viene de forma predeterminada con una implementación de cola asincrónica que
+ejecuta trabajos con un grupo de subprocesos en proceso. Los trabajos se ejecutarán de forma asincrónica, pero cualquiera
+de los trabajos de la cola se eliminarán al reiniciar.</p></div><h3 id="creating-a-job"><a class="anchorlink" href="#creating-a-job">3 Creating a Job</a></h3><p>Esta sección proporcionará una guía paso a paso para crear un trabajo y ponerlo en cola.</p><h4 id="create-the-job"><a class="anchorlink" href="#create-the-job">3.1 Create the Job</a></h4><p>Active Job proporciona un generador de Rails para crear trabajos. Lo siguiente creará un
+trabajo en <code>app/jobs</code> (con un caso de prueba adjunto en <code>test/jobs</code>):</p><div class="code_container">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate job guests_cleanup
+<span class="go">invoke  test_unit
+create    test/jobs/guests_cleanup_job_test.rb
+create  app/jobs/guests_cleanup_job.rb
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate job guests_cleanup
+">Copy</button>
+</div>
+<p>También puede crear un trabajo que se ejecutará en una cola específica:</p><div class="code_container">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate job guests_cleanup <span class="nt">--queue</span> urgent
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate job guests_cleanup --queue urgent
+">Copy</button>
+</div>
+<p>Si no desea utilizar un generador, puede crear su propio archivo dentro de
+<code>app/jobs</code>, solo asegúrate de que herede de <code>ApplicationJob</code>.</p><p>Así es como se ve un trabajo:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:default</span>
+
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="o">*</span><span class="n">guests</span><span class="p">)</span>
+    <span class="c1"># Do something later</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :default
+
+  def perform(*guests)
+    # Do something later
+  end
+end
+">Copy</button>
+</div>
+<p>Tenga en cuenta que puede definir <code>perform</code> con tantos argumentos como desee.</p><h4 id="enqueue-the-job"><a class="anchorlink" href="#enqueue-the-job">3.2 Enqueue the Job</a></h4><p>Ponga en cola un trabajo como este:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Enqueue a job to be performed as soon as the queuing system is</span>
+<span class="c1"># free.</span>
+<span class="no">GuestsCleanupJob</span><span class="p">.</span><span class="nf">perform_later</span> <span class="n">guest</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Enqueue a job to be performed as soon as the queuing system is
+# free.
+GuestsCleanupJob.perform_later guest
+">Copy</button>
+</div>
+<div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Enqueue a job to be performed tomorrow at noon.</span>
+<span class="no">GuestsCleanupJob</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="ss">wait_until: </span><span class="no">Date</span><span class="p">.</span><span class="nf">tomorrow</span><span class="p">.</span><span class="nf">noon</span><span class="p">).</span><span class="nf">perform_later</span><span class="p">(</span><span class="n">guest</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Enqueue a job to be performed tomorrow at noon.
+GuestsCleanupJob.set(wait_until: Date.tomorrow.noon).perform_later(guest)
+">Copy</button>
+</div>
+<div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Enqueue a job to be performed 1 week from now.</span>
+<span class="no">GuestsCleanupJob</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="ss">wait: </span><span class="mi">1</span><span class="p">.</span><span class="nf">week</span><span class="p">).</span><span class="nf">perform_later</span><span class="p">(</span><span class="n">guest</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Enqueue a job to be performed 1 week from now.
+GuestsCleanupJob.set(wait: 1.week).perform_later(guest)
+">Copy</button>
+</div>
+<div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># `perform_now` and `perform_later` will call `perform` under the hood so</span>
+<span class="c1"># you can pass as many arguments as defined in the latter.</span>
+<span class="no">GuestsCleanupJob</span><span class="p">.</span><span class="nf">perform_later</span><span class="p">(</span><span class="n">guest1</span><span class="p">,</span> <span class="n">guest2</span><span class="p">,</span> <span class="ss">filter: </span><span class="s1">'some_filter'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# `perform_now` and `perform_later` will call `perform` under the hood so
+# you can pass as many arguments as defined in the latter.
+GuestsCleanupJob.perform_later(guest1, guest2, filter: 'some_filter')
+">Copy</button>
+</div>
+<p>¡Eso es todo!</p><h3 id="job-execution"><a class="anchorlink" href="#job-execution">4 Job Execution</a></h3><p>Para poner en cola y ejecutar trabajos en producción, debe configurar un backend de cola,
+es decir, debe decidir qué biblioteca de colas de terceros Rails debe de usar.
+Rails solo proporciona un sistema de cola en proceso, que solo mantiene los trabajos en RAM.
+Si el proceso falla o la máquina se reinicia, todos los trabajos pendientes se pierden con el
+backend asincrónico predeterminado. Esto puede estar bien para aplicaciones más pequeñas o trabajos que no son críticos,
+pero la mayoría de las aplicaciones de producción deberán elegir un backend persistente.</p><h4 id="backends"><a class="anchorlink" href="#backends">4.1 Backends</a></h4><p>Active Job tiene adaptadores integrados para múltiples backends de cola (Sidekiq,
+Resque, Delayed Job y otros). Para obtener una lista actualizada de los adaptadores
+consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActiveJob/QueueAdapters.html">ActiveJob::QueueAdapters</a>.</p><h4 id="setting-the-backend"><a class="anchorlink" href="#setting-the-backend">4.2 Setting the Backend</a></h4><p>Puede configurar fácilmente su backend de cola:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">YourApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="c1"># Be sure to have the adapter's gem in your Gemfile</span>
+    <span class="c1"># and follow the adapter's specific installation</span>
+    <span class="c1"># and deployment instructions.</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_adapter</span> <span class="o">=</span> <span class="ss">:sidekiq</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# config/application.rb
+module YourApp
+  class Application &lt; Rails::Application
+    # Be sure to have the adapter's gem in your Gemfile
+    # and follow the adapter's specific installation
+    # and deployment instructions.
+    config.active_job.queue_adapter = :sidekiq
+  end
+end
+">Copy</button>
+</div>
+<p>También puede configurar su backend por trabajo.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">queue_adapter</span> <span class="o">=</span> <span class="ss">:resque</span>
+  <span class="c1">#....</span>
+<span class="k">end</span>
+
+<span class="c1"># Now your job will use `resque` as its backend queue adapter overriding what</span>
+<span class="c1"># was configured in `config.active_job.queue_adapter`.</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  self.queue_adapter = :resque
+  #....
+end
+
+# Now your job will use `resque` as its backend queue adapter overriding what
+# was configured in `config.active_job.queue_adapter`.
+">Copy</button>
+</div>
+<h4 id="starting-the-backend"><a class="anchorlink" href="#starting-the-backend">4.3 Starting the Backend</a></h4><p>Dado que los trabajos se ejecutan en paralelo a su aplicación Rails, la mayoría de las bibliotecas de colas
+requieren que inicie un servicio de cola específico de la biblioteca (además de
+iniciando su aplicación Rails) para que funcione el procesamiento del trabajo. Consulte la biblioteca
+documentación para obtener instrucciones sobre cómo iniciar el backend de la cola.</p><p>Here is a noncomprehensive list of documentation:</p>
+<ul>
+<li><a href="https://github.com/mperham/sidekiq/wiki/Active-Job">Sidekiq</a></li>
+<li><a href="https://github.com/resque/resque/wiki/ActiveJob">Resque</a></li>
+<li><a href="https://github.com/jondot/sneakers/wiki/How-To:-Rails-Background-Jobs-with-ActiveJob">Sneakers</a></li>
+<li><a href="https://github.com/brandonhilkert/sucker_punch#active-job">Sucker Punch</a></li>
+<li><a href="https://github.com/QueueClassic/queue_classic#active-job">Queue Classic</a></li>
+<li><a href="https://github.com/collectiveidea/delayed_job#active-job">Delayed Job</a></li>
+<li><a href="https://github.com/que-rb/que#additional-rails-specific-setup">Que</a></li>
+</ul>
+<h3 id="queues"><a class="anchorlink" href="#queues">5 Queues</a></h3><p>La mayoría de los adaptadores admiten varias colas. Con Active Job puede programar
+el trabajo para ejecutar en una cola específica:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:low_priority</span>
+  <span class="c1">#....</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :low_priority
+  #....
+end
+">Copy</button>
+</div>
+<p>Puede prefijar el nombre de la cola para todos sus trabajos usando
+<code>config.active_job.queue_name_prefix</code> en<code>application.rb</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">YourApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_prefix</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/jobs/guests_cleanup_job.rb</span>
+<span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:low_priority</span>
+  <span class="c1">#....</span>
+<span class="k">end</span>
+
+<span class="c1"># Now your job will run on queue production_low_priority on your</span>
+<span class="c1"># production environment and on staging_low_priority</span>
+<span class="c1"># on your staging environment</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# config/application.rb
+module YourApp
+  class Application &lt; Rails::Application
+    config.active_job.queue_name_prefix = Rails.env
+  end
+end
+
+# app/jobs/guests_cleanup_job.rb
+class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :low_priority
+  #....
+end
+
+# Now your job will run on queue production_low_priority on your
+# production environment and on staging_low_priority
+# on your staging environment
+">Copy</button>
+</div>
+<p>También puede configurar el prefijo por trabajo.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:low_priority</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">queue_name_prefix</span> <span class="o">=</span> <span class="kp">nil</span>
+  <span class="c1">#....</span>
+<span class="k">end</span>
+
+<span class="c1"># Now your job's queue won't be prefixed, overriding what</span>
+<span class="c1"># was configured in `config.active_job.queue_name_prefix`.</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :low_priority
+  self.queue_name_prefix = nil
+  #....
+end
+
+# Now your job's queue won't be prefixed, overriding what
+# was configured in `config.active_job.queue_name_prefix`.
+">Copy</button>
+</div>
+<p>El delimitador de prefijo de nombre de cola predeterminado es '\ <em>'. Esto se puede cambiar configurando
+`config.active</em>job.queue_name_delimiter<code>en</code>application.rb`:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">YourApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_prefix</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_delimiter</span> <span class="o">=</span> <span class="s1">'.'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/jobs/guests_cleanup_job.rb</span>
+<span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:low_priority</span>
+  <span class="c1">#....</span>
+<span class="k">end</span>
+
+<span class="c1"># Now your job will run on queue production.low_priority on your</span>
+<span class="c1"># production environment and on staging.low_priority</span>
+<span class="c1"># on your staging environment</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# config/application.rb
+module YourApp
+  class Application &lt; Rails::Application
+    config.active_job.queue_name_prefix = Rails.env
+    config.active_job.queue_name_delimiter = '.'
+  end
+end
+
+# app/jobs/guests_cleanup_job.rb
+class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :low_priority
+  #....
+end
+
+# Now your job will run on queue production.low_priority on your
+# production environment and on staging.low_priority
+# on your staging environment
+">Copy</button>
+</div>
+<p>Si desea tener más control sobre qué cola se ejecutará un trabajo, puede pasar un <code>: queue</code>
+opción a <code>#set</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="no">MyJob</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="ss">queue: :another_queue</span><span class="p">).</span><span class="nf">perform_later</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="MyJob.set(queue: :another_queue).perform_later(record)
+">Copy</button>
+</div>
+<p>Para controlar la cola desde el nivel de trabajo, puede pasar un bloque a <code>#queue_as</code>.
+El bloque se ejecutará en el contexto del trabajo (para que pueda acceder a <code>self.arguments</code>)
+y debe devolver el nombre de la cola:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProcessVideoJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="k">do</span>
+    <span class="n">video</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">arguments</span><span class="p">.</span><span class="nf">first</span>
+    <span class="k">if</span> <span class="n">video</span><span class="p">.</span><span class="nf">owner</span><span class="p">.</span><span class="nf">premium?</span>
+      <span class="ss">:premium_videojobs</span>
+    <span class="k">else</span>
+      <span class="ss">:videojobs</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">video</span><span class="p">)</span>
+    <span class="c1"># Do process video</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">ProcessVideoJob</span><span class="p">.</span><span class="nf">perform_later</span><span class="p">(</span><span class="no">Video</span><span class="p">.</span><span class="nf">last</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProcessVideoJob &lt; ApplicationJob
+  queue_as do
+    video = self.arguments.first
+    if video.owner.premium?
+      :premium_videojobs
+    else
+      :videojobs
+    end
+  end
+
+  def perform(video)
+    # Do process video
+  end
+end
+
+ProcessVideoJob.perform_later(Video.last)
+">Copy</button>
+</div>
+<div class="note"><p>Asegúrese de que su backend de cola "escuche" en su nombre de cola. Para algunos
+backends que necesita para especificar las colas para escuchar.</p></div><h3 id="callbacks"><a class="anchorlink" href="#callbacks">6 Callbacks</a></h3><p>Active Job proporciona enlaces para activar la lógica durante el ciclo de vida de un trabajo. Me gusta
+otras devoluciones de llamada en Rails, puede implementar las devoluciones de llamada como métodos ordinarios
+y use un método de clase de estilo macro para registrarlos como devoluciones de llamada:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:default</span>
+
+  <span class="n">around_perform</span> <span class="ss">:around_cleanup</span>
+
+  <span class="k">def</span> <span class="nf">perform</span>
+    <span class="c1"># Do something later</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">around_cleanup</span>
+      <span class="c1"># Do something before perform</span>
+      <span class="k">yield</span>
+      <span class="c1"># Do something after perform</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :default
+
+  around_perform :around_cleanup
+
+  def perform
+    # Do something later
+  end
+
+  private
+    def around_cleanup
+      # Do something before perform
+      yield
+      # Do something after perform
+    end
+end
+">Copy</button>
+</div>
+<p>Los métodos de clase de estilo macro también pueden recibir un bloque. Considere usar esto
+style si el código dentro de su bloque es tan corto que cabe en una sola línea.
+Por ejemplo, puede enviar métricas para cada trabajo en cola:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationJob</span> <span class="o">&lt;</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_enqueue</span> <span class="p">{</span> <span class="o">|</span><span class="n">job</span><span class="o">|</span> <span class="vg">$statsd</span><span class="p">.</span><span class="nf">increment</span> <span class="s2">"</span><span class="si">#{</span><span class="n">job</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">underscore</span><span class="si">}</span><span class="s2">.enqueue"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationJob &lt; ActiveJob::Base
+  before_enqueue { |job| $statsd.increment "#{job.class.name.underscore}.enqueue" }
+end
+'>Copy</button>
+</div>
+<h4 id="available-callbacks"><a class="anchorlink" href="#available-callbacks">6.1 Available callbacks</a></h4>
+<ul>
+<li><code>before_enqueue</code></li>
+<li><code>around_enqueue</code></li>
+<li><code>after_enqueue</code></li>
+<li><code>before_perform</code></li>
+<li><code>around_perform</code></li>
+<li><code>after_perform</code></li>
+</ul>
+<h3 id="action-mailer"><a class="anchorlink" href="#action-mailer">7 Action Mailer</a></h3><p>Uno de los trabajos más comunes en una aplicación web moderna es enviar correos electrónicos al exterior.
+del ciclo de solicitud-respuesta, por lo que el usuario no tiene que esperar. Trabajo activo
+está integrado con Action Mailer para que pueda enviar correos electrónicos fácilmente de forma asincrónica:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># If you want to send the email now use #deliver_now</span>
+<span class="no">UserMailer</span><span class="p">.</span><span class="nf">welcome</span><span class="p">(</span><span class="vi">@user</span><span class="p">).</span><span class="nf">deliver_now</span>
+
+<span class="c1"># If you want to send the email through Active Job use #deliver_later</span>
+<span class="no">UserMailer</span><span class="p">.</span><span class="nf">welcome</span><span class="p">(</span><span class="vi">@user</span><span class="p">).</span><span class="nf">deliver_later</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# If you want to send the email now use #deliver_now
+UserMailer.welcome(@user).deliver_now
+
+# If you want to send the email through Active Job use #deliver_later
+UserMailer.welcome(@user).deliver_later
+">Copy</button>
+</div>
+<div class="note"><p>El uso de la cola asincrónica de una tarea Rake (por ejemplo, para
+enviar un correo electrónico usando <code>.deliver_later</code>) generalmente no funcionará porque Rake lo hará
+probable final, lo que hace que se elimine el grupo de subprocesos en proceso, antes de cualquier/todos
+de los correos electrónicos <code>.deliver_later</code> se procesan. Para evitar este problema, utilice
+<code>.deliver_now</code> o ejecutar una cola persistente en desarrollo.</p></div><h3 id="internationalization"><a class="anchorlink" href="#internationalization">8 Internationalization</a></h3><p>Cada trabajo usa el conjunto <code>I18n.locale</code> cuando se creó el trabajo. Útil si envías
+correos electrónicos de forma asincrónica:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="no">I18n</span><span class="p">.</span><span class="nf">locale</span> <span class="o">=</span> <span class="ss">:eo</span>
+
+<span class="no">UserMailer</span><span class="p">.</span><span class="nf">welcome</span><span class="p">(</span><span class="vi">@user</span><span class="p">).</span><span class="nf">deliver_later</span> <span class="c1"># Email will be localized to Esperanto.</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="I18n.locale = :eo
+
+UserMailer.welcome(@user).deliver_later # Email will be localized to Esperanto.
+">Copy</button>
+</div>
+<h3 id="supported-types-for-arguments"><a class="anchorlink" href="#supported-types-for-arguments">9 Supported types for arguments</a></h3><p>ActiveJob admite los siguientes tipos de argumentos de forma predeterminada:</p>
+<ul>
+<li>Tipos basicos (<code>NilClass</code>, <code>String</code>, <code>Integer</code>, <code>Float</code>, <code>BigDecimal</code>, <code>TrueClass</code>, <code>FalseClass</code>)</li>
+<li><code>Symbol</code></li>
+<li><code>Date</code></li>
+<li><code>Time</code></li>
+<li><code>DateTime</code></li>
+<li><code>ActiveSupport::TimeWithZone</code></li>
+<li><code>ActiveSupport::Duration</code></li>
+<li>
+<code>Hash</code> (Las claves deben ser de <code>String</code> o tipo<code>Symbol</code>)</li>
+<li><code>ActiveSupport::HashWithIndifferentAccess</code></li>
+<li><code>Array</code></li>
+<li><code>Module</code></li>
+<li><code>Class</code></li>
+</ul>
+<h4 id="globalid"><a class="anchorlink" href="#globalid">9.1 GlobalID</a></h4><p>Active Job admite GlobalID para parámetros. Esto hace posible pasar en vivo
+Active Record objetos a su trabajo en lugar de pares de clase/id, que luego tiene
+para deserializar manualmente. Antes, los trabajos se verían así:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">TrashableCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">trashable_class</span><span class="p">,</span> <span class="n">trashable_id</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+    <span class="n">trashable</span> <span class="o">=</span> <span class="n">trashable_class</span><span class="p">.</span><span class="nf">constantize</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">trashable_id</span><span class="p">)</span>
+    <span class="n">trashable</span><span class="p">.</span><span class="nf">cleanup</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class TrashableCleanupJob &lt; ApplicationJob
+  def perform(trashable_class, trashable_id, depth)
+    trashable = trashable_class.constantize.find(trashable_id)
+    trashable.cleanup(depth)
+  end
+end
+">Copy</button>
+</div>
+<p>Ahora puedes simplemente hacer:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">TrashableCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">trashable</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+    <span class="n">trashable</span><span class="p">.</span><span class="nf">cleanup</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class TrashableCleanupJob &lt; ApplicationJob
+  def perform(trashable, depth)
+    trashable.cleanup(depth)
+  end
+end
+">Copy</button>
+</div>
+<p>Esto funciona con cualquier clase que se mezcle en <code>GlobalID::Identificación</code>, que
+por defecto se ha mezclado con las clases Active Record.</p><h4 id="serializers"><a class="anchorlink" href="#serializers">9.2 Serializers</a></h4><p>Puede ampliar la lista de tipos de argumentos admitidos. Solo necesita definir su propio serializador:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MoneySerializer</span> <span class="o">&lt;</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">Serializers</span><span class="o">::</span><span class="no">ObjectSerializer</span>
+  <span class="c1"># Checks if an argument should be serialized by this serializer.</span>
+  <span class="k">def</span> <span class="nf">serialize?</span><span class="p">(</span><span class="n">argument</span><span class="p">)</span>
+    <span class="n">argument</span><span class="p">.</span><span class="nf">is_a?</span> <span class="no">Money</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Converts an object to a simpler representative using supported object types.</span>
+  <span class="c1"># The recommended representative is a Hash with a specific key. Keys can be of basic types only.</span>
+  <span class="c1"># You should call `super` to add the custom serializer type to the hash.</span>
+  <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="n">money</span><span class="p">)</span>
+    <span class="k">super</span><span class="p">(</span>
+      <span class="s2">"amount"</span> <span class="o">=&gt;</span> <span class="n">money</span><span class="p">.</span><span class="nf">amount</span><span class="p">,</span>
+      <span class="s2">"currency"</span> <span class="o">=&gt;</span> <span class="n">money</span><span class="p">.</span><span class="nf">currency</span>
+    <span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Converts serialized value into a proper object.</span>
+  <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
+    <span class="no">Money</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">hash</span><span class="p">[</span><span class="s2">"amount"</span><span class="p">],</span> <span class="nb">hash</span><span class="p">[</span><span class="s2">"currency"</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class MoneySerializer &lt; ActiveJob::Serializers::ObjectSerializer
+  # Checks if an argument should be serialized by this serializer.
+  def serialize?(argument)
+    argument.is_a? Money
+  end
+
+  # Converts an object to a simpler representative using supported object types.
+  # The recommended representative is a Hash with a specific key. Keys can be of basic types only.
+  # You should call `super` to add the custom serializer type to the hash.
+  def serialize(money)
+    super(
+      "amount" =&gt; money.amount,
+      "currency" =&gt; money.currency
+    )
+  end
+
+  # Converts serialized value into a proper object.
+  def deserialize(hash)
+    Money.new(hash["amount"], hash["currency"])
+  end
+end
+'>Copy</button>
+</div>
+<p>y agregue este serializador a la lista:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">custom_serializers</span> <span class="o">&lt;&lt;</span> <span class="no">MoneySerializer</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.active_job.custom_serializers &lt;&lt; MoneySerializer
+">Copy</button>
+</div>
+<h3 id="exceptions"><a class="anchorlink" href="#exceptions">10 Exceptions</a></h3><p>Active Job proporciona una forma de detectar excepciones generadas durante la ejecución del
+trabajo:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">queue_as</span> <span class="ss">:default</span>
+
+  <span class="n">rescue_from</span><span class="p">(</span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">exception</span><span class="o">|</span>
+    <span class="c1"># Do something with the exception</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">perform</span>
+    <span class="c1"># Do something later</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class GuestsCleanupJob &lt; ApplicationJob
+  queue_as :default
+
+  rescue_from(ActiveRecord::RecordNotFound) do |exception|
+    # Do something with the exception
+  end
+
+  def perform
+    # Do something later
+  end
+end
+">Copy</button>
+</div>
+<p>Si la excepción no se rescata dentro del trabajo, p. Ej. como se muestra arriba, el trabajo se denomina "fallido".</p><h4 id="retrying-or-discarding-failed-jobs"><a class="anchorlink" href="#retrying-or-discarding-failed-jobs">10.1 Retrying or Discarding failed jobs</a></h4><p>Un trabajo fallido no se reintentará, a menos que se configure de otra manera.</p><p>También es posible reintentar o descartar un trabajo si se genera una excepción durante la ejecución.
+Por ejemplo:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">RemoteServiceJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="n">retry_on</span> <span class="no">CustomAppException</span> <span class="c1"># defaults to 3s wait, 5 attempts</span>
+
+  <span class="n">discard_on</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">DeserializationError</span>
+
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="c1"># Might raise CustomAppException or ActiveJob::DeserializationError</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class RemoteServiceJob &lt; ApplicationJob
+  retry_on CustomAppException # defaults to 3s wait, 5 attempts
+
+  discard_on ActiveJob::DeserializationError
+
+  def perform(*args)
+    # Might raise CustomAppException or ActiveJob::DeserializationError
+  end
+end
+">Copy</button>
+</div>
+<p>Para obtener más detalles, consulte la documentación de la API para <a href="https://edgeapi.rubyonrails.org/classes/ActiveJob/Exceptions/ClassMethods.html">ActiveJob::Exceptions</a>.</p><h4 id="deserialization"><a class="anchorlink" href="#deserialization">10.2 Deserialization</a></h4><p>GlobalID permite serializar objetos Active Record completos pasados ​​a <code># perform</code>.</p><p>Si un registro aprobado se elimina después de que el trabajo se pone en cola pero antes del <code># perform</code>
+El método se llama Active Job generará un <code>ActiveJob::DeserializationError</code>
+excepción.</p><h3 id="job-testing"><a class="anchorlink" href="#job-testing">11 Job Testing</a></h3><p>Puede encontrar instrucciones detalladas sobre cómo probar sus trabajos en el
+<a href="testing.html#testing-jobs">testing guide</a>.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

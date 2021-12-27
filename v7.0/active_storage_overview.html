@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Descripción General de Active Storage — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Descripción General de Active Storage — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Descripción General de Active StorageEste guía cubre cómo adjuntar archivos a sus modelos de Active Record.Después de leer este guía, sabrá: Cómo adjuntar uno o varios archivos a un registro. Cómo eliminar un archivo adjunto. Cómo vincular a un archivo adjunto. Cómo utilizar variantes para transformar imágenes. Cómo generar una representación de imagen de un archivo que no es de imagen, como un PDF o un video. Cómo enviar cargas de archivos directamente desde navegadores a un servicio de almacenamiento, pasando por alto sus servidores de aplicaciones. Cómo limpiar archivos almacenados durante la prueba. Cómo implementar soporte para servicios de almacenamiento adicionales." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Descripción General de Active StorageEste guía cubre cómo adjuntar archivos a sus modelos de Active Record.Después de leer este guía, sabrá: Cómo adjuntar uno o varios archivos a un registro. Cómo eliminar un archivo adjunto. Cómo vincular a un archivo adjunto. Cómo utilizar variantes para transformar imágenes. Cómo generar una representación de imagen de un archivo que no es de imagen, como un PDF o un video. Cómo enviar cargas de archivos directamente desde navegadores a un servicio de almacenamiento, pasando por alto sus servidores de aplicaciones. Cómo limpiar archivos almacenados durante la prueba. Cómo implementar soporte para servicios de almacenamiento adicionales." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Descripción General de Active Storage</h2><p>Este guía cubre cómo adjuntar archivos a sus modelos de Active Record.</p><p>Después de leer este guía, sabrá:</p>
+<ul>
+<li>Cómo adjuntar uno o varios archivos a un registro.</li>
+<li>Cómo eliminar un archivo adjunto.</li>
+<li>Cómo vincular a un archivo adjunto.</li>
+<li>Cómo utilizar variantes para transformar imágenes.</li>
+<li>Cómo generar una representación de imagen de un archivo que no es de imagen, como un PDF o un video.</li>
+<li>Cómo enviar cargas de archivos directamente desde navegadores a un servicio de almacenamiento,
+pasando por alto sus servidores de aplicaciones.</li>
+<li>Cómo limpiar archivos almacenados durante la prueba.</li>
+<li>Cómo implementar soporte para servicios de almacenamiento adicionales.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#what-is-active-storage-questionmark">What is Active Storage?</a></li>
+<li>
+<a href="#setup">Setup</a>
+
+<ul>
+<li><a href="#disk-service">Disk Service</a></li>
+<li><a href="#s3-service-amazon-s3-and-s3-compatible-apis">S3 Service (Amazon S3 and S3-compatible APIs)</a></li>
+<li><a href="#microsoft-azure-storage-service">Microsoft Azure Storage Service</a></li>
+<li><a href="#google-cloud-storage-service">Google Cloud Storage Service</a></li>
+<li><a href="#mirror-service">Mirror Service</a></li>
+<li><a href="#public-access">Public access</a></li>
+</ul>
+</li>
+<li>
+<a href="#attaching-files-to-records">Attaching Files to Records</a>
+
+<ul>
+<li><a href="#has-one-attached"><code>has_one_attached</code></a></li>
+<li><a href="#has-many-attached"><code>has_many_attached</code></a></li>
+<li><a href="#attaching-file-io-objects">Attaching File/IO Objects</a></li>
+</ul>
+</li>
+<li><a href="#removing-files">Removing Files</a></li>
+<li><a href="#linking-to-files">Linking to Files</a></li>
+<li><a href="#downloading-files">Downloading Files</a></li>
+<li><a href="#analyzing-files">Analyzing Files</a></li>
+<li><a href="#transforming-images">Transforming Images</a></li>
+<li><a href="#previewing-files">Previewing Files</a></li>
+<li>
+<a href="#direct-uploads">Direct Uploads</a>
+
+<ul>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#cross-origin-resource-sharing-cors-configuration">Cross-Origin Resource Sharing (CORS) configuration</a></li>
+<li><a href="#direct-upload-javascript-events">Direct upload JavaScript events</a></li>
+<li><a href="#example">Example</a></li>
+<li><a href="#integrating-with-libraries-or-frameworks">Integrating with Libraries or Frameworks</a></li>
+</ul>
+</li>
+<li><a href="#discarding-files-stored-during-system-tests">Discarding Files Stored During System Tests</a></li>
+<li><a href="#discarding-files-stored-during-integration-tests">Discarding Files Stored During Integration Tests</a></li>
+<li><a href="#implementing-support-for-other-cloud-services">Implementing Support for Other Cloud Services</a></li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="what-is-active-storage-questionmark"><a class="anchorlink" href="#what-is-active-storage-questionmark">1 What is Active Storage?</a></h3><p>Active Storage facilita la carga de archivos a un servicio de almacenamiento en la nube como
+Amazon S3, Google Cloud Storage o Microsoft Azure Storage y adjuntar los
+archivos a objetos Active Record. Viene con un servicio basado en disco local para
+desarrollo y pruebas y admite archivos de duplicación para subordinar servicios para
+copias de seguridad y migraciones.</p><p>Con Active Storage, una aplicación puede transformar la carga de imágenes con
+<a href="https://www.imagemagick.org">ImageMagick</a>, genera representaciones de imágenes de
+archivos.</p><h3 id="setup"><a class="anchorlink" href="#setup">2 Setup</a></h3><p>Active Storage utiliza dos tablas en la base de datos de su aplicación llamadas
+<code>active_storage_blobs</code> y <code>active_storage_attachments</code>. Después de crear un nuevo
+aplicación (o actualizando su aplicación a Rails 5.2), ejecute
+<code>bin/rails active_storage:install</code> para generar una migración que cree estos
+mesas. Utilice <code>bin/rails db:migrate</code> para ejecutar la migración.</p><div class="warning"><p><code>active_storage_attachments</code> es una tabla de combinación polimórfica que almacena el nombre de la clase de su modelo. Si el nombre de la clase de su modelo cambia, deberá ejecutar una migración en esta tabla para actualizar el <code>record_type</code> subyacente al nuevo nombre de la clase de su modelo.</p></div><div class="warning"><p>Si está utilizando UUID en lugar de números enteros como clave principal en sus modelos, deberá cambiar el tipo de columna de <code>record_id</code> para la tabla <code>active_storage_attachments</code> en la migración generada en consecuencia.</p></div><p>Declare los servicios de almacenamiento activo en <code>config/storage.yml</code>. Para cada servicio su
+usos de la aplicación, proporcione un nombre y la configuración requerida. El ejemplo
+a continuación se declaran tres servicios denominados <code>local</code>, <code>test</code> y <code>amazon</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">local</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Disk</span>
+  <span class="na">root</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("storage") %&gt;</span>
+
+<span class="na">test</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Disk</span>
+  <span class="na">root</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("tmp/storage") %&gt;</span>
+
+<span class="na">amazon</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span> <span class="c1"># e.g. 'us-east-1'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="local:
+  service: Disk
+  root: &lt;%= Rails.root.join(&quot;storage&quot;) %&gt;
+
+test:
+  service: Disk
+  root: &lt;%= Rails.root.join(&quot;tmp/storage&quot;) %&gt;
+
+amazon:
+  service: S3
+  access_key_id: &quot;&quot;
+  secret_access_key: &quot;&quot;
+  bucket: &quot;&quot;
+  region: &quot;&quot; # e.g. 'us-east-1'
+">Copy</button>
+</div>
+<p>Dile a Active Storage cual servicio debe de usar configurando
+<code>Rails.application.config.active_storage.service</code>. Porque cada entorno
+probablemente utilice un servicio diferente, se recomienda hacerlo en un
+por medio ambiente. Para utilizar el servicio de disco del ejemplo anterior en el
+entorno de desarrollo, agregaría lo siguiente a
+<code>config/environment/development.rb</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Store files locally.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">service</span> <span class="o">=</span> <span class="ss">:local</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Store files locally.
+config.active_storage.service = :local
+">Copy</button>
+</div>
+<p>Para utilizar el servicio S3 en producción, agregue lo siguiente a
+<code>config/environments/production.rb</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Store files on Amazon S3.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">service</span> <span class="o">=</span> <span class="ss">:amazon</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Store files on Amazon S3.
+config.active_storage.service = :amazon
+">Copy</button>
+</div>
+<p>Para utilizar el servicio de prueba durante la prueba, agregue lo siguiente a
+<code>config/environments/test.rb</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Store uploaded files on the local file system in a temporary directory.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">service</span> <span class="o">=</span> <span class="ss">:test</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Store uploaded files on the local file system in a temporary directory.
+config.active_storage.service = :test
+">Copy</button>
+</div>
+<p>Continúe leyendo para obtener más información sobre los adaptadores de servicio integrados (p. Ej.
+<code>Disk</code> y<code>S3</code>) y la configuración que requieren.</p><h4 id="disk-service"><a class="anchorlink" href="#disk-service">2.1 Disk Service</a></h4><p>Declare un servicio de disco en <code>config/storage.yml</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">local</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Disk</span>
+  <span class="na">root</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("storage") %&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='local:
+  service: Disk
+  root: &lt;%= Rails.root.join("storage") %&gt;
+'>Copy</button>
+</div>
+<h4 id="s3-service-amazon-s3-and-s3-compatible-apis"><a class="anchorlink" href="#s3-service-amazon-s3-and-s3-compatible-apis">2.2 S3 Service (Amazon S3 and S3-compatible APIs)</a></h4><p>Para conectarse a Amazon S3, declare un servicio S3 en <code>config/storage.yml</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">amazon</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='amazon:
+  service: S3
+  access_key_id: ""
+  secret_access_key: ""
+  region: ""
+  bucket: ""
+'>Copy</button>
+</div>
+<p>Opcionalmente, proporcione un hash de opciones de carga:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">amazon</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">upload</span><span class="pi">:</span> 
+    <span class="na">server_side_encryption</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span> <span class="c1"># 'aws:kms' or 'AES256'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="amazon:
+  service: S3
+  access_key_id: &quot;&quot;
+  secret_access_key: &quot;&quot;
+  region: &quot;&quot;
+  bucket: &quot;&quot;
+  upload: 
+    server_side_encryption: &quot;&quot; # 'aws:kms' or 'AES256'
+">Copy</button>
+</div>
+<p>Añade la gema <a href="https://github.com/aws/aws-sdk-ruby"><code>aws-sdk-s3</code></a> a su <code>Gemfile</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"aws-sdk-s3"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='gem "aws-sdk-s3", require: false
+'>Copy</button>
+</div>
+<div class="note"><p>Las características principales de Active Storage requieren los siguientes permisos: <code>s3:ListBucket</code>,<code>s3:PutObject</code>, <code>s3:GetObject</code> y <code>s3:DeleteObject</code>. Si tiene opciones de carga adicionales configuradas, como establecer ACL, es posible que se requieran permisos adicionales.</p></div><div class="note"><p>Si desea utilizar variables de entorno, archivos de configuración estándar del SDK, perfiles,
+Perfiles de instancia de IAM o roles de tareas, puede omitir el <code>access_key_id</code>, <code>secret_access_key</code>,
+y las claves <code>region</code> en el ejemplo anterior. El servicio S3 admite todos las
+opciones de autenticación descritas en el <a href="https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/setup-config.html">AWS SDK documentation</a>.</p></div><p>Para conectarse a una API de almacenamiento de objetos compatible con S3, como Digital Ocean Spaces, proporcione el <code>endpoint</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">digitalocean</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">endpoint</span><span class="pi">:</span> <span class="s">https://nyc3.digitaloceanspaces.com</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s">...</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s">...</span>
+  <span class="c1"># ...and other options</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="digitalocean:
+  service: S3
+  endpoint: https://nyc3.digitaloceanspaces.com
+  access_key_id: ...
+  secret_access_key: ...
+  # ...and other options
+">Copy</button>
+</div>
+<h4 id="microsoft-azure-storage-service"><a class="anchorlink" href="#microsoft-azure-storage-service">2.3 Microsoft Azure Storage Service</a></h4><p>Declare un servicio de Azure Storage en <code>config/storage.yml</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">azure</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">AzureStorage</span>
+  <span class="na">storage_account_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">storage_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">container</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='azure:
+  service: AzureStorage
+  storage_account_name: ""
+  storage_access_key: ""
+  container: ""
+'>Copy</button>
+</div>
+<p>Añade la gema <a href="https://github.com/Azure/azure-storage-ruby"><code>azure-storage-blob</code></a> a su <code>Gemfile</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"azure-storage-blob"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='gem "azure-storage-blob", require: false
+'>Copy</button>
+</div>
+<h4 id="google-cloud-storage-service"><a class="anchorlink" href="#google-cloud-storage-service">2.4 Google Cloud Storage Service</a></h4><p>Declare un servicio de Google Cloud Storage en <code>config/storage.yml</code>:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">google</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">GCS</span>
+  <span class="na">credentials</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("path/to/keyfile.json") %&gt;</span>
+  <span class="na">project</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='google:
+  service: GCS
+  credentials: &lt;%= Rails.root.join("path/to/keyfile.json") %&gt;
+  project: ""
+  bucket: ""
+'>Copy</button>
+</div>
+<p>Opcionalmente, proporcione un hash de credenciales en lugar de una ruta de archivo de claves:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">google</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">GCS</span>
+  <span class="na">credentials</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">service_account"</span>
+    <span class="na">project_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">private_key_id</span><span class="pi">:</span> <span class="s">&lt;%= Rails.application.credentials.dig(:gcs, :private_key_id) %&gt;</span>
+    <span class="na">private_key</span><span class="pi">:</span> <span class="s">&lt;%= Rails.application.credentials.dig(:gcs, :private_key).dump %&gt;</span>
+    <span class="na">client_email</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">client_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">auth_uri</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://accounts.google.com/o/oauth2/auth"</span>
+    <span class="na">token_uri</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://accounts.google.com/o/oauth2/token"</span>
+    <span class="na">auth_provider_x509_cert_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://www.googleapis.com/oauth2/v1/certs"</span>
+    <span class="na">client_x509_cert_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">project</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='google:
+  service: GCS
+  credentials:
+    type: "service_account"
+    project_id: ""
+    private_key_id: &lt;%= Rails.application.credentials.dig(:gcs, :private_key_id) %&gt;
+    private_key: &lt;%= Rails.application.credentials.dig(:gcs, :private_key).dump %&gt;
+    client_email: ""
+    client_id: ""
+    auth_uri: "https://accounts.google.com/o/oauth2/auth"
+    token_uri: "https://accounts.google.com/o/oauth2/token"
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+    client_x509_cert_url: ""
+  project: ""
+  bucket: ""
+'>Copy</button>
+</div>
+<p>Añade la gema <a href="https://github.com/GoogleCloudPlatform/google-cloud-ruby/tree/master/google-cloud-storage"><code>google-cloud-storage</code></a> a su <code>Gemfile</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"google-cloud-storage"</span><span class="p">,</span> <span class="s2">"~&gt; 1.11"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='gem "google-cloud-storage", "~&gt; 1.11", require: false
+'>Copy</button>
+</div>
+<h4 id="mirror-service"><a class="anchorlink" href="#mirror-service">2.5 Mirror Service</a></h4><p>Puede mantener varios servicios sincronizados definiendo un servicio espejo. Un espejo
+servicio replica cargas y elimina en dos o más servicios subordinados.</p><p>Un servicio espejo está diseñado para usarse temporalmente durante una migración entre
+servicios en producción. Puede comenzar a duplicar en un nuevo servicio, copie
+archivos preexistentes del servicio antiguo al nuevo, luego haga todo lo posible por el nuevo
+Servicio.</p><div class="note"><p>La duplicación no es atómica. Es posible que una carga se realice correctamente en el
+servicio primario y falla en cualquiera de los servicios subordinados. Antes de ir
+todo incluido en un nuevo servicio, verifique que se hayan copiado todos los archivos.</p></div><p>Defina cada uno de los servicios que le gustaría reflejar como se describe arriba. Referencia
+ellos por su nombre al definir un servicio espejo:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">s3_west_coast</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+<span class="na">s3_east_coast</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">S3</span>
+  <span class="na">access_key_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">secret_access_key</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+<span class="na">production</span><span class="pi">:</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">Mirror</span>
+  <span class="na">primary</span><span class="pi">:</span> <span class="s">s3_east_coast</span>
+  <span class="na">mirrors</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">s3_west_coast</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='s3_west_coast:
+  service: S3
+  access_key_id: ""
+  secret_access_key: ""
+  region: ""
+  bucket: ""
+
+s3_east_coast:
+  service: S3
+  access_key_id: ""
+  secret_access_key: ""
+  region: ""
+  bucket: ""
+
+production:
+  service: Mirror
+  primary: s3_east_coast
+  mirrors:
+    - s3_west_coast
+'>Copy</button>
+</div>
+<p>Aunque todos los servicios secundarios reciben cargas, las descargas siempre se manejan
+por el servicio primario.</p><p>Los servicios espejo son compatibles con cargas directas. Los archivos nuevos son directamente
+subido al servicio principal. Cuando un archivo cargado directamente se adjunta a un
+registro, se pone en cola un trabajo en segundo plano para copiarlo en los servicios secundarios.</p><h4 id="public-access"><a class="anchorlink" href="#public-access">2.6 Public access</a></h4><p>De forma predeterminada, Active Storage asume el acceso privado a los servicios. Esto significa generar URL firmadas y de un solo uso para blobs. Si prefiere que los blobs sean accesibles públicamente, especifique <code>public: true</code> en el archivo <code>config/storage.yml</code> de su aplicación:</p><div class="code_container">
+<pre><code class="highlight yaml"><span class="na">gcs</span><span class="pi">:</span> <span class="nl">&amp;gcs</span>
+  <span class="na">service</span><span class="pi">:</span> <span class="s">GCS</span>
+  <span class="na">project</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+<span class="na">private_gcs</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*gcs</span>
+  <span class="na">credentials</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("path/to/private_keyfile.json") %&gt;</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+
+<span class="na">public_gcs</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*gcs</span>
+  <span class="na">credentials</span><span class="pi">:</span> <span class="s">&lt;%= Rails.root.join("path/to/public_keyfile.json") %&gt;</span>
+  <span class="na">bucket</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">public</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='gcs: &amp;gcs
+  service: GCS
+  project: ""
+
+private_gcs:
+  &lt;&lt;: *gcs
+  credentials: &lt;%= Rails.root.join("path/to/private_keyfile.json") %&gt;
+  bucket: ""
+
+public_gcs:
+  &lt;&lt;: *gcs
+  credentials: &lt;%= Rails.root.join("path/to/public_keyfile.json") %&gt;
+  bucket: ""
+  public: true
+'>Copy</button>
+</div>
+<p>Asegúrese de que sus depósitos estén configurados correctamente para el acceso público. Consulte los documentos sobre cómo habilitar permisos de lectura públicos para <a href="https://docs.aws.amazon.com/AmazonS3/latest/user-guide/block-public-access-bucket.html">Amazon S3</a>, <a href="https://cloud.google.com/storage/docs/access-control/making-data-public#buckets">Google Cloud Storage </a> y <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-manage-access-to-resources#set-container-public-access-level-in-the-azure-portal">Microsoft Azure</a> servicios de almacenamiento.</p><h3 id="attaching-files-to-records"><a class="anchorlink" href="#attaching-files-to-records">3 Attaching Files to Records</a></h3><h4 id="has-one-attached"><a class="anchorlink" href="#has-one-attached">3.1 <code>has_one_attached</code></a></h4><p>La macro <code>has_one_attached</code> configura un mapeo uno a uno entre registros y
+archivos. Cada registro puede tener un archivo adjunto.</p><p>Por ejemplo, suponga que su aplicación tiene un modelo <code>User</code>. Si desea que cada usuario
+tener un avatar, defina el modelo <code>User</code> así:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_one_attached</span> <span class="ss">:avatar</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
+  has_one_attached :avatar
+end
+">Copy</button>
+</div>
+<p>Puedes crear una usuario con un avatar:</p><div class="code_container">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">file_field</span> <span class="ss">:avatar</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form.file_field :avatar %&gt;
+">Copy</button>
+</div>
+<div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">SignupController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="n">user_params</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">[</span><span class="ss">:user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="nf">id</span>
+    <span class="n">redirect_to</span> <span class="n">root_path</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">user_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:user</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:email_address</span><span class="p">,</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">:avatar</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class SignupController &lt; ApplicationController
+  def create
+    user = User.create!(user_params)
+    session[:user_id] = user.id
+    redirect_to root_path
+  end
+
+  private
+    def user_params
+      params.require(:user).permit(:email_address, :password, :avatar)
+    end
+end
+">Copy</button>
+</div>
+<p>Llame a <code>avatar.attach</code> para adjuntar un avatar a un usuario existente:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:avatar</span><span class="p">])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="user.avatar.attach(params[:avatar])
+">Copy</button>
+</div>
+<p>Llame a <code>avatar.attached?</code> para determinar si un usuario en particular tiene un avatar:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">attached?</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="user.avatar.attached?
+">Copy</button>
+</div>
+<p>En algunos casos, es posible que desee anular un servicio predeterminado para un archivo adjunto específico.
+Puede configurar servicios específicos por archivo adjunto usando la opción <code>service</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_one_attached</span> <span class="ss">:avatar</span><span class="p">,</span> <span class="ss">service: :s3</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
+  has_one_attached :avatar, service: :s3
+end
+">Copy</button>
+</div>
+<h4 id="has-many-attached"><a class="anchorlink" href="#has-many-attached">3.2 <code>has_many_attached</code></a></h4><p>La macro <code>has_many_attached</code> establece una relación de uno a varios entre registros
+y archivos. Cada registro puede tener muchos archivos adjuntos.</p><p>Por ejemplo, suponga que su aplicación tiene un modelo de <code>Message</code>. Si quieres cada uno
+mensaje para tener muchas imágenes, defina el modelo <code>Message</code> así:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many_attached</span> <span class="ss">:images</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Message &lt; ApplicationRecord
+  has_many_attached :images
+end
+">Copy</button>
+</div>
+<p>Puedes crear un mensaje con imágenes:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MessagesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="no">Message</span><span class="p">.</span><span class="nf">create!</span><span class="p">(</span><span class="n">message_params</span><span class="p">)</span>
+    <span class="n">redirect_to</span> <span class="n">message</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">message_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:message</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">images: </span><span class="p">[])</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MessagesController &lt; ApplicationController
+  def create
+    message = Message.create!(message_params)
+    redirect_to message
+  end
+
+  private
+    def message_params
+      params.require(:message).permit(:title, :content, images: [])
+    end
+end
+">Copy</button>
+</div>
+<p>Llame a <code>images.attach</code> para agregar nuevas imágenes a un mensaje existente:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="vi">@message</span><span class="p">.</span><span class="nf">images</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:images</span><span class="p">])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@message.images.attach(params[:images])
+">Copy</button>
+</div>
+<p>Llame a <code>images.attached?</code> Para determinar si un mensaje en particular tiene imágenes:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="vi">@message</span><span class="p">.</span><span class="nf">images</span><span class="p">.</span><span class="nf">attached?</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@message.images.attached?
+">Copy</button>
+</div>
+<p>La anulación del servicio predeterminado se hace de la misma manera que <code>has_one_attached</code>, usando la opción <code>service</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many_attached</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">service: :s3</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Message &lt; ApplicationRecord
+  has_many_attached :images, service: :s3
+end
+">Copy</button>
+</div>
+<h4 id="attaching-file-io-objects"><a class="anchorlink" href="#attaching-file-io-objects">3.3 Attaching File/IO Objects</a></h4><p>A veces es necesario adjuntar un archivo que no llega a través de una solicitud HTTP.
+Por ejemplo, es posible que desee adjuntar un archivo que generó en el disco o descargó
+desde una URL enviada por el usuario. Es posible que también desee adjuntar un archivo de accesorio en un
+prueba modelo. Para hacer eso, proporcione un Hash que contenga al menos un objeto IO abierto
+y un nombre de archivo:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="vi">@message</span><span class="p">.</span><span class="nf">image</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="ss">io: </span><span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s1">'/path/to/file'</span><span class="p">),</span> <span class="ss">filename: </span><span class="s1">'file.pdf'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf')
+">Copy</button>
+</div>
+<p>Cuando sea posible, proporcione también un tipo de contenido. Active Storage intenta
+determinar el tipo de contenido de un archivo a partir de sus datos. Vuelve al contenido
+tipo que proporcione si no puede hacer eso.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="vi">@message</span><span class="p">.</span><span class="nf">image</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="ss">io: </span><span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s1">'/path/to/file'</span><span class="p">),</span> <span class="ss">filename: </span><span class="s1">'file.pdf'</span><span class="p">,</span> <span class="ss">content_type: </span><span class="s1">'application/pdf'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@message.image.attach(io: File.open('/path/to/file'), filename: 'file.pdf', content_type: 'application/pdf')
+">Copy</button>
+</div>
+<p>Puede omitir la inferencia del tipo de contenido a partir de los datos pasando
+<code>identificar: false</code> junto con el <code>content_type</code>.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="vi">@message</span><span class="p">.</span><span class="nf">image</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span>
+  <span class="ss">io: </span><span class="no">File</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="s1">'/path/to/file'</span><span class="p">),</span>
+  <span class="ss">filename: </span><span class="s1">'file.pdf'</span><span class="p">,</span>
+  <span class="ss">content_type: </span><span class="s1">'application/pdf'</span><span class="p">,</span>
+  <span class="ss">identify: </span><span class="kp">false</span>
+<span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@message.image.attach(
+  io: File.open('/path/to/file'),
+  filename: 'file.pdf',
+  content_type: 'application/pdf',
+  identify: false
+)
+">Copy</button>
+</div>
+<p>Si no proporciona un tipo de contenido y Active Storage no puede determinar el
+el tipo de contenido del archivo automáticamente, el valor predeterminado es application/octet-stream.</p><h3 id="removing-files"><a class="anchorlink" href="#removing-files">4 Removing Files</a></h3><p>Para eliminar un archivo adjunto de un modelo, llame a <code>purge</code> en el archivo adjunto. Eliminación
+se puede hacer en segundo plano si su aplicación está configurada para usar Active Job.
+La purga elimina el blob y el archivo del servicio de almacenamiento.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Synchronously destroy the avatar and actual resource files.</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">purge</span>
+
+<span class="c1"># Destroy the associated models and actual resource files async, via Active Job.</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">purge_later</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Synchronously destroy the avatar and actual resource files.
+user.avatar.purge
+
+# Destroy the associated models and actual resource files async, via Active Job.
+user.avatar.purge_later
+">Copy</button>
+</div>
+<h3 id="linking-to-files"><a class="anchorlink" href="#linking-to-files">5 Linking to Files</a></h3><p>Genere una URL permanente para el blob que apunta a la aplicación. Sobre
+acceso, se devuelve una redirección al punto final del servicio real. Esta indirección
+desacopla la URL del servicio de la real y permite, por ejemplo, duplicar
+anexos en diferentes servicios para alta disponibilidad. La redirección tiene un
+Caducidad HTTP de 5 min.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">url_for</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="url_for(user.avatar)
+">Copy</button>
+</div>
+<p>Para crear un enlace de descarga, use el ayudante <code>rails_blob_{path|url}</code>. Usando esto
+helper le permite establecer la disposición.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">rails_blob_path</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">,</span> <span class="ss">disposition: </span><span class="s2">"attachment"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='rails_blob_path(user.avatar, disposition: "attachment")
+'>Copy</button>
+</div>
+<div class="warning"><p>Para evitar ataques XSS, ActiveStorage fuerza el encabezado Content-Disposition
+a "archivo adjunto" para algunos tipos de archivos. Para cambiar este comportamiento, consulte la
+opciones de configuración disponibles en  <a href="configuring.html#configuring-active-storage">Configuring Rails Applications</a>.</p></div><p>Si necesita crear un enlace desde fuera del contexto del controlador/vista (Background
+jobs, Cronjobs, etc.), puede acceder a rails_blob_path así</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">url_helpers</span><span class="p">.</span><span class="nf">rails_blob_path</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">,</span> <span class="ss">only_path: </span><span class="kp">true</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.url_helpers.rails_blob_path(user.avatar, only_path: true)
+">Copy</button>
+</div>
+<h3 id="downloading-files"><a class="anchorlink" href="#downloading-files">6 Downloading Files</a></h3><p>A veces, es necesario procesar un blob después de que se carga, por ejemplo, para convertir
+a un formato diferente. Use <code>ActiveStorage::Blob#download</code> para leer un blob
+datos binarios en la memoria:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">binary</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">download</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="binary = user.avatar.download
+">Copy</button>
+</div>
+<p>Es posible que desee descargar un blob en un archivo en el disco para que un programa externo (p. Ej.
+un escáner de virus o un transcodificador de medios) pueden operar en él. Utilizar
+<code>ActiveStorage::Blob open</code> para descargar un blob a un archivo temporal en el disco:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">message</span><span class="p">.</span><span class="nf">video</span><span class="p">.</span><span class="nf">open</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+  <span class="nb">system</span> <span class="s1">'/path/to/virus/scanner'</span><span class="p">,</span> <span class="n">file</span><span class="p">.</span><span class="nf">path</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="message.video.open do |file|
+  system '/path/to/virus/scanner', file.path
+  # ...
+end
+">Copy</button>
+</div>
+<p>Es importante saber que el archivo aún no está disponible en la devolución de llamada `<code>after_create</code>, sino solo en el `after_create_commit.</p><h3 id="analyzing-files"><a class="anchorlink" href="#analyzing-files">7 Analyzing Files</a></h3><p>Active Storage <a href="https://edgeapi.rubyonrails.org/classes/ActiveStorage/Blob/Analyzable.html#method-i-analyze">analyzes</a> archivos una vez que se hayan cargado poniendo en cola un trabajo en Trabajo activo. Los archivos analizados almacenarán información adicional en el hash de metadatos, incluido <code>analyzed: true</code>. Puede comprobar si un blob ha sido analizado llamando a <code>analyzed?</code> En él.</p><p>El análisis de imágenes proporciona atributos de <code>width</code> y height<code>. El análisis de video proporciona estos datos, así como la</code>duration<code>,</code>angle<code>, y</code>display_aspect_ratio`.</p><p>El análisis requiere la gema <code>mini_magick</code>. El análisis de video también requiere la biblioteca <a href="https://www.ffmpeg.org/">FFmpeg</a>, que debe incluir por separado.</p><h3 id="transforming-images"><a class="anchorlink" href="#transforming-images">8 Transforming Images</a></h3><p>Para habilitar variantes, agregue la gema <code>image_processing</code> a su<code>Gemfile</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s1">'image_processing'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem 'image_processing'
+">Copy</button>
+</div>
+<p>Para crear una variación de una imagen, llame a <code>variant</code> en el <code>Blob</code>. Puede pasar cualquier transformación al método admitido por el procesador. El procesador predeterminado para Active Storage es MiniMagick, pero también puede usar <a href="https://www.rubydoc.info/gems/ruby-vips/Vips/Image">Vips</a>.</p><p>Cuando el navegador accede a la URL variante, Active Storage transformará la
+blob original en el formato especificado y redirigir a su nuevo servicio
+ubicación.</p><div class="code_container">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">user</span><span class="p">.</span><span class="nf">avatar</span><span class="p">.</span><span class="nf">variant</span><span class="p">(</span><span class="ss">resize_to_limit: </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= image_tag user.avatar.variant(resize_to_limit: [100, 100]) %&gt;
+">Copy</button>
+</div>
+<p>Para cambiar al procesador Vips, debe agregar lo siguiente a
+<code>config/application.rb</code>:</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Use Vips for processing variants.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">variant_processor</span> <span class="o">=</span> <span class="ss">:vips</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Use Vips for processing variants.
+config.active_storage.variant_processor = :vips
+">Copy</button>
+</div>
+<h3 id="previewing-files"><a class="anchorlink" href="#previewing-files">9 Previewing Files</a></h3><p>Se pueden obtener una vista previa de algunos archivos que no son de imagen: es decir, se pueden presentar como imágenes.
+Por ejemplo, se puede obtener una vista previa de un archivo de video extrayendo su primer fotograma. Fuera de
+En la caja, Active Storage admite la vista previa de videos y documentos PDF.</p><div class="code_container">
+<pre><code class="highlight erb"><span class="nt">&lt;ul&gt;</span>
+  <span class="cp">&lt;%</span> <span class="vi">@message</span><span class="p">.</span><span class="nf">files</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">file</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize_to_limit: </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;ul&gt;
+  &lt;% @message.files.each do |file| %&gt;
+    &lt;li&gt;
+      &lt;%= image_tag file.preview(resize_to_limit: [100, 100]) %&gt;
+    &lt;/li&gt;
+  &lt;% end %&gt;
+&lt;/ul&gt;
+">Copy</button>
+</div>
+<div class="warning"><p>La extracción de vistas previas requiere aplicaciones de terceros, FFmpeg para
+video y muPDF para PDF, y en macOS también XQuartz y Poppler.
+Rails no proporciona estas bibliotecas. Debe instalarlos usted mismo para
+utilice los previsualizadores integrados. Antes de instalar y utilizar software de terceros,
+asegúrese de comprender las implicaciones de licencias de hacerlo.</p></div><h3 id="direct-uploads"><a class="anchorlink" href="#direct-uploads">10 Direct Uploads</a></h3><p>Active Storage, con su biblioteca JavaScript incluida, admite la carga
+directamente del cliente a la nube</p><h4 id="usage"><a class="anchorlink" href="#usage">10.1 Usage</a></h4>
+<ol>
+<li>
+<p>Incluya <code>activestorage.js</code> en el paquete de JavaScript de su aplicación.</p>
+<p>Usando la canalización de activos::</p>
+<div class="code_container">
+<pre><code class="highlight js"><span class="c1">//= require activestorage</span>
+
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="//= require activestorage
+
+">Copy</button>
+</div>
+<p>Usando el paquete npm:</p>
+<div class="code_container">
+<pre><code class="highlight js"><span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">@rails/activestorage</span><span class="dl">"</span><span class="p">).</span><span class="nx">start</span><span class="p">()</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='require("@rails/activestorage").start()
+'>Copy</button>
+</div>
+</li>
+<li>
+<p>Anote las entradas del archivo con la URL de carga directa</p>
+<div class="code_container">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">file_field</span> <span class="ss">:attachments</span><span class="p">,</span> <span class="ss">multiple: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">direct_upload: </span><span class="kp">true</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form.file_field :attachments, multiple: true, direct_upload: true %&gt;
+">Copy</button>
+</div>
+</li>
+<li><p>Configure CORS en servicios de almacenamiento de terceros para permitir solicitudes de carga directa.</p></li>
+<li><p>¡Eso es! Las cargas comienzan con el envío del formulario.</p></li>
+</ol>
+<h4 id="cross-origin-resource-sharing-cors-configuration"><a class="anchorlink" href="#cross-origin-resource-sharing-cors-configuration">10.2 Cross-Origin Resource Sharing (CORS) configuration</a></h4><p>Para que las cargas directas a un servicio de terceros funcionen, deberá configurar el servicio para permitir solicitudes de origen cruzado desde su aplicación. Consulte la documentación de CORS para su servicio:</p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html#how-do-i-enable-cors">S3</a></li>
+<li><a href="https://cloud.google.com/storage/docs/configuring-cors">Google Cloud Storage</a></li>
+<li><a href="https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services">Azure Storage</a></li>
+</ul>
+<p>Tenga cuidado de permitir:</p>
+<ul>
+<li>Todos los orígenes desde los que se accede a su aplicación</li>
+<li>El método de solicitud <code>PUT</code>
+</li>
+<li>Los siguientes encabezados:
+
+<ul>
+<li><code>Origin</code></li>
+<li><code>Content-Type</code></li>
+<li><code>Content-MD5</code></li>
+<li>
+<code>Content-Disposition</code> (excepto para Azure Storage)</li>
+<li>
+<code>x-ms-blob-content-disposition</code> (solamente para Azure Storage)</li>
+<li>
+<code>x-ms-blob-type</code> (solamente para Azure Storage )</li>
+</ul>
+</li>
+</ul>
+<p>No se requiere configuración de CORS para el servicio de disco, ya que comparte el origen de su aplicación.</p><h5 id="example-s3-cors-configuration"><a class="anchorlink" href="#example-s3-cors-configuration">10.2.1 Example: S3 CORS configuration</a></h5><div class="code_container">
+<pre><code class="highlight xml"><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;CORSConfiguration</span> <span class="na">xmlns=</span><span class="s">"http://s3.amazonaws.com/doc/2006-03-01/"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;CORSRule&gt;</span>
+    <span class="nt">&lt;AllowedOrigin&gt;</span>https://www.example.com<span class="nt">&lt;/AllowedOrigin&gt;</span>
+    <span class="nt">&lt;AllowedMethod&gt;</span>PUT<span class="nt">&lt;/AllowedMethod&gt;</span>
+    <span class="nt">&lt;AllowedHeader&gt;</span>Origin<span class="nt">&lt;/AllowedHeader&gt;</span>
+    <span class="nt">&lt;AllowedHeader&gt;</span>Content-Type<span class="nt">&lt;/AllowedHeader&gt;</span>
+    <span class="nt">&lt;AllowedHeader&gt;</span>Content-MD5<span class="nt">&lt;/AllowedHeader&gt;</span>
+    <span class="nt">&lt;AllowedHeader&gt;</span>Content-Disposition<span class="nt">&lt;/AllowedHeader&gt;</span>
+    <span class="nt">&lt;MaxAgeSeconds&gt;</span>3600<span class="nt">&lt;/MaxAgeSeconds&gt;</span>
+<span class="nt">&lt;/CORSRule&gt;</span>
+<span class="nt">&lt;/CORSConfiguration&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"&gt;
+&lt;CORSRule&gt;
+    &lt;AllowedOrigin&gt;https://www.example.com&lt;/AllowedOrigin&gt;
+    &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;
+    &lt;AllowedHeader&gt;Origin&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-Type&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-MD5&lt;/AllowedHeader&gt;
+    &lt;AllowedHeader&gt;Content-Disposition&lt;/AllowedHeader&gt;
+    &lt;MaxAgeSeconds&gt;3600&lt;/MaxAgeSeconds&gt;
+&lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;
+'>Copy</button>
+</div>
+<h5 id="example-google-cloud-storage-cors-configuration"><a class="anchorlink" href="#example-google-cloud-storage-cors-configuration">10.2.2 Example: Google Cloud Storage CORS configuration</a></h5><div class="code_container">
+<pre><code class="highlight json"><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"origin"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"https://www.example.com"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"PUT"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"responseHeader"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Origin"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Content-Type"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Content-MD5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Content-Disposition"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"maxAgeSeconds"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text='[
+  {
+    "origin": ["https://www.example.com"],
+    "method": ["PUT"],
+    "responseHeader": ["Origin", "Content-Type", "Content-MD5", "Content-Disposition"],
+    "maxAgeSeconds": 3600
+  }
+]
+'>Copy</button>
+</div>
+<h5 id="example-azure-storage-cors-configuration"><a class="anchorlink" href="#example-azure-storage-cors-configuration">10.2.3 Example: Azure Storage CORS configuration</a></h5><div class="code_container">
+<pre><code class="highlight xml"><span class="nt">&lt;Cors&gt;</span>
+  <span class="nt">&lt;CorsRule&gt;</span>
+    <span class="nt">&lt;AllowedOrigins&gt;</span>https://www.example.com<span class="nt">&lt;/AllowedOrigins&gt;</span>
+    <span class="nt">&lt;AllowedMethods&gt;</span>PUT<span class="nt">&lt;/AllowedMethods&gt;</span>
+    <span class="nt">&lt;AllowedHeaders&gt;</span>Origin, Content-Type, Content-MD5, x-ms-blob-content-disposition, x-ms-blob-type<span class="nt">&lt;/AllowedHeaders&gt;</span>
+    <span class="nt">&lt;MaxAgeInSeconds&gt;</span>3600<span class="nt">&lt;/MaxAgeInSeconds&gt;</span>
+  <span class="nt">&lt;/CorsRule&gt;</span>
+<span class="nt">&lt;Cors&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;Cors&gt;
+  &lt;CorsRule&gt;
+    &lt;AllowedOrigins&gt;https://www.example.com&lt;/AllowedOrigins&gt;
+    &lt;AllowedMethods&gt;PUT&lt;/AllowedMethods&gt;
+    &lt;AllowedHeaders&gt;Origin, Content-Type, Content-MD5, x-ms-blob-content-disposition, x-ms-blob-type&lt;/AllowedHeaders&gt;
+    &lt;MaxAgeInSeconds&gt;3600&lt;/MaxAgeInSeconds&gt;
+  &lt;/CorsRule&gt;
+&lt;Cors&gt;
+">Copy</button>
+</div>
+<h4 id="direct-upload-javascript-events"><a class="anchorlink" href="#direct-upload-javascript-events">10.3 Direct upload JavaScript events</a></h4>
+<table>
+<thead>
+<tr>
+<th>Event name</th>
+<th>Event target</th>
+<th>Event data (<code>event.detail</code>)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direct-uploads:start</code></td>
+<td><code>&lt;form&gt;</code></td>
+<td>Ninguna</td>
+<td>Se envió un formulario que contiene archivos para campos de carga directa.</td>
+</tr>
+<tr>
+<td><code>direct-upload:initialize</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file}</code></td>
+<td>Se envía para cada archivo después del envío del formulario.</td>
+</tr>
+<tr>
+<td><code>direct-upload:start</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file}</code></td>
+<td>Está comenzando una carga directa.</td>
+</tr>
+<tr>
+<td><code>direct-upload:before-blob-request</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file, xhr}</code></td>
+<td>Antes de realizar una solicitud a su aplicación para la carga directa de metadatos.</td>
+</tr>
+<tr>
+<td><code>direct-upload:before-storage-request</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file, xhr}</code></td>
+<td>Antes de realizar una solicitud para almacenar un archivo.</td>
+</tr>
+<tr>
+<td><code>direct-upload:progress</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file, progress}</code></td>
+<td>A medida que avanzan las solicitudes para almacenar archivos.</td>
+</tr>
+<tr>
+<td><code>direct-upload:error</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file, error}</code></td>
+<td>Ocurrió un error. Se mostrará una <code>alert</code> a menos que se cancele este evento.</td>
+</tr>
+<tr>
+<td><code>direct-upload:end</code></td>
+<td><code>&lt;input&gt;</code></td>
+<td><code>{id, file}</code></td>
+<td>Ha finalizado una carga directa.</td>
+</tr>
+<tr>
+<td><code>direct-uploads:end</code></td>
+<td><code>&lt;form&gt;</code></td>
+<td>Ninguna</td>
+<td>Todas las cargas directas han finalizado.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example"><a class="anchorlink" href="#example">10.4 Example</a></h4><p>Puede utilizar estos eventos para mostrar el progreso de una carga.</p><p><img src="https://user-images.githubusercontent.com/5355/28694528-16e69d0c-72f8-11e7-91a7-c0b8cfc90391.gif" alt="direct-uploads"></p><p>Para mostrar los archivos cargados en un formulario:</p><div class="code_container">
+<pre><code class="highlight js"><span class="c1">// direct_uploads.js</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload:initialize</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">target</span><span class="p">,</span> <span class="nx">detail</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">file</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">detail</span>
+  <span class="nx">target</span><span class="p">.</span><span class="nx">insertAdjacentHTML</span><span class="p">(</span><span class="dl">"</span><span class="s2">beforebegin</span><span class="dl">"</span><span class="p">,</span> <span class="s2">`
+    &lt;div id="direct-upload-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">" class="direct-upload direct-upload--pending"&gt;
+      &lt;div id="direct-upload-progress-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">" class="direct-upload__progress" style="width: 0%"&gt;&lt;/div&gt;
+      &lt;span class="direct-upload__filename"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  `</span><span class="p">)</span>
+  <span class="nx">target</span><span class="p">.</span><span class="nx">previousElementSibling</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">`.direct-upload__filename`</span><span class="p">).</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">name</span>
+<span class="p">})</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload:start</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span>
+  <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">`direct-upload-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+  <span class="nx">element</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload--pending</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload:progress</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">progress</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span>
+  <span class="kd">const</span> <span class="nx">progressElement</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">`direct-upload-progress-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+  <span class="nx">progressElement</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">progress</span><span class="p">}</span><span class="s2">%`</span>
+<span class="p">})</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload:error</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">error</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span>
+  <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">`direct-upload-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+  <span class="nx">element</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload--error</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">element</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">title</span><span class="dl">"</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload:end</span><span class="dl">"</span><span class="p">,</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">id</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">detail</span>
+  <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">`direct-upload-</span><span class="p">${</span><span class="nx">id</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span>
+  <span class="nx">element</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="dl">"</span><span class="s2">direct-upload--complete</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='// direct_uploads.js
+
+addEventListener("direct-upload:initialize", event =&gt; {
+  const { target, detail } = event
+  const { id, file } = detail
+  target.insertAdjacentHTML("beforebegin", `
+    &lt;div id="direct-upload-${id}" class="direct-upload direct-upload--pending"&gt;
+      &lt;div id="direct-upload-progress-${id}" class="direct-upload__progress" style="width: 0%"&gt;&lt;/div&gt;
+      &lt;span class="direct-upload__filename"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  `)
+  target.previousElementSibling.querySelector(`.direct-upload__filename`).textContent = file.name
+})
+
+addEventListener("direct-upload:start", event =&gt; {
+  const { id } = event.detail
+  const element = document.getElementById(`direct-upload-${id}`)
+  element.classList.remove("direct-upload--pending")
+})
+
+addEventListener("direct-upload:progress", event =&gt; {
+  const { id, progress } = event.detail
+  const progressElement = document.getElementById(`direct-upload-progress-${id}`)
+  progressElement.style.width = `${progress}%`
+})
+
+addEventListener("direct-upload:error", event =&gt; {
+  event.preventDefault()
+  const { id, error } = event.detail
+  const element = document.getElementById(`direct-upload-${id}`)
+  element.classList.add("direct-upload--error")
+  element.setAttribute("title", error)
+})
+
+addEventListener("direct-upload:end", event =&gt; {
+  const { id } = event.detail
+  const element = document.getElementById(`direct-upload-${id}`)
+  element.classList.add("direct-upload--complete")
+})
+'>Copy</button>
+</div>
+<p>Agregar estilos:</p><div class="code_container">
+<pre><code class="highlight css"><span class="c">/* direct_uploads.css */</span>
+
+<span class="nc">.direct-upload</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">relative</span><span class="p">;</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">2px</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="m">3px</span> <span class="m">3px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0.3</span><span class="p">);</span>
+  <span class="nl">border-radius</span><span class="p">:</span> <span class="m">3px</span><span class="p">;</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="m">11px</span><span class="p">;</span>
+  <span class="nl">line-height</span><span class="p">:</span> <span class="m">13px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.direct-upload--pending</span> <span class="p">{</span>
+  <span class="nl">opacity</span><span class="p">:</span> <span class="m">0.6</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.direct-upload__progress</span> <span class="p">{</span>
+  <span class="nl">position</span><span class="p">:</span> <span class="nb">absolute</span><span class="p">;</span>
+  <span class="nl">top</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">left</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">bottom</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="nl">opacity</span><span class="p">:</span> <span class="m">0.2</span><span class="p">;</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="m">#0076ff</span><span class="p">;</span>
+  <span class="nl">transition</span><span class="p">:</span> <span class="n">width</span> <span class="m">120ms</span> <span class="n">ease-out</span><span class="p">,</span> <span class="n">opacity</span> <span class="m">60ms</span> <span class="m">60ms</span> <span class="n">ease-in</span><span class="p">;</span>
+  <span class="nl">transform</span><span class="p">:</span> <span class="n">translate3d</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.direct-upload--complete</span> <span class="nc">.direct-upload__progress</span> <span class="p">{</span>
+  <span class="nl">opacity</span><span class="p">:</span> <span class="m">0.4</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.direct-upload--error</span> <span class="p">{</span>
+  <span class="nl">border-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">input</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="nt">file</span><span class="o">][</span><span class="nt">data-direct-upload-url</span><span class="o">][</span><span class="nt">disabled</span><span class="o">]</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="/* direct_uploads.css */
+
+.direct-upload {
+  display: inline-block;
+  position: relative;
+  padding: 2px 4px;
+  margin: 0 3px 3px 0;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.direct-upload--pending {
+  opacity: 0.6;
+}
+
+.direct-upload__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.2;
+  background: #0076ff;
+  transition: width 120ms ease-out, opacity 60ms 60ms ease-in;
+  transform: translate3d(0, 0, 0);
+}
+
+.direct-upload--complete .direct-upload__progress {
+  opacity: 0.4;
+}
+
+.direct-upload--error {
+  border-color: red;
+}
+
+input[type=file][data-direct-upload-url][disabled] {
+  display: none;
+}
+">Copy</button>
+</div>
+<h4 id="integrating-with-libraries-or-frameworks"><a class="anchorlink" href="#integrating-with-libraries-or-frameworks">10.5 Integrating with Libraries or Frameworks</a></h4><p>Si desea utilizar la función Carga directa desde un marco de JavaScript, o
+desea integrar soluciones personalizadas de arrastrar y soltar, puede utilizar el
+Clase <code>DirectUpload</code> para este propósito. Al recibir un archivo de su biblioteca
+de su elección, cree una instancia de DirectUpload y llame a su método de creación. Crear tomas
+una devolución de llamada para invocar cuando se complete la carga.</p><div class="code_container">
+<pre><code class="highlight js"><span class="k">import</span> <span class="p">{</span> <span class="nx">DirectUpload</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@rails/activestorage</span><span class="dl">"</span>
+
+<span class="kd">const</span> <span class="nx">input</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=file]</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="c1">// Bind to file drop - use the ondrop on a parent element or use a</span>
+<span class="c1">//  library like Dropzone</span>
+<span class="kd">const</span> <span class="nx">onDrop</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+  <span class="kd">const</span> <span class="nx">files</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">dataTransfer</span><span class="p">.</span><span class="nx">files</span><span class="p">;</span>
+  <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">files</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">file</span> <span class="o">=&gt;</span> <span class="nx">uploadFile</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="c1">// Bind to normal file selection</span>
+<span class="nx">input</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">change</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nb">Array</span><span class="p">.</span><span class="k">from</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">files</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">file</span> <span class="o">=&gt;</span> <span class="nx">uploadFile</span><span class="p">(</span><span class="nx">file</span><span class="p">))</span>
+  <span class="c1">// you might clear the selected files from the input</span>
+  <span class="nx">input</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="p">})</span>
+
+<span class="kd">const</span> <span class="nx">uploadFile</span> <span class="o">=</span> <span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// your form needs the file_field direct_upload: true, which</span>
+  <span class="c1">//  provides data-direct-upload-url</span>
+  <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">dataset</span><span class="p">.</span><span class="nx">directUploadUrl</span>
+  <span class="kd">const</span> <span class="nx">upload</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DirectUpload</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span>
+
+  <span class="nx">upload</span><span class="p">.</span><span class="nx">create</span><span class="p">((</span><span class="nx">error</span><span class="p">,</span> <span class="nx">blob</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Handle the error</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// Add an appropriately-named hidden input to the form with a</span>
+      <span class="c1">//  value of blob.signed_id so that the blob ids will be</span>
+      <span class="c1">//  transmitted in the normal upload flow</span>
+      <span class="kd">const</span> <span class="nx">hiddenField</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="dl">'</span><span class="s1">input</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hidden</span><span class="dl">"</span><span class="p">);</span>
+      <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">value</span><span class="dl">"</span><span class="p">,</span> <span class="nx">blob</span><span class="p">.</span><span class="nx">signed_id</span><span class="p">);</span>
+      <span class="nx">hiddenField</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">input</span><span class="p">.</span><span class="nx">name</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">hiddenField</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import { DirectUpload } from &quot;@rails/activestorage&quot;
+
+const input = document.querySelector('input[type=file]')
+
+// Bind to file drop - use the ondrop on a parent element or use a
+//  library like Dropzone
+const onDrop = (event) =&gt; {
+  event.preventDefault()
+  const files = event.dataTransfer.files;
+  Array.from(files).forEach(file =&gt; uploadFile(file))
+}
+
+// Bind to normal file selection
+input.addEventListener('change', (event) =&gt; {
+  Array.from(input.files).forEach(file =&gt; uploadFile(file))
+  // you might clear the selected files from the input
+  input.value = null
+})
+
+const uploadFile = (file) =&gt; {
+  // your form needs the file_field direct_upload: true, which
+  //  provides data-direct-upload-url
+  const url = input.dataset.directUploadUrl
+  const upload = new DirectUpload(file, url)
+
+  upload.create((error, blob) =&gt; {
+    if (error) {
+      // Handle the error
+    } else {
+      // Add an appropriately-named hidden input to the form with a
+      //  value of blob.signed_id so that the blob ids will be
+      //  transmitted in the normal upload flow
+      const hiddenField = document.createElement('input')
+      hiddenField.setAttribute(&quot;type&quot;, &quot;hidden&quot;);
+      hiddenField.setAttribute(&quot;value&quot;, blob.signed_id);
+      hiddenField.name = input.name
+      document.querySelector('form').appendChild(hiddenField)
+    }
+  })
+}
+">Copy</button>
+</div>
+<p>Si necesita realizar un seguimiento del progreso de la carga del archivo, se puede pasar un tercer
+parámetro al constructor <code>DirectUpload</code>. Durante la carga, DirectUpload
+llamará al método <code>directUploadWillStoreFileWithXHR</code> del objeto. Entonces puedes
+enlazar su propio controlador de progreso en el XHR.</p><div class="code_container">
+<pre><code class="highlight js"><span class="k">import</span> <span class="p">{</span> <span class="nx">DirectUpload</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@rails/activestorage</span><span class="dl">"</span>
+
+<span class="kd">class</span> <span class="nx">Uploader</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">upload</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DirectUpload</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">file</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="nx">upload</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">upload</span><span class="p">.</span><span class="nx">create</span><span class="p">((</span><span class="nx">error</span><span class="p">,</span> <span class="nx">blob</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Handle the error</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">// Add an appropriately-named hidden input to the form</span>
+        <span class="c1">// with a value of blob.signed_id</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="nx">directUploadWillStoreFileWithXHR</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">request</span><span class="p">.</span><span class="nx">upload</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">progress</span><span class="dl">"</span><span class="p">,</span>
+      <span class="nx">event</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">directUploadDidProgress</span><span class="p">(</span><span class="nx">event</span><span class="p">))</span>
+  <span class="p">}</span>
+
+  <span class="nx">directUploadDidProgress</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Use event.loaded and event.total to update the progress bar</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='import { DirectUpload } from "@rails/activestorage"
+
+class Uploader {
+  constructor(file, url) {
+    this.upload = new DirectUpload(this.file, this.url, this)
+  }
+
+  upload(file) {
+    this.upload.create((error, blob) =&gt; {
+      if (error) {
+        // Handle the error
+      } else {
+        // Add an appropriately-named hidden input to the form
+        // with a value of blob.signed_id
+      }
+    })
+  }
+
+  directUploadWillStoreFileWithXHR(request) {
+    request.upload.addEventListener("progress",
+      event =&gt; this.directUploadDidProgress(event))
+  }
+
+  directUploadDidProgress(event) {
+    // Use event.loaded and event.total to update the progress bar
+  }
+}
+'>Copy</button>
+</div>
+<h3 id="discarding-files-stored-during-system-tests"><a class="anchorlink" href="#discarding-files-stored-during-system-tests">11 Discarding Files Stored During System Tests</a></h3><p>Las pruebas del sistema limpian los datos de prueba al revertir una transacción. Porque destroy
+nunca se llama en un objeto, los archivos adjuntos nunca se limpian. Si tu
+deseas borrar los archivos, puede hacerlo en una devolución de llamada <code>after_teardown</code>. Haciéndolo
+aquí asegura que todas las conexiones creadas durante la prueba estén completas y
+no recibirá un error de Active Storage diciendo que no puede encontrar un archivo.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationSystemTestCase</span> <span class="o">&lt;</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">SystemTestCase</span>
+  <span class="n">driven_by</span> <span class="ss">:selenium</span><span class="p">,</span> <span class="ss">using: :chrome</span><span class="p">,</span> <span class="ss">screen_size: </span><span class="p">[</span><span class="mi">1400</span><span class="p">,</span> <span class="mi">1400</span><span class="p">]</span>
+
+  <span class="k">def</span> <span class="nf">remove_uploaded_files</span>
+    <span class="no">FileUtils</span><span class="p">.</span><span class="nf">rm_rf</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/storage_test"</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">after_teardown</span>
+    <span class="k">super</span>
+    <span class="n">remove_uploaded_files</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationSystemTestCase &lt; ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
+
+  def remove_uploaded_files
+    FileUtils.rm_rf("#{Rails.root}/storage_test")
+  end
+
+  def after_teardown
+    super
+    remove_uploaded_files
+  end
+end
+'>Copy</button>
+</div>
+<p>Si las pruebas de su sistema verifican la eliminación de un modelo con archivos adjuntos y está
+usando Active Job, configure su entorno de prueba para usar el adaptador de cola en línea para
+el trabajo de purga se ejecuta inmediatamente, más bien en un momento futuro desconocido.</p><p>También es posible que desee utilizar una definición de servicio separada para el entorno de prueba.
+para que sus pruebas no eliminen los archivos que se crean durante el desarrollo.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="c1"># Use inline job processing to make things happen immediately</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_adapter</span> <span class="o">=</span> <span class="ss">:inline</span>
+
+<span class="c1"># Separate file storage in the test environment</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">service</span> <span class="o">=</span> <span class="ss">:local_test</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Use inline job processing to make things happen immediately
+config.active_job.queue_adapter = :inline
+
+# Separate file storage in the test environment
+config.active_storage.service = :local_test
+">Copy</button>
+</div>
+<h3 id="discarding-files-stored-during-integration-tests"><a class="anchorlink" href="#discarding-files-stored-during-integration-tests">12 Discarding Files Stored During Integration Tests</a></h3><p>De manera similar a las pruebas del sistema, los archivos cargados durante las pruebas de integración no se
+limpian automáticamente. Si desea borrar los archivos, puede hacerlo en una
+devolución de llamada <code>after_teardown</code>. Hacerlo aquí asegura que todas las conexiones creadas
+durante la prueba están completos y no recibirá un error de Active Storage
+diciendo que no puede encontrar un archivo.</p><div class="code_container">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">RemoveUploadedFiles</span>
+  <span class="k">def</span> <span class="nf">after_teardown</span>
+    <span class="k">super</span>
+    <span class="n">remove_uploaded_files</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">remove_uploaded_files</span>
+    <span class="no">FileUtils</span><span class="p">.</span><span class="nf">rm_rf</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'tmp'</span><span class="p">,</span> <span class="s1">'storage'</span><span class="p">))</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">ActionDispatch</span>
+  <span class="k">class</span> <span class="nc">IntegrationTest</span>
+    <span class="n">prepend</span> <span class="no">RemoveUploadedFiles</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module RemoveUploadedFiles
+  def after_teardown
+    super
+    remove_uploaded_files
+  end
+
+  private
+
+  def remove_uploaded_files
+    FileUtils.rm_rf(Rails.root.join('tmp', 'storage'))
+  end
+end
+
+module ActionDispatch
+  class IntegrationTest
+    prepend RemoveUploadedFiles
+  end
+end
+">Copy</button>
+</div>
+<h3 id="implementing-support-for-other-cloud-services"><a class="anchorlink" href="#implementing-support-for-other-cloud-services">13 Implementing Support for Other Cloud Services</a></h3><p>Si necesita admitir un servicio en la nube que no sean estos, deberá
+implementar el Servicio. Cada servicio se extiende
+<a href="https://github.com/rails/rails/blob/master/activestorage/lib/active_storage/service.rb"><code>ActiveStorage::Service</code></a>
+implementando los métodos necesarios para cargar y descargar archivos a la nube.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>
