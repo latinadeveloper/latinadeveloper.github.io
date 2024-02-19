@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -210,7 +210,20 @@ objetos.</p><p>Después de leer esta guía, sabrá:</p>
     <div class="wrapper">
       <div id="mainCol">
         <h3 id="the-object-life-cycle"><a class="anchorlink" href="#the-object-life-cycle">1 The Object Life Cycle</a></h3><p>El Ciclo de Vida del Objeto</p><p>Durante el funcionamiento normal de una aplicación de Rails, se pueden crear, actualizar y destruir los objetos. Active Record proporciona ganchos en este <em>object life cycle</em> para que pueda controlar su aplicación y sus datos.</p><p>Las devoluciones de llamada le permiten activar la lógica antes o después de una alteración del estado de un objeto.</p><h3 id="callbacks-overview"><a class="anchorlink" href="#callbacks-overview">2 Callbacks Overview</a></h3><p>Descripción General de Devoluciones de Llamada</p><p>Las devoluciones de llamada son métodos que se llaman en ciertos momentos del ciclo de vida de un objeto. Con las devoluciones de llamada, es posible escribir código que se ejecutará siempre que se cree, guarde, actualice, elimine, valide o cargue un objeto Active Record desde la base de datos.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:login</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+
+  <span class="n">before_validation</span> <span class="ss">:ensure_login_has_a_value</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">ensure_login_has_a_value</span>
+      <span class="k">if</span> <span class="n">login</span><span class="p">.</span><span class="nf">nil?</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">login</span> <span class="o">=</span> <span class="n">email</span> <span class="k">unless</span> <span class="n">email</span><span class="p">.</span><span class="nf">blank?</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   validates :login, :email, presence: true
 
   before_validation :ensure_login_has_a_value
@@ -222,20 +235,44 @@ objetos.</p><p>Después de leer esta guía, sabrá:</p>
       end
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Los métodos de clase de estilo macro también pueden recibir un bloque. Considere usar este estilo si el código dentro de su bloque es tan corto que cabe en una sola línea:</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:login</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+
+  <span class="n">before_create</span> <span class="k">do</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="n">login</span><span class="p">.</span><span class="nf">capitalize</span> <span class="k">if</span> <span class="nb">name</span><span class="p">.</span><span class="nf">blank?</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   validates :login, :email, presence: true
 
   before_create do
     self.name = login.capitalize if name.blank?
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Las devoluciones de llamada también se pueden registrar para que solo se activen en ciertos eventos del ciclo de vida:</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">before_validation</span> <span class="ss">:normalize_name</span><span class="p">,</span> <span class="ss">on: :create</span>
+
+  <span class="c1"># :on takes an array as well</span>
+  <span class="n">after_validation</span> <span class="ss">:set_location</span><span class="p">,</span> <span class="ss">on: </span><span class="p">[</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">:update</span> <span class="p">]</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">normalize_name</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="nb">name</span><span class="p">.</span><span class="nf">downcase</span><span class="p">.</span><span class="nf">titleize</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">set_location</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">location</span> <span class="o">=</span> <span class="no">LocationService</span><span class="p">.</span><span class="nf">query</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   before_validation :normalize_name, on: :create
 
   # :on takes an array as well
@@ -250,7 +287,7 @@ end
       self.location = LocationService.query(self)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Se considera una buena práctica declarar los métodos de devolución de llamada como privados. Si se dejan públicos, se pueden llamar desde fuera del modelo y violan el principio de encapsulación de objetos.</p><h3 id="available-callbacks"><a class="anchorlink" href="#available-callbacks">3 Available Callbacks</a></h3><p>Callbacks Disponibles</p><p>Aquí hay una lista con todas las devoluciones de llamada de Active Record disponibles, enumeradas en el mismo orden en que se las llamará durante las respectivas operaciones:</p><h4 id="creating-an-object"><a class="anchorlink" href="#creating-an-object">3.1 Creating an Object</a></h4>
 <ul>
@@ -286,7 +323,26 @@ end
 <p>ADVERTENCIA. <code>after_save</code> se ejecuta tanto en crear como en actualizar, pero siempre <em>after</em> de las devoluciones de llamada más específicas <code>after_create</code> y <code>after_update</code>, sin importar el orden en que se ejecutaron las llamadas macro.</p><p>ADVERTENCIA. Se debe tener cuidado en las devoluciones de llamada para evitar actualizar los atributos. Por ejemplo, evite ejecutar <code>update(attribute: "value")</code>  y un código similar durante las devoluciones de llamada. Esto puede alterar el estado del modelo y puede provocar efectos secundarios inesperados durante la confirmación. En su lugar, debe intentar asignar valores en las devoluciones de llamada <code>before_create</code> o anteriores.</p><p>NOTA: las devoluciones de llamada <code>before_destroy</code> deben colocarse antes de las asociaciones  <code>dependent: :destroy</code>
 (o use la opción <code>prepend: true</code>), para asegurarse de que se ejecuten antes que
 los registros sean eliminados por <code>dependent: :destroy</code>.</p><h4 id="after-initialize-and-after-find"><a class="anchorlink" href="#after-initialize-and-after-find">3.4 <code>after_initialize</code> and <code>after_find</code></a></h4><p>La devolución de llamada <code>after_initialize</code> se llamará siempre que se cree una instancia de un objeto Active Record, ya sea utilizando directamente <code>new</code> o cuando se carga un registro desde la base de datos. Puede ser útil para evitar la necesidad de anular directamente el método de <code>initialize</code> de Active Record.</p><p>La devolución de llamada <code>after_find</code> se llamará siempre que Active Record cargue un registro de la base de datos. <code>after_find</code> se llama antes de<code>after_initialize</code> si ambos están definidos.</p><p>La devolución de llamada <code>after_initialize</code> y<code>after_find</code> no tienen contrapartidas <code>before_ *</code>, pero pueden registrarse como las otras devoluciones de llamadas de Active Record.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_initialize</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">"You have initialized an object!"</span>
+  <span class="k">end</span>
+
+  <span class="n">after_find</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">"You have found an object!"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span>
+<span class="no">You</span> <span class="n">have</span> <span class="n">initialized</span> <span class="n">an</span> <span class="n">object!</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;User id: nil&gt;</span>
+
+<span class="o">&gt;&gt;</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span>
+<span class="no">You</span> <span class="n">have</span> <span class="n">found</span> <span class="n">an</span> <span class="n">object!</span>
+<span class="no">You</span> <span class="n">have</span> <span class="n">initialized</span> <span class="n">an</span> <span class="n">object!</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;User id: 1&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class User &lt; ApplicationRecord
   after_initialize do |user|
     puts "You have initialized an object!"
   end
@@ -304,25 +360,64 @@ You have initialized an object!
 You have found an object!
 You have initialized an object!
 =&gt; #&lt;User id: 1&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="after-touch"><a class="anchorlink" href="#after-touch">3.5 <code>after_touch</code></a></h4><p>La devolución de llamada <code>after_touch</code> se llamará cada vez que se toque un objeto Active Record.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_touch</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">"You have touched an object"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">u</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Kuldeep'</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;User id: 1, name: "Kuldeep", created_at: "2013-11-25 12:17:49", updated_at: "2013-11-25 12:17:49"&gt;</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">u</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">You</span> <span class="n">have</span> <span class="n">touched</span> <span class="n">an</span> <span class="n">object</span>
+<span class="o">=&gt;</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   after_touch do |user|
-    puts "You have touched an object"
+    puts &quot;You have touched an object&quot;
   end
 end
 
 &gt;&gt; u = User.create(name: 'Kuldeep')
-=&gt; #&lt;User id: 1, name: "Kuldeep", created_at: "2013-11-25 12:17:49", updated_at: "2013-11-25 12:17:49"&gt;
+=&gt; #&lt;User id: 1, name: &quot;Kuldeep&quot;, created_at: &quot;2013-11-25 12:17:49&quot;, updated_at: &quot;2013-11-25 12:17:49&quot;&gt;
 
 &gt;&gt; u.touch
 You have touched an object
 =&gt; true
-</code></pre>
+">Copy</button>
 </div>
 <p>It can be used along with <code>belongs_to</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class Employee &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Employee</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:company</span><span class="p">,</span> <span class="ss">touch: </span><span class="kp">true</span>
+  <span class="n">after_touch</span> <span class="k">do</span>
+    <span class="nb">puts</span> <span class="s1">'An Employee was touched'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Company</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:employees</span>
+  <span class="n">after_touch</span> <span class="ss">:log_when_employees_or_company_touched</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">log_when_employees_or_company_touched</span>
+      <span class="nb">puts</span> <span class="s1">'Employee/Company was touched'</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="vi">@employee</span> <span class="o">=</span> <span class="no">Employee</span><span class="p">.</span><span class="nf">last</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Employee id: 1, company_id: 1, created_at: "2013-11-25 17:04:22", updated_at: "2013-11-25 17:05:05"&gt;</span>
+
+<span class="c1"># triggers @employee.company.touch</span>
+<span class="o">&gt;&gt;</span> <span class="vi">@employee</span><span class="p">.</span><span class="nf">touch</span>
+<span class="no">An</span> <span class="no">Employee</span> <span class="n">was</span> <span class="n">touched</span>
+<span class="no">Employee</span><span class="o">/</span><span class="no">Company</span> <span class="n">was</span> <span class="n">touched</span>
+<span class="o">=&gt;</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Employee &lt; ApplicationRecord
   belongs_to :company, touch: true
   after_touch do
     puts 'An Employee was touched'
@@ -340,14 +435,14 @@ class Company &lt; ApplicationRecord
 end
 
 &gt;&gt; @employee = Employee.last
-=&gt; #&lt;Employee id: 1, company_id: 1, created_at: "2013-11-25 17:04:22", updated_at: "2013-11-25 17:05:05"&gt;
+=&gt; #&lt;Employee id: 1, company_id: 1, created_at: &quot;2013-11-25 17:04:22&quot;, updated_at: &quot;2013-11-25 17:05:05&quot;&gt;
 
 # triggers @employee.company.touch
 &gt;&gt; @employee.touch
 An Employee was touched
 Employee/Company was touched
 =&gt; true
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="running-callbacks"><a class="anchorlink" href="#running-callbacks">4 Running Callbacks</a></h3><p>Ejecutar Devoluciones de Llamada</p><p>Los siguientes métodos desencadenan las devoluciones de llamada:</p>
 <ul>
@@ -391,11 +486,33 @@ Employee/Company was touched
 <li><code>update_counters</code></li>
 </ul>
 <p>Sin embargo, estos métodos se deben usarse con precaución, ya que las reglas comerciales importantes y la lógica de la aplicación pueden mantenerse en devoluciones de llamada. Eludirlos sin comprender las posibles implicaciones puede conducir a datos no válidos.</p><h3 id="halting-execution"><a class="anchorlink" href="#halting-execution">6 Halting Execution</a></h3><p>Detener la Ejecución</p><p>Cuando comience a registrar nuevas devoluciones de llamada para sus modelos, se pondrán en cola para su ejecución. Esta cola incluirá todas las validaciones de su modelo, las devoluciones de llamada registradas y la operación de la base de datos que se ejecutará.</p><div class="code_container">
-<pre><code class="language-ruby">throw :abort
+<pre><code class="highlight ruby"><span class="kp">throw</span> <span class="ss">:abort</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="throw :abort
+">Copy</button>
 </div>
 <p>ADVERTENCIA. Rails volverá a plantear cualquier excepción que no sea <code>ActiveRecord::Rollback</code> o<code>ActiveRecord::RecordInvalid</code> después de detener la cadena de devolución de llamada. Elevando una excepción que no sea <code>ActiveRecord::Rollback</code> o<code>ActiveRecord::RecordInvalid</code> puede romper el código que no espera métodos como <code>save</code> y <code>update</code> (que normalmente intentan devolver <code>true</code> o<code>false</code>) una excepción.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_destroy</span> <span class="ss">:log_destroy_action</span>
+
+  <span class="k">def</span> <span class="nf">log_destroy_action</span>
+    <span class="nb">puts</span> <span class="s1">'Article destroyed'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;User id: 1&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">articles</span><span class="p">.</span><span class="nf">create!</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Article id: 1, user_id: 1&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="n">user</span><span class="p">.</span><span class="nf">destroy</span>
+<span class="no">Article</span> <span class="n">destroyed</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;User id: 1&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   has_many :articles, dependent: :destroy
 end
 
@@ -414,83 +531,146 @@ end
 &gt;&gt; user.destroy
 Article destroyed
 =&gt; #&lt;User id: 1&gt;
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="conditional-callbacks"><a class="anchorlink" href="#conditional-callbacks">7 Conditional Callbacks</a></h3><p>Condicionales de Callbacks </p><p>Al igual que con las validaciones, también podemos condicionar la invocación de un método de devolución de llamada a la satisfacción de un predicado dado. Podemos hacer esto usando las opciones <code>:if</code> y <code>:unless</code>, que pueden tomar un símbolo, un <code>Proc</code> o un <code>Array</code>. Puede usar la opción <code>:if</code> cuando desee especificar en qué condiciones se debe llamar a la devolución de llamada <em>unless</em>. Si desea especificar las condiciones bajo las cuales no se debe llamar a la devolución de llamada <strong>should not</strong>, puede usar la opción <code>:unless</code></p><h4 id="using-if-and-unless-with-a-symbol"><a class="anchorlink" href="#using-if-and-unless-with-a-symbol">7.1 Using <code>:if</code> and <code>:unless</code> with a <code>Symbol</code></a></h4><p>Puede asociar las opciones <code>:if</code> y <code>:unlesss</code> con un símbolo correspondiente al nombre de un método de predicado que se llamará justo antes de la devolución de llamada. Cuando se usa la opción <code>:if</code>, la devolución de llamada no se ejecutará si el método de predicado devuelve falso; cuando se usa la opción <code>:unless</code>, la devolución de llamada no se ejecutará si el método de predicado devuelve verdadero. Esta es la opción más común. Al usar esta forma de registro, también es posible registrar varios predicados diferentes que se deben llamar para verificar si se debe ejecutar la devolución de llamada.</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">before_save</span> <span class="ss">:normalize_card_number</span><span class="p">,</span> <span class="ss">if: :paid_with_card?</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   before_save :normalize_card_number, if: :paid_with_card?
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="using-if-and-unless-with-a-proc"><a class="anchorlink" href="#using-if-and-unless-with-a-proc">7.2 Using <code>:if</code> and <code>:unless</code> with a <code>Proc</code></a></h4><p>Es posible asociar <code>:if</code> y <code>:unless</code> con un objeto <code>Proc</code>. Esta opción es más adecuada cuando se escriben métodos de validación cortos, generalmente de una sola línea:</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">before_save</span> <span class="ss">:normalize_card_number</span><span class="p">,</span>
+    <span class="ss">if: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">order</span><span class="o">|</span> <span class="n">order</span><span class="p">.</span><span class="nf">paid_with_card?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   before_save :normalize_card_number,
     if: Proc.new { |order| order.paid_with_card? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Como el proceso se evalúa en el contexto del objeto, también es posible escribir esto como:</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">before_save</span> <span class="ss">:normalize_card_number</span><span class="p">,</span> <span class="ss">if: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="n">paid_with_card?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   before_save :normalize_card_number, if: Proc.new { paid_with_card? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="multiple-conditions-for-callbacks"><a class="anchorlink" href="#multiple-conditions-for-callbacks">7.3 Multiple Conditions for Callbacks</a></h4><p>Al escribir devoluciones de llamada condicionales, es posible mezclar tanto <code>:if</code> como <code>:unless</code> en la misma declaración de devolución de llamada:</p><div class="code_container">
-<pre><code class="language-ruby">class Comment &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_create</span> <span class="ss">:send_email_to_author</span><span class="p">,</span> <span class="ss">if: :author_wants_emails?</span><span class="p">,</span>
+    <span class="ss">unless: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span> <span class="n">comment</span><span class="p">.</span><span class="nf">article</span><span class="p">.</span><span class="nf">ignore_comments?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Comment &lt; ApplicationRecord
   after_create :send_email_to_author, if: :author_wants_emails?,
     unless: Proc.new { |comment| comment.article.ignore_comments? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="combining-callback-conditions"><a class="anchorlink" href="#combining-callback-conditions">7.4 Combining Callback Conditions</a></h4><p>Cuando varias condiciones definen si se debe realizar una devolución de llamada o no, se puede usar una 'Matriz'. Además, puede aplicar <code>: if</code> y <code>:unless</code> a la misma devolución de llamada.</p><div class="code_container">
-<pre><code class="language-ruby">class Comment &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_create</span> <span class="ss">:send_email_to_author</span><span class="p">,</span>
+    <span class="ss">if: </span><span class="p">[</span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">user</span><span class="p">.</span><span class="nf">allow_send_email?</span> <span class="p">},</span> <span class="ss">:author_wants_emails?</span><span class="p">],</span>
+    <span class="ss">unless: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">article</span><span class="p">.</span><span class="nf">ignore_comments?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Comment &lt; ApplicationRecord
   after_create :send_email_to_author,
     if: [Proc.new { |c| c.user.allow_send_email? }, :author_wants_emails?],
     unless: Proc.new { |c| c.article.ignore_comments? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La devolución de llamada solo se ejecuta cuando todas las condiciones <code>:if</code> y ninguna de las condiciones<code>:unless</code> se evalúan como <code>true</code>.</p><h3 id="callback-classes"><a class="anchorlink" href="#callback-classes">8 Callback Classes</a></h3><p>Clases de Devolución de Llamada</p><p>A veces, los métodos de devolución de llamada que escribirá serán lo suficientemente útiles como para ser reutilizados por otros modelos. Active Record hace posible crear clases que encapsulan los métodos de devolución de llamada, para que puedan reutilizarse.</p><p>Aquí hay un ejemplo en el que creamos una clase con una devolución de llamada <code>after_destroy</code> para un modelo<code>PictureFile</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class PictureFileCallbacks
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFileCallbacks</span>
+  <span class="k">def</span> <span class="nf">after_destroy</span><span class="p">(</span><span class="n">picture_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="n">picture_file</span><span class="p">.</span><span class="nf">filepath</span><span class="p">)</span>
+      <span class="no">File</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">picture_file</span><span class="p">.</span><span class="nf">filepath</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFileCallbacks
   def after_destroy(picture_file)
     if File.exist?(picture_file.filepath)
       File.delete(picture_file.filepath)
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuando se declara dentro de una clase, como se indicó anteriormente, los métodos de devolución de llamada recibirán el objeto modelo como un parámetro. Ahora podemos usar la clase de devolución de llamada en el modelo:</p><div class="code_container">
-<pre><code class="language-ruby">class PictureFile &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_destroy</span> <span class="no">PictureFileCallbacks</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFile &lt; ApplicationRecord
   after_destroy PictureFileCallbacks.new
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Tenga en cuenta que necesitábamos crear una instancia de un nuevo objeto <code>PictureFileCallbacks</code>, ya que declaramos nuestra devolución de llamada como método de instancia. Esto es particularmente útil si las devoluciones de llamada hacen uso del estado del objeto instanciado. Sin embargo, a menudo tendrá más sentido declarar las devoluciones de llamada como métodos de clase:</p><div class="code_container">
-<pre><code class="language-ruby">class PictureFileCallbacks
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFileCallbacks</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">after_destroy</span><span class="p">(</span><span class="n">picture_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="n">picture_file</span><span class="p">.</span><span class="nf">filepath</span><span class="p">)</span>
+      <span class="no">File</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">picture_file</span><span class="p">.</span><span class="nf">filepath</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFileCallbacks
   def self.after_destroy(picture_file)
     if File.exist?(picture_file.filepath)
       File.delete(picture_file.filepath)
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si el método de devolución de llamada se declara de esta manera, no será necesario instanciar un objeto <code>PictureFileCallbacks</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class PictureFile &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_destroy</span> <span class="no">PictureFileCallbacks</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFile &lt; ApplicationRecord
   after_destroy PictureFileCallbacks
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede declarar tantas devoluciones de llamada como desee dentro de sus clases de devolución de llamada.</p><h3 id="transaction-callbacks"><a class="anchorlink" href="#transaction-callbacks">9 Transaction Callbacks</a></h3><p>Callbacks de transacciones</p><p>Hay dos devoluciones de llamada adicionales que se activan al completar una transacción de base de datos: <code>after_commit</code> y <code>after_rollback</code>. Estas devoluciones de llamada son muy similares a la devolución de llamada <code>after_save</code>, excepto que no se ejecutan hasta después de que los cambios en la base de datos se hayan confirmado o revertido. Son más útiles cuando sus modelos de registros activos necesitan interactuar con sistemas externos que no forman parte de la transacción de la base de datos.</p><p>Considere, por ejemplo, el ejemplo anterior en el que el modelo <code>PictureFile</code> necesita eliminar un archivo después de que se destruya el registro correspondiente. Si algo genera una excepción después de que se llama la devolución de llamada <code>after_destroy</code> y la transacción se revierte, el archivo se habrá eliminado y el modelo quedará en un estado inconsistente. Por ejemplo, suponga que <code>picture_file_2</code> en el código a continuación no es válido y que el método <code>save!</code> genera un error.</p><div class="code_container">
-<pre><code class="language-ruby">PictureFile.transaction do
+<pre><code class="highlight ruby"><span class="no">PictureFile</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
+  <span class="n">picture_file_1</span><span class="p">.</span><span class="nf">destroy</span>
+  <span class="n">picture_file_2</span><span class="p">.</span><span class="nf">save!</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="PictureFile.transaction do
   picture_file_1.destroy
   picture_file_2.save!
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Al usar la devolución de llamada <code>after_commit</code> podemos dar cuenta de este caso.</p><div class="code_container">
-<pre><code class="language-ruby">class PictureFile &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_commit</span> <span class="ss">:delete_picture_file_from_disk</span><span class="p">,</span> <span class="ss">on: :destroy</span>
+
+  <span class="k">def</span> <span class="nf">delete_picture_file_from_disk</span>
+    <span class="k">if</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+      <span class="no">File</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFile &lt; ApplicationRecord
   after_commit :delete_picture_file_from_disk, on: :destroy
 
   def delete_picture_file_from_disk
@@ -499,7 +679,7 @@ end
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>NOTA: La opción <code>:on</code> especifica cuándo se activará una devolución de llamada. Si tu
 no proporcione la opción <code>:on</code>, la devolución de llamada se activará para cada acción.</p><p>Dado que el uso de la devolución de llamada <code>after_commit</code> solo en crear, actualizar o eliminar es
@@ -510,7 +690,17 @@ común, hay alias para esas operaciones:</p>
 <li><code>after_destroy_commit</code></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">class PictureFile &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PictureFile</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_destroy_commit</span> <span class="ss">:delete_picture_file_from_disk</span>
+
+  <span class="k">def</span> <span class="nf">delete_picture_file_from_disk</span>
+    <span class="k">if</span> <span class="no">File</span><span class="p">.</span><span class="nf">exist?</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+      <span class="no">File</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PictureFile &lt; ApplicationRecord
   after_destroy_commit :delete_picture_file_from_disk
 
   def delete_picture_file_from_disk
@@ -519,10 +709,27 @@ común, hay alias para esas operaciones:</p>
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>ADVERTENCIA. Cuando se completa una transacción, se llaman las devoluciones de llamada <code>after_commit</code> o<code>after_rollback</code> para todos los modelos creados, actualizados o destruidos dentro de esa transacción. Sin embargo, si se genera una excepción dentro de una de estas devoluciones de llamada, la excepción se disparará y los métodos restantes <code>after_commit</code> o<code>after_rollback</code> no se ejecutarán. Como tal, si su código de devolución de llamada podría generar una excepción, deberá rescatarlo y manejarlo dentro de la devolución de llamada para permitir que se ejecuten otras devoluciones de llamada.</p><p>ADVERTENCIA. El código ejecutado dentro de las devoluciones de llamada <code>after_commit</code> o <code>after_rollback</code> no están incluido en una transacción.</p><p>ADVERTENCIA. El uso de <code>after_create_commit</code> y <code>after_update_commit</code> en el mismo modelo solo permitirá que la última devolución de la llamada definida surta efecto y anulará todas las demás.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_create_commit</span> <span class="ss">:log_user_saved_to_db</span>
+  <span class="n">after_update_commit</span> <span class="ss">:log_user_saved_to_db</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">log_user_saved_to_db</span>
+    <span class="nb">puts</span> <span class="s1">'User was saved to database'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># prints nothing</span>
+<span class="o">&gt;&gt;</span> <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span>
+
+<span class="c1"># updating @user</span>
+<span class="o">&gt;&gt;</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">save</span>
+<span class="o">=&gt;</span> <span class="no">User</span> <span class="n">was</span> <span class="n">saved</span> <span class="n">to</span> <span class="n">database</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   after_create_commit :log_user_saved_to_db
   after_update_commit :log_user_saved_to_db
 
@@ -538,14 +745,31 @@ end
 # updating @user
 &gt;&gt; @user.save
 =&gt; User was saved to database
-</code></pre>
+">Copy</button>
 </div>
 <p>También hay un alias para usar la devolución de llamada <code>after_commit</code> para crear y actualizar juntos:</p>
 <ul>
 <li><code>after_save_commit</code></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_save_commit</span> <span class="ss">:log_user_saved_to_db</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">log_user_saved_to_db</span>
+    <span class="nb">puts</span> <span class="s1">'User was saved to database'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># creating a User</span>
+<span class="o">&gt;&gt;</span> <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span>
+<span class="o">=&gt;</span> <span class="no">User</span> <span class="n">was</span> <span class="n">saved</span> <span class="n">to</span> <span class="n">database</span>
+
+<span class="c1"># updating @user</span>
+<span class="o">&gt;&gt;</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">save</span>
+<span class="o">=&gt;</span> <span class="no">User</span> <span class="n">was</span> <span class="n">saved</span> <span class="n">to</span> <span class="n">database</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   after_save_commit :log_user_saved_to_db
 
   private
@@ -561,7 +785,7 @@ end
 # updating @user
 &gt;&gt; @user.save
 =&gt; User was saved to database
-</code></pre>
+">Copy</button>
 </div>
 
 

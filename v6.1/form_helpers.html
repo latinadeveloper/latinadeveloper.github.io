@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ayudantes de Formulario de Action — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Ayudantes de Formulario de Action — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Ayudantes de Formulario de ActionLos formularios en las aplicaciones web son una interfaz esencial para la entrada del usuario. Sin embargo, escribir y mantener el marcado de formularios puede volverse tedioso rápidamente debido a la necesidad de manejar la denominación del control de formularios y sus numerosos atributos. Rails elimina esta complejidad al proporcionar ayudantes de vista para generar marcas de formularios. Sin embargo, dado que estos ayudantes tienen diferentes casos de uso, los desarrolladores deben conocer las diferencias entre los métodos auxiliares antes de ponerlos en práctica.Después de leer esta guía, sabrá: Cómo crear formularios de búsqueda y formularios genéricos similares que no representen ningún modelo específico en su aplicación. Cómo hacer formularios centrados en modelos para crear y editar registros de bases de datos específicos. Cómo generar cuadros de selección a partir de múltiples tipos de datos. Qué fecha y hora proporciona Helpers Rails. Qué hace que un formulario de carga de archivos sea diferente. Cómo publicar formularios en recursos externos y especificar la configuración de un autenticity_token. Cómo construir formas complejas." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Ayudantes de Formulario de ActionLos formularios en las aplicaciones web son una interfaz esencial para la entrada del usuario. Sin embargo, escribir y mantener el marcado de formularios puede volverse tedioso rápidamente debido a la necesidad de manejar la denominación del control de formularios y sus numerosos atributos. Rails elimina esta complejidad al proporcionar ayudantes de vista para generar marcas de formularios. Sin embargo, dado que estos ayudantes tienen diferentes casos de uso, los desarrolladores deben conocer las diferencias entre los métodos auxiliares antes de ponerlos en práctica.Después de leer esta guía, sabrá: Cómo crear formularios de búsqueda y formularios genéricos similares que no representen ningún modelo específico en su aplicación. Cómo hacer formularios centrados en modelos para crear y editar registros de bases de datos específicos. Cómo generar cuadros de selección a partir de múltiples tipos de datos. Qué fecha y hora proporciona Helpers Rails. Qué hace que un formulario de carga de archivos sea diferente. Cómo publicar formularios en recursos externos y especificar la configuración de un autenticity_token. Cómo construir formas complejas." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Ayudantes de Formulario de Action</h2><p>Los formularios en las aplicaciones web son una interfaz esencial para la entrada del usuario. Sin embargo, escribir y mantener el marcado de formularios puede volverse tedioso rápidamente debido a la necesidad de manejar la denominación del control de formularios y sus numerosos atributos. Rails elimina esta complejidad al proporcionar ayudantes de vista para generar marcas de formularios. Sin embargo, dado que estos ayudantes tienen diferentes casos de uso, los desarrolladores deben conocer las diferencias entre los métodos auxiliares antes de ponerlos en práctica.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Cómo crear formularios de búsqueda y formularios genéricos similares que no representen ningún modelo específico en su aplicación.</li>
+<li>Cómo hacer formularios centrados en modelos para crear y editar registros de bases de datos específicos.</li>
+<li>Cómo generar cuadros de selección a partir de múltiples tipos de datos.</li>
+<li>Qué fecha y hora proporciona Helpers Rails.</li>
+<li>Qué hace que un formulario de carga de archivos sea diferente.</li>
+<li>Cómo publicar formularios en recursos externos y especificar la configuración de un <code>autenticity_token</code>.</li>
+<li>Cómo construir formas complejas.</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li>
+<a href="#dealing-with-basic-forms">Dealing with Basic Forms</a>
+
+<ul>
+<li><a href="#a-generic-search-form">A Generic Search Form</a></li>
+<li><a href="#helpers-for-generating-form-elements">Helpers for Generating Form Elements</a></li>
+<li><a href="#other-helpers-of-interest">Other Helpers of Interest</a></li>
+</ul>
+</li>
+<li>
+<a href="#dealing-with-model-objects">Dealing with Model Objects</a>
+
+<ul>
+<li><a href="#dealing-with-model-objects-model-object-helpers">Model Object Helpers</a></li>
+<li><a href="#binding-a-form-to-an-object">Binding a Form to an Object</a></li>
+<li><a href="#relying-on-record-identification">Relying on Record Identification</a></li>
+<li><a href="#how-do-forms-with-patch-put-or-delete-methods-work-questionmark">How do forms with PATCH, PUT, or DELETE methods work?</a></li>
+</ul>
+</li>
+<li>
+<a href="#making-select-boxes-with-ease">Making Select Boxes with Ease</a>
+
+<ul>
+<li><a href="#the-select-and-option-tags">The Select and Option Tags</a></li>
+<li><a href="#select-boxes-for-dealing-with-model-objects">Select Boxes for Dealing with Model Objects</a></li>
+<li><a href="#option-tags-from-a-collection-of-arbitrary-objects">Option Tags from a Collection of Arbitrary Objects</a></li>
+<li><a href="#time-zone-and-country-select">Time Zone and Country Select</a></li>
+</ul>
+</li>
+<li>
+<a href="#using-date-and-time-form-helpers">Using Date and Time Form Helpers</a>
+
+<ul>
+<li><a href="#barebones-helpers">Barebones Helpers</a></li>
+<li><a href="#using-date-and-time-form-helpers-model-object-helpers">Model Object Helpers</a></li>
+<li><a href="#common-options">Common Options</a></li>
+<li><a href="#individual-components">Individual Components</a></li>
+</ul>
+</li>
+<li>
+<a href="#creating-checkboxes-for-relations">Creating Checkboxes for Relations</a>
+
+<ul>
+<li><a href="#the-collection-check-boxes-tag">The Collection Check Boxes tag</a></li>
+</ul>
+</li>
+<li>
+<a href="#uploading-files">Uploading Files</a>
+
+<ul>
+<li><a href="#what-gets-uploaded">What Gets Uploaded</a></li>
+</ul>
+</li>
+<li><a href="#customizing-form-builders">Customizing Form Builders</a></li>
+<li>
+<a href="#understanding-parameter-naming-conventions">Understanding Parameter Naming Conventions</a>
+
+<ul>
+<li><a href="#basic-structures">Basic Structures</a></li>
+<li><a href="#combining-them">Combining Them</a></li>
+<li><a href="#using-form-helpers">Using Form Helpers</a></li>
+</ul>
+</li>
+<li><a href="#forms-to-external-resources">Forms to External Resources</a></li>
+<li>
+<a href="#building-complex-forms">Building Complex Forms</a>
+
+<ul>
+<li><a href="#configuring-the-model">Configuring the Model</a></li>
+<li><a href="#nested-forms">Nested Forms</a></li>
+<li><a href="#the-controller">The Controller</a></li>
+<li><a href="#removing-objects">Removing Objects</a></li>
+<li><a href="#preventing-empty-records">Preventing Empty Records</a></li>
+<li><a href="#adding-fields-on-the-fly">Adding Fields on the Fly</a></li>
+</ul>
+</li>
+<li><a href="#using-form-for-and-form-tag">Using form_for and form_tag</a></li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <div class="note"><p>Este guía no pretende ser la documentación completa de los ayudantes de formulario disponibles y sus argumentos. Visite <a href="https://edgeapi.rubyonrails.org/">the Rails API documentation</a> para obtener una referencia completa.</p></div><h3 id="dealing-with-basic-forms"><a class="anchorlink" href="#dealing-with-basic-forms">1 Dealing with Basic Forms</a></h3><p>The main form helper is <code>form_with</code>.</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with do %&gt;
+  Form contents
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Cuando se llama sin argumentos como este, crea una etiqueta de formulario que, cuando se envía, el POST en la página actual. Por ejemplo, asumiendo que la página actual es una página de inicio, el HTML generado se verá así:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/" data-remote="true" method="post"&gt;
+  &lt;input name="authenticity_token" type="hidden" value="J7CBxfHalt49OSHp27hblqK20c9PgwJ108nDHX/8Cts=" /&gt;
+  Form contents
+&lt;/form&gt;
+</code></pre>
+</div>
+<p>Notarás que el HTML contiene un elemento <code>input</code> con el tipo <code>hidden</code>. Esta "entrada" es importante, porque los formularios que no son GET no se pueden enviar correctamente sin ella.
+El elemento de entrada oculto con el nombre <code>autenticity_token</code> es una característica de seguridad de Rails llamada <strong>protección contra falsificación de solicitudes entre sitios</strong>, y los ayudantes de formulario lo generan para cada formulario que no sea GET (siempre que esta característica de seguridad esté habilitada). Puede leer más sobre esto en la guía <a href="security.html#cross-site-request-forgery-csrf">Securing Rails Applications</a>.</p><h4 id="a-generic-search-form"><a class="anchorlink" href="#a-generic-search-form">1.1 A Generic Search Form</a></h4><p>Uno de los formularios más básicos que ve en la web es un formulario de búsqueda. Este formulario contiene:</p>
+<ul>
+<li>un elemento de formulario con el método "GET",</li>
+<li>una etiqueta para la entrada,</li>
+<li>un elemento de entrada de texto, y</li>
+<li>un elemento de envío.</li>
+</ul>
+<p>To create this form you will use <code>form_with</code>, <code>label_tag</code>, <code>text_field_tag</code>, and <code>submit_tag</code>, respectively. Like this:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with url: "/search", method: :get do |form| %&gt;
+  &lt;%= form.label :q, "Search for:" %&gt;
+  &lt;%= form.text_field :q %&gt;
+  &lt;%= form.submit "Search" %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Esto generará el siguiente HTML:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/search" data-remote="true" method="get"&gt;
+  &lt;label for="q"&gt;Search for:&lt;/label&gt;
+  &lt;input id="q" name="q" type="text" /&gt;
+  &lt;input name="commit" type="submit" value="Search" data-disable-with="Search" /&gt;
+&lt;/form&gt;
+</code></pre>
+</div>
+<div class="info"><p>Pasar <code>url: my_specified_path</code> a <code>form_with</code> le indica al formulario dónde realizar la solicitud. Sin embargo, como se explica a continuación, también puede pasar objetos ActiveRecord al formulario.</p></div><div class="info"><p>Para cada entrada de formulario, se genera un atributo de ID a partir de su nombre (<code>"q"</code> en el ejemplo anterior). Estos ID pueden ser muy útiles para el estilo CSS o la manipulación de controles de formulario con JavaScript.</p></div><div class="warning"><p>Utilice "GET" como método para los formularios de búsqueda. Esto permite a los usuarios marcar una búsqueda específica y volver a ella. De forma más general, Rails le anima a utilizar el verbo HTTP correcto para una acción.</p></div><h4 id="helpers-for-generating-form-elements"><a class="anchorlink" href="#helpers-for-generating-form-elements">1.2 Helpers for Generating Form Elements</a></h4><p>Rails proporciona una serie de ayudantes para generar elementos de formulario como
+casillas de verificación, campos de texto y botones de opción. Estos ayudantes básicos, con nombres
+terminando en <code>_tag</code> (como <code>text_field_tag</code> y <code>check_box_tag</code>), genere solo una
+elemento único <code>&lt;input&gt;</code>. El primer parámetro de estos es siempre el nombre del
+entrada. Cuando se envía el formulario, el nombre se pasará junto con el formulario
+datos, y se dirigirá a los <code>params</code> en el controlador con el
+valor ingresado por el usuario para ese campo. Por ejemplo, si el formulario contiene
+<code>&lt;%= text_field_tag(:query) %&gt;</code>, entonces podrá obtener el valor de este
+campo en el controlador con <code>params[:query]</code>.</p><p>Al nombrar entradas, Rails utiliza ciertas convenciones que hacen posible enviar parámetros con valores no escalares como matrices o hashes, que también serán accesibles en <code>params</code>. Puede leer más sobre ellos en el capítulo <a href="#%20comprensi%C3%B3n-de-convenciones%20de%20nomenclatura%20de%20par%C3%A1metros">Comprensión de las convenciones de nomenclatura de parámetros</a> de esta guía. Para obtener detalles sobre el uso preciso de estos ayudantes, consulte la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormTagHelper.html">API documentation</a>.</p><h5 id="checkboxes"><a class="anchorlink" href="#checkboxes">1.2.1 Checkboxes</a></h5><p>Las casillas de verificación son controles de formulario que brindan al usuario un conjunto de opciones que pueden habilitar o deshabilitar:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= check_box_tag(:pet_dog) %&gt;
+&lt;%= label_tag(:pet_dog, "I own a dog") %&gt;
+&lt;%= check_box_tag(:pet_cat) %&gt;
+&lt;%= label_tag(:pet_cat, "I own a cat") %&gt;
+</code></pre>
+</div>
+<p>Output:</p><div class="code_container">
+<pre><code class="language-xml">&lt;input id="age_child" name="age" type="radio" value="child" /&gt;
+&lt;label for="age_child"&gt;I am younger than 21&lt;/label&gt;
+&lt;input id="age_adult" name="age" type="radio" value="adult" /&gt;
+&lt;label for="age_adult"&gt;I am over 21&lt;/label&gt;
+</code></pre>
+</div>
+<p>Al igual que con <code>check_box_tag</code>, el segundo parámetro de<code>radio_button_tag</code> es el valor de la entrada. Debido a que estos dos botones de radio comparten el mismo nombre (<code>age</code>), el usuario solo podrá seleccionar uno de ellos, y <code>params[:age]</code>contendrá <code>"niño"</code> o <code>"adulto"</code>.</p><div class="note"><p>Utilice siempre etiquetas para las casillas de verificación y los botones de opción. Asocian texto con una opción específica y,
+expandiendo la región en la que se puede hacer clic,
+les facilita a los usuarios hacer clic en las entradas.</p></div><h5 id="radio-buttons"><a class="anchorlink" href="#radio-buttons">1.2.2 Radio Buttons</a></h5><p>Los botones de opción, aunque similares a las casillas de verificación, son controles que especifican un conjunto de opciones en las que se excluyen mutuamente (es decir, el usuario solo puede elegir una):</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= radio_button_tag(:age, "child") %&gt;
+&lt;%= label_tag(:age_child, "I am younger than 21") %&gt;
+&lt;%= radio_button_tag(:age, "adult") %&gt;
+&lt;%= label_tag(:age_adult, "I am over 21") %&gt;
+</code></pre>
+</div>
+<p>Salida:</p><div class="code_container">
+<pre><code class="language-xml">&lt;input id="age_child" name="age" type="radio" value="child" /&gt;
+&lt;label for="age_child"&gt;I am younger than 21&lt;/label&gt;
+&lt;input id="age_adult" name="age" type="radio" value="adult" /&gt;
+&lt;label for="age_adult"&gt;I am over 21&lt;/label&gt;
+</code></pre>
+</div>
+<p>Al igual que con <code>check_box_tag</code>, el segundo parámetro de <code>radio_button_tag</code> es el valor de la entrada. Debido a que estos dos botones de radio comparten el mismo nombre (<code>age</code>), el usuario solo podrá seleccionar uno de ellos, y <code>params [:age]</code>contendrá <code>"child"</code> o <code>"adulto"</code>.</p><div class="note"><p>Utilice siempre etiquetas para las casillas de verificación y los botones de opción. Asocian texto con una opción específica y,
+expandiendo la región en la que se puede hacer clic,
+facilitar a los usuarios hacer clic en las entradas.</p></div><h4 id="other-helpers-of-interest"><a class="anchorlink" href="#other-helpers-of-interest">1.3 Other Helpers of Interest</a></h4><p>Otros controles de formulario que vale la pena mencionar son áreas de texto, campos de contraseña,
+campos ocultos, campos de búsqueda, campos de teléfono, campos de fecha, campos de hora,
+campos de color, campos locales de fecha y hora, campos de mes, campos de semana,
+Campos de URL, campos de correo electrónico, campos de números y campos de rango:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= text_area_tag(:message, "Hi, nice site", size: "24x6") %&gt;
+&lt;%= password_field_tag(:password) %&gt;
+&lt;%= hidden_field_tag(:parent_id, "5") %&gt;
+&lt;%= search_field(:user, :name) %&gt;
+&lt;%= telephone_field(:user, :phone) %&gt;
+&lt;%= date_field(:user, :born_on) %&gt;
+&lt;%= datetime_local_field(:user, :graduation_day) %&gt;
+&lt;%= month_field(:user, :birthday_month) %&gt;
+&lt;%= week_field(:user, :birthday_week) %&gt;
+&lt;%= url_field(:user, :homepage) %&gt;
+&lt;%= email_field(:user, :address) %&gt;
+&lt;%= color_field(:user, :favorite_color) %&gt;
+&lt;%= time_field(:task, :started_at) %&gt;
+&lt;%= number_field(:product, :price, in: 1.0..20.0, step: 0.5) %&gt;
+&lt;%= range_field(:product, :discount, in: 1..100) %&gt;
+</code></pre>
+</div>
+<p>Salida</p><div class="code_container">
+<pre><code class="language-xml">&lt;textarea id="message" name="message" cols="24" rows="6"&gt;Hi, nice site&lt;/textarea&gt;
+&lt;input id="password" name="password" type="password" /&gt;
+&lt;input id="parent_id" name="parent_id" type="hidden" value="5" /&gt;
+&lt;input id="user_name" name="user[name]" type="search" /&gt;
+&lt;input id="user_phone" name="user[phone]" type="tel" /&gt;
+&lt;input id="user_born_on" name="user[born_on]" type="date" /&gt;
+&lt;input id="user_graduation_day" name="user[graduation_day]" type="datetime-local" /&gt;
+&lt;input id="user_birthday_month" name="user[birthday_month]" type="month" /&gt;
+&lt;input id="user_birthday_week" name="user[birthday_week]" type="week" /&gt;
+&lt;input id="user_homepage" name="user[homepage]" type="url" /&gt;
+&lt;input id="user_address" name="user[address]" type="email" /&gt;
+&lt;input id="user_favorite_color" name="user[favorite_color]" type="color" value="#000000" /&gt;
+&lt;input id="task_started_at" name="task[started_at]" type="time" /&gt;
+&lt;input id="product_price" max="20.0" min="1.0" name="product[price]" step="0.5" type="number" /&gt;
+&lt;input id="product_discount" max="100" min="1" name="product[discount]" type="range" /&gt;
+</code></pre>
+</div>
+<p>Las entradas ocultas no se muestran al usuario, sino que contienen datos como cualquier entrada textual. Los valores dentro de ellos se pueden cambiar con JavaScript.</p><div class="warning"><p>La búsqueda, teléfono, fecha, hora, color, fecha y hora, fecha y hora-local,
+Las entradas de mes, semana, URL, correo electrónico, número y rango son controles HTML5.
+Si necesita que su aplicación tenga una experiencia constante en navegadores más antiguos,
+necesitará un polyfill HTML5 (proporcionado por CSS y / o JavaScript).
+Definitivamente hay <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">no shortage of solutions for this</a>, aunque una herramienta popular en este momento es
+<a href="https://modernizr.com/">Modernizr</a>, que proporciona una forma sencilla de agregar funcionalidad basada en la presencia de
+características HTML5 detectadas.</p></div><div class="info"><p>Si está utilizando campos de entrada de contraseña (para cualquier propósito), es posible que desee configurar su aplicación para evitar que se registren esos parámetros. Puede obtener más información sobre esto en la guía <a href="security.html%20#%20logging">Protección de aplicaciones de Rails</a>.</p></div><h3 id="dealing-with-model-objects"><a class="anchorlink" href="#dealing-with-model-objects">2 Dealing with Model Objects</a></h3><h4 id="dealing-with-model-objects-model-object-helpers"><a class="anchorlink" href="#dealing-with-model-objects-model-object-helpers">2.1 Model Object Helpers</a></h4><p>Una tarea particularmente común para un formulario es editar o crear un objeto modelo. Si los ayudantes <code>* _tag</code> ciertamente se pueden usar para esta tarea, son algo detallados, ya que cada etiqueta debe asegurarse de que se use el nombre de parámetro correcto y establecer el valor predeterminado de la entrada de manera adecuada. Rails proporciona ayudantes adaptados a esta tarea. Estos ayudantes carecen del sufijo <code>_tag</code>, por ejemplo, <code>text_field</code>, <code>text_area</code>.</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= text_field(:person, :name) %&gt;
+</code></pre>
+</div>
+<p>producirá una salida similar a</p><div class="code_container">
+<pre><code class="language-erb">&lt;input id="person_name" name="person[name]" type="text" value="Henry" /&gt;
+</code></pre>
+</div>
+<p>Al enviar el formulario, el valor ingresado por el usuario se almacenará en <code>params[:person][:name]</code>.</p><div class="warning"><p>Debe pasar el nombre de una variable de instancia, es decir, <code>:person</code> o<code>"person"</code>, no una instancia real de su objeto modelo.</p></div><p>Rails proporciona ayudantes para mostrar los errores de validación asociados con un objeto de modelo. Estos se tratan en detalle en la guía <a href="active_record_validations.html#displaying-validation-errors-in-views">Active Record Validations</a>.</p><h4 id="binding-a-form-to-an-object"><a class="anchorlink" href="#binding-a-form-to-an-object">2.2 Binding a Form to an Object</a></h4><p>Si bien esto es un aumento en la comodidad, está lejos de ser perfecto. Si <code>Person</code> tiene muchos atributos para editar, estaríamos repitiendo el nombre del objeto editado muchas veces. Lo que queremos hacer es vincular de alguna manera un formulario a un objeto modelo, que es exactamente lo que hace <code>form_with</code> con <code>:model</code>.</p><p>Supongamos que tenemos un controlador para tratar los artículos <code>app/controllers/articles_controller.rb</code>:</p><div class="code_container">
+<pre><code class="language-ruby">def new
+  @article = Article.new
+end
+</code></pre>
+</div>
+<p>La vista correspondiente  <code>app/views/articles/new.html.erb</code> que usa <code>form_with</code> se ve así:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @article, class: "nifty_form" do |form| %&gt;
+  &lt;%= form.text_field :title %&gt;
+  &lt;%= form.text_area :body, size: "60x12" %&gt;
+  &lt;%= form.submit "Create" %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Hay algunas cosas a tener en cuenta aquí:</p>
+<ul>
+<li>
+<code>@article</code> es el objeto real que se está editando.</li>
+<li>Hay un solo hash de opciones. Las opciones HTML (excepto <code>id</code> y <code>class</code>) se pasan en el hash <code>:html</code>. También puede proporcionar una opción <code>:namespace</code> para su formulario para garantizar la unicidad de los atributos de identificación en los elementos del formulario. El atributo de alcance tendrá el prefijo de subrayado en la identificación HTML generada.</li>
+<li>El método <code>form_with</code> produce un objeto ** constructor de formularios ** (la variable<code>form</code>).</li>
+<li>Si desea dirigir su solicitud de formulario a una URL en particular, debería usar <code>form_with url: my_nifty_url_path</code> en su lugar. Para ver opciones más detalladas sobre lo que acepta <code>form_with</code>, asegúrese de  <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with">check out the API documentation</a>.</li>
+<li>Los métodos para crear controles de formulario se llaman ** en ** el objeto del generador de formularios <code>form</code>.</li>
+</ul>
+<p>El HTML resultante es:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form class="nifty_form" action="/articles" accept-charset="UTF-8" data-remote="true" method="post"&gt;
+  &lt;input type="hidden" name="authenticity_token" value="NRkFyRWxdYNfUg7vYxLOp2SLf93lvnl+QwDWorR42Dp6yZXPhHEb6arhDOIWcqGit8jfnrPwL781/xlrzj63TA==" /&gt;
+  &lt;input type="text" name="article[title]" id="article_title" /&gt;
+  &lt;textarea name="article[body]" id="article_body" cols="60" rows="12"&gt;&lt;/textarea&gt;
+  &lt;input type="submit" name="commit" value="Create" data-disable-with="Create" /&gt;
+&lt;/form&gt;
+</code></pre>
+</div>
+<p>El objeto pasado como <code>:model</code> en <code>form_with</code> controla la clave utilizada en <code>params</code> para acceder a los valores del formulario. Aquí el nombre es <code>article</code>, por lo que todas las entradas tienen el formato <code>article[attribute_name]</code>. En consecuencia, en la acción <code>create</code> <code>params[:article]</code> habrá un hash con las claves<code>:title</code> y <code>:body</code>. Puede leer más sobre la importancia de los nombres de entrada en el capítulo <a href="#understanding-parameter-naming-conventions">Understanding Parameter Naming Conventions</a> de este guía.</p><div class="info"><p>convencionalmente, sus entradas reflejarán los atributos del modelo. Sin embargo, ¡no tienen que hacerlo! Si hay otra información que necesita, puede incluirla en su formulario al igual que con los atributos y acceder a ella a través de <code>params[:article][:my_nifty_non_attribute_input]</code>.</p></div><p>Los métodos auxiliares llamados en el constructor de formularios son idénticos a los ayudantes de objetos de modelo, excepto que no es necesario especificar qué objeto se está editando, ya que este ya está gestionado por el constructor de formularios.</p><p>Puede crear un enlace similar sin crear etiquetas <code>&lt;form&gt;</code> con el ayudante <code>fields_for</code>. Esto es útil para editar objetos de modelo adicionales con el mismo formulario. Por ejemplo, si tuvieras un modelo <code>Person</code> con un modelo <code>ContactDetail</code> asociado, podrías crear un formulario para crear ambos así:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.text_field :name %&gt;
+  &lt;%= fields_for :contact_detail, @person.contact_detail do |contact_detail_form| %&gt;
+    &lt;%= contact_detail_form.text_field :phone_number %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>que produce la siguiente salida:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form action="/people" accept-charset="UTF-8" data-remote="true" method="post"&gt;
+  &lt;input type="hidden" name="authenticity_token" value="bL13x72pldyDD8bgtkjKQakJCpd4A8JdXGbfksxBDHdf1uC0kCMqe2tvVdUYfidJt0fj3ihC4NxiVHv8GVYxJA==" /&gt;
+  &lt;input type="text" name="person[name]" id="person_name" /&gt;
+  &lt;input type="text" name="contact_detail[phone_number]" id="contact_detail_phone_number" /&gt;
+&lt;/form&gt;
+</code></pre>
+</div>
+<p>El objeto generado por <code>fields_for</code> es un constructor de formularios como el generado por <code>form_with</code>.</p><h4 id="relying-on-record-identification"><a class="anchorlink" href="#relying-on-record-identification">2.3 Relying on Record Identification</a></h4><p>El modelo de artículo está disponible directamente para los usuarios de la aplicación, por lo que, siguiendo las mejores prácticas para desarrollar con Rails, debe declararlo <strong>a resource</strong>:</p><div class="code_container">
+<pre><code class="language-ruby">resources :articles
+</code></pre>
+</div>
+<p>SUGERENCIA: Declarar un recurso tiene varios efectos secundarios. Ver <a href="routing.html#resource-routing-the-rails-default">Rails Routing from the Outside In</a> guía para obtener más información sobre la configuración y el uso de recursos.</p><p>Cuando se trata de recursos RESTful, las llamadas a <code>form_with</code> pueden volverse significativamente más fáciles si confía en la <strong>identificación de registro</strong>. En resumen, puede pasar la instancia del modelo y hacer que Rails descubra el nombre del modelo y el resto:</p><div class="code_container">
+<pre><code class="language-ruby">## Creating a new article
+# long-style:
+form_with(model: @article, url: articles_path)
+# short-style:
+form_with(model: @article)
+
+## Editing an existing article
+# long-style:
+form_with(model: @article, url: article_path(@article), method: "patch")
+# short-style:
+form_with(model: @article)
+</code></pre>
+</div>
+<p>Observe cómo la invocación de estilo corto <code>form_with</code> es convenientemente la misma, independientemente de que el registro sea nuevo o existente. La identificación del registro es lo suficientemente inteligente como para averiguar si el registro es nuevo preguntando <code>record.persisted?</code>. También selecciona la ruta correcta a la que enviar y el nombre según la clase del objeto.</p><div class="warning"><p>Cuando usa STI (herencia de tabla única) con sus modelos, no puede confiar en la identificación de registros en una subclase si solo su clase principal se declara un recurso. Tendrá que especificar <code>:url</code> y <code>:scope</code> (el nombre del modelo) explícitamente.</p></div><h5 id="dealing-with-namespaces"><a class="anchorlink" href="#dealing-with-namespaces">2.3.1 Dealing with Namespaces</a></h5><p>Si ha creado rutas con espacios de nombres, <code>form_with</code> también tiene una ingeniosa abreviatura para eso. Si su aplicación tiene un espacio de nombres de administrador, entonces</p><div class="code_container">
+<pre><code class="language-ruby">form_with model: [:admin, @article]
+</code></pre>
+</div>
+<p>creará un formulario que se envía al <code>ArticlesController</code> dentro del espacio de nombres de administrador (enviándolo a <code>admin_article_path(@article)</code>en el caso de una actualización). Si tiene varios niveles de espacio de nombres, la sintaxis es similar:</p><div class="code_container">
+<pre><code class="language-ruby">form_with model: [:admin, :management, @article]
+</code></pre>
+</div>
+<p>Para obtener más información sobre el sistema de enrutamiento de Rails y las convenciones asociadas, consulte el 
+guía <a href="routing.html">Rails Routing from the Outside In</a></p><h4 id="how-do-forms-with-patch-put-or-delete-methods-work-questionmark"><a class="anchorlink" href="#how-do-forms-with-patch-put-or-delete-methods-work-questionmark">2.4 How do forms with PATCH, PUT, or DELETE methods work?</a></h4><p>El marco de Rails fomenta el diseño RESTful de sus aplicaciones, lo que significa que estará realizando muchas solicitudes de "PATCH", "PUT" y "DELETE" (además de "GET" y "POST"). Sin embargo, la mayoría de los navegadores <em>no admiten</em> métodos distintos de "GET" y "POST" cuando se trata de enviar formularios.</p><p>Rails soluciona este problema emulando otros métodos sobre POST con una entrada oculta llamada <code>" _method "</code>, que está configurada para reflejar el método deseado:</p><div class="code_container">
+<pre><code class="language-ruby">form_with(url: search_path, method: "patch")
+</code></pre>
+</div>
+<p>Output:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/search" data-remote="true" method="post"&gt;
+  &lt;input name="_method" type="hidden" value="patch" /&gt;
+  &lt;input name="authenticity_token" type="hidden" value="f755bb0ed134b76c432144748a6d4b7a7ddf2b71" /&gt;
+  ...
+&lt;/form&gt;
+</code></pre>
+</div>
+<p>Al analizar los datos POSTED, Rails tendrá en cuenta el parámetro especial <code>_method</code> y actuará como si el método HTTP fuera el especificado dentro de él (" PATCH "en este ejemplo).</p><div class="warning"><p>Todos los formularios que usan <code>form_with</code> implementan <code>remote: true</code> de forma predeterminada. Estos formularios enviarán datos mediante una solicitud XHR (Ajax). Para deshabilitar esto, incluya <code>local: true</code>. Para profundizar más, consulte la guía <a href="working_with_javascript_in_rails.html#remote-elements">Working with JavaScript in Rails</a></p></div><h3 id="making-select-boxes-with-ease"><a class="anchorlink" href="#making-select-boxes-with-ease">3 Making Select Boxes with Ease</a></h3><p>Los cuadros de selección en HTML requieren una cantidad significativa de marcado (un elemento <code>OPTION</code> para cada opción para elegir), por lo tanto, tiene más sentido que se generen dinámicamente.</p><p>Así es como podría verse el marcado:</p><div class="code_container">
+<pre><code class="language-xml">&lt;select name="city_id" id="city_id"&gt;
+  &lt;option value="1"&gt;Lisbon&lt;/option&gt;
+  &lt;option value="2"&gt;Madrid&lt;/option&gt;
+  &lt;option value="3"&gt;Berlin&lt;/option&gt;
+&lt;/select&gt;
+</code></pre>
+</div>
+<p>Aquí tienes una lista de ciudades cuyos nombres se presentan al usuario. Internamente, la aplicación solo quiere manejar sus ID, por lo que se utilizan como atributo de valor de las opciones. Veamos cómo puede ayudar Rails aquí.</p><h4 id="the-select-and-option-tags"><a class="anchorlink" href="#the-select-and-option-tags">3.1 The Select and Option Tags</a></h4><p>El ayudante más genérico es <code>select_tag</code>, que, como su nombre lo indica, simplemente genera la etiqueta <code>SELECT</code> que encapsula una cadena de opciones:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= select_tag(:city_id, raw('&lt;option value="1"&gt;Lisbon&lt;/option&gt;&lt;option value="2"&gt;Madrid&lt;/option&gt;&lt;option value="3"&gt;Berlin&lt;/option&gt;')) %&gt;
+</code></pre>
+</div>
+<p>Este es un comienzo, pero no crea dinámicamente las etiquetas de opción. Puede generar etiquetas de opciones con el ayudante <code>options_for_select</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= options_for_select([['Lisbon', 1], ['Madrid', 2], ['Berlin', 3]]) %&gt;
+</code></pre>
+</div>
+<p>Salida:</p><div class="code_container">
+<pre><code class="language-xml">&lt;option value="1"&gt;Lisbon&lt;/option&gt;
+&lt;option value="2"&gt;Madrid&lt;/option&gt;
+&lt;option value="3"&gt;Berlin&lt;/option&gt;
+</code></pre>
+</div>
+<p>El primer argumento de <code>options_for_select</code> es una matriz anidada donde cada elemento tiene dos elementos: texto de la opción (nombre de la ciudad) y valor de la opción (id de la ciudad). El valor de la opción es lo que se enviará a su controlador. A menudo, esta será la identificación de un objeto de base de datos correspondiente, pero no tiene por qué ser así.</p><p>Sabiendo esto, puede combinar <code>select_tag</code> y <code>options_for_select</code> para lograr el marcado completo deseado:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= select_tag(:city_id, options_for_select(...)) %&gt;
+</code></pre>
+</div>
+<p><code>options_for_select</code> te permite preseleccionar una opción pasando su valor.</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= options_for_select([['Lisbon', 1], ['Madrid', 2], ['Berlin', 3]], 2) %&gt;
+</code></pre>
+</div>
+<p>Salida:</p><div class="code_container">
+<pre><code class="language-xml">&lt;option value="1"&gt;Lisbon&lt;/option&gt;
+&lt;option value="2" selected="selected"&gt;Madrid&lt;/option&gt;
+&lt;option value="3"&gt;Berlin&lt;/option&gt;
+</code></pre>
+</div>
+<p>Siempre que Rails vea que el valor interno de una opción que se está generando coincide con este valor, agregará el atributo <code>selected</code> a esa opción.</p><p>Puede agregar atributos arbitrarios a las opciones usando hashes:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= options_for_select(
+  [
+    ['Lisbon', 1, { 'data-size' =&gt; '2.8 million' }],
+    ['Madrid', 2, { 'data-size' =&gt; '3.2 million' }],
+    ['Berlin', 3, { 'data-size' =&gt; '3.4 million' }]
+  ], 2
+) %&gt;
+</code></pre>
+</div>
+<p>Salida:</p><div class="code_container">
+<pre><code class="language-xml">&lt;option value="1" data-size="2.8 million"&gt;Lisbon&lt;/option&gt;
+&lt;option value="2" selected="selected" data-size="3.2 million"&gt;Madrid&lt;/option&gt;
+&lt;option value="3" data-size="3.4 million"&gt;Berlin&lt;/option&gt;
+</code></pre>
+</div>
+<h4 id="select-boxes-for-dealing-with-model-objects"><a class="anchorlink" href="#select-boxes-for-dealing-with-model-objects">3.2 Select Boxes for Dealing with Model Objects</a></h4><p>En la mayoría de los casos, los controles de formulario estarán vinculados a un modelo específico y, como es de esperar, Rails proporciona ayudantes diseñados para ese propósito. De acuerdo con otros ayudantes de formulario, cuando se trata de un objeto modelo, elimine el sufijo <code>_tag</code> de <code>select_tag</code>:</p><p>Si su controlador ha definido <code>@person</code> y el city_id de esa persona es 2:</p><div class="code_container">
+<pre><code class="language-ruby">@person = Person.new(city_id: 2)
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-erb">&lt;%= select(:person, :city_id, [['Lisbon', 1], ['Madrid', 2], ['Berlin', 3]]) %&gt;
+</code></pre>
+</div>
+<p>producirá una salida similar a</p><div class="code_container">
+<pre><code class="language-xml">&lt;select name="person[city_id]" id="person_city_id"&gt;
+  &lt;option value="1"&gt;Lisbon&lt;/option&gt;
+  &lt;option value="2" selected="selected"&gt;Madrid&lt;/option&gt;
+  &lt;option value="3"&gt;Berlin&lt;/option&gt;
+&lt;/select&gt;
+</code></pre>
+</div>
+<p>Observe que el tercer parámetro, la matriz de opciones, es el mismo tipo de argumento que pasa a <code>options_for_select</code>. Una ventaja aquí es que no tienes que preocuparte por preseleccionar la ciudad correcta si el usuario ya tiene una; Rails hará esto por ti leyendo el atributo <code>@person.city_id</code>.</p><p>Al igual que con otros ayudantes, si tuviera que usar el ayudante <code>select</code> en un generador de formularios en el ámbito del objeto <code>@person</code>, la sintaxis sería:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.select(:city_id, [['Lisbon', 1], ['Madrid', 2], ['Berlin', 3]]) %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>También puede pasar un bloque al ayudante <code>select</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.select(:city_id) do %&gt;
+    &lt;% [['Lisbon', 1], ['Madrid', 2], ['Berlin', 3]].each do |c| %&gt;
+      &lt;%= content_tag(:option, c.first, value: c.last) %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<div class="warning"><p>Si está utilizando <code>select</code> o ayudantes similares para establecer una asociación <code>belongs_to</code>, debe pasar el nombre de la clave externa (en el ejemplo anterior, <code>city_id</code>), no el nombre de la asociación en sí.</p></div><div class="warning"><p>Cuando <code>:include_blank</code> o <code>:prompt</code> no están presentes, <code>:include_blank</code> se fuerza como verdadero si el atributo de selección <code>required</code> es verdadero, el <code>size</code> de visualización es uno y <code>multiple</code> no es verdadero.</p></div><h4 id="option-tags-from-a-collection-of-arbitrary-objects"><a class="anchorlink" href="#option-tags-from-a-collection-of-arbitrary-objects">3.3 Option Tags from a Collection of Arbitrary Objects</a></h4><p>Generar etiquetas de opciones con <code>options_for_select</code> requiere que crees una matriz que contenga el texto y el valor de cada opción. Pero, ¿qué pasaría si tuvieras un modelo <code>City</code> (quizás uno de Active Record) y quisieras generar etiquetas de opción a partir de una colección de esos objetos? Una solución sería hacer una matriz anidada iterando sobre ellos:</p><div class="code_container">
+<pre><code class="language-erb">&lt;% cities_array = City.all.map { |city| [city.name, city.id] } %&gt;
+&lt;%= options_for_select(cities_array) %&gt;
+</code></pre>
+</div>
+<p>Esta es una solución perfectamente válida, pero Rails ofrece una alternativa menos detallada: <code>options_from_collection_for_select</code>. Este ayudante espera una colección de objetos arbitrarios y dos argumentos adicionales: los nombres de los métodos para leer la opción <strong>valor</strong> y <strong>texto</strong>, respectivamente:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= options_from_collection_for_select(City.all, :id, :name) %&gt;
+</code></pre>
+</div>
+<p>Como su nombre lo indica, esto solo genera etiquetas de opción. Para generar un cuadro de selección de trabajo, necesitaría usar <code>collection_select</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= collection_select(:person, :city_id, City.all, :id, :name) %&gt;
+</code></pre>
+</div>
+<p>Al igual que con otros ayudantes, si tuviera que usar el ayudante <code>collection_select</code> en un generador de formularios en el ámbito del objeto <code>@person</code>, la sintaxis sería:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.collection_select(:city_id, City.all, :id, :name) %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<div class="note"><p>Los pares pasados ​​a <code>options_for_select</code> deben tener el texto primero y el valor en segundo lugar, sin embargo, con <code>options_from_collection_for_select</code> debe tener el método value primero y el método text en segundo lugar.</p></div><h4 id="time-zone-and-country-select"><a class="anchorlink" href="#time-zone-and-country-select">3.4 Time Zone and Country Select</a></h4><p>Para aprovechar el soporte de zona horaria en Rails, debe preguntar a sus usuarios en qué zona horaria se encuentran. Hacerlo requeriría generar opciones de selección de una lista de <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/TimeZone.html"><code>ActiveSupport::TimeZone</code></a> usando <code>collection_select</code>, pero simplemente puedes usar el ayudante <code>time_zone_select</code> que ya envuelve esto:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= time_zone_select(:person, :time_zone) %&gt;
+</code></pre>
+</div>
+<p>También hay un ayudante <code>time_zone_options_for_select</code> para una forma más manual (por lo tanto, más personalizable) de hacer esto. Lea la  <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormOptionsHelper.html#method-i-time_zone_options_for_select">API documentation</a> para conocer los posibles argumentos de estos dos métodos.</p><p>Rails <em>usado</em> para tener un ayudante <code>country_select</code> para elegir países, pero esto se ha extraído al  <a href="https://github.com/stefanpenner/country_select">country_select plugin</a>.</p><h3 id="using-date-and-time-form-helpers"><a class="anchorlink" href="#using-date-and-time-form-helpers">4 Using Date and Time Form Helpers</a></h3><p>Puede optar por no utilizar los ayudantes de formulario que generan campos de entrada de fecha y hora HTML5 y utilizar los ayudantes de fecha y hora alternativos. Estos ayudantes de fecha y hora difieren de todos los demás ayudantes de formulario en dos aspectos importantes:</p>
+<ul>
+<li>Las fechas y horas no son representables por un solo elemento de entrada. En su lugar, tiene varios, uno para cada componente (año, mes, día, etc.) y, por lo tanto, no hay un valor único en su hash <code>params</code> con su fecha u hora.</li>
+<li>Otros ayudantes usan el sufijo <code>_tag</code> para indicar si un ayudante es un ayudante básico o uno que opera en objetos de modelo. Con fechas y horas, <code>select_date</code>, <code>select_time</code> y <code>select_datetime</code> son los ayudantes básicos,<code>date_select</code>, <code>time_select</code> y<code>datetime_select</code> son los ayudantes de objetos de modelo equivalentes.</li>
+</ul>
+<p>Ambas familias de ayudantes crearán una serie de cuadros de selección para los diferentes componentes (año, mes, día, etc.).</p><h4 id="barebones-helpers"><a class="anchorlink" href="#barebones-helpers">4.1 Barebones Helpers</a></h4><p>La familia de ayudantes <code>select_ *</code> toma como primer argumento una instancia de <code>Date</code>,<code>Time</code> o <code>DateTime</code> que se utiliza como el valor seleccionado actualmente. Puede omitir este parámetro, en cuyo caso se utiliza la fecha actual. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= select_date Date.today, prefix: :start_date %&gt;
+</code></pre>
+</div>
+<p>salidas (con valores de opción reales omitidos para brevedad)</p><div class="code_container">
+<pre><code class="language-xml">&lt;select id="start_date_year" name="start_date[year]"&gt;
+&lt;/select&gt;
+&lt;select id="start_date_month" name="start_date[month]"&gt;
+&lt;/select&gt;
+&lt;select id="start_date_day" name="start_date[day]"&gt;
+&lt;/select&gt;
+</code></pre>
+</div>
+<p>Las entradas anteriores darían como resultado que <code>params[:start_date]</code> sea un hash con claves <code>:yaer</code>,<code>:month</code>, <code>:day</code>. Para obtener un objeto <code>Date</code>,<code>Time</code> o <code>DateTime</code> real, tendría que extraer estos valores y pasarlos al constructor apropiado, por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
+</code></pre>
+</div>
+<p>La opción <code>:prefix</code> es la clave utilizada para recuperar el hash de los componentes de la fecha del hash de <code>params</code>. Aquí se estableció en <code>start_date</code>, si se omite, se establecerá de forma predeterminada en<code>date</code>.</p><h4 id="using-date-and-time-form-helpers-model-object-helpers"><a class="anchorlink" href="#using-date-and-time-form-helpers-model-object-helpers">4.2 Model Object Helpers</a></h4><p><code>select_date</code> no funciona bien con formularios que actualizan o crean objetos de Active Record ya que Active Record espera que cada elemento del hash de <code>params</code> corresponda a un atributo.
+Los ayudantes de objetos de modelo para fechas y horas envían parámetros con nombres especiales; cuando Active Record ve parámetros con tales nombres, sabe que deben combinarse con los otros parámetros y entregarse a un constructor apropiado para el tipo de columna. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= date_select :person, :birth_date %&gt;
+</code></pre>
+</div>
+<p>salidas (con valores de opción reales omitidos para brevedad)</p><div class="code_container">
+<pre><code class="language-xml">&lt;select id="person_birth_date_1i" name="person[birth_date(1i)]"&gt;
+&lt;/select&gt;
+&lt;select id="person_birth_date_2i" name="person[birth_date(2i)]"&gt;
+&lt;/select&gt;
+&lt;select id="person_birth_date_3i" name="person[birth_date(3i)]"&gt;
+&lt;/select&gt;
+</code></pre>
+</div>
+<p>que da como resultado un hash <code>params</code> como</p><div class="code_container">
+<pre><code class="language-ruby">{'person' =&gt; {'birth_date(1i)' =&gt; '2008', 'birth_date(2i)' =&gt; '11', 'birth_date(3i)' =&gt; '22'}}
+</code></pre>
+</div>
+<p>Cuando esto se pasa a <code>Person.new</code> (o <code>update</code>), Active Record detecta que todos estos parámetros deben usarse para construir el atributo <code>birth_date</code> y usa la información con sufijos para determinar en qué orden se deben pasar estos parámetros funciones como <code>Date.civil</code>.</p><h4 id="common-options"><a class="anchorlink" href="#common-options">4.3 Common Options</a></h4><p>Ambas familias de ayudantes utilizan el mismo conjunto básico de funciones para generar las etiquetas de selección individuales y, por lo tanto, ambos aceptan en gran medida las mismas opciones. En particular, de forma predeterminada, Rails generará opciones de año 5 años a cada lado del año actual. Si este no es un rango apropiado, las opciones <code>: start_year</code> y<code>: end_year</code> lo anulan. Para obtener una lista exhaustiva de las opciones disponibles, consulte la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html">documentación de la API</a>.</p><p>Como regla general, debe usar <code>date_select</code> cuando trabaje con objetos de modelo y <code>select_date</code> en otros casos, como un formulario de búsqueda que filtra los resultados por fecha.</p><h4 id="individual-components"><a class="anchorlink" href="#individual-components">4.4 Individual Components</a></h4><p>Ocasionalmente, es necesario mostrar solo un componente de fecha, como un año o un mes. Rails proporciona una serie de ayudantes para esto, uno para cada componente <code>select_year</code>, <code>select_month</code>, <code>select_day</code>, <code>select_hour</code>, <code>select_minute</code>, <code>select_second</code>. Estos ayudantes son bastante sencillos. De forma predeterminada, generarán un campo de entrada con el nombre del componente de tiempo (por ejemplo, "año" para <code>select_year</code>," mes "para<code>select_month</code>, etc.) aunque esto puede anularse con la opción <code>: field_name</code>. La opción <code>: prefix</code> funciona de la misma manera que para<code>select_date</code> y <code>select_time</code> y tiene el mismo valor predeterminado.</p><p>El primer parámetro especifica qué valor debe seleccionarse y puede ser una instancia de una <code>Date</code>, <code>Time</code> o <code>DateTime</code>, en cuyo caso se extraerá el componente relevante o un valor numérico. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= select_year(2009) %&gt;
+&lt;%= select_year(Time.new(2009)) %&gt;
+</code></pre>
+</div>
+<p>producirá la misma salida y el valor elegido por el usuario puede ser recuperado por <code>params[:date][:year]</code>.</p><h3 id="creating-checkboxes-for-relations"><a class="anchorlink" href="#creating-checkboxes-for-relations">5 Creating Checkboxes for Relations</a></h3><p>Generar opciones de casillas de verificación que actúen adecuadamente con los modelos de Active Record
+y los parámetros sólidos pueden ser una empresa confusa. Afortunadamente hay un ayudante
+función para reducir significativamente el trabajo requerido.</p><p>Así es como puede verse el marcado:</p><div class="code_container">
+<pre><code class="language-xml">&lt;input type="checkbox" value="1" checked="checked" name="person[city_ids][]" id="person_cities_1" /&gt;
+&lt;label for="person_cities_1"&gt;Pittsburgh&lt;/label&gt;
+&lt;input type="checkbox" value="2" checked="checked" name="person[city_ids][]" id="person_cities_2"/&gt;
+&lt;label for="person_cities_2"&gt;Madison&lt;/label&gt;
+&lt;input type="checkbox" value="3" checked="checked" name="person[city_ids][]" id="person_cities_3"/&gt;
+&lt;label for="person_cities_3"&gt;Santa Rosa&lt;/label&gt;
+</code></pre>
+</div>
+<p>Tiene una lista de ciudades cuyos nombres se muestran al usuario y asociados
+casillas de verificación que contienen la identificación de cada entrada de la base de datos de ciudades.</p><h4 id="the-collection-check-boxes-tag"><a class="anchorlink" href="#the-collection-check-boxes-tag">5.1 The Collection Check Boxes tag</a></h4><p>The <code>collection_check_boxes</code> exists to help create these checkboxes with the
+name for each input that maps to params that can be passed directly to model
+relationships.</p><p>In this example we show the currently associated records in a collection:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.collection_check_boxes :city_ids, person.object.cities, :id, :name %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Esto vuelve</p><div class="code_container">
+<pre><code class="language-xml">&lt;input type="checkbox" value="1" checked="checked" name="person[city_ids][]" id="person_cities_1" checked="checked" /&gt;
+&lt;label for="person_cities_1"&gt;Pittsburgh&lt;/label&gt;
+&lt;input type="checkbox" value="2" checked="checked" name="person[city_ids][]" id="person_cities_2" checked="checked" /&gt;
+&lt;label for="person_cities_2"&gt;Madison&lt;/label&gt;
+&lt;input type="checkbox" value="3" checked="checked" name="person[city_ids][]" id="person_cities_3" checked="checked" /&gt;
+&lt;label for="person_cities_3"&gt;Santa Rosa&lt;/label&gt;
+</code></pre>
+</div>
+<p>También puede pasar un bloque para formatear el html como desee:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.collection_check_boxes :city_ids, City.all, :id, :name do |city| %&gt;
+    &lt;div&gt;
+      &lt;%= city.check_box %&gt;&lt;%= city.label %&gt;
+    &lt;/div&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Esto vuelve</p><div class="code_container">
+<pre><code class="language-xml">&lt;div&gt;
+  &lt;input type="checkbox" value="1" checked="checked" name="person[city_ids][]" id="person_cities_1" checked="checked" /&gt;
+  &lt;label for="person_cities_1"&gt;Pittsburgh&lt;/label&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;input type="checkbox" value="2" checked="checked" name="person[city_ids][]" id="person_cities_2" checked="checked" /&gt;
+  &lt;label for="person_cities_2"&gt;Madison&lt;/label&gt;
+&lt;/div&gt;
+&lt;div&gt;
+  &lt;input type="checkbox" value="3" checked="checked" name="person[city_ids][]" id="person_cities_3" checked="checked" /&gt;
+  &lt;label for="person_cities_3"&gt;Santa Rosa&lt;/label&gt;
+&lt;/div&gt;
+</code></pre>
+</div>
+<p>La firma del método es</p><div class="code_container">
+<pre><code class="language-erb">collection_check_boxes(object, method, collection, value_method, text_method, options = {}, html_options = {}, &amp;block)
+</code></pre>
+</div>
+
+<ul>
+<li>
+<code>object</code> - el objeto de formulario, esto es innecesario si se usa el
+llamada al método <code>form.collection_check_boxes</code>
+</li>
+<li>
+<code>method</code> - el método de asociación para la relación del modelo</li>
+<li>
+<code>collection</code>: una matriz de objetos para mostrar en las casillas de verificación</li>
+<li>
+<code>value_method</code>: el método a llamar al completar el atributo value en
+la casilla de verificación</li>
+<li>
+<code>text</code> - el método para llamar al completar el texto de la etiqueta</li>
+</ul>
+<h3 id="uploading-files"><a class="anchorlink" href="#uploading-files">6 Uploading Files</a></h3><p>Una tarea común es cargar algún tipo de archivo, ya sea una imagen de una persona o un archivo CSV que contiene datos para procesar. Lo más importante para recordar con la carga de archivos es que el atributo enctype del formulario representado <strong>debe</strong> establecerse en "multipart / form-data". Si usa <code>form_with</code> con <code>:model</code>, esto se hace automáticamente. Si usa <code>form_with</code> sin <code>:model</code>, debe configurarlo usted mismo, según el siguiente ejemplo.</p><p>Los dos formularios siguientes cargan un archivo.</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |form| %&gt;
+  &lt;%= form.file_field :picture %&gt;
+&lt;% end %&gt;
+
+&lt;%= form_with url: "/uploads", multipart: true do |form| %&gt;
+  &lt;%= form.file_field 'picture' %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Rails proporciona el par habitual de ayudantes: los barebones <code>file_field_tag</code> y el modelo orientado a <code>file_field</code>. Como era de esperar en el primer caso, el archivo cargado está en <code>params[:person][:picture]</code> y en el segundo caso en <code>params[:picture]</code>.</p><h4 id="what-gets-uploaded"><a class="anchorlink" href="#what-gets-uploaded">6.1 What Gets Uploaded</a></h4><p>El objeto en el hash <code>params</code> es una instancia de <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Http/UploadedFile.html"><code>ActionDispatch::Http::UploadedFile</code></a>. El siguiente fragmento guarda el archivo cargado en <code>#{Rails.root}/public/uploads</code> con el mismo nombre que el archivo original.</p><div class="code_container">
+<pre><code class="language-ruby">def upload
+  uploaded_file = params[:picture]
+  File.open(Rails.root.join('public', 'uploads', uploaded_file.original_filename), 'wb') do |file|
+    file.write(uploaded_file.read)
+  end
+end
+</code></pre>
+</div>
+<p>Una vez que se ha cargado un archivo, hay una multitud de tareas potenciales, que van desde dónde almacenar los archivos (en disco, Amazon S3, etc.), asociarlos con modelos, cambiar el tamaño de los archivos de imagen y generar miniaturas, etc. <a href="active_storage_overview.html">Active Storage</a> está diseñado para ayudar con estas tareas.</p><h3 id="customizing-form-builders"><a class="anchorlink" href="#customizing-form-builders">7 Customizing Form Builders</a></h3><p>El objeto generado por <code>form_with</code> y <code>fields_for</code> es una instancia de  <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html"><code>ActionView::Helpers::FormBuilder</code></a>. Los creadores de formularios encapsulan la noción de mostrar elementos de formulario para un solo objeto. Si bien puede escribir ayudantes para sus formularios de la forma habitual, también puede crear la subclase <code>ActionView::Helpers::FormBuilder</code> y agregar los ayudantes allí. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |form| %&gt;
+  &lt;%= text_field_with_label form, :first_name %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>puede ser reemplazado con</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person, builder: LabellingFormBuilder do |form| %&gt;
+  &lt;%= form.text_field :first_name %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>definiendo una clase <code>LabellingFormBuilder</code> similar a la siguiente:</p><div class="code_container">
+<pre><code class="language-ruby">class LabellingFormBuilder &lt; ActionView::Helpers::FormBuilder
+  def text_field(attribute, options={})
+    label(attribute) + super
+  end
+end
+</code></pre>
+</div>
+<p>If you reuse this frequently you could define a <code>labeled_form_with</code> helper that automatically applies the <code>builder: LabellingFormBuilder</code> option:</p><div class="code_container">
+<pre><code class="language-ruby">def labeled_form_with(model: nil, scope: nil, url: nil, format: nil, **options, &amp;block)
+  options.merge! builder: LabellingFormBuilder
+  form_with model: model, scope: scope, url: url, format: format, **options, &amp;block
+end
+</code></pre>
+</div>
+<p>El constructor de formularios utilizado también determina qué sucede cuando lo hace</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= render partial: f %&gt;
+</code></pre>
+</div>
+<p>Si <code>f</code> es una instancia de<code>ActionView::Helpers::FormBuilder</code>, esto hará que el <code>formulario</code> sea parcial, estableciendo el objeto del parcial en el generador de formularios. Si el constructor de formularios es de la clase <code>LabellingFormBuilder</code>, en su lugar se representará el parcial de<code>labelling_form</code>.</p><h3 id="understanding-parameter-naming-conventions"><a class="anchorlink" href="#understanding-parameter-naming-conventions">8 Understanding Parameter Naming Conventions</a></h3><p>Los valores de los formularios pueden estar en el nivel superior del hash <code>params</code> o anidados en otro hash. Por ejemplo, en una acción estándar de <code>create</code> para un modelo de Persona, <code>params[:person]</code> normalmente sería un hash de todos los atributos que la persona debe crear. El hash <code>params</code> también puede contener matrices, matrices de hashes, etc.</p><p>Fundamentalmente, los formularios HTML no conocen ningún tipo de datos estructurados, todo lo que generan son pares nombre-valor, donde los pares son simplemente cadenas simples. Las matrices y hashes que ves en tu aplicación son el resultado de algunas convenciones de nomenclatura de parámetros que usa Rails.</p><h4 id="basic-structures"><a class="anchorlink" href="#basic-structures">8.1 Basic Structures</a></h4><p>Las dos estructuras básicas son matrices y hashes. Los hash reflejan la sintaxis utilizada para acceder al valor en <code>params</code>. Por ejemplo, si un formulario contiene:</p><div class="code_container">
+<pre><code class="language-xml">&lt;input id="person_name" name="person[name]" type="text" value="Henry"/&gt;
+</code></pre>
+</div>
+<p>el hash <code>params</code> contendrá</p><div class="code_container">
+<pre><code class="language-ruby">{'person' =&gt; {'name' =&gt; 'Henry'}}
+</code></pre>
+</div>
+<p>y <code>params[:person][:name]</code> recuperará el valor enviado en el controlador.</p><p>Los hash se pueden anidar tantos niveles como sea necesario, por ejemplo</p><div class="code_container">
+<pre><code class="language-xml">&lt;input id="person_address_city" name="person[address][city]" type="text" value="New York"/&gt;
+</code></pre>
+</div>
+<p>dará como resultado que el hash <code>params</code> sea</p><div class="code_container">
+<pre><code class="language-ruby">{'person' =&gt; {'address' =&gt; {'city' =&gt; 'New York'}}}
+</code></pre>
+</div>
+<p>Normalmente, Rails ignora los nombres de parámetros duplicados. Si el nombre del parámetro contiene un conjunto vacío de corchetes <code>[]</code>, se acumularán en una matriz. Si desea que los usuarios puedan ingresar varios números de teléfono, puede colocar esto en el formulario:</p><div class="code_container">
+<pre><code class="language-xml">&lt;input name="person[phone_number][]" type="text"/&gt;
+&lt;input name="person[phone_number][]" type="text"/&gt;
+&lt;input name="person[phone_number][]" type="text"/&gt;
+</code></pre>
+</div>
+<p>Esto daría como resultado que params <code>params[:person][:phone_number]</code> sea una matriz que contiene los números de teléfono ingresados.</p><h4 id="combining-them"><a class="anchorlink" href="#combining-them">8.2 Combining Them</a></h4><p>We can mix and match these two concepts. One element of a hash might be an array as in the previous example, or you can have an array of hashes. For example, a form might let you create any number of addresses by repeating the following form fragment</p><div class="code_container">
+<pre><code class="language-xml">&lt;input name="person[addresses][][line1]" type="text"/&gt;
+&lt;input name="person[addresses][][line2]" type="text"/&gt;
+&lt;input name="person[addresses][][city]" type="text"/&gt;
+&lt;input name="person[addresses][][line1]" type="text"/&gt;
+&lt;input name="person[addresses][][line2]" type="text"/&gt;
+&lt;input name="person[addresses][][city]" type="text"/&gt;
+</code></pre>
+</div>
+<p>Esto daría como resultado que <code>params[:person][:addresses]</code>  sea una matriz de hashes con las claves <code>línea1</code>, <code>línea2</code> y <code>city</code>.</p><p>Sin embargo, existe una restricción, mientras que los hash se pueden anidar arbitrariamente, solo se permite un nivel de "matriz". Las matrices generalmente se pueden reemplazar por hashes; por ejemplo, en lugar de tener una matriz de objetos modelo, se puede tener un hash de objetos modelo codificados por su ID, un índice de matriz o algún otro parámetro.</p><div class="warning"><p>Los parámetros de la matriz no funcionan bien con el ayudante <code>check_box</code>. De acuerdo con la especificación HTML, las casillas de verificación no marcadas no envían ningún valor. Sin embargo, a menudo es conveniente que una casilla de verificación envíe siempre un valor. El ayudante <code>check_box</code> falsifica esto creando una entrada auxiliar oculta con el mismo nombre. Si la casilla de verificación no está marcada, solo se envía la entrada oculta y, si está marcada, ambas se envían, pero el valor enviado por la casilla de verificación tiene prioridad.</p></div><h4 id="using-form-helpers"><a class="anchorlink" href="#using-form-helpers">8.3 Using Form Helpers</a></h4><p>Las secciones anteriores no usaron los ayudantes de formulario de Rails en absoluto. Si bien puede crear los nombres de entrada usted mismo y pasarlos directamente a ayudantes como <code>text_field_tag</code>, Rails también proporciona soporte de mayor nivel. Las dos herramientas a su disposición aquí son el parámetro de nombre para <code>form_with</code> y <code>fields_for</code> y la opción <code>:index</code> que toman los ayudantes.</p><p>Es posible que desee representar un formulario con un conjunto de campos de edición para cada una de las direcciones de una persona. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |person_form| %&gt;
+  &lt;%= person_form.text_field :name %&gt;
+  &lt;% @person.addresses.each do |address| %&gt;
+    &lt;%= person_form.fields_for address, index: address.id do |address_form| %&gt;
+      &lt;%= address_form.text_field :city %&gt;
+    &lt;% end %&gt;
+  &lt;% end %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Suponiendo que la persona tuviera dos direcciones, con los identificadores 23 y 45, esto generaría una salida similar a esta:</p><div class="code_container">
+<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/people/1" data-remote="true" method="post"&gt;
+  &lt;input name="_method" type="hidden" value="patch" /&gt;
+  &lt;input id="person_name" name="person[name]" type="text" /&gt;
+  &lt;input id="person_address_23_city" name="person[address][23][city]" type="text" /&gt;
+  &lt;input id="person_address_45_city" name="person[address][45][city]" type="text" /&gt;
+&lt;/form&gt;
+</code></pre>
+</div>
+<p>Esto resultará en un hash <code>params</code> que se parece a</p><div class="code_container">
+<pre><code class="language-ruby">{'person' =&gt; {'name' =&gt; 'Bob', 'address' =&gt; {'23' =&gt; {'city' =&gt; 'Paris'}, '45' =&gt; {'city' =&gt; 'London'}}}}
+</code></pre>
+</div>
+<p>Rails sabe que todas estas entradas deben ser parte del hash de la persona porque usted
+llamado <code>fields_for</code> en el primer generador de formularios. Especificando una opción <code>:index</code>
+le estás diciendo a Rails que en lugar de nombrar las entradas <code>person[address][city]</code>
+debe insertar ese índice rodeado por [] entre la dirección y la ciudad.
+Esto suele ser útil, ya que es fácil localizar qué registro de dirección
+debe modificarse. Puede pasar números con algún otro significado,
+strings o incluso <code>nil</code> (lo que dará como resultado la creación de un parámetro de matriz).</p><p>Para crear anidamientos más intrincados, puede especificar la primera parte de la entrada
+nombre (<code>person[address]</code> en el ejemplo anterior) explícitamente:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= fields_for 'person[address][primary]', address, index: address.id do |address_form| %&gt;
+  &lt;%= address_form.text_field :city %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>creará entradas como</p><div class="code_container">
+<pre><code class="language-xml">&lt;input id = "person_address_primary_1_city" name = "person [address] [primary] [1] [city]" type = "text" value = "Bologna" /&gt;
+</code></pre>
+</div>
+<p>Como regla general, el nombre de entrada final es la concatenación del nombre dado a <code>fields_for</code>/<code>form_with</code>, el valor del índice y el nombre del atributo. También puede pasar una opción <code>:index</code> directamente a los ayudantes como <code>text_field</code>, pero normalmente es menos repetitivo especificar esto en el nivel del constructor de formularios que en los controles de entrada individuales.</p><p>Como atajo, puede agregar [] al nombre y omitir la opción <code>:index</code>. Esto es lo mismo que especificar <code>index: address.id</code> así</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= fields_for 'person[address][primary][]', address do |address_form| %&gt;
+  &lt;%= address_form.text_field :city %&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>produce exactamente la misma salida que el ejemplo anterior.</p><h3 id="forms-to-external-resources"><a class="anchorlink" href="#forms-to-external-resources">9 Forms to External Resources</a></h3><p>Los ayudantes de formulario de Rails también se pueden utilizar para crear un formulario para publicar datos en un recurso externo. Sin embargo, a veces puede ser necesario establecer un <code>authenticity_token</code> para el recurso; esto se puede hacer pasando un parámetro <code>authentity_token: 'your_external_token'</code> a las opciones de <code>form_with</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with url: 'http://farfar.away/form', authenticity_token: 'external_token' do %&gt;
+  Form contents
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>A veces, cuando se envían datos a un recurso externo, como una pasarela de pago, los campos que se pueden usar en el formulario están limitados por una API externa y puede que no sea deseable generar un <code>autenticity_token</code>. Para no enviar un token, simplemente pase <code>false</code> a la opción<code>:authentity_token</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with url: 'http://farfar.away/form', authenticity_token: 'external_token' do %&gt;
+  Form contents
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>A veces, cuando se envían datos a un recurso externo, como una pasarela de pago, los campos que se pueden usar en el formulario están limitados por una API externa y puede que no sea deseable generar un <code>autenticity_token</code>. Para no enviar un token, simplemente pase <code>false</code> a la opción <code>:authentity_token</code>:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with url: 'http://farfar.away/form', authenticity_token: false do %&gt;
+  Form contents
+&lt;% end %&gt;
+</code></pre>
+</div>
+<h3 id="building-complex-forms"><a class="anchorlink" href="#building-complex-forms">10 Building Complex Forms</a></h3><p>Muchas aplicaciones crecen más allá de formularios simples que editan un solo objeto. Por ejemplo, al crear una <code>Person</code>, es posible que desee permitir que el usuario (en el mismo formulario) cree varios registros de direcciones (casa, trabajo, etc.). Al editar posteriormente a esa persona, el usuario debe poder agregar, eliminar o modificar direcciones según sea necesario.</p><h4 id="configuring-the-model"><a class="anchorlink" href="#configuring-the-model">10.1 Configuring the Model</a></h4><p>Active Record proporciona soporte a nivel de modelo a través del método <code>accept_nested_attributes_for</code>:</p><div class="code_container">
+<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+  has_many :addresses, inverse_of: :person
+  accepts_nested_attributes_for :addresses
+end
+
+class Address &lt; ApplicationRecord
+  belongs_to :person
+end
+</code></pre>
+</div>
+<p>Esto crea un método <code>address_attributes =</code> en <code>Person</code> que le permite crear, actualizar y (opcionalmente) destruir direcciones.</p><h4 id="nested-forms"><a class="anchorlink" href="#nested-forms">10.2 Nested Forms</a></h4><p>El siguiente formulario permite a un usuario crear una <code>Person</code> y sus direcciones asociadas.</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |form| %&gt;
+  Addresses:
+  &lt;ul&gt;
+    &lt;%= form.fields_for :addresses do |addresses_form| %&gt;
+      &lt;li&gt;
+        &lt;%= addresses_form.label :kind %&gt;
+        &lt;%= addresses_form.text_field :kind %&gt;
+
+        &lt;%= addresses_form.label :street %&gt;
+        &lt;%= addresses_form.text_field :street %&gt;
+        ...
+      &lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;/ul&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Cuando una asociación acepta atributos anidados, <code>fields_for</code> representa su bloque una vez por cada elemento de la asociación. En particular, si una persona no tiene direcciones, no rinde nada. Un patrón común es que el controlador construya uno o más elementos secundarios vacíos para que se muestre al usuario al menos un conjunto de campos. El siguiente ejemplo daría como resultado 2 conjuntos de campos de dirección que se representan en el formulario de nueva persona.</p><div class="code_container">
+<pre><code class="language-ruby">def new
+  @person = Person.new
+  2.times { @person.addresses.build }
+end
+</code></pre>
+</div>
+<p>El <code>fields_for</code> produce un constructor de formularios. El nombre de los parámetros será el
+<code>accept_nested_attributes_for</code> espera. Por ejemplo, al crear un usuario con
+2 direcciones, los parámetros enviados se verían así:</p><div class="code_container">
+<pre><code class="language-ruby">{
+  'person' =&gt; {
+    'name' =&gt; 'John Doe',
+    'addresses_attributes' =&gt; {
+      '0' =&gt; {
+        'kind' =&gt; 'Home',
+        'street' =&gt; '221b Baker Street'
+      },
+      '1' =&gt; {
+        'kind' =&gt; 'Office',
+        'street' =&gt; '31 Spooner Street'
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<p>Las claves del hash <code>:address_attributes</code> no son importantes, simplemente deben ser diferentes para cada dirección.</p><p>Si el objeto asociado ya está guardado, <code>fields_for</code> genera automáticamente una entrada oculta con el <code>id</code> del registro guardado. Puede deshabilitar esto pasando <code>include_id: false</code> a <code>fields_for</code>.</p><h4 id="the-controller"><a class="anchorlink" href="#the-controller">10.3 The Controller</a></h4><p>As usual you need to
+<a href="action_controller_overview.html#strong-parameters">declare the permitted parameters</a> in
+el controlador antes de pasarlos al modelo:</p><div class="code_container">
+<pre><code class="language-ruby">def create
+  @person = Person.new(person_params)
+  # ...
+end
+
+private
+  def person_params
+    params.require(:person).permit(:name, addresses_attributes: [:id, :kind, :street])
+  end
+</code></pre>
+</div>
+<h4 id="removing-objects"><a class="anchorlink" href="#removing-objects">10.4 Removing Objects</a></h4><p>Puede permitir que los usuarios eliminen objetos asociados pasando <code>allow_destroy: true</code> a<code>accept_nested_attributes_for</code></p><div class="code_container">
+<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+  has_many :addresses
+  accepts_nested_attributes_for :addresses, allow_destroy: true
+end
+</code></pre>
+</div>
+<p>Si el hash de los atributos de un objeto contiene la clave <code>_destroy</code> con un valor que
+se evalúa como <code>true</code> (por ejemplo, 1, "1", verdadero o "verdadero"), el objeto se destruirá.
+Este formulario permite a los usuarios eliminar direcciones:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= form_with model: @person do |form| %&gt;
+  Addresses:
+  &lt;ul&gt;
+    &lt;%= form.fields_for :addresses do |addresses_form| %&gt;
+      &lt;li&gt;
+        &lt;%= addresses_form.check_box :_destroy %&gt;
+        &lt;%= addresses_form.label :kind %&gt;
+        &lt;%= addresses_form.text_field :kind %&gt;
+        ...
+      &lt;/li&gt;
+    &lt;% end %&gt;
+  &lt;/ul&gt;
+&lt;% end %&gt;
+</code></pre>
+</div>
+<p>Don't forget to update the permitted params in your controller to also include
+the <code>_destroy</code> field</p><div class="code_container">
+<pre><code class="language-ruby">def person_params
+  params.require(:person).
+    permit(:name, addresses_attributes: [:id, :kind, :street, :_destroy])
+end
+</code></pre>
+</div>
+<h4 id="preventing-empty-records"><a class="anchorlink" href="#preventing-empty-records">10.5 Preventing Empty Records</a></h4><p>A menudo es útil ignorar conjuntos de campos que el usuario no ha completado. Puede controlar esto pasando un proceso <code>:reject_if</code> a <code>accept_nested_attributes_for</code>. Este proceso se llamará con cada hash de atributos enviado por el formulario. Si el proceso devuelve <code>false</code>, Active Record no creará un objeto asociado para ese hash. El siguiente ejemplo solo intenta construir una dirección si se establece el atributo <code>kind</code>.</p><div class="code_container">
+<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+  has_many :addresses
+  accepts_nested_attributes_for :addresses, reject_if: lambda {|attributes| attributes['kind'].blank?}
+end
+</code></pre>
+</div>
+<p>Para su comodidad, en su lugar, puede pasar el símbolo <code>:all_blank</code> que creará un proceso que rechazará los registros en los que todos los atributos estén en blanco excluyendo cualquier valor para<code>_destroy</code>.</p><h4 id="adding-fields-on-the-fly"><a class="anchorlink" href="#adding-fields-on-the-fly">10.6 Adding Fields on the Fly</a></h4><p>En lugar de representar varios conjuntos de campos con anticipación, es posible que desee agregarlos solo cuando un usuario haga clic en el botón "Agregar nueva dirección". Rails no proporciona ningún soporte integrado para esto. Al generar nuevos conjuntos de campos, debe asegurarse de que la clave de la matriz asociada sea única: la fecha de JavaScript actual (milisegundos desde la <a href="https://en.wikipedia.org/wiki/Unix_time">epoch</a>) es una opción común.</p><h3 id="using-form-for-and-form-tag"><a class="anchorlink" href="#using-form-for-and-form-tag">11 Using form_for and form_tag</a></h3><p>Antes de que se introdujera <code>form_with</code> en Rails 5.1, su funcionalidad solía dividirse entre <code>form_tag</code> y <code>form_for</code>. Ambos están ahora obsoletos. La documentación sobre su uso se puede encontrar en <a href="https://guides.rubyonrails.org/v5.2/form_helpers.html">older versions of this guide</a>.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

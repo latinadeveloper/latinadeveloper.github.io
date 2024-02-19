@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -231,8 +231,10 @@ caché de páginas y acciones, deberá agregar <code>actionpack-page_caching</co
 con el almacenamiento en caché local, querrá habilitar el almacenamiento en caché en su
 entorno estableciendo <code>config.action_controller.perform_caching</code> en <code>true</code> en
 el archivo <code>config/environment/*.rb</code> relevante:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_controller.perform_caching = true
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_controller</span><span class="p">.</span><span class="nf">perform_caching</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_controller.perform_caching = true
+">Copy</button>
 </div>
 <div class="note"><p>Cambiar el valor de <code>config.action_controller.perform_caching</code>
 solo tienen un efecto en el almacenamiento en caché proporcionado por el componente Action Controller.
@@ -246,17 +248,25 @@ implementar la caducidad de la caché.</p><div class="info"><p>El almacenamiento
 todos los cuales tienen las mismas características de almacenamiento en caché. Cuando diferentes partes del
 La página debe almacenarse en caché y caducar por separado, puede usar el almacenamiento en caché de fragmentos.</p><p>El almacenamiento en caché de fragmentos permite que un fragmento de la lógica de vista se envuelva en un bloque de caché y se sirva fuera del almacén de caché cuando llegue la siguiente solicitud.</p><p>Por ejemplo, si desea almacenar en caché cada producto en una página, puede usar este
 código:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% @products.each do |product| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@products</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">product</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">product</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">product</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% @products.each do |product| %&gt;
   &lt;% cache product do %&gt;
     &lt;%= render product %&gt;
   &lt;% end %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuando su aplicación reciba su primera solicitud a esta página, Rails escribirá
 una nueva entrada de caché con una clave única. Una clave se parece a esto:</p><div class="code_container">
-<pre><code class="language-plain">views/products/index:bea67108094918eeba42cd4a6e786901/products/1
+<pre><code class="highlight plaintext">views/products/index:bea67108094918eeba42cd4a6e786901/products/1
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="views/products/index:bea67108094918eeba42cd4a6e786901/products/1
+">Copy</button>
 </div>
 <p>La cadena de caracteres en el medio es un resumen de árbol de plantilla. Es un hash
 resumen calculado en función del contenido del fragmento de vista que está almacenando en caché. Si
@@ -265,16 +275,22 @@ caducando el archivo existente.</p><p>Una versión de caché, derivada del regis
 Cuando se toca el producto, la versión de la caché cambia y los fragmentos almacenados
 que contienen la versión anterior se ignoran.</p><div class="info"><p>las tiendas de caché como Memcached eliminarán automáticamente los archivos de caché antiguos.</p></div><p>Si desea almacenar en caché un fragmento en determinadas condiciones, puede utilizar
 <code>cache_if</code> o <code>cache_unless</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% cache_if admin?, product do %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">cache_if</span> <span class="n">admin?</span><span class="p">,</span> <span class="n">product</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">product</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% cache_if admin?, product do %&gt;
   &lt;%= render product %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="collection-caching"><a class="anchorlink" href="#collection-caching">1.3.1 Collection caching</a></h5><p>El ayudante <code>render</code> también puede almacenar en caché plantillas individuales renderizadas para una colección.
 Incluso puede mejorar el ejemplo anterior con <code>each</code> leyendo todo el caché
 plantillas a la vez en lugar de una por una. Esto se hace pasando <code>cached: true</code> al renderizar la colección:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= render partial: 'products/product', collection: @products, cached: true %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="ss">partial: </span><span class="s1">'products/product'</span><span class="p">,</span> <span class="ss">collection: </span><span class="vi">@products</span><span class="p">,</span> <span class="ss">cached: </span><span class="kp">true</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= render partial: 'products/product', collection: @products, cached: true %&gt;
+">Copy</button>
 </div>
 <p>Todas las plantillas almacenadas en caché de renderizaciones anteriores se recuperarán a la vez con mucho
 mayor velocidad. Además, las plantillas que aún no se hayan almacenado en caché serán
@@ -284,40 +300,60 @@ todos los demás fragmentos internos se pueden reutilizar al regenerar el exteri
 fragmento.</p><p>Como se explicó en la sección anterior, un archivo en caché caducará si el valor de
 <code>updated_at</code> cambia para un registro del que depende directamente el archivo en caché.
 Sin embargo, esto no caducará ningún caché en el que esté anidado el fragmento.</p><p>Por ejemplo, adopte la siguiente perspectiva:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% cache product do %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">product</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">product</span><span class="p">.</span><span class="nf">games</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% cache product do %&gt;
   &lt;%= render product.games %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Lo que a su vez muestra esta vista:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% cache game do %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">game</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">game</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% cache game do %&gt;
   &lt;%= render game %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Si se cambia cualquier atributo del juego, el valor de <code>updated_at</code> se establecerá en el
 tiempo actual, con lo que expira el caché. Sin embargo, debido a que <code>updated_at</code>
 no se cambiará para el objeto del producto, esa caché no caducará y
 su aplicación servirá datos obsoletos. Para solucionar este problema, vinculamos los modelos con
 el método <code>touch</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:games</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Game</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:product</span><span class="p">,</span> <span class="ss">touch: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Product &lt; ApplicationRecord
   has_many :games
 end
 
 class Game &lt; ApplicationRecord
   belongs_to :product, touch: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Con <code>touch</code> establecido en<code>true</code>, cualquier acción que cambie <code>updated_at</code> para un juego
 registro también lo cambiará para el producto asociado, con lo que expirará el
 cache.</p><h4 id="shared-partial-caching"><a class="anchorlink" href="#shared-partial-caching">1.5 Shared Partial Caching</a></h4><p>Es posible compartir parciales y el almacenamiento en caché asociado entre archivos con diferentes tipos de mime. Por ejemplo, el almacenamiento en caché parcial compartido permite a los escritores de plantillas compartir un parcial entre archivos HTML y JavaScript. Cuando las plantillas se recopilan en las rutas del archivo de resolución de plantillas, solo incluyen la extensión del idioma de la plantilla y no el tipo mime. Debido a esto, las plantillas se pueden usar para múltiples tipos de mímica. Tanto las solicitudes HTML como JavaScript responderán al siguiente código:</p><div class="code_container">
-<pre><code class="language-ruby">render(partial: 'hotels/hotel', collection: @hotels, cached: true)
+<pre><code class="highlight ruby"><span class="n">render</span><span class="p">(</span><span class="ss">partial: </span><span class="s1">'hotels/hotel'</span><span class="p">,</span> <span class="ss">collection: </span><span class="vi">@hotels</span><span class="p">,</span> <span class="ss">cached: </span><span class="kp">true</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="render(partial: 'hotels/hotel', collection: @hotels, cached: true)
+">Copy</button>
 </div>
 <p>Cargará un archivo llamado <code>hotels/hotel.erb</code>.</p><p>Otra opción es incluir el nombre de archivo completo del parcial a renderizar.</p><div class="code_container">
-<pre><code class="language-ruby">render(partial: 'hotels/hotel.html.erb', collection: @hotels, cached: true)
+<pre><code class="highlight ruby"><span class="n">render</span><span class="p">(</span><span class="ss">partial: </span><span class="s1">'hotels/hotel.html.erb'</span><span class="p">,</span> <span class="ss">collection: </span><span class="vi">@hotels</span><span class="p">,</span> <span class="ss">cached: </span><span class="kp">true</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="render(partial: 'hotels/hotel.html.erb', collection: @hotels, cached: true)
+">Copy</button>
 </div>
 <p>Cargará un archivo llamado <code>hotels/hotel.html.erb</code> en cualquier tipo de archivo mime, por ejemplo, podría incluir este parcial en un archivo JavaScript.</p><h4 id="managing-dependencies"><a class="anchorlink" href="#managing-dependencies">1.6 Managing dependencies</a></h4><p>Para invalidar correctamente la caché, debe definir correctamente la
 almacenamiento en caché de dependencias. Rails es lo suficientemente inteligente como para manejar casos comunes para que usted no
@@ -325,76 +361,129 @@ tengo que especificar algo. Sin embargo, a veces, cuando se trata de
 helpers, por ejemplo, debe definirlos explícitamente.</p><h5 id="implicit-dependencies"><a class="anchorlink" href="#implicit-dependencies">1.6.1 Implicit dependencies</a></h5><p>La mayoría de las dependencias de la plantilla se pueden derivar de llamadas a <code>render</code> en la plantilla
 sí mismo. A continuación se muestran algunos ejemplos de llamadas de renderización que <code>ActionView::Digestor</code> conoce
 cómo decodificar:</p><div class="code_container">
-<pre><code class="language-ruby">render partial: "comments/comment", collection: commentable.comments
-render "comments/comments"
+<pre><code class="highlight ruby"><span class="n">render</span> <span class="ss">partial: </span><span class="s2">"comments/comment"</span><span class="p">,</span> <span class="ss">collection: </span><span class="n">commentable</span><span class="p">.</span><span class="nf">comments</span>
+<span class="n">render</span> <span class="s2">"comments/comments"</span>
+<span class="n">render</span> <span class="s1">'comments/comments'</span>
+<span class="n">render</span><span class="p">(</span><span class="s1">'comments/comments'</span><span class="p">)</span>
+
+<span class="n">render</span> <span class="s2">"header"</span> <span class="n">translates</span> <span class="n">to</span> <span class="n">render</span><span class="p">(</span><span class="s2">"comments/header"</span><span class="p">)</span>
+
+<span class="n">render</span><span class="p">(</span><span class="vi">@topic</span><span class="p">)</span>         <span class="n">translates</span> <span class="n">to</span> <span class="n">render</span><span class="p">(</span><span class="s2">"topics/topic"</span><span class="p">)</span>
+<span class="n">render</span><span class="p">(</span><span class="n">topics</span><span class="p">)</span>         <span class="n">translates</span> <span class="n">to</span> <span class="n">render</span><span class="p">(</span><span class="s2">"topics/topic"</span><span class="p">)</span>
+<span class="n">render</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="nf">topics</span><span class="p">)</span> <span class="n">translates</span> <span class="n">to</span> <span class="n">render</span><span class="p">(</span><span class="s2">"topics/topic"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="render partial: &quot;comments/comment&quot;, collection: commentable.comments
+render &quot;comments/comments&quot;
 render 'comments/comments'
 render('comments/comments')
 
-render "header" translates to render("comments/header")
+render &quot;header&quot; translates to render(&quot;comments/header&quot;)
 
-render(@topic)         translates to render("topics/topic")
-render(topics)         translates to render("topics/topic")
-render(message.topics) translates to render("topics/topic")
-</code></pre>
+render(@topic)         translates to render(&quot;topics/topic&quot;)
+render(topics)         translates to render(&quot;topics/topic&quot;)
+render(message.topics) translates to render(&quot;topics/topic&quot;)
+">Copy</button>
 </div>
 <p>Por otro lado, algunas llamadas deben cambiarse para que el almacenamiento en caché funcione correctamente.
 Por ejemplo, si está pasando una colección personalizada, deberá cambiar:</p><div class="code_container">
-<pre><code class="language-ruby">render @project.documents.where(published: true)
+<pre><code class="highlight ruby"><span class="n">render</span> <span class="vi">@project</span><span class="p">.</span><span class="nf">documents</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">published: </span><span class="kp">true</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="render @project.documents.where(published: true)
+">Copy</button>
 </div>
 <p>a:</p><div class="code_container">
-<pre><code class="language-ruby">render partial: "documents/document", collection: @project.documents.where(published: true)
+<pre><code class="highlight ruby"><span class="n">render</span> <span class="ss">partial: </span><span class="s2">"documents/document"</span><span class="p">,</span> <span class="ss">collection: </span><span class="vi">@project</span><span class="p">.</span><span class="nf">documents</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">published: </span><span class="kp">true</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='render partial: "documents/document", collection: @project.documents.where(published: true)
+'>Copy</button>
 </div>
 <h5 id="explicit-dependencies"><a class="anchorlink" href="#explicit-dependencies">1.6.2 Explicit dependencies</a></h5><p>A veces tendrá dependencias de plantilla que no se pueden derivar en absoluto. Esta
 Suele ser el caso cuando la renderización ocurre en ayudantes. He aquí un ejemplo:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= render_sortable_todolists @project.todolists %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">render_sortable_todolists</span> <span class="vi">@project</span><span class="p">.</span><span class="nf">todolists</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= render_sortable_todolists @project.todolists %&gt;
+">Copy</button>
 </div>
 <p>Deberá usar un formato de comentario especial para llamarlos:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%# Template Dependency: todolists/todolist %&gt;
-&lt;%= render_sortable_todolists @project.todolists %&gt;
+<pre><code class="highlight erb"><span class="c">&lt;%# Template Dependency: todolists/todolist %&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render_sortable_todolists</span> <span class="vi">@project</span><span class="p">.</span><span class="nf">todolists</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%# Template Dependency: todolists/todolist %&gt;
+&lt;%= render_sortable_todolists @project.todolists %&gt;
+">Copy</button>
 </div>
 <p>En algunos casos, como una configuración de herencia de una sola tabla, es posible que tenga un montón de
 dependencias explícitas. En lugar de escribir todas las plantillas, puede utilizar un
 comodín para que coincida con cualquier plantilla en un directorio:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%# Template Dependency: events/* %&gt;
-&lt;%= render_categorizable_events @person.events %&gt;
+<pre><code class="highlight erb"><span class="c">&lt;%# Template Dependency: events/* %&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render_categorizable_events</span> <span class="vi">@person</span><span class="p">.</span><span class="nf">events</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%# Template Dependency: events/* %&gt;
+&lt;%= render_categorizable_events @person.events %&gt;
+">Copy</button>
 </div>
 <p>En cuanto al almacenamiento en caché de la colección, si la plantilla parcial no comienza con una limpieza
 llamada de caché, aún puede beneficiarse del almacenamiento en caché de la colección agregando un
 formato de comentario en cualquier lugar de la plantilla, como:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%# Template Collection: notification %&gt;
+<pre><code class="highlight erb"><span class="c">&lt;%# Template Collection: notification %&gt;</span>
+<span class="cp">&lt;%</span> <span class="n">my_helper_that_calls_cache</span><span class="p">(</span><span class="n">some_arg</span><span class="p">,</span> <span class="n">notification</span><span class="p">)</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">notification</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%# Template Collection: notification %&gt;
 &lt;% my_helper_that_calls_cache(some_arg, notification) do %&gt;
   &lt;%= notification.name %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="external-dependencies"><a class="anchorlink" href="#external-dependencies">1.6.3 External dependencies</a></h5><p>Si usa un método auxiliar, por ejemplo, dentro de un bloque en caché y luego actualiza
 ese ayudante, tendrás que aumentar el caché también. Realmente no importa como
 lo hace, pero el MD5 del archivo de plantilla debe cambiar. Una recomendación es
 simplemente sea explícito en un comentario, como:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%# Helper Dependency Updated: Jul 28, 2015 at 7pm %&gt;
-&lt;%= some_helper_method(person) %&gt;
+<pre><code class="highlight erb"><span class="c">&lt;%# Helper Dependency Updated: Jul 28, 2015 at 7pm %&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">some_helper_method</span><span class="p">(</span><span class="n">person</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%# Helper Dependency Updated: Jul 28, 2015 at 7pm %&gt;
+&lt;%= some_helper_method(person) %&gt;
+">Copy</button>
 </div>
 <h4 id="low-level-caching"><a class="anchorlink" href="#low-level-caching">1.7 Low-Level Caching</a></h4><p>A veces es necesario almacenar en caché un valor particular o el resultado de una consulta en lugar de almacenar en caché fragmentos de vista. El mecanismo de almacenamiento en caché de Rails funciona muy bien para almacenar <strong>cualquier</strong> tipo de información.</p><p>La forma más eficiente de implementar el almacenamiento en caché de bajo nivel es utilizando el método <code>Rails.cache.fetch</code>. Este método lee y escribe en la caché. Cuando se pasa un solo argumento, se obtiene la clave y se devuelve el valor de la caché. Si se pasa un bloque, ese bloque se ejecutará en caso de que falle la caché. El valor de retorno del bloque se escribirá en la caché bajo la clave de caché dada, y se devolverá ese valor de retorno. En caso de acierto en la caché, el valor almacenado en caché se devolverá sin ejecutar el bloque.</p><p>Considere el siguiente ejemplo. Una aplicación tiene un modelo de "Producto" con un método de instancia que busca el precio del producto en un sitio web de la competencia. Los datos devueltos por este método serían perfectos para el almacenamiento en caché de bajo nivel:</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nf">competing_price</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">cache_key_with_version</span><span class="si">}</span><span class="s2">/competing_price"</span><span class="p">,</span> <span class="ss">expires_in: </span><span class="mi">12</span><span class="p">.</span><span class="nf">hours</span><span class="p">)</span> <span class="k">do</span>
+      <span class="no">Competitor</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">find_price</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Product &lt; ApplicationRecord
   def competing_price
     Rails.cache.fetch("#{cache_key_with_version}/competing_price", expires_in: 12.hours) do
       Competitor::API.find_price(id)
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <div class="note"><p>Observe que en este ejemplo usamos el método <code>cache_key_with_version</code>, por lo que la clave de caché resultante será algo como <code>products/233-20140225082222765838000/competing_price</code>. <code>cache_key_with_version</code> genera una cadena basada en el nombre de clase del modelo,<code>id</code> y atributos <code>updated_at</code>. Esta es una convención común y tiene la ventaja de invalidar la caché cada vez que se actualiza el producto. En general, cuando utiliza el almacenamiento en caché de bajo nivel para la información de nivel de instancia, debe generar una clave de caché.</p></div><h4 id="sql-caching"><a class="anchorlink" href="#sql-caching">1.8 SQL Caching</a></h4><p>El almacenamiento en caché de consultas es una función de Rails que almacena en caché el conjunto de resultados devuelto por cada
 consulta. Si Rails vuelve a encontrar la misma consulta para esa solicitud, utilizará
 el conjunto de resultados en caché en lugar de ejecutar la consulta en la base de datos
 de nuevo.</p><p>Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">class ProductsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="c1"># Run a find query</span>
+    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">all</span>
+
+    <span class="o">...</span>
+
+    <span class="c1"># Run the same query again</span>
+    <span class="vi">@products</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProductsController &lt; ApplicationController
 
   def index
     # Run a find query
@@ -407,7 +496,7 @@ de nuevo.</p><p>Por ejemplo:</p><div class="code_container">
   end
 
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La segunda vez que se ejecuta la misma consulta en la base de datos, en realidad no llegará a la base de datos. La primera vez que se devuelve el resultado de la consulta, se almacena en la caché de consultas (en la memoria) y la segunda vez se extrae de la memoria.</p><p>Sin embargo, es importante tener en cuenta que los cachés de consultas se crean al comienzo de
 una acción y destruida al final de esa acción y, por lo tanto, persisten solo durante el
@@ -416,8 +505,10 @@ de manera persistente, puede hacerlo con almacenamiento en caché de bajo nivel.
 almacenamiento en caché).</p><h4 id="configuration"><a class="anchorlink" href="#configuration">2.1 Configuration</a></h4><p>Puede configurar el almacén de caché predeterminado de su aplicación configurando el
 Opción de configuración <code>config.cache_store</code>. Otros parámetros se pueden pasar como
 argumentos para el constructor de la tienda de caché:</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :memory_store, { size: 64.megabytes }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:memory_store</span><span class="p">,</span> <span class="p">{</span> <span class="ss">size: </span><span class="mi">64</span><span class="p">.</span><span class="nf">megabytes</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = :memory_store, { size: 64.megabytes }
+">Copy</button>
 </div>
 <div class="note"><p>Alternativamente, puede llamar a <code>ActionController::Base.cache_store</code> fuera de un bloque de configuración.</p></div><p>Puede acceder a la caché llamando a <code>Rails.cache</code>.</p><h4 id="activesupport-cache-store"><a class="anchorlink" href="#activesupport-cache-store">2.2 ActiveSupport::Cache::Store</a></h4><p>Esta clase proporciona la base para interactuar con la caché en Rails. Esta es una clase abstracta y no puede usarla por sí sola. En su lugar, debe utilizar una implementación concreta de la clase vinculada a un motor de almacenamiento. Rails se envía con varias implementaciones documentadas a continuación.</p><p>Los métodos principales para llamar son <code>read</code>, <code>write</code>, <code>delete</code>, <code>exist?</code>, y <code>fetch</code>. El método de búsqueda toma un bloque y devolverá un valor existente de la caché o evaluará el bloque y escribirá el resultado en la caché si no existe ningún valor.</p><p>Hay algunas opciones comunes que pueden ser utilizadas por todas las implementaciones de caché. Estos se pueden pasar al constructor oa los diversos métodos para interactuar con las entradas.</p>
 <ul>
@@ -432,12 +523,16 @@ por proceso. Esto significa que si está utilizando Puma u otro servidor con sub
 puede tener varios subprocesos esperando a que la conexión esté disponible.
 Para aumentar la cantidad de conexiones disponibles, puede habilitar la conexión
 agrupación.</p><p>Primero, agregue la gema <code>connection_pool</code> a su Gemfile:</p><div class="code_container">
-<pre><code class="language-ruby">gem 'connection_pool'
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s1">'connection_pool'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="gem 'connection_pool'
+">Copy</button>
 </div>
 <p>A continuación, pase las opciones <code>:pool_size</code> y / o <code>:pool_timeout</code> al configurar el almacén de caché:</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :mem_cache_store, "cache.example.com", { pool_size: 5, pool_timeout: 5 }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:mem_cache_store</span><span class="p">,</span> <span class="s2">"cache.example.com"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">pool_size: </span><span class="mi">5</span><span class="p">,</span> <span class="ss">pool_timeout: </span><span class="mi">5</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.cache_store = :mem_cache_store, "cache.example.com", { pool_size: 5, pool_timeout: 5 }
+'>Copy</button>
 </div>
 
 <ul>
@@ -448,15 +543,19 @@ agrupación.</p><p>Primero, agregue la gema <code>connection_pool</code> a su Ge
 <code>ActiveSupport::Cache::Store</code> e implementando los métodos apropiados. De esta manera,
 puede intercambiar cualquier cantidad de tecnologías de almacenamiento en caché en su aplicación Rails.</p><p>Para usar un almacén de caché personalizado, simplemente configure el almacén de caché en una nueva instancia de su
 clase personalizada.</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = MyCacheStore.new
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="no">MyCacheStore</span><span class="p">.</span><span class="nf">new</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = MyCacheStore.new
+">Copy</button>
 </div>
 <h4 id="activesupport-cache-memorystore"><a class="anchorlink" href="#activesupport-cache-memorystore">2.3 ActiveSupport::Cache::MemoryStore</a></h4><p>Este almacén de caché mantiene las entradas en la memoria en el mismo proceso de Ruby. El caché
 tienda tiene un tamaño acotado especificado enviando la opción <code>:size</code> al
 inicializador (el valor predeterminado es 32 Mb). Cuando la caché excede el tamaño asignado, un
 se producirá la limpieza y las entradas utilizadas menos recientemente b</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :memory_store, { size: 64.megabytes }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:memory_store</span><span class="p">,</span> <span class="p">{</span> <span class="ss">size: </span><span class="mi">64</span><span class="p">.</span><span class="nf">megabytes</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = :memory_store, { size: 64.megabytes }
+">Copy</button>
 </div>
 <p>Si está ejecutando varios procesos del servidor Ruby on Rails (que es el caso
 si está usando Phusion Passenger o el modo en clúster de Puma), entonces su servidor Rails
@@ -465,8 +564,10 @@ store no es apropiado para grandes implementaciones de aplicaciones. Sin embargo
 funcionan bien para sitios pequeños y de poco tráfico con solo un par de procesos de servidor,
 así como entornos de desarrollo y prueba.</p><p>Los nuevos proyectos de Rails están configurados para utilizar esta implementación en el entorno de desarrollo de forma predeterminada.</p><div class="note"><p>Dado que los procesos no compartirán datos de caché al usar <code>:memory_store</code>,
 no será posible leer, escribir o caducar manualmente el caché a través de la consola Rails.</p></div><h4 id="activesupport-cache-filestore"><a class="anchorlink" href="#activesupport-cache-filestore">2.4 ActiveSupport::Cache::FileStore</a></h4><p>Este almacén de caché utiliza el sistema de archivos para almacenar entradas. La ruta al directorio donde se almacenarán los archivos de la tienda debe especificarse al inicializar la caché.</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :file_store, "/path/to/cache/directory"
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:file_store</span><span class="p">,</span> <span class="s2">"/path/to/cache/directory"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.cache_store = :file_store, "/path/to/cache/directory"
+'>Copy</button>
 </div>
 <p>Con este almacén de caché, varios procesos de servidor en el mismo host pueden compartir un
 cache. Este almacén de caché es apropiado para sitios de tráfico bajo a medio que son
@@ -477,8 +578,10 @@ no se proporciona un <code>config.cache_store</code> explícito.</p><h4 id="acti
 servidores memcached en su clúster. Si no se especifica ninguno, asumirá
 memcached se está ejecutando en localhost en el puerto predeterminado, pero este no es un ideal
 configuración para sitios más grandes.</p><p>Los métodos <code>write</code> y <code>fetch</code> en esta caché aceptan dos opciones adicionales que aprovechan las características específicas de Memcached. Puede especificar <code>:raw</code> para enviar un valor directamente al servidor sin serialización. El valor debe ser una cadena o un número. Puede usar operaciones directas de Memcached como <code>increment</code> y <code>decrement</code> solo en valores sin procesar. También puede especificar <code>:less_exist</code> si no desea que memcached sobrescriba una entrada existente.</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :mem_cache_store, "cache-1.example.com", "cache-2.example.com"
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:mem_cache_store</span><span class="p">,</span> <span class="s2">"cache-1.example.com"</span><span class="p">,</span> <span class="s2">"cache-2.example.com"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.cache_store = :mem_cache_store, "cache-1.example.com", "cache-2.example.com"
+'>Copy</button>
 </div>
 <h4 id="activesupport-cache-rediscachestore"><a class="anchorlink" href="#activesupport-cache-rediscachestore">2.6 ActiveSupport::Cache::RedisCacheStore</a></h4><p>La tienda de caché de Redis aprovecha el soporte de Redis para el desalojo automático
 cuando alcanza la memoria máxima, lo que le permite comportarse como un servidor de caché Memcached.</p><p>Nota de implementación: Redis no expira las claves de forma predeterminada, así que tenga cuidado de usar un
@@ -498,21 +601,42 @@ servicio de recopilación de excepciones. Debe aceptar tres argumentos de palabr
 el método de almacenamiento de caché que se llamó originalmente; <code>return</code>, el valor que
 se devolvió al usuario, normalmente <code>nil</code>; y <code>excepción</code>, la excepción que
 fue rescatado.</p><p>Para comenzar, agregue la gema redis a su Gemfile:</p><div class="code_container">
-<pre><code class="language-ruby">gem 'redis'
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s1">'redis'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="gem 'redis'
+">Copy</button>
 </div>
 <p>Puede habilitar el soporte para más rápido  <a href="https://github.com/redis/hiredis">hiredis</a>
 biblioteca de conexión agregando adicionalmente su envoltorio ruby a su Gemfile:</p><div class="code_container">
-<pre><code class="language-ruby">gem 'hiredis'
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s1">'hiredis'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="gem 'hiredis'
+">Copy</button>
 </div>
 <p>La tienda de caché de Redis requerirá y usará automáticamente hiredis si está disponible. No más
 se necesita configuración.</p><p>Finalmente, agregue la configuración en el archivo <code>config/environment/*.rb</code> relevante:</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:redis_cache_store</span><span class="p">,</span> <span class="p">{</span> <span class="ss">url: </span><span class="no">ENV</span><span class="p">[</span><span class="s1">'REDIS_URL'</span><span class="p">]</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+">Copy</button>
 </div>
 <p>Un almacén de caché de Redis de producción más complejo puede verse así:</p><div class="code_container">
-<pre><code class="language-ruby">cache_servers = %w(redis://cache-01:6379/0 redis://cache-02:6379/0)
+<pre><code class="highlight ruby"><span class="n">cache_servers</span> <span class="o">=</span> <span class="sx">%w(redis://cache-01:6379/0 redis://cache-02:6379/0)</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:redis_cache_store</span><span class="p">,</span> <span class="p">{</span> <span class="ss">url: </span><span class="n">cache_servers</span><span class="p">,</span>
+
+  <span class="ss">connect_timeout:    </span><span class="mi">30</span><span class="p">,</span>  <span class="c1"># Defaults to 20 seconds</span>
+  <span class="ss">read_timeout:       </span><span class="mf">0.2</span><span class="p">,</span> <span class="c1"># Defaults to 1 second</span>
+  <span class="ss">write_timeout:      </span><span class="mf">0.2</span><span class="p">,</span> <span class="c1"># Defaults to 1 second</span>
+  <span class="ss">reconnect_attempts: </span><span class="mi">1</span><span class="p">,</span>   <span class="c1"># Defaults to 0</span>
+
+  <span class="ss">error_handler: </span><span class="o">-&gt;</span> <span class="p">(</span><span class="nb">method</span><span class="p">:,</span> <span class="n">returning</span><span class="p">:,</span> <span class="n">exception</span><span class="p">:)</span> <span class="p">{</span>
+    <span class="c1"># Report errors to Sentry as warnings</span>
+    <span class="no">Raven</span><span class="p">.</span><span class="nf">capture_exception</span> <span class="n">exception</span><span class="p">,</span> <span class="ss">level: </span><span class="s1">'warning'</span><span class="p">,</span>
+      <span class="ss">tags: </span><span class="p">{</span> <span class="ss">method: </span><span class="nb">method</span><span class="p">,</span> <span class="ss">returning: </span><span class="n">returning</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cache_servers = %w(redis://cache-01:6379/0 redis://cache-02:6379/0)
 config.cache_store = :redis_cache_store, { url: cache_servers,
 
   connect_timeout:    30,  # Defaults to 20 seconds
@@ -526,19 +650,24 @@ config.cache_store = :redis_cache_store, { url: cache_servers,
       tags: { method: method, returning: returning }
   }
 }
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="activesupport-cache-nullstore"><a class="anchorlink" href="#activesupport-cache-nullstore">2.7 ActiveSupport::Cache::NullStore</a></h4><p>Esta implementación de almacenamiento de caché está destinada a usarse solo en entornos de desarrollo o prueba y nunca almacena nada. Esto puede ser muy útil en el desarrollo cuando tiene código que interactúa directamente con <code>Rails.cache</code> pero el almacenamiento en caché puede interferir con la posibilidad de ver los resultados de los cambios de código. Con este almacén de caché, todas las operaciones de <code>fetch</code> y <code>read</code> darán como resultado un error.</p><div class="code_container">
-<pre><code class="language-ruby">config.cache_store = :null_store
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:null_store</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = :null_store
+">Copy</button>
 </div>
 <h3 id="cache-keys"><a class="anchorlink" href="#cache-keys">3 Cache Keys</a></h3><p>Las claves utilizadas en una caché pueden ser cualquier objeto que responda a <code>cache_key</code> o
 <code>to_param</code>. Puede implementar el método <code>cache_key</code> en sus clases si lo necesita
 para generar claves personalizadas. Active Record generará claves basadas en el nombre de la clase
 y registro de identificación.</p><p>Puede utilizar hashes y matrices de valores como claves de caché.</p><div class="code_container">
-<pre><code class="language-ruby"># This is a legal cache key
-Rails.cache.read(site: "mysite", owners: [owner_1, owner_2])
+<pre><code class="highlight ruby"><span class="c1"># This is a legal cache key</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">cache</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="ss">site: </span><span class="s2">"mysite"</span><span class="p">,</span> <span class="ss">owners: </span><span class="p">[</span><span class="n">owner_1</span><span class="p">,</span> <span class="n">owner_2</span><span class="p">])</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='# This is a legal cache key
+Rails.cache.read(site: "mysite", owners: [owner_1, owner_2])
+'>Copy</button>
 </div>
 <p>Las claves que use en <code>Rails.cache</code> no serán las mismas que las que realmente usa con
 el motor de almacenamiento. Pueden modificarse con un espacio de nombres o modificarse para adaptarse
@@ -546,7 +675,27 @@ limitaciones de la tecnología backend. Esto significa, por ejemplo, que no pued
 valores con <code>Rails.cache</code> y luego intente extraerlos con la gema <code>dalli</code>.
 Sin embargo, tampoco debe preocuparse por exceder el límite de tamaño de Memcached o
 violar las reglas de sintaxis.</p><h3 id="conditional-get-support"><a class="anchorlink" href="#conditional-get-support">4 Conditional GET support</a></h3><p>Los GET condicionales son una característica de la especificación HTTP que proporciona una forma para que los servidores web le digan a los navegadores que la respuesta a una solicitud GET no ha cambiado desde la última solicitud y se puede extraer de forma segura de la caché del navegador.</p><p>Funcionan utilizando los encabezados <code>HTTP_IF_NONE_MATCH</code> y <code>HTTP_IF_MODIFIED_SINCE</code>  para pasar tanto un identificador de contenido único como la marca de tiempo de la última vez que se cambió el contenido. Si el navegador realiza una solicitud donde el identificador de contenido (etag) o la última modificación desde la marca de tiempo coincide con la versión del servidor, entonces el servidor solo necesita enviar una respuesta vacía con un estado no modificado.</p><p>Es responsabilidad del servidor (es decir, nuestra) buscar la última marca de tiempo modificada y el encabezado if-none-match y determinar si enviar o no la respuesta completa. Con el soporte de obtención condicional en Rails, esta es una tarea bastante fácil:</p><div class="code_container">
-<pre><code class="language-ruby">class ProductsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="c1"># If the request is stale according to the given timestamp and etag value</span>
+    <span class="c1"># (i.e. it needs to be processed again) then execute this block</span>
+    <span class="k">if</span> <span class="n">stale?</span><span class="p">(</span><span class="ss">last_modified: </span><span class="vi">@product</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">.</span><span class="nf">utc</span><span class="p">,</span> <span class="ss">etag: </span><span class="vi">@product</span><span class="p">.</span><span class="nf">cache_key_with_version</span><span class="p">)</span>
+      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="n">wants</span><span class="o">|</span>
+        <span class="c1"># ... normal response processing</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="c1"># If the request is fresh (i.e. it's not modified) then you don't need to do</span>
+    <span class="c1"># anything. The default render checks for this using the parameters</span>
+    <span class="c1"># used in the previous call to stale? and will automatically send a</span>
+    <span class="c1"># :not_modified. So that's it, you're done.</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProductsController &lt; ApplicationController
 
   def show
     @product = Product.find(params[:id])
@@ -565,10 +714,22 @@ violar las reglas de sintaxis.</p><h3 id="conditional-get-support"><a class="anc
     # :not_modified. So that's it, you're done.
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>En lugar de un hash de opciones, también puede simplemente pasar un modelo. Rails usará los métodos <code>updated_at</code> y <code>cache_key_with_version</code> para configurar <code>last_modified</code> y <code>etag</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class ProductsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">stale?</span><span class="p">(</span><span class="vi">@product</span><span class="p">)</span>
+      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="n">wants</span><span class="o">|</span>
+        <span class="c1"># ... normal response processing</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProductsController &lt; ApplicationController
   def show
     @product = Product.find(params[:id])
 
@@ -579,10 +740,21 @@ end
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si no tiene ningún procesamiento de respuesta especial y está usando el mecanismo de renderizado predeterminado (es decir, no está usando <code>respond_to</code> o llamando a renderizar usted mismo), entonces tiene un ayudante fácil en <code>fresh_when</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class ProductsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="c1"># This will automatically send back a :not_modified if the request is fresh,</span>
+  <span class="c1"># and will render the default template (product.*) if it's stale.</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">fresh_when</span> <span class="ss">last_modified: </span><span class="vi">@product</span><span class="p">.</span><span class="nf">published_at</span><span class="p">.</span><span class="nf">utc</span><span class="p">,</span> <span class="ss">etag: </span><span class="vi">@product</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProductsController &lt; ApplicationController
 
   # This will automatically send back a :not_modified if the request is fresh,
   # and will render the default template (product.*) if it's stale.
@@ -592,7 +764,7 @@ end
     fresh_when last_modified: @product.published_at.utc, etag: @product
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>A veces queremos almacenar en caché la respuesta, por ejemplo, una página estática, que nunca obtiene
 Caducado. Para lograr esto, podemos usar el ayudante <code>http_cache_forever</code> y haciendo
@@ -601,47 +773,70 @@ navegador. Para permitir que los proxies almacenen en caché la respuesta, estab
 que pueden entregar la respuesta en caché a todos los usuarios.</p><p>Con este ayudante, el encabezado <code>last_modified</code> se establece en <code>Time.new(2011, 1, 1).utc</code>
 y el encabezado <code>expires</code> se establece en 100 años.</p><div class="warning"><p>Utilice este método con cuidado ya que el navegador / proxy no podrá invalidar
 la respuesta almacenada en caché a menos que la caché del navegador se borre a la fuerza.</p></div><div class="code_container">
-<pre><code class="language-ruby">class HomeController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">HomeController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">http_cache_forever</span><span class="p">(</span><span class="ss">public: </span><span class="kp">true</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">render</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class HomeController &lt; ApplicationController
   def index
     http_cache_forever(public: true) do
       render
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="strong-v-s-weak-etags"><a class="anchorlink" href="#strong-v-s-weak-etags">4.1 Strong v/s Weak ETags</a></h4><p>Rails genera ETag débiles de forma predeterminada. Los ETag débiles permiten semánticamente equivalentes
 respuestas para tener los mismos ETag, incluso si sus cuerpos no coinciden exactamente.
 Esto es útil cuando no queremos que la página se vuelva a generar para cambios menores en
 cuerpo de respuesta.</p><p>Los ETag débiles tienen un <code>W /</code> principal para diferenciarlos de los ETag fuertes.</p><div class="code_container">
-<pre><code class="language-plain">  W/"618bbc92e2d35ea1945008b42799b0e7" → Weak ETag
+<pre><code class="highlight plaintext">  W/"618bbc92e2d35ea1945008b42799b0e7" → Weak ETag
   "618bbc92e2d35ea1945008b42799b0e7" → Strong ETag
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='  W/"618bbc92e2d35ea1945008b42799b0e7" → Weak ETag
+  "618bbc92e2d35ea1945008b42799b0e7" → Strong ETag
+'>Copy</button>
 </div>
 <p>A diferencia de ETag débil, ETag fuerte implica que la respuesta debe ser exactamente la misma
 y byte a byte idéntico. Útil cuando se realizan solicitudes de rango dentro de un
 archivo grande de video o PDF. Algunas CDN solo admiten ETag potentes, como Akamai.
 Si es absolutamente necesario generar un ETag fuerte, puede hacerlo de la siguiente manera.</p><div class="code_container">
-<pre><code class="language-ruby">  class ProductsController &lt; ApplicationController
+<pre><code class="highlight ruby">  <span class="k">class</span> <span class="nc">ProductsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="k">def</span> <span class="nf">show</span>
+      <span class="vi">@product</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+      <span class="n">fresh_when</span> <span class="ss">last_modified: </span><span class="vi">@product</span><span class="p">.</span><span class="nf">published_at</span><span class="p">.</span><span class="nf">utc</span><span class="p">,</span> <span class="ss">strong_etag: </span><span class="vi">@product</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  class ProductsController &lt; ApplicationController
     def show
       @product = Product.find(params[:id])
       fresh_when last_modified: @product.published_at.utc, strong_etag: @product
     end
   end
-</code></pre>
+">Copy</button>
 </div>
 <p>También puede configurar el ETag fuerte directamente en la respuesta.</p><div class="code_container">
-<pre><code class="language-ruby">  response.strong_etag = response.body # =&gt; "618bbc92e2d35ea1945008b42799b0e7"
+<pre><code class="highlight ruby">  <span class="n">response</span><span class="p">.</span><span class="nf">strong_etag</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span> <span class="c1"># =&gt; "618bbc92e2d35ea1945008b42799b0e7"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='  response.strong_etag = response.body # =&gt; "618bbc92e2d35ea1945008b42799b0e7"
+'>Copy</button>
 </div>
 <h3 id="caching-in-development"><a class="anchorlink" href="#caching-in-development">5 Caching in Development</a></h3><p>Es común querer probar la estrategia de almacenamiento en caché de su aplicación
 en modo de desarrollo. Rails proporciona el comando rails <code>dev:cache</code> para
 activar / desactivar fácilmente el almacenamiento en caché.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails dev:cache
-Development mode is now being cached.
-$ bin/rails dev:cache
-Development mode is no longer being cached.
-</code></pre>
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>dev:cache
+<span class="go">Development mode is now being cached.
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>dev:cache
+<span class="go">Development mode is no longer being cached.
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails dev:cache
+bin/rails dev:cache
+">Copy</button>
 </div>
 <h3 id="references"><a class="anchorlink" href="#references">6 References</a></h3>
 <ul>

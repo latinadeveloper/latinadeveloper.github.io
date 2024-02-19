@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Descripción General de Action Cable — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Descripción General de Action Cable — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Descripción General de Action CableEn esta guía, aprenderá cómo funciona Action Cable y cómo usar WebSockets para incorpore funciones en tiempo real en su aplicación Rails.Después de leer esta guía, sabrá: Qué es Action Cable y su integración backend y frontend Cómo configurar Action Cable Cómo configurar canales Configuración de implementación y arquitectura para ejecutar Action Cable" />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Descripción General de Action CableEn esta guía, aprenderá cómo funciona Action Cable y cómo usar WebSockets para incorpore funciones en tiempo real en su aplicación Rails.Después de leer esta guía, sabrá: Qué es Action Cable y su integración backend y frontend Cómo configurar Action Cable Cómo configurar canales Configuración de implementación y arquitectura para ejecutar Action Cable" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Descripción General de Action Cable</h2><p>En esta guía, aprenderá cómo funciona Action Cable y cómo usar WebSockets para
+incorpore funciones en tiempo real en su aplicación Rails.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Qué es Action Cable y su integración backend y frontend</li>
+<li>Cómo configurar Action Cable</li>
+<li>Cómo configurar canales</li>
+<li>Configuración de implementación y arquitectura para ejecutar Action Cable</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#what-is-action-cable-questionmark">What is Action Cable?</a></li>
+<li><a href="#terminology">Terminology</a></li>
+<li><a href="#what-is-pub-sub-questionmark">What is Pub/Sub?</a></li>
+<li>
+<a href="#server-side-components">Server-Side Components</a>
+
+<ul>
+<li><a href="#server-side-components-connections">Connections</a></li>
+<li><a href="#channels">Channels</a></li>
+</ul>
+</li>
+<li>
+<a href="#client-side-components">Client-Side Components</a>
+
+<ul>
+<li><a href="#client-side-components-connections">Connections</a></li>
+</ul>
+</li>
+<li>
+<a href="#client-server-interactions">Client-Server Interactions</a>
+
+<ul>
+<li><a href="#streams">Streams</a></li>
+<li><a href="#broadcasting">Broadcasting</a></li>
+<li><a href="#client-server-interactions-subscriptions">Subscriptions</a></li>
+<li><a href="#passing-parameters-to-channels">Passing Parameters to Channels</a></li>
+<li><a href="#rebroadcasting-a-message">Rebroadcasting a Message</a></li>
+</ul>
+</li>
+<li>
+<a href="#full-stack-examples">Full-Stack Examples</a>
+
+<ul>
+<li><a href="#example-1-user-appearances">Example 1: User Appearances</a></li>
+<li><a href="#example-2-receiving-new-web-notifications">Example 2: Receiving New Web Notifications</a></li>
+<li><a href="#more-complete-examples">More Complete Examples</a></li>
+</ul>
+</li>
+<li>
+<a href="#configuration">Configuration</a>
+
+<ul>
+<li><a href="#subscription-adapter">Subscription Adapter</a></li>
+<li><a href="#allowed-request-origins">Allowed Request Origins</a></li>
+<li><a href="#consumer-configuration">Consumer Configuration</a></li>
+<li><a href="#worker-pool-configuration">Worker Pool Configuration</a></li>
+<li><a href="#other-configurations">Other Configurations</a></li>
+</ul>
+</li>
+<li>
+<a href="#running-standalone-cable-servers">Running Standalone Cable Servers</a>
+
+<ul>
+<li><a href="#in-app">In App</a></li>
+<li><a href="#standalone">Standalone</a></li>
+</ul>
+</li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#deployment">Deployment</a></li>
+<li><a href="#testing">Testing</a></li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="what-is-action-cable-questionmark"><a class="anchorlink" href="#what-is-action-cable-questionmark">1 What is Action Cable?</a></h3><p>Action Cable seamlessly integrates
+<a href="https://en.wikipedia.org/wiki/WebSocket">WebSockets</a> con el resto de tu
+Aplicación de Rails. Permite escribir características en tiempo real en Ruby en el
+mismo estilo y forma que el resto de su aplicación Rails, sin dejar de ser
+eficiente y escalable. Es una oferta de pila completa que proporciona tanto
+marco JavaScript del lado del cliente y un marco Ruby del lado del servidor. Tienes
+acceso a su modelo de dominio completo escrito con Active Record o su ORM de
+elección.</p><h3 id="terminology"><a class="anchorlink" href="#terminology">2 Terminology</a></h3><p>Un solo servidor de Action Cable puede manejar múltiples instancias de conexión. Tiene uno
+instancia de conexión por conexión WebSocket. Un solo usuario puede tener múltiples
+WebSockets abiertos en su aplicación si utilizan varias pestañas o dispositivos del navegador.
+El cliente de una conexión WebSocket se denomina consumidor.</p><p>Cada consumidor puede, a su vez, suscribirse a múltiples canales de cable. Cada canal
+encapsula una unidad lógica de trabajo, similar a lo que hace un controlador en
+una configuración regular de MVC. Por ejemplo, podría tener un <code>ChatChannel</code> y
+un <code>AppearancesChannel</code>, y un consumidor podría suscribirse a
+oa ambos canales. Como mínimo, un consumidor debe estar suscrito
+a un canal.</p><p>When the consumer is subscribed to a channel, they act as a subscriber.
+The connection between the subscriber and the channel is, surprise-surprise,
+called a subscription. A consumer can act as a subscriber to a given channel
+any number of times. For example, a consumer could subscribe to multiple chat rooms
+at the same time. (And remember that a physical user may have multiple consumers,
+one per tab/device open to your connection).</p><p>Cada canal puede volver a transmitir cero o más transmisiones.
+Una radiodifusión es un enlace pubsub donde cualquier cosa transmitida por la emisora ​​es
+enviado directamente a los suscriptores del canal que están transmitiendo esa transmisión con nombre.</p><p>Como puede ver, esta es una pila arquitectónica bastante profunda. Hay muchas novedades
+terminología para identificar las nuevas piezas, y además de eso, está tratando
+con reflejos del lado del cliente y del servidor de cada unidad.</p><h3 id="what-is-pub-sub-questionmark"><a class="anchorlink" href="#what-is-pub-sub-questionmark">3 What is Pub/Sub?</a></h3><p><a href="https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">Pub/Sub</a>, o
+Publicar-Suscribir, se refiere a un paradigma de cola de mensajes mediante el cual los remitentes de
+información (editores), envian datos a una clase abstracta de destinatarios
+(suscriptores), sin especificar destinatarios individuales. Action Cable utiliza este
+enfoque para comunicarse entre el servidor y muchos clientes.</p><h3 id="server-side-components"><a class="anchorlink" href="#server-side-components">4 Server-Side Components</a></h3><h4 id="server-side-components-connections"><a class="anchorlink" href="#server-side-components-connections">4.1 Connections</a></h4><p><em>Connections</em> forman la base de la relación cliente-servidor. Para cada
+WebSocket aceptado por el servidor, se crea una instancia de un objeto de conexión. Este
+objeto se convierte en el padre de todas las <em>channel subscriptions</em> que se crean
+de ahí en adelante. La conexión en sí no se ocupa de ninguna aplicación específica
+lógicamente más allá de la autenticación y autorización. El cliente de la conexión  de
+un WebSocket se llama conexión <em>consumer</em>. Un usuario individual creará
+un par de conexión de consumidor por pestaña, ventana o dispositivo del navegador que tengan abierto.</p><p>Las conexiones son instancias de <code>ApplicationCable::Connection</code>. En esta clase, tu
+autorizas la conexión entrante y procedes a establecerla si el usuario puede
+ser identificado.</p><h5 id="connection-setup"><a class="anchorlink" href="#connection-setup">4.1.1 Connection Setup</a></h5><div class="code_container">
+<pre><code class="language-ruby"># app/channels/application_cable/connection.rb
+module ApplicationCable
+  class Connection &lt; ActionCable::Connection::Base
+    identified_by :current_user
+
+    def connect
+      self.current_user = find_verified_user
+    end
+
+    private
+      def find_verified_user
+        if verified_user = User.find_by(id: cookies.encrypted[:user_id])
+          verified_user
+        else
+          reject_unauthorized_connection
+        end
+      end
+  end
+end
+</code></pre>
+</div>
+<p>Aquí, <code>protected_by</code> es un identificador de conexión que se puede usar para encontrar la
+conexión específica más tarde. Tenga en cuenta que todo lo que esté marcado como identificador
+cree un delegado con el mismo nombre en cualquiera instancia de canal creada fuera de la conexión.</p><p>Este ejemplo se basa en el hecho de que ya habrá manejado la autenticación del usuario
+en otro lugar de su aplicación, y que una autenticación exitosa establece un cifrado
+cookie con el ID de usuario.</p><p>La cookie se envía automáticamente a la instancia de conexión cuando una nueva conexión
+se intenta, y lo usa para establecer el <code>current_user</code>. Identificando la conexión
+por este mismo usuario actual, también se asegura de que luego pueda recuperar todas las
+conexiones de un usuario determinado (y potencialmente desconectarlas todas si el usuario es eliminado
+o no autorizado).</p><p>Si su enfoque de autenticación incluye el uso de una sesión, utiliza el almacén de cookies para
+la sesión, su cookie de sesión se llama <code>_session</code> y la clave de ID de usuario es<code>user_id</code> usted
+puede utilizar este enfoque:</p><div class="code_container">
+<pre><code class="language-ruby">verified_user = User.find_by(id: cookies.encrypted['_session']['user_id'])
+</code></pre>
+</div>
+<h5 id="connections-exception-handling"><a class="anchorlink" href="#connections-exception-handling">4.1.2 Exception Handling</a></h5><p>De forma predeterminada, las excepciones no controladas se capturan y registran en el registrador de Rails. Si a ti te gustaría
+interceptar globalmente estas excepciones e informarlas a un servicio de seguimiento de errores externo, por
+ejemplo, puede hacerlo con
+<a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Rescuable/ClassMethods.html#method-i-rescue_from"><code>rescue_from</code></a>.</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/application_cable/connection.rb
+module ApplicationCable
+  class Connection &lt; ActionCable::Connection::Base
+    rescue_from StandardError, with: :report_error
+
+    private
+
+    def report_error(e)
+      SomeExternalBugtrackingService.notify(e)
+    end
+  end
+end
+</code></pre>
+</div>
+<h4 id="channels"><a class="anchorlink" href="#channels">4.2 Channels</a></h4><p>Un <em>channel</em> encapsula una unidad lógica de trabajo, similar a lo que hace un controlador en un
+configuración regular de MVC. Por defecto, Rails crea una clase principal <code>ApplicationCable::Channel</code>
+para encapsular la lógica compartida entre sus canales.</p><h5 id="parent-channel-setup"><a class="anchorlink" href="#parent-channel-setup">4.2.1 Parent Channel Setup</a></h5><div class="code_container">
+<pre><code class="language-ruby"># app/channels/application_cable/channel.rb
+module ApplicationCable
+  class Channel &lt; ActionCable::Channel::Base
+  end
+end
+</code></pre>
+</div>
+<p>Luego, crearía sus propias clases de canal. Por ejemplo, podría tener un
+<code>ChatChannel</code> y un<code>AppearanceChannel</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+end
+
+# app/channels/appearance_channel.rb
+class AppearanceChannel &lt; ApplicationCable::Channel
+end
+</code></pre>
+</div>
+<p>A continuación, un consumidor podría suscribirse a uno de estos canales oa ambos.</p><h5 id="channels-subscriptions"><a class="anchorlink" href="#channels-subscriptions">4.2.2 Subscriptions</a></h5><p>Los consumidores se suscriben a los canales, actuando como <em>subscribers</em>. Su conexión es
+llamada <em>subscription</em>. Los mensajes producidos se enrutan luego a estos canales
+suscripciones basadas en un identificador enviado por el consumidor de cable.</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  # Called when the consumer has successfully
+  # become a subscriber to this channel.
+  def subscribed
+  end
+end
+</code></pre>
+</div>
+<h5 id="channels-exception-handling"><a class="anchorlink" href="#channels-exception-handling">4.2.3 Exception Handling</a></h5><p>Al igual que con <code>ActionCable::Connection::Base</code>, también puedes usar <code>rescue_from</code> en un
+canal específico para manejar excepciones planteadas:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  rescue_from 'MyError', with: :deliver_error_message
+
+  private
+
+  def deliver_error_message(e)
+    broadcast_to(...)
+  end
+end
+</code></pre>
+</div>
+<h3 id="client-side-components"><a class="anchorlink" href="#client-side-components">5 Client-Side Components</a></h3><h4 id="client-side-components-connections"><a class="anchorlink" href="#client-side-components-connections">5.1 Connections</a></h4><p>Los consumidores necesitan una instancia de la conexión de su lado. Esto puede ser
+establecido usando el siguiente JavaScript, que es generado por defecto por Rails:</p><h5 id="connect-consumer"><a class="anchorlink" href="#connect-consumer">5.1.1 Connect Consumer</a></h5><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/consumer.js
+// Action Cable provides the framework to deal with WebSockets in Rails.
+// You can generate new channels where WebSocket features live using the `bin/rails generate channel` command.
+
+import { createConsumer } from "@rails/actioncable"
+
+export default createConsumer()
+</code></pre>
+</div>
+<p>Esto preparará a un consumidor que se conectará contra <code>/cable</code> en su servidor de forma predeterminada.
+La conexión no se establecerá hasta que también haya especificado al menos una suscripción
+estás interesado en tener.</p><p>El consumidor puede, opcionalmente, tomar un argumento que especifique la URL a la que conectarse. Esta
+puede ser una cadena, o una función que devuelve una cadena que se llamará cuando se abre el WebSocket.</p><div class="code_container">
+<pre><code class="language-js">// Specify a different URL to connect to
+createConsumer('https://ws.example.com/cable')
+
+// Use a function to dynamically generate the URL
+createConsumer(getWebSocketURL)
+
+function getWebSocketURL {
+  const token = localStorage.get('auth-token')
+  return `https://ws.example.com/cable?token=${token}`
+}
+</code></pre>
+</div>
+<h5 id="subscriber"><a class="anchorlink" href="#subscriber">5.1.2 Subscriber</a></h5><p>Un consumidor se convierte en suscriptor al crear una suscripción a un canal determinado:</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/chat_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" })
+
+// app/javascript/channels/appearance_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create({ channel: "AppearanceChannel" })
+</code></pre>
+</div>
+<p>Si bien esto crea la suscripción, la funcionalidad necesaria para responder a
+los datos recibidos se describirán más adelante.</p><p>Un consumidor puede actuar como suscriptor de un canal determinado tantas veces como desee.
+Por ejemplo, un consumidor podría suscribirse a varias salas de chat al mismo tiempo:</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/chat_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create({ channel: "ChatChannel", room: "1st Room" })
+consumer.subscriptions.create({ channel: "ChatChannel", room: "2nd Room" })
+</code></pre>
+</div>
+<h3 id="client-server-interactions"><a class="anchorlink" href="#client-server-interactions">6 Client-Server Interactions</a></h3><h4 id="streams"><a class="anchorlink" href="#streams">6.1 Streams</a></h4><p><em>Streams</em> proporcionan el mecanismo por el cual los canales enrutan el contenido publicado
+(transmisiones) a sus suscriptores. El siguiente ejemplo
+suscríbase a la transmisión <code>chat_Best Room</code> si el parámetro de la sala
+es <code>Best Room</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end
+end
+</code></pre>
+</div>
+<p>Si tiene una transmisión relacionada con un modelo, la transmisión utilizada
+se puede generar a partir del canal y el modelo. El siguiente ejemplo
+suscríbete a una transmisión como <code>comments:Z2lkOi8vVGVzdEFwcC9Qb3N0LzE</code>,
+donde <code>Z2lkOi8vVGVzdEFwcC9Qb3N0LzE</code> es el GlobalID del modelo de publicación.</p><div class="code_container">
+<pre><code class="language-ruby">class CommentsChannel &lt; ApplicationCable::Channel
+  def subscribed
+    post = Post.find(params[:id])
+    stream_for post
+  end
+end
+</code></pre>
+</div>
+<p>Luego puede transmitir a este canal de esta manera:</p><div class="code_container">
+<pre><code class="language-ruby">CommentsChannel.broadcast_to(@post, @comment)
+</code></pre>
+</div>
+<h4 id="broadcasting"><a class="anchorlink" href="#broadcasting">6.2 Broadcasting</a></h4><p>Un <em>broadcasting</em> es un enlace pub/sub donde cualquier cosa transmitida por un editor
+se enruta directamente a los suscriptores del canal que están transmitiendo ese nombre
+radiodifusión. Cada canal puede transmitir cero o más transmisiones.</p><p>Las transmisiones son puramente una cola en línea y dependen del tiempo. Si un consumidor
+no  esta transmitiendo (suscrito a un canal determinado), no recibirán la transmisión
+si se conectan más tarde.</p><p>Las transmisiones se llaman en otra parte de su aplicación Rails:</p><div class="code_container">
+<pre><code class="language-ruby">WebNotificationsChannel.broadcast_to(
+  current_user,
+  title: 'New things!',
+  body: 'All the news fit to print'
+)
+</code></pre>
+</div>
+<p>La llamada <code>WebNotificationsChannel.broadcast_to</code> coloca un mensaje en el
+la cola pubsub del adaptador de suscripción con un nombre de transmisión independiente para cada usuario.
+La cola de pubsub predeterminada para Action Cable es <code>redis</code> en producción y <code>async</code> en desarrollo y
+entornos de prueba. Para un usuario con un ID de 1, el nombre de la transmisión sería <code>web_notifications:1</code>.</p><p>El canal ha recibido instrucciones para transmitir todo lo que llega a
+<code>web_notifications:1</code> directamente al cliente invocando el <code>recibido</code>
+llamar de vuelta.</p><h4 id="client-server-interactions-subscriptions"><a class="anchorlink" href="#client-server-interactions-subscriptions">6.3 Subscriptions</a></h4><p>Cuando un consumidor está suscrito a un canal, actúa como suscriptor. Esta
+conexión se llama suscripción. Los mensajes entrantes luego se enrutan a
+estas suscripciones de canal que se basan en un identificador enviado por el consumidor de cable.</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/chat_channel.js
+// Assumes you've already requested the right to send web notifications
+import consumer from "./consumer"
+
+consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
+  received(data) {
+    this.appendLine(data)
+  },
+
+  appendLine(data) {
+    const html = this.createLine(data)
+    const element = document.querySelector("[data-chat-room='Best Room']")
+    element.insertAdjacentHTML("beforeend", html)
+  },
+
+  createLine(data) {
+    return `
+      &lt;article class="chat-line"&gt;
+        &lt;span class="speaker"&gt;${data["sent_by"]}&lt;/span&gt;
+        &lt;span class="body"&gt;${data["body"]}&lt;/span&gt;
+      &lt;/article&gt;
+    `
+  }
+})
+</code></pre>
+</div>
+<h4 id="passing-parameters-to-channels"><a class="anchorlink" href="#passing-parameters-to-channels">6.4 Passing Parameters to Channels</a></h4><p>Puede pasar parámetros del lado del cliente al lado del servidor al crear un
+suscripción. Por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end
+end
+</code></pre>
+</div>
+<p>Un objeto pasado como primer argumento a <code>subscriptions.create</code> se convierte en el
+hash de params en el canal de cable. Se requiere la palabra clave <code>canal</code>:</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/chat_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
+  received(data) {
+    this.appendLine(data)
+  },
+
+  appendLine(data) {
+    const html = this.createLine(data)
+    const element = document.querySelector("[data-chat-room='Best Room']")
+    element.insertAdjacentHTML("beforeend", html)
+  },
+
+  createLine(data) {
+    return `
+      &lt;article class="chat-line"&gt;
+        &lt;span class="speaker"&gt;${data["sent_by"]}&lt;/span&gt;
+        &lt;span class="body"&gt;${data["body"]}&lt;/span&gt;
+      &lt;/article&gt;
+    `
+  }
+})
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby"># Somewhere in your app this is called, perhaps
+# from a NewCommentJob.
+ActionCable.server.broadcast(
+  "chat_#{room}",
+  sent_by: 'Paul',
+  body: 'This is a cool chat app.'
+)
+</code></pre>
+</div>
+<h4 id="rebroadcasting-a-message"><a class="anchorlink" href="#rebroadcasting-a-message">6.5 Rebroadcasting a Message</a></h4><p>Un caso de uso común es <em>rebroadcast</em> un mensaje enviado por un cliente a cualquier
+otros clientes conectados.</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/chat_channel.rb
+class ChatChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_from "chat_#{params[:room]}"
+  end
+
+  def receive(data)
+    ActionCable.server.broadcast("chat_#{params[:room]}", data)
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/chat_channel.js
+import consumer from "./consumer"
+
+const chatChannel = consumer.subscriptions.create({ channel: "ChatChannel", room: "Best Room" }, {
+  received(data) {
+    // data =&gt; { sent_by: "Paul", body: "This is a cool chat app." }
+  }
+}
+
+chatChannel.send({ sent_by: "Paul", body: "This is a cool chat app." })
+</code></pre>
+</div>
+<p>La retransmisión será recibida por todos los clientes conectados, <em>incluyendo</em> el
+cliente que envió el mensaje. Tenga en cuenta que los parámetros son los mismos que cuando
+te suscribiste al canal.</p><h3 id="full-stack-examples"><a class="anchorlink" href="#full-stack-examples">7 Full-Stack Examples</a></h3><p>Los siguientes pasos de configuración son comunes a ambos ejemplos:</p>
+<ol>
+<li>
+<a href="#connection-setup">Setup your connection</a>.</li>
+<li>
+<a href="#parent-channel-setup">Setup your parent channel</a>.</li>
+<li>
+<a href="#connect-consumer">Connect your consumer</a>.</li>
+</ol>
+<h4 id="example-1-user-appearances"><a class="anchorlink" href="#example-1-user-appearances">7.1 Example 1: User Appearances</a></h4><p>Aquí hay un ejemplo simple de un canal que rastrea si un usuario está en línea o no
+y en qué página están. (Esto es útil para crear funciones de presencia como mostrar
+un punto verde junto a un nombre de usuario si está en línea).</p><p>Cree el canal de apariencia del lado del servidor:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/appearance_channel.rb
+class AppearanceChannel &lt; ApplicationCable::Channel
+  def subscribed
+    current_user.appear
+  end
+
+  def unsubscribed
+    current_user.disappear
+  end
+
+  def appear(data)
+    current_user.appear(on: data['appearing_on'])
+  end
+
+  def away
+    current_user.away
+  end
+end
+</code></pre>
+</div>
+<p>Cuando se inicia una suscripción, la devolución de llamada <code>subscribed</code> se activa y uno
+aprovecha la oportunidad para decir "el usuario actual ha aparecido". Ese
+API de aparecer/desaparecer podría estar respaldado por Redis, una base de datos o cualquier otra cosa.</p><p>Cree la suscripción del canal de apariencia del lado del cliente:</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/appearance_channel.js
+import consumer from "./consumer"
+
+consumer.subscriptions.create("AppearanceChannel", {
+  // Called once when the subscription is created.
+  initialized() {
+    this.update = this.update.bind(this)
+  },
+
+  // Called when the subscription is ready for use on the server.
+  connected() {
+    this.install()
+    this.update()
+  },
+
+  // Called when the WebSocket connection is closed.
+  disconnected() {
+    this.uninstall()
+  },
+
+  // Called when the subscription is rejected by the server.
+  rejected() {
+    this.uninstall()
+  },
+
+  update() {
+    this.documentIsActive ? this.appear() : this.away()
+  },
+
+  appear() {
+    // Calls `AppearanceChannel#appear(data)` on the server.
+    this.perform("appear", { appearing_on: this.appearingOn })
+  },
+
+  away() {
+    // Calls `AppearanceChannel#away` on the server.
+    this.perform("away")
+  },
+
+  install() {
+    window.addEventListener("focus", this.update)
+    window.addEventListener("blur", this.update)
+    document.addEventListener("turbolinks:load", this.update)
+    document.addEventListener("visibilitychange", this.update)
+  },
+
+  uninstall() {
+    window.removeEventListener("focus", this.update)
+    window.removeEventListener("blur", this.update)
+    document.removeEventListener("turbolinks:load", this.update)
+    document.removeEventListener("visibilitychange", this.update)
+  },
+
+  get documentIsActive() {
+    return document.visibilityState == "visible" &amp;&amp; document.hasFocus()
+  },
+
+  get appearingOn() {
+    const element = document.querySelector("[data-appearing-on]")
+    return element ? element.getAttribute("data-appearing-on") : null
+  }
+})
+</code></pre>
+</div>
+<h6 id="client-server-interaction"><a class="anchorlink" href="#client-server-interaction">7.1.1 Client-Server Interaction</a></h6>
+<ol>
+<li><p><strong>Client</strong> se conecta al <strong>Server</strong> vía <code>App.cable =
+ActionCable.createConsumer("ws://cable.example.com")</code>. (<code>cable.js</code>). El
+<strong>Server</strong> identifica esta conexión por <code>current_user</code>.</p></li>
+<li><p><strong>Client</strong> se suscribe al canal de aparición a través de
+<code>consumer.subscriptions.create({ channel: "AppearanceChannel" })</code>. (<code>appearance_channel.js</code>)</p></li>
+<li><p><strong>Server</strong> reconoce que se ha iniciado una nueva suscripción para el
+canal de apariencia y ejecuta su callback <code>subscribed</code>, llamando al 
+método <code>appear</code> en <code>current_user</code>. (<code>appearance_channel.rb</code>)</p></li>
+<li><p><strong>Client</strong> reconoce que se ha establecido una suscripción y llama
+<code>connected</code> (<code>appearance_channel.js</code>) que a su vez llama <code>install</code> y <code>appear</code>.
+<code>appear</code> llama <code>AppearanceChannel#appear(data)</code> en el servidor y proporciona un
+hash de datos de <code>{ appearing_on: this.appearingOn }</code>. Esto es
+posible porque la instancia del canal del lado del servidor expone automáticamente todos
+métodos públicos declarados en la clase (menos las devoluciones de llamada), para que estos puedan ser
+alcanzado como llamadas de procedimiento remoto a través del método <code>perform</code> de una suscripción.</p></li>
+<li><p><strong>Server</strong> recibe la solicitud de <code>appear</code> acción sobre la apariencia
+canal para la conexión identificada por <code>current_user</code>
+(<code>appearance_channel.rb</code>). <strong>Server</strong> recupera los datos con el
+<code>:appearing_on</code> clave del hash de datos y lo establece como el valor para la clave <code>:on</code>
+que se pasa a <code>current_user.appear</code>.</p></li>
+</ol>
+<h4 id="example-2-receiving-new-web-notifications"><a class="anchorlink" href="#example-2-receiving-new-web-notifications">7.2 Example 2: Receiving New Web Notifications</a></h4><p>El ejemplo de apariencia tenía que ver con exponer la funcionalidad del servidor a
+invocación del lado del cliente a través de la conexión WebSocket. Pero la gran cosa
+sobre WebSockets es que es una calle de doble sentido. Así que ahora mostremos un ejemplo
+donde el servidor invoca una acción en el cliente.</p><p>Este es un canal de notificación web que le permite activar el lado del cliente
+notificaciones web cuando transmite a las transmisiones correctas:</p><p>Cree el canal de notificaciones web del lado del servidor:</p><div class="code_container">
+<pre><code class="language-ruby"># app/channels/web_notifications_channel.rb
+class WebNotificationsChannel &lt; ApplicationCable::Channel
+  def subscribed
+    stream_for current_user
+  end
+end
+</code></pre>
+</div>
+<p>Cree la suscripción al canal de notificaciones web del lado del cliente:</p><div class="code_container">
+<pre><code class="language-js">// app/javascript/channels/web_notifications_channel.js
+// Client-side which assumes you've already requested
+// the right to send web notifications.
+import consumer from "./consumer"
+
+consumer.subscriptions.create("WebNotificationsChannel", {
+  received(data) {
+    new Notification(data["title"], body: data["body"])
+  }
+})
+</code></pre>
+</div>
+<p>Transmita contenido a una instancia de canal de notificación web desde cualquier lugar de su
+solicitud:</p><div class="code_container">
+<pre><code class="language-ruby"># Somewhere in your app this is called, perhaps from a NewCommentJob
+WebNotificationsChannel.broadcast_to(
+  current_user,
+  title: 'New things!',
+  body: 'All the news fit to print'
+)
+</code></pre>
+</div>
+<p>La llamada <code>WebNotificationsChannel.broadcast_to</code> coloca un mensaje en el
+la cola pubsub del adaptador de suscripción con un nombre de transmisión independiente para cada
+usuario. Para un usuario con un ID de 1, el nombre de la transmisión sería
+<code>web_notifications: 1</code>.</p><p>El canal ha recibido instrucciones para transmitir todo lo que llega a
+<code>web_notifications: 1</code> directamente al cliente invocando el <code>recibido</code>
+llamar de vuelta. Los datos pasados ​​como argumento son el hash enviado como segundo parámetro
+a la llamada de difusión del lado del servidor, codificado JSON para el viaje a través del cable
+y desempaquetado para el argumento de datos que llega como "recibido".</p><h4 id="more-complete-examples"><a class="anchorlink" href="#more-complete-examples">7.3 More Complete Examples</a></h4><p>Ver el <a href="https://github.com/rails/actioncable-examples">rails/actioncable-examples</a>
+repositorio para ver un ejemplo completo de cómo configurar Action Cable en una aplicación Rails y agregar canales.</p><h3 id="configuration"><a class="anchorlink" href="#configuration">8 Configuration</a></h3><p>Action Cable tiene dos configuraciones requeridas: un adaptador de suscripción y orígenes de solicitud permitidos.</p><h4 id="subscription-adapter"><a class="anchorlink" href="#subscription-adapter">8.1 Subscription Adapter</a></h4><p>De forma predeterminada, Action Cable busca un archivo de configuración en <code>config/cable.yml</code>.
+El archivo debe especificar un adaptador para cada entorno de Rails. Ver el
+Sección <a href="#dependencies">Dependencies</a> para obtener información adicional sobre adaptadores.</p><div class="code_container">
+<pre><code class="language-yaml">development:
+  adapter: async
+
+test:
+  adapter: async
+
+production:
+  adapter: redis
+  url: redis://10.10.3.153:6381
+  channel_prefix: appname_production
+</code></pre>
+</div>
+<h5 id="adapter-configuration"><a class="anchorlink" href="#adapter-configuration">8.1.1 Adapter Configuration</a></h5><p>Below is a list of the subscription adapters available for end users.</p><h6 id="async-adapter"><a class="anchorlink" href="#async-adapter">8.1.1.1 Async Adapter</a></h6><p>El adaptador asincrónico está diseñado para desarrollo/prueba y no debe usarse en producción.</p><h6 id="redis-adapter"><a class="anchorlink" href="#redis-adapter">8.1.1.2 Redis Adapter</a></h6><p>El adaptador de Redis requiere que los usuarios proporcionen una URL que apunte al servidor de Redis.
+Además, se puede proporcionar un <code>prefijo_canal</code> para evitar colisiones de nombres de canales
+cuando se usa el mismo servidor Redis para múltiples aplicaciones. Ver el <a href="https://redis.io/topics/pubsub#database-amp-scoping">Redis PubSub documentation</a> para más detalles.</p><p> ##### PostgreSQL Adapter</p><p>El adaptador PostgreSQL usa el grupo de conexiones de Active Record y, por lo tanto, el
+configuración de la base de datos <code>config / database.yml</code> de la aplicación, para su conexión.
+Esto puede cambiar en el futuro. <a href="https://github.com/rails/rails/issues/27214">#27214</a></p><h4 id="allowed-request-origins"><a class="anchorlink" href="#allowed-request-origins">8.2 Allowed Request Origins</a></h4><p>Action Cable solo aceptará solicitudes de orígenes específicos, que son
+pasado a la configuración del servidor como una matriz. Los orígenes pueden ser instancias de
+cadenas o expresiones regulares, contra las cuales se realizará una comprobación de la coincidencia.</p><div class="code_container">
+<pre><code class="language-ruby">config.action_cable.allowed_request_origins = ['https://rubyonrails.com', %r{http://ruby.*}]
+</code></pre>
+</div>
+<p>Para deshabilitar y permitir solicitudes de cualquier origen:</p><div class="code_container">
+<pre><code class="language-ruby">config.action_cable.disable_request_forgery_protection = true
+</code></pre>
+</div>
+<p>De forma predeterminada, Action Cable permite todas las solicitudes de localhost: 3000 cuando se ejecuta
+en el entorno de desarrollo.</p><h4 id="consumer-configuration"><a class="anchorlink" href="#consumer-configuration">8.3 Consumer Configuration</a></h4><p>Para configurar la URL, agregue una llamada a <code>action_cable_meta_tag</code> en su diseño HTML
+CABEZA. Esto utiliza una URL o ruta establecida normalmente a través de <code>config.action_cable.url</code> en el
+archivos de configuración del entorno.</p><h4 id="worker-pool-configuration"><a class="anchorlink" href="#worker-pool-configuration">8.4 Worker Pool Configuration</a></h4><p>El grupo de trabajadores se utiliza para ejecutar devoluciones de llamada de conexión y acciones de canal en
+aislamiento del hilo principal del servidor. Action Cable le permite a la aplicación
+a configurar el número de subprocesos procesados simultáneamente en el grupo de trabajadores.</p><div class="code_container">
+<pre><code class="language-ruby">config.action_cable.worker_pool_size = 4
+</code></pre>
+</div>
+<p>Además, tenga en cuenta que su servidor debe proporcionar al menos el mismo número de bases de datos
+conexiones como tienes trabajadores. El tamaño del grupo de trabajadores predeterminado se establece en 4, por lo que
+eso significa que se debe hacer disponibles por lo menos 4 conexiones de base de datos.
+Puede cambiar eso en <code>config/database.yml</code> a través del atributo<code>pool</code>.</p><h4 id="other-configurations"><a class="anchorlink" href="#other-configurations">8.5 Other Configurations</a></h4><p>La otra opción común para configurar son las etiquetas de registro aplicadas al
+registrador por conexión. Aquí hay un ejemplo en cual se usa
+la identificación de la cuenta de usuario si está disponible, de lo contrario "sin cuenta" al etiquetar:</p><div class="code_container">
+<pre><code class="language-ruby">config.action_cable.log_tags = [
+  -&gt; request { request.env['user_account_id'] || "no-account" },
+  :action_cable,
+  -&gt; request { request.uuid }
+]
+</code></pre>
+</div>
+<p>Para obtener una lista completa de todas las opciones de configuración, consulte la
+Clase <code>ActionCable :: Server :: Configuration</code></p><h3 id="running-standalone-cable-servers"><a class="anchorlink" href="#running-standalone-cable-servers">9 Running Standalone Cable Servers</a></h3><h4 id="in-app"><a class="anchorlink" href="#in-app">9.1 In App</a></h4><p>Action Cable puede funcionar junto con su aplicación Rails. Por ejemplo, para
+escuchar las solicitudes de WebSocket en <code>/ websocket</code>, especifique esa ruta en
+<code>config.action_cable.mount_path</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># config/application.rb
+class Application &lt; Rails::Application
+  config.action_cable.mount_path = '/websocket'
+end
+</code></pre>
+</div>
+<p>Puede utilizar <code>ActionCable.createConsumer()</code> para conectarse al cable
+servidor si se invoca <code>action_cable_meta_tag</code> en el diseño. De lo contrario, un camino es
+especificado como primer argumento para <code>createConsumer</code> (por ejemplo, <code>ActionCable.createConsumer("/websocket")</code>).</p><p>Para cada instancia de su servidor que cree y para cada trabajador su servidor
+genera, también tendrá una nueva instancia de Action Cable, pero el uso de Redis
+mantiene los mensajes sincronizados entre conexiones.</p><h4 id="standalone"><a class="anchorlink" href="#standalone">9.2 Standalone</a></h4><p>Los servidores de cable se pueden separar de su servidor de aplicaciones normal. Sus
+sigue siendo una aplicación de Rack, pero es su propia aplicación de Rack. El recomendado
+La configuración básica es la siguiente:</p><div class="code_container">
+<pre><code class="language-ruby"># cable/config.ru
+require_relative "../config/environment"
+Rails.application.eager_load!
+
+run ActionCable.server
+</code></pre>
+</div>
+<p>Luego inicias el servidor usando un binstub en <code>bin / cable</code> ala:</p><div class="code_container">
+<pre><code class="language-plain">#!/bin/bash
+bundle exec puma -p 28080 cable/config.ru
+</code></pre>
+</div>
+<p>Lo anterior iniciará un servidor de cable en el puerto 28080.</p><p>El servidor WebSocket no tiene acceso a la sesión, pero tiene
+acceso a las cookies. Esto se puede utilizar cuando necesite manipular
+autenticación. Puede ver una forma de hacerlo con Devise en este <a href="https://greg.molnar.io/blog/actioncable-devise-authentication/">article</a>.</p><h3 id="dependencies"><a class="anchorlink" href="#dependencies">10 Dependencies</a></h3><p>Action Cable proporciona una interfaz de adaptador de suscripción para procesar su
+internos de pubsub. De forma predeterminada adaptadores incluidos son, asincrónica, en línea, PostgreSQL y Redis.
+El adaptador predeterminado en las nuevas aplicaciones Rails es el adaptador asincrónico (<code>async</code>).</p><p>El lado Ruby de las cosas se basa en <a href="https://github.com/faye/websocket-driver-ruby">websocket-driver</a>,
+<a href="https://github.com/celluloid/nio4r">nio4r</a>, y <a href="https://github.com/ruby-concurrency/concurrent-ruby">concurrent-ruby</a>.</p><h3 id="deployment"><a class="anchorlink" href="#deployment">11 Deployment</a></h3><p>Action Cable funciona con una combinación de WebSockets e hilos. Ambos
+la plomería del marco y el trabajo de canal especificado por el usuario son manejados internamente por
+utilizando el soporte de hilos nativos de Ruby. Esto significa que puede usar todos sus
+Modelos de rieles sin problemas, siempre que no haya cometido ningún pecado de seguridad de hilos.</p><p>El servidor de Action Cable implementa la API de secuestro de sockets de Rack,
+permitiendo así el uso de un patrón multiproceso para gestionar conexiones
+internamente, independientemente de si el servidor de aplicaciones es multiproceso o no.</p><p>En consecuencia, Action Cable funciona con servidores populares como Unicorn, Puma y
+Pasajero.</p><h3 id="testing"><a class="anchorlink" href="#testing">12 Testing</a></h3><p>Puede encontrar instrucciones detalladas sobre cómo probar la funcionalidad de su Action Cable en el 
+guía <a href="testing.html#testing-action-cable">testing guide</a>.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

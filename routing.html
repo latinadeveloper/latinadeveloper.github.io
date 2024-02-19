@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -262,27 +262,47 @@
     <div class="wrapper">
       <div id="mainCol">
         <h3 id="the-purpose-of-the-rails-router"><a class="anchorlink" href="#the-purpose-of-the-rails-router">1 The Purpose of the Rails Router</a></h3><p>El enrutador Rails reconoce las URL y las envía a la acción de un controlador o a una aplicación de Rack. También puede generar rutas y URL, evitando la necesidad de codificar cadenas en sus vistas.</p><h4 id="connecting-urls-to-code"><a class="anchorlink" href="#connecting-urls-to-code">1.1 Connecting URLs to Code</a></h4><p>Cuando su aplicación Rails recibe una solicitud entrante para:</p><div class="code_container">
-<pre><code class="language-plain">GET /patients/17
+<pre><code class="highlight plaintext">GET /patients/17
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="GET /patients/17
+">Copy</button>
 </div>
 <p>le pide al enrutador que lo haga coincidir con una acción del controlador. Si la primera ruta coincidente es:</p><div class="code_container">
-<pre><code class="language-ruby">get '/patients/:id', to: 'patients#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/patients/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'patients#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/patients/:id', to: 'patients#show'
+">Copy</button>
 </div>
 <p>la solicitud se envía a la acción <code>show</code> del controlador de <code>patients</code> con <code>{id: '17'}</code> en <code>params</code>.</p><div class="note"><p>Rails usa snake_case para los nombres de los controladores aquí, si tiene un controlador de varias palabras como <code>MonsterTrucksController</code>, desea usar <code>monster_trucks#show</code>, por ejemplo.</p></div><h4 id="generating-paths-and-urls-from-code"><a class="anchorlink" href="#generating-paths-and-urls-from-code">1.2 Generating Paths and URLs from Code</a></h4><p>También puede generar rutas y URL. Si la ruta anterior se modifica para ser:</p><div class="code_container">
-<pre><code class="language-ruby">get '/patients/:id', to: 'patients#show', as: 'patient'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/patients/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'patients#show'</span><span class="p">,</span> <span class="ss">as: </span><span class="s1">'patient'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/patients/:id', to: 'patients#show', as: 'patient'
+">Copy</button>
 </div>
 <p>y su aplicación contiene este código en el controlador:</p><div class="code_container">
-<pre><code class="language-ruby">@patient = Patient.find(params[:id])
+<pre><code class="highlight ruby"><span class="vi">@patient</span> <span class="o">=</span> <span class="no">Patient</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="@patient = Patient.find(params[:id])
+">Copy</button>
 </div>
 <p>y esto en la vista correspondiente:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Patient Record', patient_path(@patient) %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Patient Record'</span><span class="p">,</span> <span class="n">patient_path</span><span class="p">(</span><span class="vi">@patient</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Patient Record', patient_path(@patient) %&gt;
+">Copy</button>
 </div>
 <p>entonces el enrutador generará la ruta <code>/pacientes/17</code>. Esto reduce la fragilidad de su vista y hace que su código sea más fácil de entender. Tenga en cuenta que no es necesario especificar la identificación en el asistente de ruta.</p><h4 id="configuring-the-rails-router"><a class="anchorlink" href="#configuring-the-rails-router">1.3 Configuring the Rails Router</a></h4><p>Las rutas para su aplicación o motor se encuentran en el archivo <code>config/routes.rb</code> y normalmente se ven así:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:brands</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+  <span class="k">end</span>
+
+  <span class="n">resource</span> <span class="ss">:basket</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
+
+  <span class="n">resolve</span><span class="p">(</span><span class="s2">"Basket"</span><span class="p">)</span> <span class="p">{</span> <span class="n">route_for</span><span class="p">(</span><span class="ss">:basket</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='Rails.application.routes.draw do
   resources :brands, only: [:index, :show] do
     resources :products, only: [:index, :show]
   end
@@ -291,21 +311,27 @@
 
   resolve("Basket") { route_for(:basket) }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Dado que este es un archivo fuente normal de Ruby, puede usar todas sus características para ayudarlo a definir sus rutas, pero tenga cuidado con los nombres de las variables, ya que pueden entrar en conflicto con los métodos DSL del enrutador.</p><div class="note"><p>El bloque <code>Rails.application.routes.draw do ... end</code> que envuelve las definiciones de ruta es necesario para establecer el alcance del enrutador DSL y no debe eliminarse.</p></div><h3 id="resource-routing-the-rails-default"><a class="anchorlink" href="#resource-routing-the-rails-default">2 Resource Routing: the Rails Default</a></h3><p>El enrutamiento de recursos le permite declarar rápidamente todas las rutas comunes para un controlador con recursos dado. En lugar de declarar rutas separadas para sus acciones de <code>index</code>,<code>show</code>, <code>new</code>,<code>edit</code>, <code>create</code>,<code>update</code> y <code>destroy</code>, una ruta ingeniosa las declara en una sola línea de código.</p><h4 id="resources-on-the-web"><a class="anchorlink" href="#resources-on-the-web">2.1 Resources on the Web</a></h4><p>Los navegadores solicitan páginas de Rails solicitando una URL mediante un método HTTP específico, como <code>GET</code>,<code>POST</code>, <code>PATCH</code>,<code>PUT</code> y <code>DELETE</code>. Cada método es una solicitud para realizar una operación en el recurso. Una ruta de recursos mapea una serie de solicitudes relacionadas con acciones en un solo controlador.</p><p>Cuando su aplicación Rails recibe una solicitud entrante para:</p><div class="code_container">
-<pre><code class="language-plain">DELETE /photos/17
+<pre><code class="highlight plaintext">DELETE /photos/17
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="DELETE /photos/17
+">Copy</button>
 </div>
 <p>le pide al enrutador que lo asigne a una acción de controlador. Si la primera ruta coincidente es:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos
+">Copy</button>
 </div>
 <p>Rails enviaría esa solicitud a la acción <code>destroy</code> en el controlador<code>photos</code> con <code>{id: '17'}</code> en <code>params</code>.</p><h4 id="crud-verbs-and-actions"><a class="anchorlink" href="#crud-verbs-and-actions">2.2 CRUD, Verbs, and Actions</a></h4><p>En Rails, una ruta ingeniosa proporciona un mapeo entre verbos HTTP y URL para
 acciones del controlador. Por convención, cada acción también se asigna a un CRUD específico
 operación en una base de datos. Una sola entrada en el archivo de enrutamiento, como:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos
+">Copy</button>
 </div>
 <p>crea siete rutas diferentes en su aplicación, todas asignadas al controlador <code>Photos</code>:</p>
 <table>
@@ -376,27 +402,40 @@ operación en una base de datos. Una sola entrada en el archivo de enrutamiento,
 <code>photo_path(:id)</code> devuelve <code>/photos/:id</code> (por ejemplo, <code>photo_path(10)</code> por ejemplo <code>/photos/10</code>)</li>
 </ul>
 <p>Cada uno de estos ayudantes tiene un ayudante <code>_url</code> correspondiente (como<code>photos_url</code>) que devuelve la misma ruta con el prefijo actual de host, puerto y ruta.</p><h4 id="defining-multiple-resources-at-the-same-time"><a class="anchorlink" href="#defining-multiple-resources-at-the-same-time">2.4 Defining Multiple Resources at the Same Time</a></h4><p>Si necesita crear rutas para más de un recurso, puede ahorrar un poco de escritura definiéndolas todas con una sola llamada a <code>resources</code>:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, :books, :videos
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:books</span><span class="p">,</span> <span class="ss">:videos</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, :books, :videos
+">Copy</button>
 </div>
 <p>Esto funciona exactamente igual que:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span>
+<span class="n">resources</span> <span class="ss">:books</span>
+<span class="n">resources</span> <span class="ss">:videos</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos
 resources :books
 resources :videos
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="singular-resources"><a class="anchorlink" href="#singular-resources">2.5 Singular Resources</a></h4><p>A veces, tiene un recurso que los clientes siempre buscan sin hacer referencia a una identificación. Por ejemplo, le gustaría que <code>/profile</code> muestre siempre el perfil del usuario actualmente conectado. En este caso, puede usar un recurso singular para mapear <code>/profile</code> (en lugar de<code>/profile/:id</code>) a la acción <code>show</code>:</p><div class="code_container">
-<pre><code class="language-ruby">get 'profile', to: 'users#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'profile'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'users#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'profile', to: 'users#show'
+">Copy</button>
 </div>
 <p>Pasar una <code>String</code> a <code>to:</code> esperará un formato de <code>controller#action</code>. Cuando se usa un <code>Symbol</code>, la opción<code>to:</code> debe reemplazarse por<code>acción:</code>. Cuando se usa un <code>String</code> sin un <code>#</code>, la opción<code>to:</code> debe reemplazarse por <code>controller:</code>:</p><div class="code_container">
-<pre><code class="language-ruby">get 'profile', action: :show, controller: 'users'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'profile'</span><span class="p">,</span> <span class="ss">action: :show</span><span class="p">,</span> <span class="ss">controller: </span><span class="s1">'users'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'profile', action: :show, controller: 'users'
+">Copy</button>
 </div>
 <p>Esta ruta ingeniosa:</p><div class="code_container">
-<pre><code class="language-ruby">resource :geocoder
-resolve('Geocoder') { [:geocoder] }
+<pre><code class="highlight ruby"><span class="n">resource</span> <span class="ss">:geocoder</span>
+<span class="n">resolve</span><span class="p">(</span><span class="s1">'Geocoder'</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="ss">:geocoder</span><span class="p">]</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resource :geocoder
+resolve('Geocoder') { [:geocoder] }
+">Copy</button>
 </div>
 <p>crea seis rutas diferentes en su aplicación, todas asignadas al controlador <code>Geocoders</code>:</p>
 <table>
@@ -460,10 +499,14 @@ resolve('Geocoder') { [:geocoder] }
 </li>
 </ul>
 <p>Al igual que con los recursos plurales, los mismos ayudantes que terminan en <code>_url</code> también incluirán el prefijo de host, puerto y ruta.</p><h4 id="controller-namespaces-and-routing"><a class="anchorlink" href="#controller-namespaces-and-routing">2.6 Controller Namespaces and Routing</a></h4><p>Es posible que desee organizar grupos de controladores en un espacio de nombres. Lo más común es agrupar varios controladores administrativos en un espacio de nombres <code>Admin::</code>. Colocaría estos controladores en el directorio <code>app/controllers/admin</code>, y puede agruparlos en su enrutador:</p><div class="code_container">
-<pre><code class="language-ruby">namespace :admin do
+<pre><code class="highlight ruby"><span class="n">namespace</span> <span class="ss">:admin</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="namespace :admin do
   resources :articles, :comments
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto creará una serie de rutas para cada uno de los controladores <code>artcicles</code> y <code>comments</code>. Para <code>Admin::ArticlesController</code>, Rails creará:</p>
 <table>
@@ -521,24 +564,36 @@ end
 </tbody>
 </table>
 <p>Si desea enrutar <code>/articles</code> (sin el prefijo <code>/admin</code>) a <code>Admin::ArticlesController</code>, puede usar:</p><div class="code_container">
-<pre><code class="language-ruby">scope module: 'admin' do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="ss">module: </span><span class="s1">'admin'</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope module: 'admin' do
   resources :articles, :comments
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>o, para un solo caso:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles, module: 'admin'
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">module: </span><span class="s1">'admin'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles, module: 'admin'
+">Copy</button>
 </div>
 <p>Si desea enrutar <code>/admin/articles</code> a <code>ArticlesController</code> (sin el prefijo del módulo <code>Admin::</code>), puede usar:</p><div class="code_container">
-<pre><code class="language-ruby">scope '/admin' do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="s1">'/admin'</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope '/admin' do
   resources :articles, :comments
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>o, para un solo caso:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles, path: '/admin/articles'
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">path: </span><span class="s1">'/admin/articles'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles, path: '/admin/articles'
+">Copy</button>
 </div>
 <p>En cada uno de estos casos, las rutas nombradas siguen siendo las mismas que si no usara <code>scope</code>. En el último caso, las siguientes rutas se asignan a <code>ArticlesController</code>:</p>
 <table>
@@ -596,20 +651,32 @@ end
 </tbody>
 </table>
 <div class="info"><p><em>Si necesita usar un espacio de nombres de controlador diferente dentro de un bloque <code>namespace</code>, puede especificar una ruta de controlador absoluta, por ejemplo: <code>get '/foo', to: '/foo#index'</code>.</em></p></div><h4 id="nested-resources"><a class="anchorlink" href="#nested-resources">2.7 Nested Resources</a></h4><p>Es común tener recursos que lógicamente son hijos de otros recursos. Por ejemplo, suponga que su aplicación incluye estos modelos:</p><div class="code_container">
-<pre><code class="language-ruby">class Magazine &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Magazine</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:ads</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Ad</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:magazine</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Magazine &lt; ApplicationRecord
   has_many :ads
 end
 
 class Ad &lt; ApplicationRecord
   belongs_to :magazine
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Las rutas anidadas le permiten capturar esta relación en su ruta. En este caso, podría incluir esta declaración de ruta:</p><div class="code_container">
-<pre><code class="language-ruby">resources :magazines do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:magazines</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:ads</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :magazines do
   resources :ads
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Además de las rutas para revistas, esta declaración también enrutará anuncios a un <code>AdsController</code>. Las URL de los anuncios requieren una revista:</p>
 <table>
@@ -667,55 +734,92 @@ end
 </tbody>
 </table>
 <p>Esto también creará ayudantes de enrutamiento como <code>magazine_ads_url</code> y <code>edit_magazine_ad_path</code>. Estos ayudantes toman una instancia de Magazine como primer parámetro (<code>magazine_ads_url(@magazine)</code>).</p><h5 id="limits-to-nesting"><a class="anchorlink" href="#limits-to-nesting">2.7.1 Limits to Nesting</a></h5><p>Puede anidar recursos dentro de otros recursos anidados si lo desea. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :publishers do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:publishers</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:magazines</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:photos</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :publishers do
   resources :magazines do
     resources :photos
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Los recursos profundamente anidados se vuelven rápidamente engorrosos. En este caso, por ejemplo, la aplicación reconocería rutas como:</p><div class="code_container">
-<pre><code class="language-plain">/publishers/1/magazines/2/photos/3
+<pre><code class="highlight plaintext">/publishers/1/magazines/2/photos/3
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="/publishers/1/magazines/2/photos/3
+">Copy</button>
 </div>
 <p>The corresponding route helper would be <code>publisher_magazine_photo_url</code>, requiring you to specify objects at all three levels. Indeed, this situation is confusing enough that a popular <a href="http://weblog.jamisbuck.org/2007/2/5/nesting-resources">article</a> by Jamis Buck proposes a rule of thumb for good Rails design:</p><div class="info"><p>_Los recursos nunca deben anidarse a más de 1 nivel de profundidad.</p></div><h5 id="shallow-nesting"><a class="anchorlink" href="#shallow-nesting">2.7.2 Shallow Nesting</a></h5><p>Una forma de evitar la anidación profunda (como se recomendó anteriormente) es generar las acciones de colección dentro del ámbito del padre, para tener una idea de la jerarquía, pero no anidar las acciones de los miembros. En otras palabras, para construir solo rutas con la mínima cantidad de información para identificar de forma única el recurso, así:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="p">]</span>
+<span class="k">end</span>
+<span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:show</span><span class="p">,</span> <span class="ss">:edit</span><span class="p">,</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:destroy</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles do
   resources :comments, only: [:index, :new, :create]
 end
 resources :comments, only: [:show, :edit, :update, :destroy]
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta idea logra un equilibrio entre rutas descriptivas y anidación profunda. Existe una sintaxis abreviada para lograr precisamente eso, a través de la opción <code>:shallow</code>:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">shallow: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles do
   resources :comments, shallow: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto generará exactamente las mismas rutas que el primer ejemplo. También puede especificar la opción <code>:shallow</code> en el recurso principal, en cuyo caso todos los recursos anidados serán poco profundos:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles, shallow: true do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">shallow: </span><span class="kp">true</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+  <span class="n">resources</span> <span class="ss">:quotes</span>
+  <span class="n">resources</span> <span class="ss">:drafts</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles, shallow: true do
   resources :comments
   resources :quotes
   resources :drafts
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El método <code>shallow</code> del DSL crea un alcance dentro del cual cada anidamiento es superficial. Esto genera las mismas rutas que el ejemplo anterior:</p><div class="code_container">
-<pre><code class="language-ruby">shallow do
+<pre><code class="highlight ruby"><span class="n">shallow</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:comments</span>
+    <span class="n">resources</span> <span class="ss">:quotes</span>
+    <span class="n">resources</span> <span class="ss">:drafts</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="shallow do
   resources :articles do
     resources :comments
     resources :quotes
     resources :drafts
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Existen dos opciones para <code>scope</code> para personalizar rutas poco profundas. <code>:shallow_path</code> antepone las rutas de miembros con el parámetro especificado:</p><div class="code_container">
-<pre><code class="language-ruby">scope shallow_path: "sekret" do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="ss">shallow_path: </span><span class="s2">"sekret"</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">shallow: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='scope shallow_path: "sekret" do
   resources :articles do
     resources :comments, shallow: true
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El recurso de comentarios aquí tendrá las siguientes rutas generadas para él:</p>
 <table>
@@ -773,12 +877,18 @@ end
 </tbody>
 </table>
 <p>La opción <code>:shallow_prefix</code> agrega el parámetro especificado a los ayudantes de ruta nombrados:</p><div class="code_container">
-<pre><code class="language-ruby">scope shallow_prefix: "sekret" do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="ss">shallow_prefix: </span><span class="s2">"sekret"</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">shallow: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='scope shallow_prefix: "sekret" do
   resources :articles do
     resources :comments, shallow: true
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El recurso de comentarios aquí tendrá las siguientes rutas generadas para él:</p>
 <table>
@@ -836,23 +946,44 @@ end
 </tbody>
 </table>
 <h4 id="routing-concerns"><a class="anchorlink" href="#routing-concerns">2.8 Routing Concerns</a></h4><p>Las preocupaciones sobre el enrutamiento le permiten declarar rutas comunes que se pueden reutilizar dentro de otros recursos y rutas. Para definir una preocupación:</p><div class="code_container">
-<pre><code class="language-ruby">concern :commentable do
+<pre><code class="highlight ruby"><span class="n">concern</span> <span class="ss">:commentable</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+
+<span class="n">concern</span> <span class="ss">:image_attachable</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">only: :index</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="concern :commentable do
   resources :comments
 end
 
 concern :image_attachable do
   resources :images, only: :index
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Estas preocupaciones se pueden utilizar en los recursos para evitar la duplicación de código y compartir el comportamiento entre rutas:</p><div class="code_container">
-<pre><code class="language-ruby">resources :messages, concerns: :commentable
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:messages</span><span class="p">,</span> <span class="ss">concerns: :commentable</span>
+
+<span class="n">resources</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">concerns: </span><span class="p">[</span><span class="ss">:commentable</span><span class="p">,</span> <span class="ss">:image_attachable</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :messages, concerns: :commentable
 
 resources :articles, concerns: [:commentable, :image_attachable]
-</code></pre>
+">Copy</button>
 </div>
 <p>Lo anterior es equivalente a:</p><div class="code_container">
-<pre><code class="language-ruby">resources :messages do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:messages</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+
+<span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+  <span class="n">resources</span> <span class="ss">:images</span><span class="p">,</span> <span class="ss">only: :index</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :messages do
   resources :comments
 end
 
@@ -860,150 +991,246 @@ resources :articles do
   resources :comments
   resources :images, only: :index
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También puede usarlos en cualquier lugar que desee dentro de las rutas, por ejemplo, en una llamada a <code>scope</code> o <code>namespace</code>:</p><div class="code_container">
-<pre><code class="language-ruby">namespace :articles do
+<pre><code class="highlight ruby"><span class="n">namespace</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">concerns</span> <span class="ss">:commentable</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="namespace :articles do
   concerns :commentable
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="creating-paths-and-urls-from-objects"><a class="anchorlink" href="#creating-paths-and-urls-from-objects">2.9 Creating Paths and URLs from Objects</a></h4><p>Además de utilizar los ayudantes de enrutamiento, Rails también puede crear rutas y URL a partir de una serie de parámetros. Por ejemplo, suponga que tiene este conjunto de rutas:</p><div class="code_container">
-<pre><code class="language-ruby">resources :magazines do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:magazines</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:ads</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :magazines do
   resources :ads
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Al usar <code>magazine_ad_path</code>, puede pasar instancias de <code>Magazine</code> y <code>Ad</code> en lugar de los ID numéricos:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Ad details'</span><span class="p">,</span> <span class="n">magazine_ad_path</span><span class="p">(</span><span class="vi">@magazine</span><span class="p">,</span> <span class="vi">@ad</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Ad details', magazine_ad_path(@magazine, @ad) %&gt;
+">Copy</button>
 </div>
 <p>También puede usar <code>url_for</code> con un conjunto de objetos, y Rails determinará automáticamente qué ruta desea:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Ad details', url_for([@magazine, @ad]) %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Ad details'</span><span class="p">,</span> <span class="n">url_for</span><span class="p">([</span><span class="vi">@magazine</span><span class="p">,</span> <span class="vi">@ad</span><span class="p">])</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Ad details', url_for([@magazine, @ad]) %&gt;
+">Copy</button>
 </div>
 <p>En este caso, Rails verá que <code>@magazine</code> es una<code>Magazine</code> y <code>@ad</code> es un <code>Ad</code> y, por lo tanto, usará el ayudante <code>magazine_ad_path</code>. En ayudantes como <code>link_to</code>, puedes especificar solo el objeto en lugar de la llamada completa a <code>url_for</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Ad details', [@magazine, @ad] %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Ad details'</span><span class="p">,</span> <span class="p">[</span><span class="vi">@magazine</span><span class="p">,</span> <span class="vi">@ad</span><span class="p">]</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Ad details', [@magazine, @ad] %&gt;
+">Copy</button>
 </div>
 <p>Si desea vincular solo a una revista:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Magazine details', @magazine %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Magazine details'</span><span class="p">,</span> <span class="vi">@magazine</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Magazine details', @magazine %&gt;
+">Copy</button>
 </div>
 <p>Para otras acciones, solo necesita insertar el nombre de la acción como el primer elemento de la matriz:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'Edit Ad', [:edit, @magazine, @ad] %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit Ad'</span><span class="p">,</span> <span class="p">[</span><span class="ss">:edit</span><span class="p">,</span> <span class="vi">@magazine</span><span class="p">,</span> <span class="vi">@ad</span><span class="p">]</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'Edit Ad', [:edit, @magazine, @ad] %&gt;
+">Copy</button>
 </div>
 <p>Esto le permite tratar las instancias de sus modelos como URL y es una ventaja clave para usar el estilo ingenioso.</p><h4 id="adding-more-restful-actions"><a class="anchorlink" href="#adding-more-restful-actions">2.10 Adding More RESTful Actions</a></h4><p>No está limitado a las siete rutas que el enrutamiento RESTful crea de forma predeterminada. Si lo desea, puede agregar rutas adicionales que se apliquen a la colección o miembros individuales de la colección.</p><h5 id="adding-member-routes"><a class="anchorlink" href="#adding-member-routes">2.10.1 Adding Member Routes</a></h5><p>Para agregar una ruta miembro, simplemente agregue un bloque <code>member</code> en el bloque de recursos:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span> <span class="k">do</span>
+  <span class="n">member</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="s1">'preview'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos do
   member do
     get 'preview'
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto reconocerá <code>/photos/1/preview</code> con GET, y se dirigirá a la acción <code>preview</code> de <code>PhotosController</code>, con el valor de id de recurso pasado en <code>params[:id]</code>. También creará los ayudantes <code>preview_photo_url</code> y <code>preview_photo_path</code>.</p><p>Dentro del bloque de rutas miembro, cada nombre de ruta especifica el verbo HTTP que
 será reconocido. Puede usar <code>get</code>,<code>patch</code>, <code>put</code>,<code>post</code> o <code>delete</code> aquí
 . Si no tiene varias rutas <code>member</code>, también puede pasar <code>:on</code> a un
 ruta, eliminando el bloque:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'preview'</span><span class="p">,</span> <span class="ss">on: :member</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos do
   get 'preview', on: :member
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede omitir la opción <code>:on</code>, esto creará la misma ruta de miembro excepto que el valor de id del recurso estará disponible en <code>params[:photo_id]</code>en lugar de<code>params [: id]</code>. Los asistentes de ruta también cambiarán de nombre de <code>preview_photo_url</code> y <code>preview_photo_path</code> a <code>photo_preview_url</code> y <code>photo_preview_path</code>.</p><h5 id="adding-collection-routes"><a class="anchorlink" href="#adding-collection-routes">2.10.2 Adding Collection Routes</a></h5><p>Para agregar una ruta a la colección</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span> <span class="k">do</span>
+  <span class="n">collection</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="s1">'search'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos do
   collection do
     get 'search'
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto permitirá a Rails reconocer rutas como <code>/photos/search</code> con GET, y dirigirse a la acción de <code>search</code> de <code>PhotosController</code>. También creará los ayudantes de ruta <code>search_photos_url</code> y <code>search_photos_path</code>.</p><p>Al igual que con las rutas de miembros, puede pasar <code>:on</code> a una ruta:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'search'</span><span class="p">,</span> <span class="ss">on: :collection</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos do
   get 'search', on: :collection
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Si está definiendo rutas de recursos adicionales con un símbolo como primer argumento posicional, tenga en cuenta que no es equivalente a usar una cadena. Los símbolos infieren acciones del controlador mientras que las cadenas infieren rutas.</p></div><h5 id="adding-routes-for-additional-new-actions"><a class="anchorlink" href="#adding-routes-for-additional-new-actions">2.10.3 Adding Routes for Additional New Actions</a></h5><p>Para agregar una nueva acción alternativa usando el atajo <code>:on</code>:</p><div class="code_container">
-<pre><code class="language-ruby">resources :comments do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:comments</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'preview'</span><span class="p">,</span> <span class="ss">on: :new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :comments do
   get 'preview', on: :new
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto permitirá a Rails reconocer rutas como <code>/comments/new/preview</code> con GET, y dirigirse a la acción de <code>preview</code> de <code>CommentsController</code>. También creará los ayudantes de ruta <code>preview_new_comment_url</code> y <code>preview_new_comment_path</code>.</p><div class="info"><p>si se encuentra agregando muchas acciones adicionales a una ruta ingeniosa, es hora de detenerse y preguntarse si está ocultando la presencia de otro recurso.</p></div><h3 id="non-resourceful-routes"><a class="anchorlink" href="#non-resourceful-routes">3 Non-Resourceful Routes</a></h3><p>Además del enrutamiento de recursos, Rails tiene un poderoso soporte para enrutar URL arbitrarias a acciones. Aquí, no obtiene grupos de rutas generados automáticamente por enrutamiento ingenioso. En su lugar, configura cada ruta por separado dentro de su aplicación.</p><p>Si bien generalmente debe utilizar un enrutamiento ingenioso, todavía hay muchos lugares donde el enrutamiento más simple es más apropiado. No es necesario tratar de calzar hasta la última pieza de su aplicación en un marco ingenioso si no es una buena opción.</p><p>En particular, el enrutamiento simple hace que sea muy fácil asignar URL heredadas a nuevas acciones de Rails.</p><h4 id="bound-parameters"><a class="anchorlink" href="#bound-parameters">3.1 Bound Parameters</a></h4><p>Cuando configuras una ruta regular, proporcionas una serie de símbolos que Rails asigna a partes de una solicitud HTTP entrante. Por ejemplo, considere esta ruta:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos(/:id)', to: 'photos#display'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos(/:id)'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#display'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos(/:id)', to: 'photos#display'
+">Copy</button>
 </div>
 <p>Si una solicitud entrante de <code>/photos/1</code> es procesada por esta ruta (porque no ha coincidido con ninguna ruta anterior en el archivo), el resultado será invocar la acción <code>display</code> del <code>PhotosController</code>, y para que el parámetro final <code>"1"</code> esté disponible como <code>params[:id]</code>. Esta ruta también enrutará la solicitud entrante de <code>/photos</code> a<code>PhotosController#display</code>, ya que <code>:id</code> es un parámetro opcional, indicado entre paréntesis.</p><h4 id="dynamic-segments"><a class="anchorlink" href="#dynamic-segments">3.2 Dynamic Segments</a></h4><p>Puede configurar tantos segmentos dinámicos dentro de una ruta regular como desee. Cualquier segmento estará disponible para la acción como parte de "params". Si configura esta ruta:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id/:user_id', to: 'photos#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id/:user_id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id/:user_id', to: 'photos#show'
+">Copy</button>
 </div>
 <p>Se enviará una ruta entrante de <code>/photos/1/2</code> a la acción <code>show</code> del <code>PhotosController</code>. <code>params[:id]</code> será <code>"1"</code>, y <code>params[:user_id]</code> será <code>"2"</code>.</p><p>SUGERENCIA: De forma predeterminada, los segmentos dinámicos no aceptan puntos; esto se debe a que el punto se usa como separador para rutas formateadas. Si necesita usar un punto dentro de un segmento dinámico, agregue una restricción que anule esto, por ejemplo,  <code>id: /[^\/]+/</code> permite cualquier cosa excepto una barra.</p><h4 id="static-segments"><a class="anchorlink" href="#static-segments">3.3 Static Segments</a></h4><p>Puede especificar segmentos estáticos al crear una ruta sin anteponer dos puntos a un fragmento:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id/with_user/:user_id', to: 'photos#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id/with_user/:user_id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id/with_user/:user_id', to: 'photos#show'
+">Copy</button>
 </div>
 <p>Esta ruta respondería a rutas como <code>/photos/1/with_user/2</code>. En este caso, <code>params</code> sería <code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p><h4 id="the-query-string"><a class="anchorlink" href="#the-query-string">3.4 The Query String</a></h4><p>Los <code>params</code> también incluirán cualquier parámetro de la cadena de consulta. Por ejemplo, con esta ruta:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id', to: 'photos#show'
+">Copy</button>
 </div>
 <p>Una ruta entrante de <code>/photos/1? User_id=2</code> será enviada a la acción <code>show</code> del controlador <code>Photos</code>. <code>params</code> será<code>{ controller: 'photos', action: 'show', id: '1', user_id: '2' }</code>.</p><h4 id="defining-defaults"><a class="anchorlink" href="#defining-defaults">3.5 Defining Defaults</a></h4><p>Puede definir valores predeterminados en una ruta proporcionando un hash para la opción <code>:defaults</code>. Esto incluso se aplica a los parámetros que no especifica como segmentos dinámicos. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span><span class="p">,</span> <span class="ss">defaults: </span><span class="p">{</span> <span class="ss">format: </span><span class="s1">'jpg'</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id', to: 'photos#show', defaults: { format: 'jpg' }
+">Copy</button>
 </div>
 <p>Rails haría coincidir <code>photos/12</code> con la acción<code>show</code> de <code>PhotosController</code>, y establecería <code>params[:format]</code> en <code>"jpg"</code>.</p><p>También puede utilizar <code>defaults</code> en un formato de bloque para definir los valores predeterminados para varios elementos:</p><div class="code_container">
-<pre><code class="language-ruby">defaults format: :json do
+<pre><code class="highlight ruby"><span class="n">defaults</span> <span class="ss">format: :json</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:photos</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="defaults format: :json do
   resources :photos
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>No puede anular los valores predeterminados mediante los parámetros de consulta, esto es por razones de seguridad. Los únicos valores predeterminados que se pueden anular son los segmentos dinámicos mediante sustitución en la ruta de la URL.</p></div><h4 id="naming-routes"><a class="anchorlink" href="#naming-routes">3.6 Naming Routes</a></h4><p>Puede especificar un nombre para cualquier ruta usando la opción <code>:as</code>:</p><div class="code_container">
-<pre><code class="language-ruby">get 'exit', to: 'sessions#destroy', as: :logout
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'exit'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'sessions#destroy'</span><span class="p">,</span> <span class="ss">as: :logout</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'exit', to: 'sessions#destroy', as: :logout
+">Copy</button>
 </div>
 <p>Esto creará <code>logout_path</code> y <code>logout_url</code> como ayudantes de ruta con nombre en su aplicación. Llamar a <code>logout_path</code> devolverá <code>/exit</code></p><p>También puede usar esto para anular los métodos de enrutamiento definidos por los recursos, como este:</p><div class="code_container">
-<pre><code class="language-ruby">get ':username', to: 'users#show', as: :user
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">':username'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'users#show'</span><span class="p">,</span> <span class="ss">as: :user</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get ':username', to: 'users#show', as: :user
+">Copy</button>
 </div>
 <p>Esto definirá un método <code>user_path</code> que estará disponible en controladores, ayudantes y vistas que irán a una ruta como <code>/bob</code>. Dentro de la acción <code>show</code> de <code>UsersController</code>, <code>params [:username]</code> contendrá el nombre de usuario del usuario. Cambie <code>:username</code> en la definición de ruta si no desea que el nombre de su parámetro sea <code>:username</code>.</p><h4 id="http-verb-constraints"><a class="anchorlink" href="#http-verb-constraints">3.7 HTTP Verb Constraints</a></h4><p>En general, debes usar los métodos <code>get</code>,<code>post</code>, <code>put</code>, <code>patch</code> y <code>delete</code> para restringir una ruta a un verbo en particular. Puede usar el método <code>match</code> con la opción <code>:via</code> para hacer coincidir varios verbos a la vez:</p><div class="code_container">
-<pre><code class="language-ruby">match 'photos', to: 'photos#show', via: [:get, :post]
+<pre><code class="highlight ruby"><span class="n">match</span> <span class="s1">'photos'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span><span class="p">,</span> <span class="ss">via: </span><span class="p">[</span><span class="ss">:get</span><span class="p">,</span> <span class="ss">:post</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="match 'photos', to: 'photos#show', via: [:get, :post]
+">Copy</button>
 </div>
 <p>Puede hacer coincidir todos los verbos con una ruta en particular usando <code>via: :all</code>:</p><div class="code_container">
-<pre><code class="language-ruby">match 'photos', to: 'photos#show', via: :all
+<pre><code class="highlight ruby"><span class="n">match</span> <span class="s1">'photos'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span><span class="p">,</span> <span class="ss">via: :all</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="match 'photos', to: 'photos#show', via: :all
+">Copy</button>
 </div>
 <div class="note"><p>Enrutar las solicitudes <code>GET</code> y <code>POST</code> a una sola acción tiene implicaciones de seguridad. En general, debe evitar enrutar todos los verbos a una acción a menos que tenga una buena razón para hacerlo.</p></div><div class="note"><p><code>GET</code> en Rails no buscará el token CSRF. Nunca debe escribir en la base de datos desde solicitudes <code>GET</code>. Para obtener más información, consulte la <a href="security.html#csrf-countermeasures">security guide</a> sobre las contramedidas CSRF.</p></div><h4 id="segment-constraints"><a class="anchorlink" href="#segment-constraints">3.8 Segment Constraints</a></h4><p>Puede utilizar la opción <code>:constraints</code> para imponer un formato para un segmento dinámico:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span><span class="p">,</span> <span class="ss">constraints: </span><span class="p">{</span> <span class="ss">id: </span><span class="sr">/[A-Z]\d{5}/</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id', to: 'photos#show', constraints: { id: /[A-Z]\d{5}/ }
+">Copy</button>
 </div>
 <p>Esta ruta coincidiría con rutas como <code>/photos/A12345</code>, pero no con <code>/photos/893</code>. Puede expresar más sucintamente la misma ruta de esta manera:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#show'</span><span class="p">,</span> <span class="ss">id: </span><span class="sr">/[A-Z]\d{5}/</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/:id', to: 'photos#show', id: /[A-Z]\d{5}/
+">Copy</button>
 </div>
 <p><code>:constraints</code> toma expresiones regulares con la restricción de que los anclajes de expresiones regulares no se pueden usar. Por ejemplo, la siguiente ruta no funcionará:</p><div class="code_container">
-<pre><code class="language-ruby">get '/:id', to: 'articles#show', constraints: { id: /^\d/ }
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'articles#show'</span><span class="p">,</span> <span class="ss">constraints: </span><span class="p">{</span> <span class="ss">id: </span><span class="sr">/^\d/</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/:id', to: 'articles#show', constraints: { id: /^\d/ }
+">Copy</button>
 </div>
 <p>Sin embargo, tenga en cuenta que no es necesario utilizar anclajes porque todas las rutas están ancladas al principio.</p><p>Por ejemplo, las siguientes rutas permitirían <code>articles</code> con valores <code>to_param</code> como <code>1-hello-world</code> que siempre comienzan con un número y <code>users</code> con valores <code>to_param</code> como <code>david</code> que nunca comienzan con un número para compartir el espacio de nombres raíz:</p><div class="code_container">
-<pre><code class="language-ruby">get '/:id', to: 'articles#show', constraints: { id: /\d.+/ }
-get '/:username', to: 'users#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/:id'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'articles#show'</span><span class="p">,</span> <span class="ss">constraints: </span><span class="p">{</span> <span class="ss">id: </span><span class="sr">/\d.+/</span> <span class="p">}</span>
+<span class="n">get</span> <span class="s1">'/:username'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'users#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/:id', to: 'articles#show', constraints: { id: /\d.+/ }
+get '/:username', to: 'users#show'
+">Copy</button>
 </div>
 <h4 id="request-based-constraints"><a class="anchorlink" href="#request-based-constraints">3.9 Request-Based Constraints</a></h4><p>También puede restringir una ruta en función de cualquier método en el <a href="action_controller_overview.html#the-request-object">Request object</a> que devuelve una <code>String</code>.</p><p>Especifica una restricción basada en solicitud de la misma manera que especifica una restricción de segmento:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos', to: 'photos#index', constraints: { subdomain: 'admin' }
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#index'</span><span class="p">,</span> <span class="ss">constraints: </span><span class="p">{</span> <span class="ss">subdomain: </span><span class="s1">'admin'</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos', to: 'photos#index', constraints: { subdomain: 'admin' }
+">Copy</button>
 </div>
 <p>También puede especificar restricciones en forma de bloque:</p><div class="code_container">
-<pre><code class="language-ruby">namespace :admin do
+<pre><code class="highlight ruby"><span class="n">namespace</span> <span class="ss">:admin</span> <span class="k">do</span>
+  <span class="n">constraints</span> <span class="ss">subdomain: </span><span class="s1">'admin'</span> <span class="k">do</span>
+    <span class="n">resources</span> <span class="ss">:photos</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="namespace :admin do
   constraints subdomain: 'admin' do
     resources :photos
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Las restricciones de solicitud funcionan llamando a un método en el <a href="action_controller_overview.html#the-request-object">Request object</a>  con el mismo nombre que la clave hash y luego compare el valor de retorno con el valor hash. Por lo tanto, los valores de restricción deben coincidir con el tipo de retorno del método de objeto Request correspondiente. Por ejemplo: <code>constraints: {subdomain: 'api'}</code> coincidirá con un subdominio <code>api</code> como se esperaba, sin embargo, usando un símbolo<code>constraints: {subdominio: :api}</code>no lo hará, porque <code>request.subdomain</code> devuelve <code>'api'</code> como una cadena.</p></div><div class="note"><p>Hay una excepción para la restricción <code>format</code>: si bien es un método en el objeto Request, también es un parámetro opcional implícito en cada ruta. Las restricciones de segmento tienen prioridad y la restricción de "formato" solo se aplica como tal cuando se aplica mediante un hash. Por ejemplo, <code>get 'foo', las restricciones: {formato: 'json'}</code> coincidirá con <code>GET/foo</code> porque el formato es opcional por defecto. Sin embargo, puede  <a href="#advanced-constraints">use a lambda</a> como en <code>get 'foo', constraints: lambda { |req| req.format == :json }</code> y la ruta solo coincidirá con solicitudes JSON explícitas.</p></div><h4 id="advanced-constraints"><a class="anchorlink" href="#advanced-constraints">3.10 Advanced Constraints</a></h4><p>Si tiene una restricción más avanzada, puede proporcionar un objeto que responda a "¿coincidencias?" Que Rails debería usar. Supongamos que desea enrutar a todos los usuarios de una lista restringida al <code>RestrictedListController</code>. Podrías hacerlo:</p><div class="code_container">
-<pre><code class="language-ruby">class RestrictedListConstraint
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">RestrictedListConstraint</span>
+  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@ips</span> <span class="o">=</span> <span class="no">RestrictedList</span><span class="p">.</span><span class="nf">retrieve_ips</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">matches?</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="vi">@ips</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">remote_ip</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'*path'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'restricted_list#index'</span><span class="p">,</span>
+    <span class="ss">constraints: </span><span class="no">RestrictedListConstraint</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class RestrictedListConstraint
   def initialize
     @ips = RestrictedList.retrieve_ips
   end
@@ -1017,118 +1244,184 @@ Rails.application.routes.draw do
   get '*path', to: 'restricted_list#index',
     constraints: RestrictedListConstraint.new
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También puede especificar restricciones como lambda:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'*path'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'restricted_list#index'</span><span class="p">,</span>
+    <span class="ss">constraints: </span><span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">request</span><span class="o">|</span> <span class="no">RestrictedList</span><span class="p">.</span><span class="nf">retrieve_ips</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">remote_ip</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
   get '*path', to: 'restricted_list#index',
     constraints: lambda { |request| RestrictedList.retrieve_ips.include?(request.remote_ip) }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Tanto el método <code>matches?</code> Como el lambda obtienen el objeto <code>request</code> como argumento</p><h4 id="route-globbing-and-wildcard-segments"><a class="anchorlink" href="#route-globbing-and-wildcard-segments">3.11 Route Globbing and Wildcard Segments</a></h4><p>El globbing de ruta es una forma de especificar que un parámetro particular debe coincidir con todas las partes restantes de una ruta. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">get 'photos/*other', to: 'photos#unknown'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'photos/*other'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'photos#unknown'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'photos/*other', to: 'photos#unknown'
+">Copy</button>
 </div>
 <p>Esta ruta coincidiría con <code>photos/12</code> o <code>/photos/long/path/to/12</code>, estableciendo <code>params[:other]</code> en <code>"12"</code> o <code>"long/path/to/12"</code>. Los fragmentos precedidos de una estrella se denominan "segmentos comodín".</p><p>Los segmentos comodín pueden aparecer en cualquier lugar de una ruta. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">get 'books/*section/:title', to: 'books#show'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'books/*section/:title'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'books#show'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'books/*section/:title', to: 'books#show'
+">Copy</button>
 </div>
 <p>coincidiría <code>books/some/section/last-words-a-memoir</code> con <code>params[:section]</code> es igual a <code>'some/section'</code>, y <code>params[:title]</code> es igual a <code>'last-words-a-memoir'</code>.</p><p>Técnicamente, una ruta puede tener incluso más de un segmento comodín. El comparador asigna segmentos a parámetros de forma intuitiva. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">get '*a/foo/*b', to: 'test#index'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'*a/foo/*b'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'test#index'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '*a/foo/*b', to: 'test#index'
+">Copy</button>
 </div>
 <p>coincidiría <code>zoo/woo/foo/bar/baz</code> con <code>params[:a]</code> es igual a  <code>'zoo/woo'</code>, y <code>params[:b]</code> es igual a  <code>'bar/baz'</code>.</p><div class="note"><p>Al solicitar <code>'/foo/bar.json'</code>, sus <code>params[:pages]</code>serán iguales a <code>'foo/bar'</code> con el formato de solicitud JSON. Si desea recuperar el antiguo comportamiento de 3.0.x, puede proporcionar <code>format: false</code> como este:</p></div><div class="code_container">
-<pre><code class="language-ruby">get '*pages', to: 'pages#show', format: false
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'*pages'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'pages#show'</span><span class="p">,</span> <span class="ss">format: </span><span class="kp">false</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '*pages', to: 'pages#show', format: false
+">Copy</button>
 </div>
 <div class="note"><p>Si desea que el segmento de formato sea obligatorio, por lo que no se puede omitir, puede proporcionar <code>format: true</code> así:</p></div><div class="code_container">
-<pre><code class="language-ruby">get '*pages', to: 'pages#show', format: true
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'*pages'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'pages#show'</span><span class="p">,</span> <span class="ss">format: </span><span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '*pages', to: 'pages#show', format: true
+">Copy</button>
 </div>
 <h4 id="redirection"><a class="anchorlink" href="#redirection">3.12 Redirection</a></h4><p>Puede redirigir cualquier ruta a otra ruta usando el ayudante <code>redirect</code> en su enrutador:</p><div class="code_container">
-<pre><code class="language-ruby">get '/stories', to: redirect('/articles')
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/stories'</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span><span class="p">(</span><span class="s1">'/articles'</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/stories', to: redirect('/articles')
+">Copy</button>
 </div>
 <p>También puede reutilizar segmentos dinámicos de la coincidencia en la ruta para redirigir a:</p><div class="code_container">
-<pre><code class="language-ruby">get '/stories/:name', to: redirect('/articles/%{name}')
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/stories/:name'</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span><span class="p">(</span><span class="s1">'/articles/%{name}'</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/stories/:name', to: redirect('/articles/%{name}')
+">Copy</button>
 </div>
 <p>También puede proporcionar un bloque para redirigir, que recibe los parámetros de ruta simbolizados y el objeto de solicitud:</p><div class="code_container">
-<pre><code class="language-ruby">get '/stories/:name', to: redirect { |path_params, req| "/articles/#{path_params[:name].pluralize}" }
-get '/stories', to: redirect { |path_params, req| "/articles/#{req.subdomain}" }
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/stories/:name'</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span> <span class="p">{</span> <span class="o">|</span><span class="n">path_params</span><span class="p">,</span> <span class="n">req</span><span class="o">|</span> <span class="s2">"/articles/</span><span class="si">#{</span><span class="n">path_params</span><span class="p">[</span><span class="ss">:name</span><span class="p">].</span><span class="nf">pluralize</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
+<span class="n">get</span> <span class="s1">'/stories'</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span> <span class="p">{</span> <span class="o">|</span><span class="n">path_params</span><span class="p">,</span> <span class="n">req</span><span class="o">|</span> <span class="s2">"/articles/</span><span class="si">#{</span><span class="n">req</span><span class="p">.</span><span class="nf">subdomain</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/stories/:name', to: redirect { |path_params, req| &quot;/articles/#{path_params[:name].pluralize}&quot; }
+get '/stories', to: redirect { |path_params, req| &quot;/articles/#{req.subdomain}&quot; }
+">Copy</button>
 </div>
 <p>Tenga en cuenta que la redirección predeterminada es una redirección 301 "Movido permanentemente". Tenga en cuenta que algunos navegadores web o servidores proxy almacenarán en caché este tipo de redireccionamiento, haciendo que la página anterior sea inaccesible. Puede utilizar la opción <code>:status</code> para cambiar el estado de la respuesta:</p><div class="code_container">
-<pre><code class="language-ruby">get '/stories/:name', to: redirect('/articles/%{name}', status: 302)
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/stories/:name'</span><span class="p">,</span> <span class="ss">to: </span><span class="n">redirect</span><span class="p">(</span><span class="s1">'/articles/%{name}'</span><span class="p">,</span> <span class="ss">status: </span><span class="mi">302</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/stories/:name', to: redirect('/articles/%{name}', status: 302)
+">Copy</button>
 </div>
 <p>En todos estos casos, si no proporciona el host principal (<code>http://www.example.com</code>), Rails tomará esos detalles de la solicitud actual.</p><h4 id="routing-to-rack-applications"><a class="anchorlink" href="#routing-to-rack-applications">3.13 Routing to Rack Applications</a></h4><p>En lugar de una cadena como <code>'articles#index'</code>, que corresponde a la acción <code>index</code> en el <code>ArticlesController</code>, puedes especificar cualquier <a href="rails_on_rack.html">Rack application</a> como el punto final para un comparador:</p><div class="code_container">
-<pre><code class="language-ruby">match '/application.js', to: MyRackApp, via: :all
+<pre><code class="highlight ruby"><span class="n">match</span> <span class="s1">'/application.js'</span><span class="p">,</span> <span class="ss">to: </span><span class="no">MyRackApp</span><span class="p">,</span> <span class="ss">via: :all</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="match '/application.js', to: MyRackApp, via: :all
+">Copy</button>
 </div>
 <p>Mientras <code>MyRackApp</code> responda a <code>call</code> y devuelva un <code>[status, headers, body]</code>, el enrutador no reconocerá la diferencia entre la aplicación Rack y una acción. Este es un uso apropiado de <code>via: :all</code>, ya que querrá permitir que su aplicación Rack maneje todos los verbos como lo considere apropiado.</p><div class="note"><p>Para los curiosos, <code>'articles#index'</code> en realidad se expande a <code>ArticlesController.action(:index)</code>, que devuelve una aplicación Rack válida.</p></div><p>Si especifica una aplicación Rack como el punto final para un comparador, recuerde que
 la ruta no se modificará en la aplicación receptora. Con lo siguiente
 route su aplicación Rack debe esperar que la ruta sea <code>/admin</code>:</p><div class="code_container">
-<pre><code class="language-ruby">match '/admin', to: AdminApp, via: :all
+<pre><code class="highlight ruby"><span class="n">match</span> <span class="s1">'/admin'</span><span class="p">,</span> <span class="ss">to: </span><span class="no">AdminApp</span><span class="p">,</span> <span class="ss">via: :all</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="match '/admin', to: AdminApp, via: :all
+">Copy</button>
 </div>
 <p>Si prefiere que su aplicación Rack reciba solicitudes en la raíz
 ruta en su lugar, use <code>mount</code>:</p><div class="code_container">
-<pre><code class="language-ruby">mount AdminApp, at: '/admin'
+<pre><code class="highlight ruby"><span class="n">mount</span> <span class="no">AdminApp</span><span class="p">,</span> <span class="ss">at: </span><span class="s1">'/admin'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="mount AdminApp, at: '/admin'
+">Copy</button>
 </div>
 <h4 id="using-root"><a class="anchorlink" href="#using-root">3.14 Using <code>root</code></a></h4><p>Puede especificar a qué Rails debe enrutar <code>'/'</code> con el método <code>root</code>:</p><div class="code_container">
-<pre><code class="language-ruby">root to: 'pages#main'
-root 'pages#main' # shortcut for the above
+<pre><code class="highlight ruby"><span class="n">root</span> <span class="ss">to: </span><span class="s1">'pages#main'</span>
+<span class="n">root</span> <span class="s1">'pages#main'</span> <span class="c1"># shortcut for the above</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="root to: 'pages#main'
+root 'pages#main' # shortcut for the above
+">Copy</button>
 </div>
 <p>Debe colocar la ruta <code>root</code> en la parte superior del archivo, porque es la ruta más popular y debe coincidir primero.</p><div class="note"><p>La ruta <code>root</code> solo enruta las solicitudes <code>GET</code> a la acción.</p></div><p>También puede utilizar la raíz dentro de espacios de nombres y ámbitos. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">namespace :admin do
+<pre><code class="highlight ruby"><span class="n">namespace</span> <span class="ss">:admin</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="ss">to: </span><span class="s2">"admin#index"</span>
+<span class="k">end</span>
+
+<span class="n">root</span> <span class="ss">to: </span><span class="s2">"home#index"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='namespace :admin do
   root to: "admin#index"
 end
 
 root to: "home#index"
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="unicode-character-routes"><a class="anchorlink" href="#unicode-character-routes">3.15 Unicode Character Routes</a></h4><p>Puede especificar rutas de caracteres Unicode directamente. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">get 'こんにちは', to: 'welcome#index'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'こんにちは'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'welcome#index'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get 'こんにちは', to: 'welcome#index'
+">Copy</button>
 </div>
 <h4 id="direct-routes"><a class="anchorlink" href="#direct-routes">3.16 Direct Routes</a></h4><p>Puede crear ayudantes de URL personalizados directamente. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">direct :homepage do
+<pre><code class="highlight ruby"><span class="n">direct</span> <span class="ss">:homepage</span> <span class="k">do</span>
+  <span class="s2">"http://www.rubyonrails.org"</span>
+<span class="k">end</span>
+
+<span class="c1"># &gt;&gt; homepage_url</span>
+<span class="c1"># =&gt; "http://www.rubyonrails.org"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='direct :homepage do
   "http://www.rubyonrails.org"
 end
 
 # &gt;&gt; homepage_url
 # =&gt; "http://www.rubyonrails.org"
-</code></pre>
+'>Copy</button>
 </div>
 <p>El valor de retorno del bloque debe ser un argumento válido para el método <code>url_for</code>. Por lo tanto, puede pasar una URL de cadena válida, Hash, Array, una instancia de modelo activo o una clase de modelo activo.</p><div class="code_container">
-<pre><code class="language-ruby">direct :commentable do |model|
+<pre><code class="highlight ruby"><span class="n">direct</span> <span class="ss">:commentable</span> <span class="k">do</span> <span class="o">|</span><span class="n">model</span><span class="o">|</span>
+  <span class="p">[</span> <span class="n">model</span><span class="p">,</span> <span class="ss">anchor: </span><span class="n">model</span><span class="p">.</span><span class="nf">dom_id</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="n">direct</span> <span class="ss">:main</span> <span class="k">do</span>
+  <span class="p">{</span> <span class="ss">controller: </span><span class="s1">'pages'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'index'</span><span class="p">,</span> <span class="ss">subdomain: </span><span class="s1">'www'</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="direct :commentable do |model|
   [ model, anchor: model.dom_id ]
 end
 
 direct :main do
   { controller: 'pages', action: 'index', subdomain: 'www' }
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="using-resolve"><a class="anchorlink" href="#using-resolve">3.17 Using <code>resolve</code></a></h4><p>El método <code>resolve</code> permite personalizar el mapeo polimórfico de modelos. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resource :basket
+<pre><code class="highlight ruby"><span class="n">resource</span> <span class="ss">:basket</span>
+
+<span class="n">resolve</span><span class="p">(</span><span class="s2">"Basket"</span><span class="p">)</span> <span class="p">{</span> <span class="p">[</span><span class="ss">:basket</span><span class="p">]</span> <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='resource :basket
 
 resolve("Basket") { [:basket] }
-</code></pre>
+'>Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with model: @basket do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@basket</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="c">&lt;!-- basket form --&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with model: @basket do |form| %&gt;
   &lt;!-- basket form --&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto generará la URL singular <code>/basket</code> en lugar de la habitual <code>/baskets/:id</code>.</p><h3 id="customizing-resourceful-routes"><a class="anchorlink" href="#customizing-resourceful-routes">4 Customizing Resourceful Routes</a></h3><p>Si bien las rutas predeterminadas y los ayudantes generados por <code>resources :articles</code> generalmente le servirán bien, es posible que desee personalizarlos de alguna manera. Rails le permite personalizar prácticamente cualquier parte genérica de los ayudantes ingeniosos.</p><h4 id="specifying-a-controller-to-use"><a class="anchorlink" href="#specifying-a-controller-to-use">4.1 Specifying a Controller to Use</a></h4><p>La opción <code>:controller</code> le permite especificar explícitamente un controlador para usar para el recurso. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, controller: 'images'
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">controller: </span><span class="s1">'images'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, controller: 'images'
+">Copy</button>
 </div>
 <p>reconocerá las rutas entrantes que comienzan con <code>/photos</code> pero se dirigirán al controlador<code>Images</code>:</p>
 <table>
@@ -1186,26 +1479,37 @@ resolve("Basket") { [:basket] }
 </tbody>
 </table>
 <div class="note"><p>Utilice <code>photos_path</code>, <code>new_photo_path</code>, etc. para generar rutas para este recurso.</p></div><p>Para los controladores de espacio de nombres, puede utilizar la notación de directorio. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :user_permissions, controller: 'admin/user_permissions'
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:user_permissions</span><span class="p">,</span> <span class="ss">controller: </span><span class="s1">'admin/user_permissions'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :user_permissions, controller: 'admin/user_permissions'
+">Copy</button>
 </div>
 <p>Esto se enrutará al controlador <code>Admin::UserPermissions</code>.</p><div class="note"><p>Solo se admite la notación de directorio. Especificando el
 controlador con notación constante de Ruby (por ejemplo, <code>controller: 'Admin::UserPermissions'</code>)
 puede conducir a problemas de enrutamiento y resulta en
 una advertencia.</p></div><h4 id="specifying-constraints"><a class="anchorlink" href="#specifying-constraints">4.2 Specifying Constraints</a></h4><p>Puede usar la opción <code>: constraints</code> para especificar un formato requerido en el<code>id</code> implícito. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, constraints: { id: /[A-Z][A-Z][0-9]+/ }
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">constraints: </span><span class="p">{</span> <span class="ss">id: </span><span class="sr">/[A-Z][A-Z][0-9]+/</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, constraints: { id: /[A-Z][A-Z][0-9]+/ }
+">Copy</button>
 </div>
 <p>Esta declaración restringe el parámetro <code>:id</code> para que coincida con la expresión regular proporcionada. Entonces, en este caso, el enrutador ya no coincidirá con <code>/ photos / 1</code> con esta ruta. En cambio, <code>/ photos / RR27</code> coincidiría.</p><p>Puede especificar una única restricción para aplicar a varias rutas utilizando el formulario de bloque:</p><div class="code_container">
-<pre><code class="language-ruby">constraints(id: /[A-Z][A-Z][0-9]+/) do
+<pre><code class="highlight ruby"><span class="n">constraints</span><span class="p">(</span><span class="ss">id: </span><span class="sr">/[A-Z][A-Z][0-9]+/</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:photos</span>
+  <span class="n">resources</span> <span class="ss">:accounts</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="constraints(id: /[A-Z][A-Z][0-9]+/) do
   resources :photos
   resources :accounts
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Por supuesto, puede utilizar las restricciones más avanzadas disponibles en rutas sin recursos en este contexto.</p></div><div class="info"><p>De forma predeterminada, el parámetro <code>:id</code> no acepta puntos; esto se debe a que el punto se usa como separador para rutas formateadas. Si necesita usar un punto dentro de un <code>:id</code> agregue una restricción que anule esto - por ejemplo, <code>id: /[^\/]+/</code> permite cualquier cosa excepto una barra.</p></div><h4 id="overriding-the-named-route-helpers"><a class="anchorlink" href="#overriding-the-named-route-helpers">4.3 Overriding the Named Route Helpers</a></h4><p>La opción <code>:as</code> le permite anular el nombre normal de los ayudantes de ruta nombrados. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, as: 'images'
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">as: </span><span class="s1">'images'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, as: 'images'
+">Copy</button>
 </div>
 <p>reconocerá las rutas entrantes que comienzan con <code>/photos</code> y enrutará las solicitudes a <code>PhotosController</code>, pero usará el valor de la opción <code>:as</code> para nombrar los ayudantes.</p>
 <table>
@@ -1263,55 +1567,88 @@ end
 </tbody>
 </table>
 <h4 id="overriding-the-new-and-edit-segments"><a class="anchorlink" href="#overriding-the-new-and-edit-segments">4.4 Overriding the <code>new</code> and <code>edit</code> Segments</a></h4><p>La opción <code>:path_names</code> te permite anular los segmentos <code>new</code> y <code>edit</code> generados automáticamente en las rutas:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, path_names: { new: 'make', edit: 'change' }
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">path_names: </span><span class="p">{</span> <span class="ss">new: </span><span class="s1">'make'</span><span class="p">,</span> <span class="ss">edit: </span><span class="s1">'change'</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, path_names: { new: 'make', edit: 'change' }
+">Copy</button>
 </div>
 <p>Esto haría que el enrutamiento reconociera rutas como:</p><div class="code_container">
-<pre><code class="language-plain">/photos/make
+<pre><code class="highlight plaintext">/photos/make
 /photos/1/change
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="/photos/make
+/photos/1/change
+">Copy</button>
 </div>
 <div class="note"><p>Esta opción no cambia los nombres reales de las acciones. Las dos rutas mostradas aún se enrutarían a las acciones <code>nuevo</code> y <code>edit</code>.</p></div><div class="info"><p>Si desea cambiar esta opción de manera uniforme para todas sus rutas, puede usar un visor.</p></div><div class="code_container">
-<pre><code class="language-ruby">scope path_names: { new: 'make' } do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="ss">path_names: </span><span class="p">{</span> <span class="ss">new: </span><span class="s1">'make'</span> <span class="p">}</span> <span class="k">do</span>
+  <span class="c1"># rest of your routes</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope path_names: { new: 'make' } do
   # rest of your routes
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="prefixing-the-named-route-helpers"><a class="anchorlink" href="#prefixing-the-named-route-helpers">4.5 Prefixing the Named Route Helpers</a></h4><p>Puede usar la opción <code>:as</code> para prefijar los ayudantes de ruta con nombre que Rails genera para una ruta. Utilice esta opción para evitar colisiones de nombres entre rutas utilizando un alcance de ruta. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">scope 'admin' do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="s1">'admin'</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">as: </span><span class="s1">'admin_photos'</span>
+<span class="k">end</span>
+
+<span class="n">resources</span> <span class="ss">:photos</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope 'admin' do
   resources :photos, as: 'admin_photos'
 end
 
 resources :photos
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto proporcionará ayudantes de ruta como <code>admin_photos_path</code>, <code>new_admin_photo_path</code>, etc.</p><p>Para prefijar un grupo de ayudantes de ruta, use <code>:as</code> con <code>scope</code>:</p><div class="code_container">
-<pre><code class="language-ruby">scope 'admin', as: 'admin' do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="s1">'admin'</span><span class="p">,</span> <span class="ss">as: </span><span class="s1">'admin'</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:accounts</span>
+<span class="k">end</span>
+
+<span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">:accounts</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope 'admin', as: 'admin' do
   resources :photos, :accounts
 end
 
 resources :photos, :accounts
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto generará rutas como <code>admin_photos_path</code> y <code>admin_accounts_path</code> que se asignan a <code>/admin/photos</code> y <code>/admin/accounts</code> respectivamente.</p><div class="note"><p>El alcance del <code>namespace</code> agregará automáticamente los prefijos <code>: as</code> así como <code>:module</code> y <code>:path</code>.</p></div><p>También puede prefijar rutas con un parámetro con nombre:</p><div class="code_container">
-<pre><code class="language-ruby">scope ':username' do
+<pre><code class="highlight ruby"><span class="n">scope</span> <span class="s1">':username'</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope ':username' do
   resources :articles
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto le proporcionará URL como <code>/bob/articles/1</code> y le permitirá hacer referencia a la parte del <code>username</code> de la ruta como <code>params[:username]</code> en controladores, ayudantes y vistas.</p><h4 id="restricting-the-routes-created"><a class="anchorlink" href="#restricting-the-routes-created">4.6 Restricting the Routes Created</a></h4><p>De forma predeterminada, Rails crea rutas para las siete acciones predeterminadas (<code>index</code>, <code>show</code>, <code>new</code>, <code>create</code>, <code>edit</code>, <code>update</code>, and <code>destroy</code>) para cada ruta RESTful en su aplicación. Puede utilizar las opciones <code>:only</code> y <code>:except</code> para ajustar este comportamiento. La opción <code>:only</code> le dice a Rails que cree solo las rutas especificadas:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, only: [:index, :show]
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, only: [:index, :show]
+">Copy</button>
 </div>
 <p>Ahora, una solicitud <code>GET</code> a <code>/photos</code> tendría éxito, pero una solicitud <code>POST</code> a <code>/photos</code> (que normalmente se enrutaría a la acción <code>create</code>) fallará.</p><p>La opción <code>: except</code> especifica una ruta o lista de rutas que Rails <em>no</em> debería crear:</p><div class="code_container">
-<pre><code class="language-ruby">resources :photos, except: :destroy
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:photos</span><span class="p">,</span> <span class="ss">except: :destroy</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :photos, except: :destroy
+">Copy</button>
 </div>
 <p>En este caso, Rails creará todas las rutas normales excepto la ruta para <code>destroy</code> (una solicitud <code>DELETE</code> a <code>/photos/:id</code>).</p><div class="info"><p>Si su aplicación tiene muchas rutas RESTful, usar <code>:only</code> y <code>:except</code> para generar solo las rutas que realmente necesita puede reducir el uso de memoria y acelerar el proceso de enrutamiento.</p></div><h4 id="translated-paths"><a class="anchorlink" href="#translated-paths">4.7 Translated Paths</a></h4><p>Usando <code>scope</code>, podemos alterar los nombres de ruta generados por <code>resources</code>:</p><div class="code_container">
-<pre><code class="language-ruby">scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
+<pre><code class="highlight ruby"><span class="n">scope</span><span class="p">(</span><span class="ss">path_names: </span><span class="p">{</span> <span class="ss">new: </span><span class="s1">'neu'</span><span class="p">,</span> <span class="ss">edit: </span><span class="s1">'bearbeiten'</span> <span class="p">})</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:categories</span><span class="p">,</span> <span class="ss">path: </span><span class="s1">'kategorien'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="scope(path_names: { new: 'neu', edit: 'bearbeiten' }) do
   resources :categories, path: 'kategorien'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Rails ahora crea rutas al <code>CategoriesController</code>.</p>
 <table>
@@ -1369,38 +1706,64 @@ end
 </tbody>
 </table>
 <h4 id="overriding-the-singular-form"><a class="anchorlink" href="#overriding-the-singular-form">4.8 Overriding the Singular Form</a></h4><p>Si desea definir la forma singular de un recurso, debe agregar reglas adicionales al <code>Inflector</code>:</p><div class="code_container">
-<pre><code class="language-ruby">ActiveSupport::Inflector.inflections do |inflect|
+<pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Inflector</span><span class="p">.</span><span class="nf">inflections</span> <span class="k">do</span> <span class="o">|</span><span class="n">inflect</span><span class="o">|</span>
+  <span class="n">inflect</span><span class="p">.</span><span class="nf">irregular</span> <span class="s1">'tooth'</span><span class="p">,</span> <span class="s1">'teeth'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'tooth', 'teeth'
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="using-as-in-nested-resources"><a class="anchorlink" href="#using-as-in-nested-resources">4.9 Using <code>:as</code> in Nested Resources</a></h4><p>La opción <code>:as</code> anula el nombre generado automáticamente para el recurso en los ayudantes de ruta anidados. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">resources :magazines do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:magazines</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:ads</span><span class="p">,</span> <span class="ss">as: </span><span class="s1">'periodical_ads'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :magazines do
   resources :ads, as: 'periodical_ads'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto creará ayudantes de enrutamiento como <code>magazine_periodical_ads_url</code> y <code>edit_magazine_periodical_ad_path</code>.</p><h4 id="overriding-named-route-parameter"><a class="anchorlink" href="#overriding-named-route-parameter">4.10 Overriding Named Route Parameter</a></h4><p>La opción <code>:param</code> anula el identificador de recurso predeterminado <code>:id</code> (nombre de
 el  <a href="routing.html#dynamic-segments">dynamic segment</a> que se utiliza para generar el
 rutas). Puede acceder a ese segmento desde su controlador usando
 <code>params[&lt;:param&gt;]</code>.</p><div class="code_container">
-<pre><code class="language-ruby">resources :videos, param: :identifier
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:videos</span><span class="p">,</span> <span class="ss">param: :identifier</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :videos, param: :identifier
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-plain">    videos GET  /videos(.:format)                  videos#index
+<pre><code class="highlight plaintext">    videos GET  /videos(.:format)                  videos#index
            POST /videos(.:format)                  videos#create
  new_video GET  /videos/new(.:format)              videos#new
 edit_video GET  /videos/:identifier/edit(.:format) videos#edit
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="    videos GET  /videos(.:format)                  videos#index
+           POST /videos(.:format)                  videos#create
+ new_video GET  /videos/new(.:format)              videos#new
+edit_video GET  /videos/:identifier/edit(.:format) videos#edit
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby">Video.find_by(identifier: params[:identifier])
+<pre><code class="highlight ruby"><span class="no">Video</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">identifier: </span><span class="n">params</span><span class="p">[</span><span class="ss">:identifier</span><span class="p">])</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Video.find_by(identifier: params[:identifier])
+">Copy</button>
 </div>
 <p>Puede anular <code>ActiveRecord::Base#to_param</code> de un modelo relacionado para construir
 una URL:</p><div class="code_container">
-<pre><code class="language-ruby">class Video &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Video</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">def</span> <span class="nf">to_param</span>
+    <span class="n">identifier</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">video</span> <span class="o">=</span> <span class="no">Video</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">identifier: </span><span class="s2">"Roman-Holiday"</span><span class="p">)</span>
+<span class="n">edit_video_path</span><span class="p">(</span><span class="n">video</span><span class="p">)</span> <span class="c1"># =&gt; "/videos/Roman-Holiday/edit"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Video &lt; ApplicationRecord
   def to_param
     identifier
   end
@@ -1408,11 +1771,25 @@ end
 
 video = Video.find_by(identifier: "Roman-Holiday")
 edit_video_path(video) # =&gt; "/videos/Roman-Holiday/edit"
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="breaking-up-very-large-route-file-into-multiple-small-ones"><a class="anchorlink" href="#breaking-up-very-large-route-file-into-multiple-small-ones">5 Breaking up <em>very</em> large route file into multiple small ones:</a></h3><p>Si trabaja en una gran aplicación con miles de rutas,
 Un solo archivo <code>config/routes.rb</code> puede resultar engorroso y difícil de leer.</p><p>Rails ofrece una manera de dividir un archivo gigantesco único <code>routes.rb</code> en varios pequeños usando la macro <code>draw</code>.</p><div class="code_container">
-<pre><code class="language-ruby"># config/routes.rb
+<pre><code class="highlight ruby"><span class="c1"># config/routes.rb</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'foo'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'foo#bar'</span>
+
+  <span class="n">draw</span><span class="p">(</span><span class="ss">:admin</span><span class="p">)</span> <span class="c1"># Will load another route file located in `config/routes/admin.rb`</span>
+<span class="k">end</span>
+
+<span class="c1"># config/routes/admin.rb</span>
+
+<span class="n">namespace</span> <span class="ss">:admin</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# config/routes.rb
 
 Rails.application.routes.draw do
   get 'foo', to: 'foo#bar'
@@ -1425,7 +1802,7 @@ end
 namespace :admin do
   resources :comments
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Llamar a <code>draw(:admin)</code> dentro del bloque <code>Rails.application.routes.draw</code> intentará cargar una ruta
 archivo que tiene el mismo nombre que el argumento dado (<code>admin.rb</code> en este caso).
@@ -1437,14 +1814,19 @@ El archivo debe estar ubicado dentro del directorio <code>config/routes</code> o
 <li>Los parámetros de enrutamiento para la ruta</li>
 </ul>
 <p>Por ejemplo, aquí hay una pequeña sección de la salida de <code>bin/rails route</code> para una ruta RESTful:</p><div class="code_container">
-<pre><code class="language-plain">    users GET    /users(.:format)          users#index
+<pre><code class="highlight plaintext">    users GET    /users(.:format)          users#index
           POST   /users(.:format)          users#create
  new_user GET    /users/new(.:format)      users#new
 edit_user GET    /users/:id/edit(.:format) users#edit
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="    users GET    /users(.:format)          users#index
+          POST   /users(.:format)          users#create
+ new_user GET    /users/new(.:format)      users#new
+edit_user GET    /users/:id/edit(.:format) users#edit
+">Copy</button>
 </div>
 <p>También puede usar la opción <code>--expanded</code> para activar el modo de formato de tabla expandido.</p><div class="code_container">
-<pre><code class="language-plain">$ bin/rails routes --expanded
+<pre><code class="highlight plaintext">$ bin/rails routes --expanded
 
 --[ Route 1 ]----------------------------------------------------
 Prefix            | users
@@ -1467,19 +1849,51 @@ Verb              | GET
 URI               | /users/:id/edit(.:format)
 Controller#Action | users#edit
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="$ bin/rails routes --expanded
+
+--[ Route 1 ]----------------------------------------------------
+Prefix            | users
+Verb              | GET
+URI               | /users(.:format)
+Controller#Action | users#index
+--[ Route 2 ]----------------------------------------------------
+Prefix            |
+Verb              | POST
+URI               | /users(.:format)
+Controller#Action | users#create
+--[ Route 3 ]----------------------------------------------------
+Prefix            | new_user
+Verb              | GET
+URI               | /users/new(.:format)
+Controller#Action | users#new
+--[ Route 4 ]----------------------------------------------------
+Prefix            | edit_user
+Verb              | GET
+URI               | /users/:id/edit(.:format)
+Controller#Action | users#edit
+">Copy</button>
 </div>
 <p>Puede buscar en sus rutas con la opción grep: -g. Esto genera cualquier ruta que coincida parcialmente con el nombre del método auxiliar de URL, el verbo HTTP o la ruta URL.</p><div class="code_container">
-<pre><code class="language-plain">$ bin/rails routes -g new_comment
+<pre><code class="highlight plaintext">$ bin/rails routes -g new_comment
 $ bin/rails routes -g POST
 $ bin/rails routes -g admin
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="$ bin/rails routes -g new_comment
+$ bin/rails routes -g POST
+$ bin/rails routes -g admin
+">Copy</button>
 </div>
 <p>Si solo desea ver las rutas que se asignan a un controlador específico, existe la opción -c.</p><div class="code_container">
-<pre><code class="language-plain">$ bin/rails routes -c users
+<pre><code class="highlight plaintext">$ bin/rails routes -c users
 $ bin/rails routes -c admin/users
 $ bin/rails routes -c Comments
 $ bin/rails routes -c Articles::CommentsController
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="$ bin/rails routes -c users
+$ bin/rails routes -c admin/users
+$ bin/rails routes -c Comments
+$ bin/rails routes -c Articles::CommentsController
+">Copy</button>
 </div>
 <div class="info"><p>Encontrará que la salida de <code>bin/rails route</code> es mucho más legible si amplía la ventana de su terminal hasta que las líneas de salida no se ajustan.</p></div><h4 id="testing-routes"><a class="anchorlink" href="#testing-routes">6.2 Testing Routes</a></h4><p>Las rutas deben incluirse en su estrategia de prueba (al igual que el resto de su aplicación). Rails ofrece tres <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Assertions/RoutingAssertions.html">built-in assertions</a> diseñadas para simplificar las rutas de prueba:</p>
 <ul>
@@ -1488,21 +1902,30 @@ $ bin/rails routes -c Articles::CommentsController
 <li><code>assert_routing</code></li>
 </ul>
 <h5 id="the-assert-generates-assertion"><a class="anchorlink" href="#the-assert-generates-assertion">6.2.1 The <code>assert_generates</code> Assertion</a></h5><p><code>assert_generates</code> afirma que un conjunto particular de opciones genera una ruta particular y se puede usar con rutas predeterminadas o rutas personalizadas. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">assert_generates '/photos/1', { controller: 'photos', action: 'show', id: '1' }
-assert_generates '/about', controller: 'pages', action: 'about'
+<pre><code class="highlight ruby"><span class="n">assert_generates</span> <span class="s1">'/photos/1'</span><span class="p">,</span> <span class="p">{</span> <span class="ss">controller: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'show'</span><span class="p">,</span> <span class="ss">id: </span><span class="s1">'1'</span> <span class="p">}</span>
+<span class="n">assert_generates</span> <span class="s1">'/about'</span><span class="p">,</span> <span class="ss">controller: </span><span class="s1">'pages'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'about'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="assert_generates '/photos/1', { controller: 'photos', action: 'show', id: '1' }
+assert_generates '/about', controller: 'pages', action: 'about'
+">Copy</button>
 </div>
 <h5 id="the-assert-recognizes-assertion"><a class="anchorlink" href="#the-assert-recognizes-assertion">6.2.2 The <code>assert_recognizes</code> Assertion</a></h5><p><code>assert_recognizes</code> es el inverso de <code>assert_generates</code>. Afirma que se reconoce una ruta determinada y la enruta a un lugar particular en su aplicación. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">assert_recognizes({ controller: 'photos', action: 'show', id: '1' }, '/photos/1')
+<pre><code class="highlight ruby"><span class="n">assert_recognizes</span><span class="p">({</span> <span class="ss">controller: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'show'</span><span class="p">,</span> <span class="ss">id: </span><span class="s1">'1'</span> <span class="p">},</span> <span class="s1">'/photos/1'</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="assert_recognizes({ controller: 'photos', action: 'show', id: '1' }, '/photos/1')
+">Copy</button>
 </div>
 <p>You can supply a <code>:method</code> argument to specify the HTTP verb:</p><div class="code_container">
-<pre><code class="language-ruby">assert_recognizes({ controller: 'photos', action: 'create' }, { path: 'photos', method: :post })
+<pre><code class="highlight ruby"><span class="n">assert_recognizes</span><span class="p">({</span> <span class="ss">controller: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'create'</span> <span class="p">},</span> <span class="p">{</span> <span class="ss">path: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">method: :post</span> <span class="p">})</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="assert_recognizes({ controller: 'photos', action: 'create' }, { path: 'photos', method: :post })
+">Copy</button>
 </div>
 <h5 id="the-assert-routing-assertion"><a class="anchorlink" href="#the-assert-routing-assertion">6.2.3 The <code>assert_routing</code> Assertion</a></h5><p>La aserción <code>assert_routing</code> verifica la ruta en ambos sentidos: prueba que la ruta genera las opciones y que las opciones generan la ruta. Por lo tanto, combina las funciones de <code>assert_generates</code> y <code>assert_recognizes</code>:</p><div class="code_container">
-<pre><code class="language-ruby">assert_routing({ path: 'photos', method: :post }, { controller: 'photos', action: 'create' })
+<pre><code class="highlight ruby"><span class="n">assert_routing</span><span class="p">({</span> <span class="ss">path: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">method: :post</span> <span class="p">},</span> <span class="p">{</span> <span class="ss">controller: </span><span class="s1">'photos'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'create'</span> <span class="p">})</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="assert_routing({ path: 'photos', method: :post }, { controller: 'photos', action: 'create' })
+">Copy</button>
 </div>
 
 

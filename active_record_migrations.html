@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -245,7 +245,18 @@ remover tablas, columnas o registros. Active Record conoce cómo actualizar su
 esquema a lo largo del tiempo, llevándolo desde cualquier punto en 
 el que se encuentre historia a la última versión. Active Record también actualizará su archivo 
 <code>db / schema.rb</code>  con la estructura actualizada de su base de datos.</p><p>Aquí hay un ejemplo de una migración</p><div class="code_container">
-<pre><code class="language-ruby">class CreateProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:description</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateProducts &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :products do |t|
       t.string :name
@@ -255,7 +266,7 @@ el que se encuentre historia a la última versión. Active Record también actua
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta migración añade una tabla llamada products con una columna de cadena de caractéres llamada
 <code>name</code> y una columna de texto llamada <code>description</code>. Una columna de clave primaria llamada <code>id</code>
@@ -270,7 +281,18 @@ cuando una migración falla, las partes de ella que tuvieron éxito no se no se 
 Tendrá que revertir los cambios que se hicieron a mano.</p><p>Hay ciertas consultas que no pueden ejecutarse en una transacción. Si tu adaptador soporta
 transacciones DDL puedes utilizar <code>disable_ddl_transaction!</code> para deshabilitarlas una sola migración.</p><p>Si tu deseas en una migración hacer algo que Active Record no sabe como revertir, 
 puedes utilizar <code>reversible</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class ChangeProductsPrice &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ChangeProductsPrice</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">reversible</span> <span class="k">do</span> <span class="o">|</span><span class="n">dir</span><span class="o">|</span>
+      <span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+        <span class="n">dir</span><span class="p">.</span><span class="nf">up</span>   <span class="p">{</span> <span class="n">t</span><span class="p">.</span><span class="nf">change</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:string</span> <span class="p">}</span>
+        <span class="n">dir</span><span class="p">.</span><span class="nf">down</span> <span class="p">{</span> <span class="n">t</span><span class="p">.</span><span class="nf">change</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:integer</span> <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ChangeProductsPrice &lt; ActiveRecord::Migration[6.0]
   def change
     reversible do |dir|
       change_table :products do |t|
@@ -280,10 +302,24 @@ puedes utilizar <code>reversible</code>:</p><div class="code_container">
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Alternativamente, puedes utilizar <code>up</code> y <code>down</code> en lugar de <code>change</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class ChangeProductsPrice &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ChangeProductsPrice</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">up</span>
+    <span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">change</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">down</span>
+    <span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">change</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:integer</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ChangeProductsPrice &lt; ActiveRecord::Migration[6.0]
   def up
     change_table :products do |t|
       t.change :price, :string
@@ -296,7 +332,7 @@ end
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="creando-una-migración"><a class="anchorlink" href="#creando-una-migraci%C3%B3n">2 Creando una Migración</a></h3><h4 id="creating-a-standalone-migration"><a class="anchorlink" href="#creating-a-standalone-migration">2.1 Creating a Standalone Migration</a></h4><p>Creando una Migración Independiente</p><p>Las migraciones son grabadas como ficheros en el directorio <code>db/migrate</code>, una por una para 
 cada clase migration. El nombre del fichero es de la forma <code>YYYYMMDDHHMMSS_create_products.rb</code>,
@@ -309,78 +345,132 @@ Rails utiliza esta marca de tiempo para determinar cual migración debería ejec
 orden correspondiente, entonces si estás copiando desde otra aplicación o generas el fichero por 
 ti mismo, se consciente de su posicione en el orden.</p><p>Por supuesto, calcular los instantes no es divertido, entonces Active Record provee 
 un generador que hace esto para usted:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddPartNumberToProducts
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddPartNumberToProducts
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddPartNumberToProducts
+">Copy</button>
 </div>
 <p>Esto creará una migración vacía apropiadamente nombrada:</p><div class="code_container">
-<pre><code class="language-ruby">class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddPartNumberToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
   def change
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Este generador puede hacer mucho más que agregar una marca de tiempo al nombre del archivo.
 Basado en convenciones de nomenclatura y argumentos adicionales (opcionales) puede también comienca
 a desarrollar la migración.</p><p>Si el nombre de la migración es de la forma "AddXXXToYYY" o "RemoveXXXFromYYY" 
 y es seguido por una lista de nombres de columnas y tipos, será creada una migración conteniendo
 las declaraciones apropiadas <code>add_column</code> y <code>remove_column</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddPartNumberToProducts part_number:string
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddPartNumberToProducts part_number:string
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddPartNumberToProducts part_number:string
+">Copy</button>
 </div>
 <p>generará</p><div class="code_container">
-<pre><code class="language-ruby">class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddPartNumberToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
   def change
     add_column :products, :part_number, :string
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si desea agregar un índice en la nueva columna, puedes hacer eso también:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddPartNumberToProducts part_number:string:index
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddPartNumberToProducts part_number:string:index
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddPartNumberToProducts part_number:string:index
+">Copy</button>
 </div>
 <p>genera</p><div class="code_container">
-<pre><code class="language-ruby">class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddPartNumberToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">add_index</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddPartNumberToProducts &lt; ActiveRecord::Migration[6.0]
   def change
     add_column :products, :part_number, :string
     add_index :products, :part_number
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Similarmente, puedes generar una migración para eliminar una columna desde la línea de comando:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration RemovePartNumberFromProducts part_number:string
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration RemovePartNumberFromProducts part_number:string
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration RemovePartNumberFromProducts part_number:string
+">Copy</button>
 </div>
 <p>genera</p><div class="code_container">
-<pre><code class="language-ruby">class RemovePartNumberFromProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">RemovePartNumberFromProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">remove_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class RemovePartNumberFromProducts &lt; ActiveRecord::Migration[6.0]
   def change
     remove_column :products, :part_number, :string
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>No está limitado a una columna generada mágicamente. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddDetailsToProducts part_number:string price:decimal
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddDetailsToProducts part_number:string price:decimal
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddDetailsToProducts part_number:string price:decimal
+">Copy</button>
 </div>
 <p>genera</p><div class="code_container">
-<pre><code class="language-ruby">class AddDetailsToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddDetailsToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">add_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:decimal</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddDetailsToProducts &lt; ActiveRecord::Migration[6.0]
   def change
     add_column :products, :part_number, :string
     add_column :products, :price, :decimal
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si el nombre de la migración es de la forma "CreateXXX" y es seguida por una lista 
 de nombres de columnas y tipos entonces será generada una migración para crear la 
 tabla XXX con las columnas listadas. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration CreateProducts name:string part_number:string
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration CreateProducts name:string part_number:string
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration CreateProducts name:string part_number:string
+">Copy</button>
 </div>
 <p>genera</p><div class="code_container">
-<pre><code class="language-ruby">class CreateProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:part_number</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateProducts &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :products do |t|
       t.string :name
@@ -390,29 +480,48 @@ tabla XXX con las columnas listadas. Por ejemplo:</p><div class="code_container"
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Como siempre, lo que ha sido recientemente generado es un punto de partida. Puedes añadir
 o remover lo que sea adecuado editando el fichero <code>db/migrate/YYYYMMDDHHMMSS_add_details_to_products.rb</code>.</p><p>También, el generador acepta tipos de columna como <code>references</code> (también disponible como
  <code>belongs_to</code>). Como ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddUserRefToProducts user:references
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddUserRefToProducts user:references
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddUserRefToProducts user:references
+">Copy</button>
 </div>
 <p>genera</p><div class="code_container">
-<pre><code class="language-ruby">class AddUserRefToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddUserRefToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_reference</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddUserRefToProducts &lt; ActiveRecord::Migration[6.0]
   def change
     add_reference :products, :user, foreign_key: true
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta migración creará una columna <code>user_id</code> y un índice apropiado.
 para más opciones <code>add_reference</code>, visita a <a href="https://edgeapi.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_reference">API documentation</a>.</p><p>Hay también un generador que produce tablas de intersección so <code>JoinTable</code> es parte del nombre: </p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration CreateJoinTableCustomerProduct customer product
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration CreateJoinTableCustomerProduct customer product
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration CreateJoinTableCustomerProduct customer product
+">Copy</button>
 </div>
 <p>producirá la siguiente migración:</p><div class="code_container">
-<pre><code class="language-ruby">class CreateJoinTableCustomerProduct &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateJoinTableCustomerProduct</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_join_table</span> <span class="ss">:customers</span><span class="p">,</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="c1"># t.index [:customer_id, :product_id]</span>
+      <span class="c1"># t.index [:product_id, :customer_id]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateJoinTableCustomerProduct &lt; ActiveRecord::Migration[6.0]
   def change
     create_join_table :customers, :products do |t|
       # t.index [:customer_id, :product_id]
@@ -420,17 +529,30 @@ para más opciones <code>add_reference</code>, visita a <a href="https://edgeapi
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="model-generators"><a class="anchorlink" href="#model-generators">2.2 Model Generators</a></h4><p>Generadores del Modelo</p><p>Los generadores de modelos y de andamiaje (Scaffold) crearán las migraciones apropiadas para añadir
 un nuevo modelo.Estas migraciones ya contendrán las instrucciones para la creación de la correspondiente tablas.
 Si le dices a Rails que columnas quieres, entonces las declaraciones para añadirlas también serán creadas.
 Por ejemplo, ejecutando:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate model Product name:string description:text
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model Product name:string description:text
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model Product name:string description:text
+">Copy</button>
 </div>
 <p>creará una migración que se ve de la siguiente manera:</p><div class="code_container">
-<pre><code class="language-ruby">class CreateProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:description</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateProducts &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :products do |t|
       t.string :name
@@ -440,28 +562,41 @@ Por ejemplo, ejecutando:</p><div class="code_container">
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puedes añadir la cantidad de columnas nombre/tipo que quieras.</p><h4 id="passing-modifiers"><a class="anchorlink" href="#passing-modifiers">2.3 Passing Modifiers</a></h4><p>Modificadores de Paso</p><p>Algunos de uso común <a href="#column-modifiers">type modifiers</a> puede ser pasados directamente en la 
 línea de comandos.Están encerrados por llaves y después por el tipo de campo:</p><p>Por ejemplo, ejecutando:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration AddDetailsToProducts <span class="s1">'price:decimal{5,2}'</span> supplier:references<span class="o">{</span>polymorphic<span class="o">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration AddDetailsToProducts 'price:decimal{5,2}' supplier:references{polymorphic}
+">Copy</button>
 </div>
 <p>producirá una migración que se ve así</p><div class="code_container">
-<pre><code class="language-ruby">class AddDetailsToProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddDetailsToProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:price</span><span class="p">,</span> <span class="ss">:decimal</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">5</span><span class="p">,</span> <span class="ss">scale: </span><span class="mi">2</span>
+    <span class="n">add_reference</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:supplier</span><span class="p">,</span> <span class="ss">polymorphic: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AddDetailsToProducts &lt; ActiveRecord::Migration[6.0]
   def change
     add_column :products, :price, :decimal, precision: 5, scale: 2
     add_reference :products, :supplier, polymorphic: true
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>CONSEJO: Eche un vistazo a la salida de ayuda de los generadores para obtener más detalles.</p><h3 id="escribiendo-una-migración"><a class="anchorlink" href="#escribiendo-una-migraci%C3%B3n">3 Escribiendo una Migración</a></h3><p>¡Una vez que haya creado su migración utilizando uno de los generadores, es hora de comenzar a trabajar!</p><h4 id="creating-a-table"><a class="anchorlink" href="#creating-a-table">3.1 Creating a Table</a></h4><p>Creando una Tabla</p><p>El método <code>create_table</code> es uno de los fundamentales, pero la mayoría del tiempo,
 sera genererado usando el generador del modelo o scaffold. Un típico uso podría ser</p><div class="code_container">
-<pre><code class="language-ruby">create_table :products do |t|
+<pre><code class="highlight ruby"><span class="n">create_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="create_table :products do |t|
   t.string :name
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>el cual crea una tabla <code>products</code> con una columna llamada <code>name</code> (y como se discutirá a continuación,
 una columna implícita <code>id</code>).</p><p>Por defecto, <code>create_table</code> creará una clave primaria llamada <code>id</code>. Puedes cambiar
@@ -469,10 +604,14 @@ el nombre de la clave primaria con la opción <code>:primary_key</code> (no te o
 el modelo correspondiente) o, si no quieres ninguna clave primaria, puedes escribir la opción 
 <code>id: false</code>. Si necesitas pasarle a la base de datos opciones específicas puedes escribir un 
 fragmento de SQĹ en la opción <code>:options</code>. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">create_table :products, options: "ENGINE=BLACKHOLE" do |t|
+<pre><code class="highlight ruby"><span class="n">create_table</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">options: </span><span class="s2">"ENGINE=BLACKHOLE"</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='create_table :products, options: "ENGINE=BLACKHOLE" do |t|
   t.string :name, null: false
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Esto añadirá <code>ENGINE=BLACKHOLE</code> con la declaración SQL utilizada para crear una tabla.</p><p>También se puede pasar la opción <code>:comment</code> con cualquier descripción para la tabla
 que se almacenará en la base de datos y se puede ver con las herramientas de administración
@@ -481,51 +620,74 @@ en migraciones para aplicaciones con grandes bases de datos, ya que ayuda a las 
 para comprender el modelo de datos y generar la documentación.
 Actualmente, solo los adaptadores MySQL y PostgreSQL admiten comentarios.</p><h4 id="creating-a-join-table"><a class="anchorlink" href="#creating-a-join-table">3.2 Creating a Join Table</a></h4><p>Crear Una Tabla De Intersección</p><p>El método de migración <code>create_join_table</code> crea una tabla de intersección HABTM (has and belongs to many).
 Un uso común sera:</p><div class="code_container">
-<pre><code class="language-ruby">create_join_table :products, :categories
+<pre><code class="highlight ruby"><span class="n">create_join_table</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:categories</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="create_join_table :products, :categories
+">Copy</button>
 </div>
 <p>la cual creará una tabla <code>categories_products</code> con dos columnas llamadas <code>category_id</code> y <code>product_id</code>.
 Esas columnas tienen la opción <code>:null</code> configurada a <code>false</code> por defecto. Esto será sobrescrito especificando 
 la opción <code>:column_options</code>.</p><div class="code_container">
-<pre><code class="language-ruby">create_join_table :products, :categories, column_options: { null: true }
+<pre><code class="highlight ruby"><span class="n">create_join_table</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:categories</span><span class="p">,</span> <span class="ss">column_options: </span><span class="p">{</span> <span class="ss">null: </span><span class="kp">true</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="create_join_table :products, :categories, column_options: { null: true }
+">Copy</button>
 </div>
 <p>Por defecto, el nombre de la tabla de intersección proviene de la unión de los dos primeros
 argumentos proporcionados a <code>create_join_table</code>, en orden alfabético.
 Para personalizar el nombre de la tabla, proporcione a <code>:table_name</code>:</p><div class="code_container">
-<pre><code class="language-ruby">create_join_table :products, :categories, table_name: :categorization
+<pre><code class="highlight ruby"><span class="n">create_join_table</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:categories</span><span class="p">,</span> <span class="ss">table_name: :categorization</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="create_join_table :products, :categories, table_name: :categorization
+">Copy</button>
 </div>
 <p>crea la tabla <code>categorization</code></p><p><code>create_join_table</code> también acepta un bloque, el cual puedes utilizar para añadir índices
 (que no son creados por defecto) o columnas adicionales:</p><div class="code_container">
-<pre><code class="language-ruby">create_join_table :products, :categories do |t|
+<pre><code class="highlight ruby"><span class="n">create_join_table</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:categories</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="ss">:product_id</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="ss">:category_id</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="create_join_table :products, :categories do |t|
   t.index :product_id
   t.index :category_id
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="changing-tables"><a class="anchorlink" href="#changing-tables">3.3 Changing Tables</a></h4><p>Cambiando Las Tablas</p><p>Un primo cercano de <code>create_table</code> es<code>change_table</code>, utilizada para modificar tablas existentes.
 Se usa de manera similar a <code>create_table</code> pero el objeto cedido sabe más trucos. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">change_table :products do |t|
+<pre><code class="highlight ruby"><span class="n">change_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">remove</span> <span class="ss">:description</span><span class="p">,</span> <span class="ss">:name</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:part_number</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">index</span> <span class="ss">:part_number</span>
+  <span class="n">t</span><span class="p">.</span><span class="nf">rename</span> <span class="ss">:upccode</span><span class="p">,</span> <span class="ss">:upc_code</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="change_table :products do |t|
   t.remove :description, :name
   t.string :part_number
   t.index :part_number
   t.rename :upccode, :upc_code
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>elimina las columnas <code>description</code> y<code>name</code>, crea una columna de cuerda <code>part_number</code>y 
 agrega un índice. Finalmente renombra la columna <code>upcode</code>.</p><h4 id="changing-columns"><a class="anchorlink" href="#changing-columns">3.4 Changing Columns</a></h4><p>Modificadores De Columnas</p><p>Como el <code>remove_column</code> y <code>add_column</code> Rails provee el método de migración <code>change_column</code>.</p><div class="code_container">
-<pre><code class="language-ruby">change_column :products, :part_number, :text
+<pre><code class="highlight ruby"><span class="n">change_column</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:part_number</span><span class="p">,</span> <span class="ss">:text</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="change_column :products, :part_number, :text
+">Copy</button>
 </div>
 <p>Esto cambia la columna <code>part_number</code> en la tabla de productos para que sea un campo<code>:text</code>.
 Nota que el comando <code>change_column</code> es irreversible.</p><p>Además de <code>change_column</code>, los métodos <code>change_column_null</code> y <code>change_column_default</code>
 se utilizan específicamente para cambiar una restricción no nula y predeterminada
 valores de una columna.</p><div class="code_container">
-<pre><code class="language-ruby">change_column_null :products, :name, false
-change_column_default :products, :approved, from: true, to: false
+<pre><code class="highlight ruby"><span class="n">change_column_null</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:name</span><span class="p">,</span> <span class="kp">false</span>
+<span class="n">change_column_default</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:approved</span><span class="p">,</span> <span class="ss">from: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">to: </span><span class="kp">false</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="change_column_null :products, :name, false
+change_column_default :products, :approved, from: true, to: false
+">Copy</button>
 </div>
 <p>Esto establece el campo <code>:name</code> en products en una columna<code>NOT NULL</code> y el valor predeterminado
  del campo <code>: approved</code> de verdadero a falso.</p><p>NOTA: También puede escribir la migración anterior <code>change_column_default</code> como
@@ -554,8 +716,10 @@ calculado la primera vez (ej: en la fecha y hora que la migración es aplicada).
 <p>Algunos adaptadores pueden admitir opciones adicionales; ver los documentos de API específicos del adaptador
 para más información.</p><p>NOTA: <code>null</code> y<code>default</code> no se pueden especificar a través de la línea de comando.</p><h4 id="foreign-keys"><a class="anchorlink" href="#foreign-keys">3.6 Foreign Keys</a></h4><p>Llaves Foráneas</p><p>Mientras no es obligatorio, es posible que desee agregar restricciones de clave externa a
 <a href="#active-record-and-referential-integrity">guarantee referential integrity</a>.</p><div class="code_container">
-<pre><code class="language-ruby">add_foreign_key :articles, :authors
+<pre><code class="highlight ruby"><span class="n">add_foreign_key</span> <span class="ss">:articles</span><span class="p">,</span> <span class="ss">:authors</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="add_foreign_key :articles, :authors
+">Copy</button>
 </div>
 <p>Esto añade una nueva clave foránea a la columna <code>author_id</code> en la tabla <code>articles</code>. 
 La clave hace referencia a la columna <code>id</code> de la tabla <code>authors</code>. Si los nombres 
@@ -565,7 +729,16 @@ las opciones <code>:column</code> y <code>:primary_key</code>.</p><p> Rails gene
  especificar si un nombre diferente es necesario.</p><p>Active Record solo soporta una columna simple como clave foránea. <code>execute</code> and
 <code>structure.sql</code> son requeridas para utilizar claves foráneas compuestas. Ver
 <a href="#schema-dumping-and-you">Schema Dumping and You</a>.</p><p>Las claves foráneas también se pueden eliminar:</p><div class="code_container">
-<pre><code class="language-ruby"># deje que Active Record descubra el nombre de la columna
+<pre><code class="highlight ruby"><span class="c1"># deje que Active Record descubra el nombre de la columna</span>
+<span class="n">remove_foreign_key</span> <span class="ss">:accounts</span><span class="p">,</span> <span class="ss">:branches</span>
+
+<span class="c1"># eliminar clave foránea para una columna específica</span>
+<span class="n">remove_foreign_key</span> <span class="ss">:accounts</span><span class="p">,</span> <span class="ss">column: :owner_id</span>
+
+<span class="c1"># eliminar clave externa por nombre</span>
+<span class="n">remove_foreign_key</span> <span class="ss">:accounts</span><span class="p">,</span> <span class="ss">name: :special_fk_name</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# deje que Active Record descubra el nombre de la columna
 remove_foreign_key :accounts, :branches
 
 # eliminar clave foránea para una columna específica
@@ -573,12 +746,14 @@ remove_foreign_key :accounts, column: :owner_id
 
 # eliminar clave externa por nombre
 remove_foreign_key :accounts, name: :special_fk_name
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="when-helpers-aren-t-enough"><a class="anchorlink" href="#when-helpers-aren-t-enough">3.7 When Helpers aren't Enough</a></h4><p>Cuando Los Ayudantes (Helpers) No Son Suficientes</p><p>Si los helpers provistos por Active Record no son suficientes puedes utilizar el método <code>execute</code>
 para ejecutar cualquier SQL:</p><div class="code_container">
-<pre><code class="language-ruby">Product.connection.execute("UPDATE products SET price = 'free' WHERE 1=1")
+<pre><code class="highlight ruby"><span class="no">Product</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"UPDATE products SET price = 'free' WHERE 1=1"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Product.connection.execute(&quot;UPDATE products SET price = 'free' WHERE 1=1&quot;)
+">Copy</button>
 </div>
 <p>Para más detalles y ejemplos de métodos individuales, leer la documentación API.
 En particular la documentación para
@@ -618,14 +793,44 @@ Actualmente, el método <code>change</code> solamente soporta estas definiciones
 <code>change_default</code> o <code>remove</code>.</p><p><code>remove_column</code> es reversible si proporciona el tipo de la columna como el tercer
 argumento. También proporcione  las opciones de columna originales, de lo contrario Rails no puede
 recrear la columna exactamente al retroceder (rolling back):</p><div class="code_container">
-<pre><code class="language-ruby">remove_column :posts, :slug, :string, null: false, default: ''
+<pre><code class="highlight ruby"><span class="n">remove_column</span> <span class="ss">:posts</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">:string</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">default: </span><span class="s1">''</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="remove_column :posts, :slug, :string, null: false, default: ''
+">Copy</button>
 </div>
 <p>Si va a necesitar usar cualquier otro método, debe usar <code>reversible</code>
 o escriba los métodos <code>up</code> y <code>down</code> en lugar de usar el método <code>change</code>.</p><h4 id="using-reversible"><a class="anchorlink" href="#using-reversible">3.9 Using <code>reversible</code></a></h4><p>Usando <code>reversible</code></p><p>Las migraciones complejas pueden requerir un procesamiento que Active Record no sabe cómo
 retroceder. Puede usar <code>reversible</code> para especificar qué hacer cuando se ejecuta una
 migración y qué más hacer al revertirla. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">class ExampleMigration &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ExampleMigration</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:distributors</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:zipcode</span>
+    <span class="k">end</span>
+
+    <span class="n">reversible</span> <span class="k">do</span> <span class="o">|</span><span class="n">dir</span><span class="o">|</span>
+      <span class="n">dir</span><span class="p">.</span><span class="nf">up</span> <span class="k">do</span>
+        <span class="c1"># add a CHECK constraint</span>
+        <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+          ALTER TABLE distributors
+            ADD CONSTRAINT zipchk
+              CHECK (char_length(zipcode) = 5) NO INHERIT;
+</span><span class="no">        SQL</span>
+      <span class="k">end</span>
+      <span class="n">dir</span><span class="p">.</span><span class="nf">down</span> <span class="k">do</span>
+        <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+          ALTER TABLE distributors
+            DROP CONSTRAINT zipchk
+</span><span class="no">        SQL</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:home_page_url</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">rename_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:email_address</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ExampleMigration &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :distributors do |t|
       t.string :zipcode
@@ -652,7 +857,7 @@ migración y qué más hacer al revertirla. Por ejemplo:</p><div class="code_con
     rename_column :users, :email, :email_address
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El uso de <code>reversible</code> asegurará que las instrucciones seran ejecutadas en el
 orden correcto también. Si se revierte la migración de ejemplo anterior,
@@ -668,7 +873,37 @@ el método <code>up</code>. En otras palabras, el esquema de la base de datos pe
  si ejecutas un <code>up</code> seguido por un <code>down</code>. </p><p> Por ejemplo, si creas una tabla en el método <code>up</code>, deberías borrarla en el método <code>down</code>.
  Es prudente que las transformaciones precisamente esten en el orden reverso en el 
  que fueron hechas en el método <code>up</code>. El ejemplo en la sección <code>reversible</code> es equivalente a:</p><div class="code_container">
-<pre><code class="language-ruby">class ExampleMigration &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ExampleMigration</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">up</span>
+    <span class="n">create_table</span> <span class="ss">:distributors</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:zipcode</span>
+    <span class="k">end</span>
+
+    <span class="c1"># add a CHECK constraint</span>
+    <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+      ALTER TABLE distributors
+        ADD CONSTRAINT zipchk
+        CHECK (char_length(zipcode) = 5);
+</span><span class="no">    SQL</span>
+
+    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:home_page_url</span><span class="p">,</span> <span class="ss">:string</span>
+    <span class="n">rename_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:email_address</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">down</span>
+    <span class="n">rename_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:email_address</span><span class="p">,</span> <span class="ss">:email</span>
+    <span class="n">remove_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:home_page_url</span>
+
+    <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+      ALTER TABLE distributors
+        DROP CONSTRAINT zipchk
+</span><span class="no">    SQL</span>
+
+    <span class="n">drop_table</span> <span class="ss">:distributors</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ExampleMigration &lt; ActiveRecord::Migration[6.0]
   def up
     create_table :distributors do |t|
       t.string :zipcode
@@ -697,12 +932,24 @@ el método <code>up</code>. En otras palabras, el esquema de la base de datos pe
     drop_table :distributors
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si tu migración es irreversible, deberías lanzar una <code>ActiveRecord::IrreversibleMigration</code> 
 desde tu método <code>down</code>. Si alguién trata de revertir la migración, un mensaje de error 
 será mostrado diciendo que esto no se puede hacer.</p><h4 id="reverting-previous-migrations"><a class="anchorlink" href="#reverting-previous-migrations">3.11 Reverting Previous Migrations</a></h4><p>Revertir Migraciones Anteriores</p><p>Puede utilizar la capacidad de Active Record para revertir las migraciones utilizando el método <code>revert</code>:</p><div class="code_container">
-<pre><code class="language-ruby">require_relative "20121212123456_example_migration"
+<pre><code class="highlight ruby"><span class="nb">require_relative</span> <span class="s2">"20121212123456_example_migration"</span>
+
+<span class="k">class</span> <span class="nc">FixupExampleMigration</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">revert</span> <span class="no">ExampleMigration</span>
+
+    <span class="n">create_table</span><span class="p">(</span><span class="ss">:apples</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:variety</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='require_relative "20121212123456_example_migration"
 
 class FixupExampleMigration &lt; ActiveRecord::Migration[6.0]
   def change
@@ -713,14 +960,40 @@ class FixupExampleMigration &lt; ActiveRecord::Migration[6.0]
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El método <code>revert</code> también acepta un bloque de instrucciones para revertir.
 Esto podría ser útil para revertir partes seleccionadas de migraciones anteriores.
 Por ejemplo, imaginemos que <code>ExampleMigration</code> está comprometido y más tarde se decide
 que sería mejor usar validaciones de Active Record,
 en lugar de la restricción <code>CHECK</code>, para verificar el código postal.</p><div class="code_container">
-<pre><code class="language-ruby">class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">DontUseConstraintForZipcodeValidationMigration</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">revert</span> <span class="k">do</span>
+      <span class="c1"># copy-pasted code from ExampleMigration</span>
+      <span class="n">reversible</span> <span class="k">do</span> <span class="o">|</span><span class="n">dir</span><span class="o">|</span>
+        <span class="n">dir</span><span class="p">.</span><span class="nf">up</span> <span class="k">do</span>
+          <span class="c1"># add a CHECK constraint</span>
+          <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+            ALTER TABLE distributors
+              ADD CONSTRAINT zipchk
+                CHECK (char_length(zipcode) = 5);
+</span><span class="no">          SQL</span>
+        <span class="k">end</span>
+        <span class="n">dir</span><span class="p">.</span><span class="nf">down</span> <span class="k">do</span>
+          <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">SQL</span><span class="sh">
+            ALTER TABLE distributors
+              DROP CONSTRAINT zipchk
+</span><span class="no">          SQL</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+      <span class="c1"># El resto de la migración estuvo bien</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class DontUseConstraintForZipcodeValidationMigration &lt; ActiveRecord::Migration[6.0]
   def change
     revert do
       # copy-pasted code from ExampleMigration
@@ -745,7 +1018,7 @@ en lugar de la restricción <code>CHECK</code>, para verificar el código postal
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La misma migración también podría haberse escrito sin usar <code>revert</code>
 pero esto habría involucrado más pasos: invertir el orden
@@ -760,8 +1033,10 @@ en la fecha de creación de cada migración.</p><p>Nota que ejecutar la tarea <c
 actualizará tu fichero <code>db/schema.rb</code> para que coincida a la estructura de tu base de datos.</p><p>Si especificas una versión de destino, Active Record ejecturará las migraciones requeridas 
 (change, up, down) hasta alcanzar la versión específica. La versión es el prefijo numérico 
 en el nombre de fichero de la migración. Por ejemplo, para migrar a la versión 20080906120000 ejectuta:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate VERSION=20080906120000
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate <span class="nv">VERSION</span><span class="o">=</span>20080906120000
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate VERSION=20080906120000
+">Copy</button>
 </div>
 <p>Si la versión 20080906120000 es mayor que la versión actual (un ejemplo, se está migrando hacia arriba)
 , se ejectutará el método <code>change</code> o <code>up</code>) en todas las migraciones hacia arriba e incluirá la 20080906120000,
@@ -769,20 +1044,26 @@ y no ejecutará ninguna migración posterior. Si se está migrando hacia abajo, 
 ejectutará todas las migraciones hacia abajo, paro no incluirá la 20080906120000.</p><h4 id="rolling-back"><a class="anchorlink" href="#rolling-back">4.1 Rolling Back</a></h4><p>Deshaciendo Migraciones</p><p>Una tarea común es revertir la última migración. Por ejemplo, si hiciste un
 comete un error y desea corregirlo. En lugar de rastrear la versión
 número asociado con la migración anterior que puede ejecutar:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:rollback
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:rollback
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:rollback
+">Copy</button>
 </div>
 <p>Esto revertirá la última migración, ya sea revocando el método  <code>change</code>
 o ejecutando el método 'down'. Si necesitas deshacer
 varias migraciones puede proporcionar un parámetro <code>STEP</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:rollback STEP=3
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:rollback <span class="nv">STEP</span><span class="o">=</span>3
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:rollback STEP=3
+">Copy</button>
 </div>
 <p>revertirá las últimas 3 migraciones.</p><p>El comando <code>db:migrate: redo</code> es un atajo para revertir luna migración y luego migrar
 de nuevo. Al igual que con el comando <code>db: rollback</code>, puede usar el parámetro<code>STEP</code>
 si necesita regresar más de una versión, por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate:redo STEP=3
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate:redo <span class="nv">STEP</span><span class="o">=</span>3
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate:redo STEP=3
+">Copy</button>
 </div>
 <p>Ninguno de estos comandos de rails hace nada que no pueda hacer con <code>db: migrate</code>. Ellos
 están ahí para su conveniencia, ya que no necesita especificar explícitamente la
@@ -794,8 +1075,10 @@ funcionalmente equivalente a <code>bin/rails db:drop db:setup</code>.</p><p>NOTA
 <a href="#schema-dumping-and-you">Schema Dumping and You</a></p><h4 id="running-specific-migrations"><a class="anchorlink" href="#running-specific-migrations">4.4 Running Specific Migrations</a></h4><p>Ejecutando Migraciones en Diferentes Entornos</p><p>Si necesitas ejecutar una migración específica hacia arriba o abajo, las tareas <code>db:migrate:up</code> y
 <code>db:migrate:down</code> harán esto. Sólo especifica la versión adecuada y la migración correspondiente 
 tendrá su método <code>change</code>, <code>up</code> o <code>down</code> invocado, por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate:up VERSION=20080906120000
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate:up <span class="nv">VERSION</span><span class="o">=</span>20080906120000
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate:up VERSION=20080906120000
+">Copy</button>
 </div>
 <p>ejecutara la migración 20080906120000 por ejecución del método <code>change</code> (o del método <code>up</code>).
 Esta tarea primero comprobará si la migración está ya realizada y no hará nada si Active Record 
@@ -803,16 +1086,19 @@ cree que esta ya se ha ejecutado antes.</p><h4 id="running-migrations-in-differe
 entorno de <code>development</code>. Si quieres ejecutar las migraciones otra vez en otro entorno, 
 puedes especificarlo utilizando la variable de entorno <code>RAILS_ENV</code> cuando ejecutas el comando. 
 Por ejemplo para ejecutar las migraciones nuevamente en el entorno de pruebas, <code>test</code>, podrías ejecutar:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate RAILS_ENV=test
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate <span class="nv">RAILS_ENV</span><span class="o">=</span><span class="nb">test</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate RAILS_ENV=test
+">Copy</button>
 </div>
 <h4 id="changing-the-output-of-running-migrations"><a class="anchorlink" href="#changing-the-output-of-running-migrations">4.6 Changing the Output of Running Migrations</a></h4><p>Cambiando la Salida de la Ejecución de Migraciones</p><p>Por defecto, las migraciones le dicen exactamente lo que están haciendo y cuánto tiempo les llevó.
 Una migración que crea una tabla y agrega un índice puede producir resultados como este</p><div class="code_container">
-<pre><code class="language-shell-session">==  CreateProducts: migrating =================================================
+<pre><code class="highlight console"><span class="go">==  CreateProducts: migrating =================================================
 -- create_table(:products)
-   -&gt; 0.0028s
-==  CreateProducts: migrated (0.0028s) ========================================
-</code></pre>
+</span><span class="gp">   -&gt;</span><span class="w"> </span>0.0028s
+<span class="go">==  CreateProducts: migrated (0.0028s) ========================================
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <p>Varios métodos son provistos en las migraciones que te permiten controlar todo esto:</p>
 <table>
@@ -838,7 +1124,29 @@ Una migración que crea una tabla y agrega un índice puede producir resultados 
 </tbody>
 </table>
 <p>Por ejemplo, esta migración:</p><div class="code_container">
-<pre><code class="language-ruby">class CreateProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">suppress_messages</span> <span class="k">do</span>
+      <span class="n">create_table</span> <span class="ss">:products</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:description</span>
+        <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">say</span> <span class="s2">"Created a table"</span>
+
+    <span class="n">suppress_messages</span> <span class="p">{</span><span class="n">add_index</span> <span class="ss">:products</span><span class="p">,</span> <span class="ss">:name</span><span class="p">}</span>
+    <span class="n">say</span> <span class="s2">"and an index!"</span><span class="p">,</span> <span class="kp">true</span>
+
+    <span class="n">say_with_time</span> <span class="s1">'Waiting for a while'</span> <span class="k">do</span>
+      <span class="nb">sleep</span> <span class="mi">10</span>
+      <span class="mi">250</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateProducts &lt; ActiveRecord::Migration[6.0]
   def change
     suppress_messages do
       create_table :products do |t|
@@ -848,10 +1156,10 @@ Una migración que crea una tabla y agrega un índice puede producir resultados 
       end
     end
 
-    say "Created a table"
+    say &quot;Created a table&quot;
 
     suppress_messages {add_index :products, :name}
-    say "and an index!", true
+    say &quot;and an index!&quot;, true
 
     say_with_time 'Waiting for a while' do
       sleep 10
@@ -859,17 +1167,18 @@ Una migración que crea una tabla y agrega un índice puede producir resultados 
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>genera la siguiente salida</p><div class="code_container">
-<pre><code class="language-shell-session">==  CreateProducts: migrating =================================================
+<pre><code class="highlight console"><span class="go">==  CreateProducts: migrating =================================================
 -- Created a table
-   -&gt; and an index!
--- Waiting for a while
-   -&gt; 10.0013s
-   -&gt; 250 rows
-==  CreateProducts: migrated (10.0054s) =======================================
-</code></pre>
+</span><span class="gp">   -&gt;</span><span class="w"> </span>and an index!
+<span class="go">-- Waiting for a while
+</span><span class="gp">   -&gt;</span><span class="w"> </span>10.0013s
+<span class="gp">   -&gt;</span><span class="w"> </span>250 rows
+<span class="go">==  CreateProducts: migrated (10.0054s) =======================================
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <p>Si quieres que Active Record no muestre ninguna salida, ejecutando <code>rake db:migrate VERBOSE=false</code> 
 se suprimirán todas las salidas.</p><h3 id="cambiando-las-migraciones-existentes"><a class="anchorlink" href="#cambiando-las-migraciones-existentes">5 Cambiando las Migraciones Existentes</a></h3><p>Ocasionalmente podemos cometer un error cuando escribimos una migración. Si has ejecutado ya
@@ -896,7 +1205,23 @@ con frecuencia se extiende a través de varias migraciones, pero la información
 resumido en el archivo de esquema.</p><h4 id="types-of-schema-dumps"><a class="anchorlink" href="#types-of-schema-dumps">6.2 Types of Schema Dumps</a></h4><p>Tipos de Volcado del Esquema</p><p>El formato del volcado de esquema generado por Rails está controlado por
 <code>config.active_record.schema_format</code> en <code>config/application.rb</code>. Por
 predeterminado, el formato es <code>:ruby</code>, pero también podria ser <code>:sql</code>.</p><div class="code_container">
-<pre><code class="language-ruby">ActiveRecord::Schema.define(version: 2008_09_06_171750) do
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Schema</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="ss">version: </span><span class="mi">2008_09_06_171750</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">create_table</span> <span class="s2">"authors"</span><span class="p">,</span> <span class="ss">force: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="s2">"name"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"created_at"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"updated_at"</span>
+  <span class="k">end</span>
+
+  <span class="n">create_table</span> <span class="s2">"products"</span><span class="p">,</span> <span class="ss">force: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="s2">"name"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">text</span>     <span class="s2">"description"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"created_at"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"updated_at"</span>
+    <span class="n">t</span><span class="p">.</span><span class="nf">string</span>   <span class="s2">"part_number"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='ActiveRecord::Schema.define(version: 2008_09_06_171750) do
   create_table "authors", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -911,7 +1236,7 @@ predeterminado, el formato es <code>:ruby</code>, pero también podria ser <code
     t.string   "part_number"
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>En muchos sentidos, esto es exactamente lo que es. Este archivo se crea inspeccionando la
 base de datos y expresando su estructura usando <code>create_table</code>, <code>add_index</code>, etc. </p><p><code>db/ chema.rb</code> no puede expresar todo lo que su base de datos puede soportar, como
@@ -941,7 +1266,19 @@ la base de datos.</p><p>Sin embargo Active Record no provee todas las herramient
 esquema utilizando un proceso consistente. Las migraciones también se pueden usar
 para agregar o modificar datos. Esto es útil en una base de datos existente que no se puede destruir.
 y recreado, como una base de datos de producción.</p><div class="code_container">
-<pre><code class="language-ruby">class AddInitialProducts &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AddInitialProducts</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">up</span>
+    <span class="mi">5</span><span class="p">.</span><span class="nf">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+      <span class="no">Product</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Product #</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"A product."</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">down</span>
+    <span class="no">Product</span><span class="p">.</span><span class="nf">delete_all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class AddInitialProducts &lt; ActiveRecord::Migration[6.0]
   def up
     5.times do |i|
       Product.create(name: "Product ##{i}", description: "A product.")
@@ -952,17 +1289,21 @@ y recreado, como una base de datos de producción.</p><div class="code_container
     Product.delete_all
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Para agregar datos iniciales después de crear una base de datos, Rails tiene incorporado
 característica <code>seeds</code> que acelera el proceso. Esto es especialmente
 útil cuando se recarga la base de datos con frecuencia en entornos de desarrollo y prueba.
 Para comenzar con esta función, llene <code>db/seeds.rb</code> con algunos
 código en Ruby, y ejecute <code>bin/rails db: seed</code>:</p><div class="code_container">
-<pre><code class="language-ruby">5.times do |i|
+<pre><code class="highlight ruby"><span class="mi">5</span><span class="p">.</span><span class="nf">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+  <span class="no">Product</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Product #</span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="ss">description: </span><span class="s2">"A product."</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='5.times do |i|
   Product.create(name: "Product ##{i}", description: "A product.")
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Esta es generalmente una forma mucho más limpia de configurar la base de datos de un espacio en blanco
 solicitud.</p><h3 id="old-migrations"><a class="anchorlink" href="#old-migrations">9 Old Migrations</a></h3><p>Viejas migraciones</p><p>El <code>db/schema.rb</code> o<code>db/structure.sql</code> es una instantánea del estado actual de su

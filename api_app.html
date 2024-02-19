@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -295,8 +295,10 @@ siguen siendo aplicables incluso si elimina la capa de vista, pero la respuesta 
 para ser la mayor parte.</p><h3 id="the-basic-configuration"><a class="anchorlink" href="#the-basic-configuration">3 The Basic Configuration</a></h3><p>Si está creando una aplicación Rails, primero será un servidor API y
 sobre todo, puede comenzar con un subconjunto más limitado de rieles y agregar características
 según sea necesario.</p><h4 id="creating-a-new-application"><a class="anchorlink" href="#creating-a-new-application">3.1 Creating a new application</a></h4><p>Puede generar una nueva aplicación api Rails:</p><div class="code_container">
-<pre><code class="language-shell-session">$ rails new my_api --api
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new my_api <span class="nt">--api</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new my_api --api
+">Copy</button>
 </div>
 <p>Esto hará tres cosas principales por ti:</p>
 <ul>
@@ -313,27 +315,39 @@ genera un nuevo recurso.</li>
 <h4 id="changing-an-existing-application"><a class="anchorlink" href="#changing-an-existing-application">3.2 Changing an existing application</a></h4><p>If you want to take an existing application and make it an API one, read the
 following steps.</p><p>In <code>config/application.rb</code> add the following line at the top of the <code>Application</code>
 class definition:</p><div class="code_container">
-<pre><code class="language-ruby">config.api_only = true
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">api_only</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.api_only = true
+">Copy</button>
 </div>
 <p>En <code>config/environment/development.rb</code>, establezca <code>config.debug_exception_response_format</code>
 para configurar el formato utilizado en las respuestas cuando se producen errores en el modo de desarrollo.</p><p>Para representar una página HTML con información de depuración, use el valor <code>:predeterminado</code>.</p><div class="code_container">
-<pre><code class="language-ruby">config.debug_exception_response_format = :default
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">debug_exception_response_format</span> <span class="o">=</span> <span class="ss">:default</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.debug_exception_response_format = :default
+">Copy</button>
 </div>
 <p>Para renderizar la información de depuración conservando el formato de respuesta, use el valor <code>:api</code>.</p><div class="code_container">
-<pre><code class="language-ruby">config.debug_exception_response_format = :api
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">debug_exception_response_format</span> <span class="o">=</span> <span class="ss">:api</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.debug_exception_response_format = :api
+">Copy</button>
 </div>
 <p>De forma predeterminada, <code>config.debug_exception_response_format</code> se establece en <code>:api</code>, cuando <code>config.api_only</code> se establece en verdadero.</p><p>Finalmente, dentro de <code>app/controllers/application_controller.rb</code>, en lugar de:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationController &lt; ActionController::Base
+end
+">Copy</button>
 </div>
 <p>hacer:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::API
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">API</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationController &lt; ActionController::API
+end
+">Copy</button>
 </div>
 <h3 id="choosing-middleware"><a class="anchorlink" href="#choosing-middleware">4 Choosing Middleware</a></h3><p>Una aplicación API viene con el siguiente middleware de forma predeterminada:</p>
 <ul>
@@ -360,20 +374,30 @@ end
 sección de la Guía del bastidor para obtener más información sobre ellos.</p><p>Otros complementos, incluido Active Record, pueden agregar middleware adicional. En
 En general, estos middleware son independientes del tipo de aplicación que está
 construir y tener sentido en una aplicación Rails solo para API.</p><p>Puede obtener una lista de todo el middleware en su aplicación a través de:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails middleware
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>middleware
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails middleware
+">Copy</button>
 </div>
 <h4 id="using-the-cache-middleware"><a class="anchorlink" href="#using-the-cache-middleware">4.1 Using the Cache Middleware</a></h4><p>De forma predeterminada, Rails agregará un middleware que proporciona un almacén de caché basado en
 la configuración de su aplicación (memcache por defecto). Esto significa que
 la caché HTTP incorporada se basará en él.</p><p>Por ejemplo, usando el método <code>stale?</code>:</p><div class="code_container">
-<pre><code class="language-ruby">def show
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="k">if</span> <span class="n">stale?</span><span class="p">(</span><span class="ss">last_modified: </span><span class="vi">@post</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">)</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@post</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def show
   @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at)
     render json: @post
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La llamada a <code>stale?</code> Comparará el encabezado <code>If-Modified-Since</code> en la solicitud
 con <code>@post.updated_at</code>. Si el encabezado es más nuevo que el último modificado, este
@@ -381,14 +405,22 @@ La acción devolverá una respuesta "304 No modificado". De lo contrario, hará 
 respuesta e incluir un encabezado "Última modificación" en él.</p><p>Normalmente, este mecanismo se utiliza por cliente. El middleware de caché
 nos permite compartir este mecanismo de almacenamiento en caché entre clientes. Podemos habilitar
 almacenamiento en caché entre clientes en la llamada a <code>stale?</code>:</p><div class="code_container">
-<pre><code class="language-ruby">def show
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="k">if</span> <span class="n">stale?</span><span class="p">(</span><span class="ss">last_modified: </span><span class="vi">@post</span><span class="p">.</span><span class="nf">updated_at</span><span class="p">,</span> <span class="ss">public: </span><span class="kp">true</span><span class="p">)</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@post</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def show
   @post = Post.find(params[:id])
 
   if stale?(last_modified: @post.updated_at, public: true)
     render json: @post
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto significa que el middleware de caché almacenará el valor de "Última modificación"
 para una URL en la caché de Rails, y agregue un encabezado <code>If-Modified-Since</code> a cualquier
@@ -401,31 +433,48 @@ archivo de configuración del entorno.</p><p>Puede aprender más sobre cómo usa
 frontales en  <a href="https://www.rubydoc.info/github/rack/rack/master/Rack/Sendfile">the Rack::Sendfile
 documentation</a>.</p><p>A continuación se muestran algunos valores de este encabezado para algunos servidores populares, una vez que estos servidores estén configurados para admitir
 envío de archivos acelerado:</p><div class="code_container">
-<pre><code class="language-ruby"># Apache and lighttpd
+<pre><code class="highlight ruby"><span class="c1"># Apache and lighttpd</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">x_sendfile_header</span> <span class="o">=</span> <span class="s2">"X-Sendfile"</span>
+
+<span class="c1"># Nginx</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">x_sendfile_header</span> <span class="o">=</span> <span class="s2">"X-Accel-Redirect"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='# Apache and lighttpd
 config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
 # Nginx
 config.action_dispatch.x_sendfile_header = "X-Accel-Redirect"
-</code></pre>
+'>Copy</button>
 </div>
 <p>Asegúrese de configurar su servidor para que admita estas opciones siguiendo las
 instrucciones en la documentación de <code>Rack::Sendfile</code>.</p><h4 id="using-actiondispatch-request"><a class="anchorlink" href="#using-actiondispatch-request">4.3 Using ActionDispatch::Request</a></h4><p><code>ActionDispatch::Request#params</code> tomará parámetros del cliente en el JSON
 formato y hacerlos disponibles en su controlador dentro de <code>params</code>.</p><p>Para usar esto, su cliente deberá realizar una solicitud con parámetros codificados en JSON
 y especifique el <code>Content-Type</code> como <code>application/json</code>.</p><p>Aquí hay un ejemplo en jQuery:</p><div class="code_container">
-<pre><code class="language-plain">jQuery.ajax({
+<pre><code class="highlight javascript"><span class="nx">jQuery</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">/people</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">dataType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">contentType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">,</span>
+  <span class="na">data</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span> <span class="na">person</span><span class="p">:</span> <span class="p">{</span> <span class="na">firstName</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Yehuda</span><span class="dl">"</span><span class="p">,</span> <span class="na">lastName</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Katz</span><span class="dl">"</span> <span class="p">}</span> <span class="p">}),</span>
+  <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">json</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="p">});</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="jQuery.ajax({
   type: 'POST',
   url: '/people',
   dataType: 'json',
   contentType: 'application/json',
-  data: JSON.stringify({ person: { firstName: "Yehuda", lastName: "Katz" } }),
+  data: JSON.stringify({ person: { firstName: &quot;Yehuda&quot;, lastName: &quot;Katz&quot; } }),
   success: function(json) { }
 });
-</code></pre>
+">Copy</button>
 </div>
 <p><code>ActionDispatch::Request</code> will see the <code>Content-Type</code> and your parameters
 will be:</p><div class="code_container">
-<pre><code class="language-ruby">{ :person =&gt; { :firstName =&gt; "Yehuda", :lastName =&gt; "Katz" } }
+<pre><code class="highlight ruby"><span class="p">{</span> <span class="ss">:person</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:firstName</span> <span class="o">=&gt;</span> <span class="s2">"Yehuda"</span><span class="p">,</span> <span class="ss">:lastName</span> <span class="o">=&gt;</span> <span class="s2">"Katz"</span> <span class="p">}</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='{ :person =&gt; { :firstName =&gt; "Yehuda", :lastName =&gt; "Katz" } }
+'>Copy</button>
 </div>
 <h4 id="using-session-middlewares"><a class="anchorlink" href="#using-session-middlewares">4.4 Using Session Middlewares</a></h4><p>Los siguientes middlewares, que se utilizan para la gestión de sesiones, están excluidos de las aplicaciones API, ya que normalmente no necesitan sesiones. Si uno de sus clientes de API es un navegador, es posible que desee agregar uno de estos nuevamente en:</p>
 <ul>
@@ -438,10 +487,14 @@ cuando se agrega (incluida la clave de sesión), por lo que no puede simplemente
 <code>use ActionDispatch::Session::CookieStore</code> y haga que las sesiones funcionen como de costumbre. (Para ser claros: sesiones
 puede funcionar, pero las opciones de sesión se ignorarán, es decir, la clave de sesión será por defecto <code>_session_id</code>)</p><p>En lugar del inicializador, tendrá que configurar las opciones relevantes en algún lugar antes de que su middleware sea
 built (como <code>config/application.rb</code>) y páselos a su middleware preferido, así:</p><div class="code_container">
-<pre><code class="language-ruby">config.session_store :cookie_store, key: '_interslice_session' # &lt;-- this also configures session_options for use below
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">session_store</span> <span class="ss">:cookie_store</span><span class="p">,</span> <span class="ss">key: </span><span class="s1">'_interslice_session'</span> <span class="c1"># &lt;-- this also configures session_options for use below</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Cookies</span> <span class="c1"># Required for all session management (regardless of session_store)</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="n">config</span><span class="p">.</span><span class="nf">session_store</span><span class="p">,</span> <span class="n">config</span><span class="p">.</span><span class="nf">session_options</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.session_store :cookie_store, key: '_interslice_session' # &lt;-- this also configures session_options for use below
 config.middleware.use ActionDispatch::Cookies # Required for all session management (regardless of session_store)
 config.middleware.use config.session_store, config.session_options
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="other-middleware"><a class="anchorlink" href="#other-middleware">4.5 Other Middleware</a></h4><p>Rails se envía con una serie de middleware que quizás desee utilizar en un
 Aplicación API, especialmente si uno de sus clientes API es el navegador:</p>
@@ -451,13 +504,17 @@ Aplicación API, especialmente si uno de sus clientes API es el navegador:</p>
 <li><code>ActionDispatch::Flash</code></li>
 </ul>
 <p>Cualquiera de estos middleware se puede agregar a través de:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.use Rack::MethodOverride
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="no">Rack</span><span class="o">::</span><span class="no">MethodOverride</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.use Rack::MethodOverride
+">Copy</button>
 </div>
 <h4 id="removing-middleware"><a class="anchorlink" href="#removing-middleware">4.6 Removing Middleware</a></h4><p>Si no desea utilizar un middleware que se incluye de forma predeterminada en la API solo
 conjunto de middleware, puede eliminarlo con:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.delete ::Rack::Sendfile
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">delete</span> <span class="o">::</span><span class="no">Rack</span><span class="o">::</span><span class="no">Sendfile</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.delete ::Rack::Sendfile
+">Copy</button>
 </div>
 <p>Tenga en cuenta que la eliminación de estos middlewares eliminará el soporte para ciertos
 características en Action Controller.</p><h3 id="choosing-controller-modules"><a class="anchorlink" href="#choosing-controller-modules">5 Choosing Controller Modules</a></h3><p>Una aplicación API (usando <code>ActionController::API</code>) viene con lo siguiente
@@ -497,16 +554,18 @@ para que no tenga que especificar elementos raíz que envíen solicitudes POST, 
 </ul>
 <p>Otros complementos pueden agregar módulos adicionales. Puede obtener una lista de todos los módulos
 incluido en <code>ActionController::API</code> en la consola de rails:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails c
-&gt;&gt; ActionController::API.ancestors - ActionController::Metal.ancestors
-=&gt; [ActionController::API,
-    ActiveRecord::Railties::ControllerRuntime,
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>c
+<span class="gp">&gt;</span><span class="o">&gt;</span> ActionController::API.ancestors - ActionController::Metal.ancestors
+<span class="gp">=&gt;</span><span class="w"> </span><span class="o">[</span>ActionController::API,
+<span class="go">    ActiveRecord::Railties::ControllerRuntime,
     ActionDispatch::Routing::RouteSet::MountedHelpers,
     ActionController::ParamsWrapper,
     ... ,
     AbstractController::Rendering,
     ActionView::ViewPaths]
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails c
+">Copy</button>
 </div>
 <h4 id="adding-other-modules"><a class="anchorlink" href="#adding-other-modules">5.1 Adding Other Modules</a></h4><p>Todos los módulos de Action Controller conocen sus módulos dependientes, por lo que puede sentir
 libre de incluir cualquier módulo en sus controladores, y todas las dependencias serán

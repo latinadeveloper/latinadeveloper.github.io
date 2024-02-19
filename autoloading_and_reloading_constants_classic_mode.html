@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -242,7 +242,16 @@
     <div class="wrapper">
       <div id="mainCol">
         <h3 id="introduction"><a class="anchorlink" href="#introduction">1 Introduction</a></h3><div class="info"><p>Esta guía documenta la carga automática en el modo <code>clásico</code>, que es el tradicional. Si desea leer sobre el modo <code>zeitwerk</code> en su lugar, el nuevo en Rails 6, verifique <a href="autoloading_and_reloading_constants.html">Constantes de carga y carga automática (modo Zeitwerk)</a>.</p></div><p>Ruby on Rails permite que las aplicaciones se escriban como si su código estuviera precargado.</p><p>En un programa normal de Ruby, las clases necesitan cargar sus dependencias:</p><div class="code_container">
-<pre><code class="language-ruby">require "application_controller"
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"application_controller"</span>
+<span class="nb">require</span> <span class="s2">"post"</span>
+
+<span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='require "application_controller"
 require "post"
 
 class PostsController &lt; ApplicationController
@@ -250,7 +259,7 @@ class PostsController &lt; ApplicationController
     @posts = Post.all
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Nuestro instinto rubyista ve rápidamente algo de redundancia allí: si las clases fueran
 definido en archivos que coincidan con su nombre, ¿no podría automatizarse su carga?
@@ -258,46 +267,82 @@ definido en archivos que coincidan con su nombre, ¿no podría automatizarse su 
 si el código se actualiza cuando cambia sin reiniciar el servidor. Sería
 Sería bueno poder usar <code>Kernel#load</code> en desarrollo, y <code>Kernel#require</code> en
 producción.</p><p>De hecho, esas funciones las proporciona Ruby on Rails, donde simplemente escribimos</p><div class="code_container">
-<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PostsController &lt; ApplicationController
   def index
     @posts = Post.all
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta guía documenta cómo funciona.</p><h3 id="constants-refresher"><a class="anchorlink" href="#constants-refresher">2 Constants Refresher</a></h3><p>Si bien las constantes son triviales en la mayoría de los lenguajes de programación, son una rica
 tema en Ruby.</p><p>Está más allá del alcance de esta guía documentar las constantes de Ruby, pero estamos
 no obstante, voy a destacar algunos temas clave. Verdaderamente captando lo siguiente
 secciones es fundamental para comprender la carga y la recarga automáticas constantes.</p><h4 id="nesting"><a class="anchorlink" href="#nesting">2.1 Nesting</a></h4><p>Las definiciones de clases y módulos se pueden anidar para crear espacios de nombres:</p><div class="code_container">
-<pre><code class="language-ruby">module XML
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">XML</span>
+  <span class="k">class</span> <span class="nc">SAXParser</span>
+    <span class="c1"># (1)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module XML
   class SAXParser
     # (1)
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El <em>anidamiento</em> en cualquier lugar dado es la colección de clases anidadas adjuntas y
 los objetos del módulo hacia afuera. El anidamiento en cualquier lugar dado se puede inspeccionar con
 <code>Module.nesting</code>. Por ejemplo, en el ejemplo anterior, el anidamiento en
 (1) es</p><div class="code_container">
-<pre><code class="language-ruby">[XML::SAXParser, XML]
+<pre><code class="highlight ruby"><span class="p">[</span><span class="no">XML</span><span class="o">::</span><span class="no">SAXParser</span><span class="p">,</span> <span class="no">XML</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[XML::SAXParser, XML]
+">Copy</button>
 </div>
 <p>Es importante comprender que el anidamiento se compone de clase y módulo
 <em>objetos</em>, no tiene nada que ver con las constantes utilizadas para acceder a ellos, y es
 también sin relación con sus nombres.</p><p>Por ejemplo, si bien esta definición es similar a la anterior:</p><div class="code_container">
-<pre><code class="language-ruby">class XML::SAXParser
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">XML::SAXParser</span>
+  <span class="c1"># (2)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class XML::SAXParser
   # (2)
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>el anidamiento en (2) es diferente:</p><div class="code_container">
-<pre><code class="language-ruby">[XML::SAXParser]
+<pre><code class="highlight ruby"><span class="p">[</span><span class="no">XML</span><span class="o">::</span><span class="no">SAXParser</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[XML::SAXParser]
+">Copy</button>
 </div>
 <p><code>XML</code> no le pertenece.</p><p>Podemos ver en este ejemplo que el nombre de una clase o módulo que pertenece a un
 cierto anidamiento no se correlaciona necesariamente con los espacios de nombres en el lugar.</p><p>Más aún, son totalmente independientes, tomemos por ejemplo</p><div class="code_container">
-<pre><code class="language-ruby">module X
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">X</span>
+  <span class="k">module</span> <span class="nn">Y</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">A</span>
+  <span class="k">module</span> <span class="nn">B</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nn">X::Y</span>
+  <span class="k">module</span> <span class="nn">A::B</span>
+    <span class="c1"># (3)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module X
   module Y
   end
 end
@@ -312,11 +357,13 @@ module X::Y
     # (3)
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El anidamiento en (3) consta de dos objetos de módulo:</p><div class="code_container">
-<pre><code class="language-ruby">[A::B, X::Y]
+<pre><code class="highlight ruby"><span class="p">[</span><span class="no">A</span><span class="o">::</span><span class="no">B</span><span class="p">,</span> <span class="no">X</span><span class="o">::</span><span class="no">Y</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[A::B, X::Y]
+">Copy</button>
 </div>
 <p>Entonces, no solo no termina en <code>A</code>, que ni siquiera pertenece al anidamiento,
 pero también contiene <code>X::Y</code>, que es independiente de <code>A::B</code>.</p><p>El anidamiento es una pila interna mantenida por el intérprete, y se obtiene
@@ -339,24 +386,34 @@ Ruby envía un módulo anónimo recién creado.</p></li>
 los bloques que se pueden pasar a <code>Class.new</code> y <code>Module.new</code> no obtienen el
 clase o módulo que se define empujado a su anidamiento. Ese es uno de los
 diferencias entre definir clases y módulos de una forma u otra.</p><h4 id="class-and-module-definitions-are-constant-assignments"><a class="anchorlink" href="#class-and-module-definitions-are-constant-assignments">2.2 Class and Module Definitions are Constant Assignments</a></h4><p>Supongamos que el siguiente fragmento crea una clase (en lugar de volver a abrirla):</p><div class="code_container">
-<pre><code class="language-ruby">class C
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">C</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class C
+end
+">Copy</button>
 </div>
 <p>Ruby crea una constante <code>C</code> en <code>Object</code> y almacena en esa constante una clase
 objeto. El nombre de la instancia de la clase es "C", una cadena que recibe el nombre de
 constante.</p><p>Es decir,</p><div class="code_container">
-<pre><code class="language-ruby">class Project &lt; ApplicationRecord
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Project</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class Project &lt; ApplicationRecord
+end
+">Copy</button>
 </div>
 <p>realiza una asignación constante equivalente a</p><div class="code_container">
-<pre><code class="language-ruby">Project = Class.new(ApplicationRecord)
+<pre><code class="highlight ruby"><span class="no">Project</span> <span class="o">=</span> <span class="no">Class</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">ApplicationRecord</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Project = Class.new(ApplicationRecord)
+">Copy</button>
 </div>
 <p>including setting the name of the class as a side-effect:</p><div class="code_container">
-<pre><code class="language-ruby">Project.name # =&gt; "Project"
+<pre><code class="highlight ruby"><span class="no">Project</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; "Project"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='Project.name # =&gt; "Project"
+'>Copy</button>
 </div>
 <p>La asignación constante tiene una regla especial para que eso suceda: si el objeto
 que se asigna es una clase o módulo anónimo, Ruby establece el nombre del objeto en
@@ -364,17 +421,24 @@ el nombre de la constante.</p><div class="info"><p>A partir de entonces, lo que 
 importar. Por ejemplo, la constante podría eliminarse, el objeto de clase podría ser
 asignado a una constante diferente, ya no se almacenará en una constante, etc.
 el nombre está establecido, no cambia.</p></div><p>De manera similar, la creación de módulos usando la palabra clave <code>module</code> como en</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
-end
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
+end
+">Copy</button>
 </div>
 <p>realiza una asignación constante equivalente a</p><div class="code_container">
-<pre><code class="language-ruby">Admin = Module.new
+<pre><code class="highlight ruby"><span class="no">Admin</span> <span class="o">=</span> <span class="no">Module</span><span class="p">.</span><span class="nf">new</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Admin = Module.new
+">Copy</button>
 </div>
 <p>including setting the name as a side-effect:</p><div class="code_container">
-<pre><code class="language-ruby">Admin.name # =&gt; "Admin"
+<pre><code class="highlight ruby"><span class="no">Admin</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; "Admin"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='Admin.name # =&gt; "Admin"
+'>Copy</button>
 </div>
 <div class="warning"><p>El contexto de ejecución de un bloque pasado a <code>Class.new</code> o <code>Module.new</code>
 no es enteramente equivalente a la del cuerpo de las definiciones utilizando el
@@ -383,12 +447,18 @@ asignación.</p></div><p>Por lo tanto, una expresión informal como "la clase <c
 objeto de clase almacenado en la constante llamada "Cadena". Esa constante, a su vez,
 pertenece al objeto de clase almacenado en la constante denominada "Objeto".</p><p><code>String</code> es una constante ordinaria, y todo lo relacionado con ellos, como
 se le aplican algoritmos de resolución.</p><p>Asimismo, en el controlador</p><div class="code_container">
-<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PostsController &lt; ApplicationController
   def index
     @posts = Post.all
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p><code>Post</code> no es la sintaxis de una clase. Más bien, <code>Post</code> es una constante de Ruby regular. Si
 todo es bueno, la constante se evalúa a un objeto que responde a "todo".</p><p>Por eso hablamos de carga automática * constante *, Rails tiene la capacidad de
@@ -396,10 +466,14 @@ cargar constantes sobre la marcha.</p><h4 id="constants-are-stored-in-modules"><
 una tabla constante; Piense en ello como una tabla hash.</p><p>Analicemos un ejemplo para entender realmente lo que eso significa. Aunque es común
 los abusos del lenguaje como "la clase <code>String</code> "son convenientes, la exposición es
 va a ser preciso aquí con fines didácticos.</p><p>Consideremos la siguiente definición de módulo:</p><div class="code_container">
-<pre><code class="language-ruby">module Colors
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Colors</span>
+  <span class="no">RED</span> <span class="o">=</span> <span class="s1">'0xff0000'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Colors
   RED = '0xff0000'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Primero, cuando se procesa la palabra clave <code>module</code>, el intérprete crea una nueva
 entrada en la tabla de constantes del objeto de clase almacenado en la constante <code>Object</code>.
@@ -425,8 +499,10 @@ la implementación de <code>const_missing</code> genera <code>NameError</code>, 
 <p>La carga automática de rieles ** no emula este algoritmo **, pero su punto de partida es
 el nombre de la constante que se va a cargar automáticamente y la cref. Ver más en <a href="#autoloading-algorithms-relative-references">Relativo
 Referencias</a>.</p><h5 id="resolution-algorithm-for-qualified-constants"><a class="anchorlink" href="#resolution-algorithm-for-qualified-constants">2.4.2 Resolution Algorithm for Qualified Constants</a></h5><p>Las constantes calificadas tienen este aspecto:</p><div class="code_container">
-<pre><code class="language-ruby">Billing::Invoice
+<pre><code class="highlight ruby"><span class="no">Billing</span><span class="o">::</span><span class="no">Invoice</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Billing::Invoice
+">Copy</button>
 </div>
 <p><code>Billing::Invoice</code> se compone de dos constantes: <code>Billing</code> es relativo y es
 resuelto utilizando el algoritmo del apartado anterior.</p><div class="info"><p>Los dos puntos iniciales harían que el primer segmento sea absoluto en lugar de
@@ -483,14 +559,19 @@ $ bin / rails runner 'p User.column_names'
 cargas automáticas.</p><p>De forma predeterminada, Rails ansioso carga los archivos de la aplicación cuando arranca en producción
 modo, por lo que la mayor parte de la carga automática que ocurre en el desarrollo no ocurre. Pero
 la carga automática aún puede activarse durante la carga ansiosa.</p><p>Por ejemplo, dado</p><div class="code_container">
-<pre><code class="language-ruby">class BeachHouse &lt; House
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">BeachHouse</span> <span class="o">&lt;</span> <span class="no">House</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class BeachHouse &lt; House
+end
+">Copy</button>
 </div>
 <p>si todavía se desconoce <code>House</code> cuando <code>app/models/beach_house.rb</code> está ansioso
 cargado, Rails lo carga automáticamente.</p><h3 id="autoload-paths-and-eager-load-paths"><a class="anchorlink" href="#autoload-paths-and-eager-load-paths">5 autoload_paths and eager_load_paths</a></h3><p>Como probablemente sepa, cuando <code>require</code> obtiene un nombre de archivo relativo:</p><div class="code_container">
-<pre><code class="language-ruby">require "erb"
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"erb"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='require "erb"
+'>Copy</button>
 </div>
 <p>Ruby busca el archivo en los directorios listados en <code>$LOAD_PATH</code>. Es decir, ruby
 itera sobre todos sus directorios y para cada uno de ellos comprueba si
@@ -521,8 +602,8 @@ aplicación y motores.</p></li>
 <p>Lo que se describe arriba son los valores predeterminados con una aplicación Rails recién generada. Hay varias formas en que esto se puede configurar de manera diferente (consulte <a href="configuring.html%20#%20rails-general-configuration">Configuración de aplicaciones de Rails</a>.
 ). Pero usando <code>autoload_paths</code> por sí solo en el pasado (antes de Rails 5), los desarrolladores podían configurar <code>autoload_paths</code> para agregar ubicaciones adicionales (por ejemplo, <code>lib</code>, que solía ser una lista de rutas de autocarga hace años, pero ya no lo es). Sin embargo, esto ahora se desaconseja para la mayoría de los propósitos, ya que es probable que dé lugar a errores solo de producción. Es posible agregar nuevas ubicaciones tanto a <code>config.eager_load_paths</code> como a <code>config.autoload_paths</code> pero utilícelo bajo su propio riesgo.</p><p>Ver también <a href="#autoloading-in-the-test-environment">Carga Automática en el Entorno de Prueba</a>.</p><p>Se puede inspeccionar el valor de <code>autoload_paths</code>. En una aplicación recién generada
 es (editado):</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails runner 'puts ActiveSupport::Dependencies.autoload_paths'
-.../app/assets
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveSupport::Dependencies.autoload_paths'</span>
+<span class="go">.../app/assets
 .../app/channels
 .../app/controllers
 .../app/controllers/concerns
@@ -539,17 +620,25 @@ es (editado):</p><div class="code_container">
 .../actioncable/app/assets
 .../actionview/app/assets
 .../test/mailers/previews
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails runner 'puts ActiveSupport::Dependencies.autoload_paths'
+">Copy</button>
 </div>
 <div class="info"><p><code>autoload_paths</code> se calcula y almacena en caché durante el proceso de inicialización.
 La aplicación debe reiniciarse para reflejar cualquier cambio en el directorio.
 estructura.</p></div><h3 id="autoloading-algorithms"><a class="anchorlink" href="#autoloading-algorithms">6 Autoloading Algorithms</a></h3><h4 id="autoloading-algorithms-relative-references"><a class="anchorlink" href="#autoloading-algorithms-relative-references">6.1 Relative References</a></h4><p>Una referencia constante relativa puede aparecer en varios lugares, por ejemplo, en</p><div class="code_container">
-<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PostsController &lt; ApplicationController
   def index
     @posts = Post.all
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>las tres referencias constantes son relativas.</p><h5 id="constants-after-the-class-and-module-keywords"><a class="anchorlink" href="#constants-after-the-class-and-module-keywords">6.1.1 Constants after the <code>class</code> and <code>module</code> Keywords</a></h5><p>Ruby realiza una búsqueda de la constante que sigue a una <code>class</code> o un <code>module</code>
 palabra clave porque necesita saber si la clase o módulo se va a crear
@@ -570,70 +659,108 @@ objeto de módulo. Por ejemplo, si el archivo <code>app/models/max_clients.rb</c
 <code>autoload_paths</code> porque el nido en ese lugar está vacío. La situación de
 <code>Post</code> es diferente, el anidamiento en esa línea es <code>[PostsController]</code>y support
 para espacios de nombres entra en juego.</p><p>La idea básica es que dada</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+  <span class="k">class</span> <span class="nc">BaseController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="vc">@@all_roles</span> <span class="o">=</span> <span class="no">Role</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
   class BaseController &lt; ApplicationController
     @@all_roles = Role.all
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>para autocargar <code>Role</code> vamos a comprobar si está definido en el actual o
 espacios de nombres de los padres, uno a la vez. Entonces, conceptualmente queremos intentar cargar automáticamente
 cualquiera de</p><div class="code_container">
-<pre><code class="language-plain">Admin::BaseController::Role
+<pre><code class="highlight plaintext">Admin::BaseController::Role
 Admin::Role
 Role
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Admin::BaseController::Role
+Admin::Role
+Role
+">Copy</button>
 </div>
 <p>en ese orden. Esa es la idea. Para hacerlo, Rails busca en <code>autoload_paths</code>
 respectivamente para nombres de archivo como estos:</p><div class="code_container">
-<pre><code class="language-plain">admin/base_controller/role.rb
+<pre><code class="highlight plaintext">admin/base_controller/role.rb
 admin/role.rb
 role.rb
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="admin/base_controller/role.rb
+admin/role.rb
+role.rb
+">Copy</button>
 </div>
 <p>módulo algunas búsquedas de directorio adicionales que vamos a cubrir pronto.</p><div class="info"><p><code>'Constant::Name'.undercore</code> da la ruta relativa sin extensión de
 el nombre del archivo donde se espera que se defina  <code>Constant::Name</code>.</p></div><p>Veamos cómo Rails carga automáticamente la constante <code>Post</code> en el <code>PostsController</code>
 arriba asumiendo que la aplicación tiene un modelo <code>Post</code> definido en
 <code>app/models/post.rb</code>.</p><p>Primero busca <code>posts_controller/post.rb</code> en <code>autoload_paths</code>:</p><div class="code_container">
-<pre><code class="language-plain">app/assets/posts_controller/post.rb
+<pre><code class="highlight plaintext">app/assets/posts_controller/post.rb
 app/controllers/posts_controller/post.rb
 app/helpers/posts_controller/post.rb
 ...
 test/mailers/previews/posts_controller/post.rb
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="app/assets/posts_controller/post.rb
+app/controllers/posts_controller/post.rb
+app/helpers/posts_controller/post.rb
+...
+test/mailers/previews/posts_controller/post.rb
+">Copy</button>
 </div>
 <p>Dado que la búsqueda se agota sin éxito, una búsqueda similar de un directorio
 se realiza, vamos a ver por qué en la <a href="#automatic-modules">next section</a>:</p><div class="code_container">
-<pre><code class="language-plain">app/assets/posts_controller/post
+<pre><code class="highlight plaintext">app/assets/posts_controller/post
 app/controllers/posts_controller/post
 app/helpers/posts_controller/post
 ...
 test/mailers/previews/posts_controller/post
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="app/assets/posts_controller/post
+app/controllers/posts_controller/post
+app/helpers/posts_controller/post
+...
+test/mailers/previews/posts_controller/post
+">Copy</button>
 </div>
 <p>Si todos esos intentos fallan, Rails vuelve a iniciar la búsqueda en el archivo principal.
 espacio de nombres. En este caso, solo queda el nivel superior:</p><div class="code_container">
-<pre><code class="language-plain">app/assets/post.rb
+<pre><code class="highlight plaintext">app/assets/post.rb
 app/controllers/post.rb
 app/helpers/post.rb
 app/mailers/post.rb
 app/models/post.rb
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="app/assets/post.rb
+app/controllers/post.rb
+app/helpers/post.rb
+app/mailers/post.rb
+app/models/post.rb
+">Copy</button>
 </div>
 <p>Se encuentra un archivo coincidente en <code>app/models/post.rb</code>. La búsqueda se detiene allí y el
 se carga el archivo. Si el archivo realmente define "Publicar", todo está bien, de lo contrario
 Se genera <code>LoadError</code>.</p><h4 id="autoloading-algorithms-qualified-references"><a class="anchorlink" href="#autoloading-algorithms-qualified-references">6.2 Qualified References</a></h4><p>Cuando falta una constante calificada, Rails no la busca en el padre
 espacios de nombres. Pero hay una advertencia: cuando falta una constante, Rails es
 incapaz de saber si el disparador era una referencia relativa o calificada.</p><p>Por ejemplo, considere</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+  <span class="no">User</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
   User
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>y</p><div class="code_container">
-<pre><code class="language-ruby">Admin::User
+<pre><code class="highlight ruby"><span class="no">Admin</span><span class="o">::</span><span class="no">User</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Admin::User
+">Copy</button>
 </div>
 <p>Si falta <code>User</code>, en cualquier caso, todo lo que Rails sabe es que una constante llamada
 Faltaba "Usuario" en un módulo llamado "Admin".</p><p>Si hay un <code>User</code> de nivel superior, Ruby lo resolvería en el ejemplo anterior, pero
@@ -644,15 +771,21 @@ algoritmos de resolución, pero en este caso intenta utilizar la siguiente heur�
 constante, Rails asume que la referencia es relativa. De lo contrario calificado.</p>
 </blockquote>
 <p>Por ejemplo, si este código activa la carga automática</p><div class="code_container">
-<pre><code class="language-ruby">Admin::User
+<pre><code class="highlight ruby"><span class="no">Admin</span><span class="o">::</span><span class="no">User</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Admin::User
+">Copy</button>
 </div>
 <p>y la constante <code>User</code> ya está presente en <code>Object</code>, no es posible que
 la situación es</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+  <span class="no">User</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
   User
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>porque de lo contrario Ruby habría resuelto <code>User</code> y ninguna carga automática habría
 se ha activado en primer lugar. Por lo tanto, Rails asume una referencia calificada y
@@ -675,7 +808,7 @@ Constants</a> al comienzo de
 esta guía para la definición de * cref <em>, y <a href="#resolution-algorithm-for-qualified-constants">algoritmo de resolución para calificados
 Constantes</a> para la definición de
 *padre</em>).</p><p>El procedimiento para cargar automáticamente la constante <code>C</code> en una situación arbitraria es el siguiente:</p><div class="code_container">
-<pre><code class="language-plain">if the class or module in which C is missing is Object
+<pre><code class="highlight plaintext">if the class or module in which C is missing is Object
   let ns = ''
 else
   let M = the class or module in which C is missing
@@ -726,6 +859,57 @@ loop do
   end
 end
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="if the class or module in which C is missing is Object
+  let ns = ''
+else
+  let M = the class or module in which C is missing
+
+  if M is anonymous
+    let ns = ''
+  else
+    let ns = M.name
+  end
+end
+
+loop do
+  # Look for a regular file.
+  for dir in autoload_paths
+    if the file &quot;#{dir}/#{ns.underscore}/c.rb&quot; exists
+      load/require &quot;#{dir}/#{ns.underscore}/c.rb&quot;
+
+      if C is now defined
+        return
+      else
+        raise LoadError
+      end
+    end
+  end
+
+  # Look for an automatic module.
+  for dir in autoload_paths
+    if the directory &quot;#{dir}/#{ns.underscore}/c&quot; exists
+      if ns is an empty string
+        let C = Module.new in Object and return
+      else
+        let C = Module.new in ns.constantize and return
+      end
+    end
+  end
+
+  if ns is empty
+    # We reached the top-level without finding the constant.
+    raise NameError
+  else
+    if C exists in any of the parent namespaces
+      # Qualified constants heuristic.
+      raise NameError
+    else
+      # Try again in the parent namespace.
+      let ns = the parent namespace of ns and retry
+    end
+  end
+end
+">Copy</button>
 </div>
 <h3 id="require-dependency"><a class="anchorlink" href="#require-dependency">7 require_dependency</a></h3><p>La carga automática constante se activa a pedido y, por lo tanto, el código que utiliza un
 cierta constante puede tenerlo ya definido o puede activar una carga automática. Ese
@@ -740,8 +924,10 @@ definir cualquier constante particular. Explotar este comportamiento sería una 
 sin embargo, las rutas de archivo y constantes deben coincidir.</p></div><h3 id="constant-reloading"><a class="anchorlink" href="#constant-reloading">8 Constant Reloading</a></h3><p>Cuando <code>config.cache_classes</code> es falso, Rails puede recargar autocargado
 constantes.</p><p>Por ejemplo, si está en una sesión de consola y edita algún archivo detrás del
 escenas, el código se puede recargar con el comando <code>reload!</code>:</p><div class="code_container">
-<pre><code class="language-plain">&gt; reload!
+<pre><code class="highlight plaintext">&gt; reload!
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&gt; reload!
+">Copy</button>
 </div>
 <p>Cuando se ejecuta la aplicación, el código se vuelve a cargar cuando algo relevante para esto
 cambios de lógica. Para hacer eso, Rails monitorea una serie de cosas:</p>
@@ -758,22 +944,36 @@ eliminándolos todos de sus respectivas clases y módulos usando
 volverá a ser desconocido y los archivos se volverán a cargar a pedido.</p><div class="info"><p>Esta es una operación de todo o nada, Rails no intenta recargar solo
 lo que cambió desde las dependencias entre clases lo hace realmente complicado.
 En cambio, todo se borra.</p></div><h3 id="common-gotchas"><a class="anchorlink" href="#common-gotchas">9 Common Gotchas</a></h3><h4 id="nesting-and-qualified-constants"><a class="anchorlink" href="#nesting-and-qualified-constants">9.1 Nesting and Qualified Constants</a></h4><p>Consideremos</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+  <span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="k">def</span> <span class="nf">index</span>
+      <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
   class UsersController &lt; ApplicationController
     def index
       @users = User.all
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>y</p><div class="code_container">
-<pre><code class="language-ruby">class Admin::UsersController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Admin::UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Admin::UsersController &lt; ApplicationController
   def index
     @users = User.all
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para resolver <code>User</code> Ruby verifica <code>Admin</code> en el primer caso, pero no lo hace en
 el último porque no pertenece al anidamiento (ver <a href="#nesting">Anidamiento</a>
@@ -782,17 +982,38 @@ Faltaba una constante y, por lo tanto, no puede actuar como lo haría Ruby. En p
 <code>Admin::User</code> se cargará automáticamente en cualquier caso.</p><p>Aunque las constantes calificadas con palabras clave <code>class</code> y <code>module</code> pueden técnicamente
 trabajar con carga automática en algunos casos, es preferible utilizar constantes relativas
 en lugar:</p><div class="code_container">
-<pre><code class="language-ruby">module Admin
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Admin</span>
+  <span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="k">def</span> <span class="nf">index</span>
+      <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Admin
   class UsersController &lt; ApplicationController
     def index
       @users = User.all
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="defining-vs-reopening-namespaces"><a class="anchorlink" href="#defining-vs-reopening-namespaces">9.2 Defining vs Reopening Namespaces</a></h4><p>Let's consider:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/blog.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/blog.rb</span>
+<span class="k">module</span> <span class="nn">Blog</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">table_name_prefix</span>
+    <span class="s2">"blog_"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/blog/post.rb</span>
+<span class="k">module</span> <span class="nn">Blog</span>
+  <span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='# app/models/blog.rb
 module Blog
   def self.table_name_prefix
     "blog_"
@@ -804,7 +1025,7 @@ module Blog
   class Post &lt; ApplicationRecord
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El nombre de la tabla para <code>Blog::Post</code> debería ser <code>blog_posts</code> debido a la existencia de
 el método <code>Blog.table_name_prefix</code>. Sin embargo, si <code>app/models/blog/post.rb</code> es
@@ -813,7 +1034,16 @@ existencia de tal método, y asume que la tabla es "posts".</p><p>Para resolver 
 <em>define</em> el módulo <code>Blog</code> (<code>app/models/blog.rb</code>), y cuál <em>reabre</em>
 (<code>app/models/blog/post.rb</code>). Luego, te aseguras de que la definición se ejecute
 primero usando <code>require_dependency</code>:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/blog/post.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/blog/post.rb</span>
+
+<span class="n">require_dependency</span> <span class="s2">"blog"</span>
+
+<span class="k">module</span> <span class="nn">Blog</span>
+  <span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='# app/models/blog/post.rb
 
 require_dependency "blog"
 
@@ -821,13 +1051,25 @@ module Blog
   class Post &lt; ApplicationRecord
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="autoloading-and-sti"><a class="anchorlink" href="#autoloading-and-sti">9.3 Autoloading and STI</a></h4><p>La herencia de tabla única (STI) es una función de Active Record que permite
 almacenar una jerarquía de modelos en una sola tabla. La API de tales modelos es
 consciente de la jerarquía y encapsula algunas necesidades comunes. Por ejemplo, dado
 estas clases:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/polygon.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/polygon.rb</span>
+<span class="k">class</span> <span class="nc">Polygon</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/triangle.rb</span>
+<span class="k">class</span> <span class="nc">Triangle</span> <span class="o">&lt;</span> <span class="no">Polygon</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/rectangle.rb</span>
+<span class="k">class</span> <span class="nc">Rectangle</span> <span class="o">&lt;</span> <span class="no">Polygon</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/polygon.rb
 class Polygon &lt; ApplicationRecord
 end
 
@@ -838,7 +1080,7 @@ end
 # app/models/rectangle.rb
 class Rectangle &lt; Polygon
 end
-</code></pre>
+">Copy</button>
 </div>
 <p><code>Triangle.create</code> crea una fila que representa un triángulo, y
 <code>Rectangle.create</code> crea una fila que representa un rectángulo. Si <code>id</code> es el
@@ -853,46 +1095,70 @@ para trabajar en alguna subclase, las cosas se ponen interesantes.</p><p>Mientra
 porque cualquier cosa en la tabla es por definición un polígono, pero cuando se trabaja con
 Las subclases Active Record deben poder enumerar los tipos que busca.
 para. Veamos un ejemplo.</p><p><code>Rectangle.all</code> solo carga rectángulos agregando una restricción de tipo a la consulta:</p><div class="code_container">
-<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
-WHERE "polygons"."type" IN ("Rectangle")
+<pre><code class="highlight sql"><span class="k">SELECT</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"polygons"</span>
+<span class="k">WHERE</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="nv">"type"</span> <span class="k">IN</span> <span class="p">(</span><span class="nv">"Rectangle"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle")
+'>Copy</button>
 </div>
 <p>Introduzcamos ahora una subclase de <code>Rectangle</code>:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/square.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/square.rb</span>
+<span class="k">class</span> <span class="nc">Square</span> <span class="o">&lt;</span> <span class="no">Rectangle</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/square.rb
 class Square &lt; Rectangle
 end
-</code></pre>
+">Copy</button>
 </div>
 <p><code>Rectangle.all</code> ahora debería devolver rectángulos <strong>y</strong> cuadrados:</p><div class="code_container">
-<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
-WHERE "polygons"."type" IN ("Rectangle", "Square")
+<pre><code class="highlight sql"><span class="k">SELECT</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"polygons"</span>
+<span class="k">WHERE</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="nv">"type"</span> <span class="k">IN</span> <span class="p">(</span><span class="nv">"Rectangle"</span><span class="p">,</span> <span class="nv">"Square"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle", "Square")
+'>Copy</button>
 </div>
 <p>Pero hay una advertencia aquí: ¿Cómo sabe Active Record que la clase <code>Square</code>
 existe en absoluto?</p><p>Incluso si el archivo <code>app/models/square.rb</code> existe y define la clase <code>Square</code>,
 si aún no se ha utilizado ningún código de esa clase, <code>Rectangle.all</code> emite la consulta</p><div class="code_container">
-<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
-WHERE "polygons"."type" IN ("Rectangle")
+<pre><code class="highlight sql"><span class="k">SELECT</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"polygons"</span>
+<span class="k">WHERE</span> <span class="nv">"polygons"</span><span class="p">.</span><span class="nv">"type"</span> <span class="k">IN</span> <span class="p">(</span><span class="nv">"Rectangle"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle")
+'>Copy</button>
 </div>
 <p>Eso no es un error, la consulta incluye todos los descendientes * conocidos * de <code>Rectangle</code>.</p><p>Una forma de asegurarse de que esto funcione correctamente independientemente del orden de ejecución es
 cargue manualmente las subclases directas en la parte inferior del archivo que define cada
 clase intermedia:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/rectangle.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/rectangle.rb</span>
+<span class="k">class</span> <span class="nc">Rectangle</span> <span class="o">&lt;</span> <span class="no">Polygon</span>
+<span class="k">end</span>
+<span class="n">require_dependency</span> <span class="s1">'square'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/rectangle.rb
 class Rectangle &lt; Polygon
 end
 require_dependency 'square'
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto debe suceder para cada clase intermedia (no raíz y no hoja). los
 la clase raíz no abarca la consulta por tipo y, por lo tanto, no necesariamente
 Hay que conocer a todos sus descendientes.</p><h4 id="autoloading-and-require"><a class="anchorlink" href="#autoloading-and-require">9.4 Autoloading and <code>require</code></a></h4><p>Los archivos que definen las constantes que se van a cargar automáticamente nunca deben ser <code>require</code>d:</p><div class="code_container">
-<pre><code class="language-ruby">require "user" # DO NOT DO THIS
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"user"</span> <span class="c1"># DO NOT DO THIS</span>
+
+<span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='require "user" # DO NOT DO THIS
 
 class UsersController &lt; ApplicationController
   ...
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Hay dos posibles errores aquí en el modo de desarrollo:</p>
 <ol>
@@ -907,12 +1173,18 @@ cargar un determinado archivo use <code>require_dependency</code> para jugar bie
 carga automática. Sin embargo, esta opción rara vez se necesita en la práctica.</p><p>Por supuesto, el uso de <code>require</code> en archivos autocargados para cargar un tercero ordinario
 bibliotecas está bien, y Rails es capaz de distinguir sus constantes, son
 no marcado como autocargado.</p><h4 id="autoloading-and-initializers"><a class="anchorlink" href="#autoloading-and-initializers">9.5 Autoloading and Initializers</a></h4><p>Considere esta asignación en <code>config/initializers/set_auth_service.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">AUTH_SERVICE = if Rails.env.production?
+<pre><code class="highlight ruby"><span class="no">AUTH_SERVICE</span> <span class="o">=</span> <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">production?</span>
+  <span class="no">RealAuthService</span>
+<span class="k">else</span>
+  <span class="no">MockedAuthService</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="AUTH_SERVICE = if Rails.env.production?
   RealAuthService
 else
   MockedAuthService
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El propósito de esta configuración sería que la aplicación use la clase que
 corresponde al entorno a través de <code>AUTH_SERVICE</code>. En modo de desarrollo
@@ -921,7 +1193,19 @@ hacemos algunas solicitudes, cambiamos su implementación y volvemos a activar l
 Para nuestra sorpresa, los cambios no se reflejan. ¿Por qué?</p><p>Como <a href="#constant-reloading">vimos anteriormente</a>, Rails elimina las constantes cargadas automáticamente,
 pero <code>AUTH_SERVICE</code> almacena el objeto de clase original. Rancio, no accesible
 utilizando la constante original, pero perfectamente funcional.</p><p>El siguiente código resume la situación:</p><div class="code_container">
-<pre><code class="language-ruby">class C
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">C</span>
+  <span class="k">def</span> <span class="nf">quack</span>
+    <span class="s1">'quack!'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">X</span> <span class="o">=</span> <span class="no">C</span>
+<span class="no">Object</span><span class="p">.</span><span class="nf">instance_eval</span> <span class="p">{</span> <span class="n">remove_const</span><span class="p">(</span><span class="ss">:C</span><span class="p">)</span> <span class="p">}</span>
+<span class="no">X</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">quack</span> <span class="c1"># =&gt; quack!</span>
+<span class="no">X</span><span class="p">.</span><span class="nf">name</span>      <span class="c1"># =&gt; C</span>
+<span class="no">C</span>           <span class="c1"># =&gt; uninitialized constant C (NameError)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class C
   def quack
     'quack!'
   end
@@ -932,11 +1216,24 @@ Object.instance_eval { remove_const(:C) }
 X.new.quack # =&gt; quack!
 X.name      # =&gt; C
 C           # =&gt; uninitialized constant C (NameError)
-</code></pre>
+">Copy</button>
 </div>
 <p>Por eso, no es una buena idea cargar automáticamente constantes en la aplicación
 inicialización.</p><p>En el caso anterior podríamos implementar un punto de acceso dinámico:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/auth_service.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/auth_service.rb</span>
+<span class="k">class</span> <span class="nc">AuthService</span>
+  <span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">production?</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">instance</span>
+      <span class="no">RealAuthService</span>
+    <span class="k">end</span>
+  <span class="k">else</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">instance</span>
+      <span class="no">MockedAuthService</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/auth_service.rb
 class AuthService
   if Rails.env.production?
     def self.instance
@@ -948,7 +1245,7 @@ class AuthService
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>and have the application use <code>AuthService.instance</code> instead. <code>AuthService</code>
 would be loaded on demand and be autoload-friendly.</p><h4 id="require-dependency-and-initializers"><a class="anchorlink" href="#require-dependency-and-initializers">9.6 <code>require_dependency</code> and Initializers</a></h4><p>Como vimos antes, <code>require_dependency</code> carga archivos en un formato compatible con la carga automática.
@@ -958,13 +1255,32 @@ ejemplo como un intento de abordar el <a href="#autoloading-and-sti">problema co
 si hay algún cambio relevante en el sistema de archivos. Si eso sucede entonces
 ¡Estamos en la misma situación que el inicializador quería evitar!</p><p>Las llamadas a <code>require_dependency</code> deben estar escritas estratégicamente en autocargado
 lugares.</p><h4 id="when-constants-aren-t-missed"><a class="anchorlink" href="#when-constants-aren-t-missed">9.7 When Constants aren't Missed</a></h4><h5 id="when-constants-aren-t-missed-relative-references"><a class="anchorlink" href="#when-constants-aren-t-missed-relative-references">9.7.1 Relative References</a></h5><p>Consideremos un simulador de vuelo. La aplicación tiene un modelo de vuelo predeterminado</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/flight_model.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/flight_model.rb</span>
+<span class="k">class</span> <span class="nc">FlightModel</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/flight_model.rb
 class FlightModel
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>que puede ser anulado por cada avión, por ejemplo</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/bell_x1/flight_model.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/bell_x1/flight_model.rb</span>
+<span class="k">module</span> <span class="nn">BellX1</span>
+  <span class="k">class</span> <span class="nc">FlightModel</span> <span class="o">&lt;</span> <span class="no">FlightModel</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/bell_x1/aircraft.rb</span>
+<span class="k">module</span> <span class="nn">BellX1</span>
+  <span class="k">class</span> <span class="nc">Aircraft</span>
+    <span class="k">def</span> <span class="nf">initialize</span>
+      <span class="vi">@flight_model</span> <span class="o">=</span> <span class="no">FlightModel</span><span class="p">.</span><span class="nf">new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/bell_x1/flight_model.rb
 module BellX1
   class FlightModel &lt; FlightModel
   end
@@ -978,23 +1294,41 @@ module BellX1
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El inicializador quiere crear un <code>BellX1::FlightModel</code> y el anidamiento tiene
 "BellX1", se ve bien. Pero si se carga el modelo de vuelo predeterminado y el
 uno para el Bell-X1 no lo es, el intérprete puede resolver el nivel superior
 Por tanto, <code>FlightModel</code> y la carga automática no se activan para<code>BellX1::FlightModel</code>.</p><p>Ese código depende de la ruta de ejecución.</p><p>Este tipo de ambigüedades a menudo se pueden resolver utilizando constantes calificadas:</p><div class="code_container">
-<pre><code class="language-ruby">module BellX1
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">BellX1</span>
+  <span class="k">class</span> <span class="nc">Plane</span>
+    <span class="k">def</span> <span class="nf">flight_model</span>
+      <span class="vi">@flight_model</span> <span class="o">||=</span> <span class="no">BellX1</span><span class="o">::</span><span class="no">FlightModel</span><span class="p">.</span><span class="nf">new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module BellX1
   class Plane
     def flight_model
       @flight_model ||= BellX1::FlightModel.new
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Además, <code>require_dependency</code> es una solución:</p><div class="code_container">
-<pre><code class="language-ruby">require_dependency 'bell_x1/flight_model'
+<pre><code class="highlight ruby"><span class="n">require_dependency</span> <span class="s1">'bell_x1/flight_model'</span>
+
+<span class="k">module</span> <span class="nn">BellX1</span>
+  <span class="k">class</span> <span class="nc">Plane</span>
+    <span class="k">def</span> <span class="nf">flight_model</span>
+      <span class="vi">@flight_model</span> <span class="o">||=</span> <span class="no">FlightModel</span><span class="p">.</span><span class="nf">new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="require_dependency 'bell_x1/flight_model'
 
 module BellX1
   class Plane
@@ -1003,10 +1337,24 @@ module BellX1
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="when-constants-aren-t-missed-qualified-references"><a class="anchorlink" href="#when-constants-aren-t-missed-qualified-references">9.7.2 Qualified References</a></h5><div class="warning"><p>Este problema solo es posible en Ruby &lt;2.5.</p></div><p>Dado</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/hotel.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/hotel.rb</span>
+<span class="k">class</span> <span class="nc">Hotel</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/image.rb</span>
+<span class="k">class</span> <span class="nc">Image</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/hotel/image.rb</span>
+<span class="k">class</span> <span class="nc">Hotel</span>
+  <span class="k">class</span> <span class="nc">Image</span> <span class="o">&lt;</span> <span class="no">Image</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/hotel.rb
 class Hotel
 end
 
@@ -1019,32 +1367,55 @@ class Hotel
   class Image &lt; Image
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>la expresión <code>Hotel::Image</code> es ambigua porque depende de la ejecución
 camino.</p><p>Como <a href="#resolution-algorithm-for-qualified-constants">vimos antes</a>, Ruby parece
 hasta la constante en <code>Hotel</code> y sus antepasados. Si <code>app/models/image.rb</code> tiene
 se ha cargado pero <code>app/models/hotel/image.rb</code> no lo ha hecho, Ruby no encuentra <code>Image</code>
 en <code>Hotel</code>, pero lo hace en <code>Object</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails runner 'Image; p Hotel::Image' 2&gt;/dev/null
-Image # NOT Hotel::Image!
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'Image; p Hotel::Image'</span> 2&gt;/dev/null
+<span class="gp">Image #</span><span class="w"> </span>NOT Hotel::Image!
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails runner 'Image; p Hotel::Image' 2&gt;/dev/null
+">Copy</button>
 </div>
 <p>El código que evalúa <code>Hotel::Image</code> debe asegurarse
 <code>app/models/hotel/image.rb</code> se ha cargado, posiblemente con
 <code>require_dependency</code>.</p><p>En estos casos, el intérprete emite una advertencia:</p><div class="code_container">
-<pre><code class="language-plain">warning: toplevel constant Image referenced by Hotel::Image
+<pre><code class="highlight plaintext">warning: toplevel constant Image referenced by Hotel::Image
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="warning: toplevel constant Image referenced by Hotel::Image
+">Copy</button>
 </div>
 <p>Esta sorprendente resolución constante se puede observar con cualquier clase clasificatoria:</p><div class="code_container">
-<pre><code class="language-plain">2.1.5 :001 &gt; String::Array
+<pre><code class="highlight plaintext">2.1.5 :001 &gt; String::Array
 (irb):1: warning: toplevel constant Array referenced by String::Array
  =&gt; Array
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="2.1.5 :001 &gt; String::Array
+(irb):1: warning: toplevel constant Array referenced by String::Array
+ =&gt; Array
+">Copy</button>
 </div>
 <div class="warning"><p>Para encontrar este problema, el espacio de nombres calificado debe ser una clase,
 <code>Object</code> no es un antepasado de módulos.</p></div><h4 id="autoloading-within-singleton-classes"><a class="anchorlink" href="#autoloading-within-singleton-classes">9.8 Autoloading within Singleton Classes</a></h4><p>Supongamos que tenemos estas definiciones de clase:</p><div class="code_container">
-<pre><code class="language-ruby"># app/models/hotel/services.rb
+<pre><code class="highlight ruby"><span class="c1"># app/models/hotel/services.rb</span>
+<span class="k">module</span> <span class="nn">Hotel</span>
+  <span class="k">class</span> <span class="nc">Services</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/hotel/geo_location.rb</span>
+<span class="k">module</span> <span class="nn">Hotel</span>
+  <span class="k">class</span> <span class="nc">GeoLocation</span>
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="no">Services</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/models/hotel/services.rb
 module Hotel
   class Services
   end
@@ -1058,7 +1429,7 @@ module Hotel
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si <code>Hotel::Services</code> se conoce por el tiempo <code>app/models/hotel/geo_location.rb</code>
 se está cargando, "Servicios" es resuelto por Ruby porque "Hotel" pertenece al
@@ -1066,65 +1437,102 @@ anidando cuando se abre la clase singleton de <code>Hotel::GeoLocation</code>.</
 la aplicación genera "NameError".</p><p>La razón es que se activa la carga automática para la clase singleton, que es
 anónimo, y como <a href="#generic-procedure">vimos antes</a>, Rails solo verifica
 espacio de nombres de nivel superior en ese caso de borde.</p><p>Una solución fácil a esta advertencia es calificar la constante:</p><div class="code_container">
-<pre><code class="language-ruby">module Hotel
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Hotel</span>
+  <span class="k">class</span> <span class="nc">GeoLocation</span>
+    <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
+      <span class="no">Hotel</span><span class="o">::</span><span class="no">Services</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Hotel
   class GeoLocation
     class &lt;&lt; self
       Hotel::Services
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="autoloading-in-basicobject"><a class="anchorlink" href="#autoloading-in-basicobject">9.9 Autoloading in <code>BasicObject</code></a></h4><p>Los descendientes directos de <code>BasicObject</code> no tienen <code>Object</code> entre sus antepasados
 y no puede resolver constantes de nivel superior:</p><div class="code_container">
-<pre><code class="language-ruby">class C &lt; BasicObject
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">C</span> <span class="o">&lt;</span> <span class="no">BasicObject</span>
+  <span class="no">String</span> <span class="c1"># NameError: uninitialized constant C::String</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class C &lt; BasicObject
   String # NameError: uninitialized constant C::String
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuando se trata de la carga automática, la trama tiene un giro. Consideremos:</p><div class="code_container">
-<pre><code class="language-ruby">class C &lt; BasicObject
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">C</span> <span class="o">&lt;</span> <span class="no">BasicObject</span>
+  <span class="k">def</span> <span class="nf">user</span>
+    <span class="no">User</span> <span class="c1"># WRONG</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class C &lt; BasicObject
   def user
     User # WRONG
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Dado que Rails comprueba el espacio de nombres de nivel superior, <code>User</code> se carga automáticamente
 primera vez que se invoca el método <code>user</code>. Solo obtiene la excepción si el
 La constante <code>User</code> se conoce en ese punto, en particular en una * segunda * llamada a
 <code>user</code>:</p><div class="code_container">
-<pre><code class="language-ruby">c = C.new
+<pre><code class="highlight ruby"><span class="n">c</span> <span class="o">=</span> <span class="no">C</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">c</span><span class="p">.</span><span class="nf">user</span> <span class="c1"># surprisingly fine, User</span>
+<span class="n">c</span><span class="p">.</span><span class="nf">user</span> <span class="c1"># NameError: uninitialized constant C::User</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="c = C.new
 c.user # surprisingly fine, User
 c.user # NameError: uninitialized constant C::User
-</code></pre>
+">Copy</button>
 </div>
 <p>porque detecta que un espacio de nombres principal ya tiene la constante (consulte <a href="#autoloading-algorithms-qualified-references">Qualified
 Referencias</a>).</p><p>Al igual que con Ruby puro, dentro del cuerpo de un descendiente directo del uso de <code>BasicObject</code>
 siempre caminos constantes absolutos:</p><div class="code_container">
-<pre><code class="language-ruby">class C &lt; BasicObject
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">C</span> <span class="o">&lt;</span> <span class="no">BasicObject</span>
+  <span class="o">::</span><span class="no">String</span> <span class="c1"># RIGHT</span>
+
+  <span class="k">def</span> <span class="nf">user</span>
+    <span class="o">::</span><span class="no">User</span> <span class="c1"># RIGHT</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class C &lt; BasicObject
   ::String # RIGHT
 
   def user
     ::User # RIGHT
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="autoloading-in-the-test-environment"><a class="anchorlink" href="#autoloading-in-the-test-environment">9.10 Autoloading in the Test Environment</a></h4><p>Al configurar el entorno de "prueba" para la carga automática, puede considerar varios factores.</p><p>Por ejemplo, podría valer la pena ejecutar sus pruebas con una configuración idéntica a la de producción (<code>config.eager_load = true</code>, <code>config.cache_classes = true</code>) para detectar cualquier problema antes de que llegue a producción (esto es una compensación por la falta de paridad dev-prod). Sin embargo, esto ralentizará el tiempo de arranque para las pruebas individuales en una máquina de desarrollo (y no es inmediatamente compatible con Spring, ver más abajo). Así que una posibilidad es hacer esto en un
 <a href="https://en.wikipedia.org/wiki/Continuous_integration">CI</a> solo máquina (que debería funcionar sin resorte).</p><p>En una máquina de desarrollo, puede ejecutar sus pruebas con lo que sea más rápido (idealmente <code>config.eager_load = false</code>).</p><p>Con el precargador de <a href="https://github.com/rails/spring">Spring</a> (incluido con las nuevas aplicaciones de Rails), lo ideal es mantener <code>config.eager_load = false</code> según el desarrollo. A veces puede terminar con una configuración híbrida (<code>config.eager_load = true</code>,<code>config.cache_classes = true</code> Y <code>config.enable_dependency_loading = true</code>), consulte <a href="https://github.com/rails/spring/issues/519#issuecomment-348324369">edición de primavera</a>. Sin embargo, podría ser más sencillo mantener la misma configuración que el desarrollo y resolver lo que sea que esté causando que falle la carga automática (tal vez por los resultados de las pruebas de CI).</p><p>De vez en cuando puede necesitar explícitamente eager_load usando <code>Rails
 .application.eager_load!</code>en la configuración de sus pruebas; esto podría ocurrir si sus <a href="https://stackoverflow.com/questions/25796409/in-rails-how-can-i-eager-load-all-code-before-a-specific-rspec-test">pruebas involucran subprocesos múltiples</a>.</p><h3 id="troubleshooting"><a class="anchorlink" href="#troubleshooting">10 Troubleshooting</a></h3><h4 id="tracing-autoloads"><a class="anchorlink" href="#tracing-autoloads">10.1 Tracing Autoloads</a></h4><p>Active Support is able to report constants as they are autoloaded. To enable these traces in a Rails application, put the following two lines in some initializer:</p><div class="code_container">
-<pre><code class="language-ruby">ActiveSupport::Dependencies.logger = Rails.logger
-ActiveSupport::Dependencies.verbose = true
+<pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span>
+<span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">verbose</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveSupport::Dependencies.logger = Rails.logger
+ActiveSupport::Dependencies.verbose = true
+">Copy</button>
 </div>
 <h4 id="where-is-a-given-autoload-triggered-questionmark"><a class="anchorlink" href="#where-is-a-given-autoload-triggered-questionmark">10.2 Where is a Given Autoload Triggered?</a></h4><p>Si se está cargando automáticamente <code>Foo</code> constante, y le gustaría saber de dónde viene esa carga automática, simplemente arroje</p><div class="code_container">
-<pre><code class="language-ruby">puts caller
+<pre><code class="highlight ruby"><span class="nb">puts</span> <span class="nb">caller</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="puts caller
+">Copy</button>
 </div>
 <p>en la parte superior de <code>foo.rb</code> e inspeccione el seguimiento de la pila impresa.</p><h4 id="which-constants-have-been-autoloaded-questionmark"><a class="anchorlink" href="#which-constants-have-been-autoloaded-questionmark">10.3 Which Constants Have Been Autoloaded?</a></h4><p>En cualquier momento dado,</p><div class="code_container">
-<pre><code class="language-ruby">ActiveSupport::Dependencies.autoloaded_constants
+<pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">autoloaded_constants</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveSupport::Dependencies.autoloaded_constants
+">Copy</button>
 </div>
 <p>tiene la colección de constantes que se han cargado automáticamente hasta ahora.</p>
 

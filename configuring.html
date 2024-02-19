@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -227,22 +227,30 @@
 <li>Después de los inicializadores</li>
 </ul>
 <h3 id="running-code-before-rails"><a class="anchorlink" href="#running-code-before-rails">2 Running Code Before Rails</a></h3><p>En el raro caso de que su aplicación necesite ejecutar algún código antes de que se cargue Rails, colóquelo encima de la llamada para <code>require "rails/all"</code> en <code>config/application.rb</code>.</p><h3 id="configuring-rails-components"><a class="anchorlink" href="#configuring-rails-components">3 Configuring Rails Components</a></h3><p>En general, el trabajo de configurar Rails significa configurar los componentes de Rails, así como configurar Rails en sí. El archivo de configuración <code>config/application.rb</code> y los archivos de configuración específicos del entorno (como<code>config/environment/production.rb</code>) le permiten especificar las distintas configuraciones que desea transferir a todos los componentes.</p><p>Por ejemplo, puede agregar esta configuración al archivo <code>config/application.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.time_zone = 'Central Time (US &amp; Canada)'
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">time_zone</span> <span class="o">=</span> <span class="s1">'Central Time (US &amp; Canada)'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.time_zone = 'Central Time (US &amp; Canada)'
+">Copy</button>
 </div>
 <p>Esta es una configuración para Rails en sí. Si desea pasar la configuración a componentes individuales de Rails, puede hacerlo a través del mismo objeto <code>config</code> en<code>config / application.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.active_record.schema_format = :ruby
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">schema_format</span> <span class="o">=</span> <span class="ss">:ruby</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.schema_format = :ruby
+">Copy</button>
 </div>
 <p>Rails utilizará esa configuración en particular para configurar Active Record.</p><h4 id="rails-general-configuration"><a class="anchorlink" href="#rails-general-configuration">3.1 Rails General Configuration</a></h4><p>Estos métodos de configuración deben llamarse en un objeto <code>Rails::Railtie</code>, como una subclase de<code>Rails::Engine</code> o <code>Rails::Application</code>.</p>
 <ul>
 <li>
 <p><code>config.after_initialize</code> toma un bloque que se ejecutará _ después de que Rails haya terminado de inicializar la aplicación. Eso incluye la inicialización del marco en sí, los motores y todos los inicializadores de la aplicación en <code>config/initializers</code>. Tenga en cuenta que este bloque _ se ejecutará para tareas de rake. Útil para configurar valores establecidos por otros inicializadores:</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.after_initialize do
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">after_initialize</span> <span class="k">do</span>
+  <span class="no">ActionView</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">sanitized_allowed_tags</span><span class="p">.</span><span class="nf">delete</span> <span class="s1">'div'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.after_initialize do
   ActionView::Base.sanitized_allowed_tags.delete 'div'
 end
-</code></pre>
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.asset_host</code> establece el host para los activos. Útil cuando las CDN se utilizan para alojar activos o cuando desea evitar las restricciones de simultaneidad integradas en los navegadores que utilizan diferentes alias de dominio. Versión más corta de <code>config.action_controller.asset_host</code>.</p></li>
@@ -258,13 +266,20 @@ solicitud. Acepta un día de la semana válido como símbolo (por ejemplo, <code
 <li>
 <p><code>config.console</code> le permite establecer la clase que se usará como consola cuando ejecute <code>bin/rails console</code>. Es mejor ejecutarlo en el bloque <code>console</code>:</p>
 <div class="code_container">
-<pre><code class="language-ruby">console do
+<pre><code class="highlight ruby"><span class="n">console</span> <span class="k">do</span>
+  <span class="c1"># this block is called only when running console,</span>
+  <span class="c1"># so we can safely require pry here</span>
+  <span class="nb">require</span> <span class="s2">"pry"</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">console</span> <span class="o">=</span> <span class="no">Pry</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='console do
   # this block is called only when running console,
   # so we can safely require pry here
   require "pry"
   config.console = Pry
 end
-</code></pre>
+'>Copy</button>
 </div>
 </li>
 <li><p><code>config.disable_sandbox</code> controla si alguien puede iniciar o no una consola en modo sandbox. Esto es útil para evitar una sesión de larga duración de la consola sandbox, que podría hacer que un servidor de base de datos se quede sin memoria. El valor predeterminado es falso.</p></li>
@@ -293,14 +308,22 @@ por defecto es <code>: debug</code> para todos los entornos. Los niveles de regi
 <li>Para soportar el silenciamiento, el registrador debe incluir el módulo <code>ActiveSupport::LoggerSilence</code>. La clase <code>ActiveSupport::Logger</code> ya incluye estos módulos.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">class MyLogger &lt; ::Logger
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyLogger</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Logger</span>
+  <span class="kp">include</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">LoggerSilence</span>
+<span class="k">end</span>
+
+<span class="n">mylogger</span>           <span class="o">=</span> <span class="no">MyLogger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
+<span class="n">mylogger</span><span class="p">.</span><span class="nf">formatter</span> <span class="o">=</span> <span class="n">config</span><span class="p">.</span><span class="nf">log_formatter</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">logger</span>      <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TaggedLogging</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">mylogger</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyLogger &lt; ::Logger
   include ActiveSupport::LoggerSilence
 end
 
 mylogger           = MyLogger.new(STDOUT)
 mylogger.formatter = config.log_formatter
 config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
-</code></pre>
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.middleware</code> le permite configurar el middleware de la aplicación. Esto se trata en profundidad en la sección <a href="#configuring-middleware">Configuración de middleware</a> a continuación.</p></li>
@@ -313,8 +336,10 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 <li>
 <p><code>config.session_store</code> especifica qué clase usar para almacenar la sesión. Los valores posibles son <code>:cookie_store</code>, que es el predeterminado, <code>:mem_cache_store</code> y <code>:disabled</code>. El último le dice a Rails que no se ocupe de las sesiones. Por defecto, un almacén de cookies con el nombre de la aplicación como clave de sesión. También se pueden especificar tiendas de sesiones personalizadas:</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.session_store :my_custom_store
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">session_store</span> <span class="ss">:my_custom_store</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.session_store :my_custom_store
+">Copy</button>
 </div>
 <p>Esta tienda personalizada debe definirse como <code>ActionDispatch::Session::MyCustomStore</code>.</p>
 </li>
@@ -322,9 +347,12 @@ config.logger      = ActiveSupport::TaggedLogging.new(mylogger)
 <li>
 <p><code>config.autoloader</code> establece el modo de carga automática. Esta opción toma el valor predeterminado de <code>:zeitwerk</code> si se especifica <code>6.0</code> en <code>config.load_defaults</code>. Las aplicaciones aún pueden usar el autocargador clásico estableciendo este valor en <code>:classic</code> después de cargar los valores predeterminados del marco:</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.load_defaults 6.0
-config.autoloader = :classic
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.0</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">autoloader</span> <span class="o">=</span> <span class="ss">:classic</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.load_defaults 6.0
+config.autoloader = :classic
+">Copy</button>
 </div>
 </li>
 </ul>
@@ -348,11 +376,16 @@ la canalización está habilitada. Se establece en <code>true</code> de forma pr
 <li><p><code>config.assets.quiet</code> deshabilita el registro de solicitudes de activos. Establecido en "true" de forma predeterminada en <code>development.rb</code>.</p></li>
 </ul>
 <h4 id="configuring-generators"><a class="anchorlink" href="#configuring-generators">3.3 Configuring Generators</a></h4><p>Rails te permite alterar qué generadores se usan con el método <code>config.generators</code>. Este método toma un bloque:</p><div class="code_container">
-<pre><code class="language-ruby">config.generators do |g|
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
+  <span class="n">g</span><span class="p">.</span><span class="nf">orm</span> <span class="ss">:active_record</span>
+  <span class="n">g</span><span class="p">.</span><span class="nf">test_framework</span> <span class="ss">:test_unit</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.generators do |g|
   g.orm :active_record
   g.test_framework :test_unit
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El conjunto completo de métodos que se pueden utilizar en este bloque es el siguiente:</p>
 <ul>
@@ -393,27 +426,39 @@ o no. El valor predeterminado es <code>true</code>.</li>
 Se incluye en el entorno de desarrollo por defecto con la siguiente configuración:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">   Rails.application.config.hosts = [
+<pre><code class="highlight ruby">   <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">hosts</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="no">IPAddr</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"0.0.0.0/0"</span><span class="p">),</span> <span class="c1"># All IPv4 addresses.</span>
+     <span class="no">IPAddr</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"::/0"</span><span class="p">),</span>      <span class="c1"># All IPv6 addresses.</span>
+     <span class="s2">"localhost"</span>              <span class="c1"># The localhost reserved domain.</span>
+   <span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='   Rails.application.config.hosts = [
      IPAddr.new("0.0.0.0/0"), # All IPv4 addresses.
      IPAddr.new("::/0"),      # All IPv6 addresses.
      "localhost"              # The localhost reserved domain.
    ]
-</code></pre>
+'>Copy</button>
 </div>
 <p>   En otros entornos, <code>Rails.application.config.hosts</code> está vacío y no
    Se realizarán las comprobaciones del encabezado <code>Host</code>. Si quieres protegerte del encabezado
    ataques a la producción, debe permitir manualmente los hosts permitidos
    con:</p><div class="code_container">
-<pre><code class="language-ruby">   Rails.application.config.hosts &lt;&lt; "product.com"
+<pre><code class="highlight ruby">   <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">hosts</span> <span class="o">&lt;&lt;</span> <span class="s2">"product.com"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='   Rails.application.config.hosts &lt;&lt; "product.com"
+'>Copy</button>
 </div>
 <p>   El host de una solicitud se compara con las entradas <code>hosts</code> con el caso
    operador (<code>#===</code>), que permite a <code>hosts</code> admitir entradas de tipo <code>Regexp</code>,
    <code>Proc</code> e <code>IPAddr</code>, por nombrar algunos. Aquí hay un ejemplo con una expresión regular.</p><div class="code_container">
-<pre><code class="language-ruby">   # Allow requests from subdomains like `www.product.com` and
+<pre><code class="highlight ruby">   <span class="c1"># Allow requests from subdomains like `www.product.com` and</span>
+   <span class="c1"># `beta1.product.com`.</span>
+   <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">hosts</span> <span class="o">&lt;&lt;</span> <span class="sr">/.*\.product\.com/</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="   # Allow requests from subdomains like `www.product.com` and
    # `beta1.product.com`.
    Rails.application.config.hosts &lt;&lt; /.*\.product\.com/
-</code></pre>
+">Copy</button>
 </div>
 <p>   Se admite un caso especial que le permite permitir todos los subdominios:</p>
 <ul>
@@ -451,8 +496,10 @@ Se incluye en el entorno de desarrollo por defecto con la siguiente configuraci�
 <code>Rack::Head</code> convierte las solicitudes HEAD en solicitudes GET y las sirve como tal.</li>
 </ul>
 <p>Además de este middleware habitual, puede agregar el suyo propio utilizando el método <code>config.middleware.use</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.use Magical::Unicorns
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="no">Magical</span><span class="o">::</span><span class="no">Unicorns</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.use Magical::Unicorns
+">Copy</button>
 </div>
 <p>Esto colocará el middleware <code>Magical::Unicorns</code> al final de la pila. Puede usar <code>insert_before</code> si desea agregar un middleware antes que otro.
 <code>ruby
@@ -461,25 +508,35 @@ config.middleware.insert_before Rack::Head, Magical::Unicorns
 <code>ruby
 config.middleware.insert_before 0, Magical::Unicorns
 </code></p><p>También hay <code>insert_after</code> que insertará un middleware tras otro:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.insert_after Rack::Head, Magical::Unicorns
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">insert_after</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Head</span><span class="p">,</span> <span class="no">Magical</span><span class="o">::</span><span class="no">Unicorns</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.insert_after Rack::Head, Magical::Unicorns
+">Copy</button>
 </div>
 <p>Los middlewares también se pueden cambiar y reemplazar por otros:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.swap ActionController::Failsafe, Lifo::Failsafe
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">swap</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Failsafe</span><span class="p">,</span> <span class="no">Lifo</span><span class="o">::</span><span class="no">Failsafe</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.swap ActionController::Failsafe, Lifo::Failsafe
+">Copy</button>
 </div>
 <p>Los middlewares se pueden mover de un lugar a otro:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.move_before ActionDispatch::Flash, Magical::Unicorns
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">move_before</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="p">,</span> <span class="no">Magical</span><span class="o">::</span><span class="no">Unicorns</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.move_before ActionDispatch::Flash, Magical::Unicorns
+">Copy</button>
 </div>
 <p>Esto moverá el middleware <code>Magical::Unicorns</code> antes
 <code>ActionDispatch::Flash</code>. También puede moverlo después de:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.move_after ActionDispatch::Flash, Magical::Unicorns
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">move_after</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Flash</span><span class="p">,</span> <span class="no">Magical</span><span class="o">::</span><span class="no">Unicorns</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.move_after ActionDispatch::Flash, Magical::Unicorns
+">Copy</button>
 </div>
 <p>También se pueden quitar de la pila por completo:</p><div class="code_container">
-<pre><code class="language-ruby">config.middleware.delete Rack::MethodOverride
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">delete</span> <span class="no">Rack</span><span class="o">::</span><span class="no">MethodOverride</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.delete Rack::MethodOverride
+">Copy</button>
 </div>
 <h4 id="configuring-i18n"><a class="anchorlink" href="#configuring-i18n">3.5 Configuring i18n</a></h4><p>Todas estas opciones de configuración se delegan a la biblioteca <code>I18n</code>.</p>
 <ul>
@@ -495,26 +552,34 @@ en controladores y vistas. Este valor predeterminado es <code>false</code>.</p><
 <li>Puede establecer la opción en <code>true</code> para usar la configuración regional predeterminada como alternativa, así:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">config.i18n.fallbacks = true
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">i18n</span><span class="p">.</span><span class="nf">fallbacks</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.i18n.fallbacks = true
+">Copy</button>
 </div>
 
 <ul>
 <li>O puede establecer una serie de configuraciones regionales como reserva, así:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">config.i18n.fallbacks = [:tr, :en]
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">i18n</span><span class="p">.</span><span class="nf">fallbacks</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:tr</span><span class="p">,</span> <span class="ss">:en</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.i18n.fallbacks = [:tr, :en]
+">Copy</button>
 </div>
 
 <ul>
 <li>O puede establecer diferentes alternativas para las configuraciones regionales de forma individual. Por ejemplo, si desea utilizar <code>:tr</code> para <code>:az</code> y <code>:de</code>,<code>:en</code> para <code>:da</code> como alternativas, puede hacerlo así:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">config.i18n.fallbacks = { az: :tr, da: [:de, :en] }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">i18n</span><span class="p">.</span><span class="nf">fallbacks</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">az: :tr</span><span class="p">,</span> <span class="ss">da: </span><span class="p">[</span><span class="ss">:de</span><span class="p">,</span> <span class="ss">:en</span><span class="p">]</span> <span class="p">}</span>
+<span class="c1">#or</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">i18n</span><span class="p">.</span><span class="nf">fallbacks</span><span class="p">.</span><span class="nf">map</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">az: :tr</span><span class="p">,</span> <span class="ss">da: </span><span class="p">[</span><span class="ss">:de</span><span class="p">,</span> <span class="ss">:en</span><span class="p">]</span> <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.i18n.fallbacks = { az: :tr, da: [:de, :en] }
 #or
 config.i18n.fallbacks.map = { az: :tr, da: [:de, :en] }
-</code></pre>
+">Copy</button>
 </div>
 </li>
 </ul>
@@ -621,17 +686,25 @@ El valor predeterminado es <code>/ ^ fk_rails_ [0-9a-f] {10} $ /</code>.</p></li
 <li>
 <p><code>config.action_controller.enable_fragment_cache_logging</code> determina si se registran las lecturas y escrituras de fragmentos de caché en formato detallado de la siguiente manera:</p>
 <div class="code_container">
-<pre><code class="language-plain">Read fragment views/v1/2914079/v1/2914079/recordings/70182313-20160225015037000000/d0bdf2974e1ef6d31685c3b392ad0b74 (0.6ms)
+<pre><code class="highlight plaintext">Read fragment views/v1/2914079/v1/2914079/recordings/70182313-20160225015037000000/d0bdf2974e1ef6d31685c3b392ad0b74 (0.6ms)
 Rendered messages/_message.html.erb in 1.2 ms [cache hit]
 Write fragment views/v1/2914079/v1/2914079/recordings/70182313-20160225015037000000/3b4e249ac9d168c617e32e84b99218b5 (1.1ms)
 Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Read fragment views/v1/2914079/v1/2914079/recordings/70182313-20160225015037000000/d0bdf2974e1ef6d31685c3b392ad0b74 (0.6ms)
+Rendered messages/_message.html.erb in 1.2 ms [cache hit]
+Write fragment views/v1/2914079/v1/2914079/recordings/70182313-20160225015037000000/3b4e249ac9d168c617e32e84b99218b5 (1.1ms)
+Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
+">Copy</button>
 </div>
 <p>De forma predeterminada, se establece en <code>false</code>, lo que da como resultado el siguiente resultado:</p>
 <div class="code_container">
-<pre><code class="language-plain">Rendered messages/_message.html.erb in 1.2 ms [cache hit]
+<pre><code class="highlight plaintext">Rendered messages/_message.html.erb in 1.2 ms [cache hit]
 Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Rendered messages/_message.html.erb in 1.2 ms [cache hit]
+Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
+">Copy</button>
 </div>
 </li>
 </ul>
@@ -641,7 +714,16 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
 <li>
 <p><code>config.action_dispatch.default_headers</code> es un hash con encabezados HTTP que se establecen de forma predeterminada en cada respuesta. Por defecto, esto se define como:</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_dispatch.default_headers = {
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">default_headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'X-Frame-Options'</span> <span class="o">=&gt;</span> <span class="s1">'SAMEORIGIN'</span><span class="p">,</span>
+  <span class="s1">'X-XSS-Protection'</span> <span class="o">=&gt;</span> <span class="s1">'1; mode=block'</span><span class="p">,</span>
+  <span class="s1">'X-Content-Type-Options'</span> <span class="o">=&gt;</span> <span class="s1">'nosniff'</span><span class="p">,</span>
+  <span class="s1">'X-Download-Options'</span> <span class="o">=&gt;</span> <span class="s1">'noopen'</span><span class="p">,</span>
+  <span class="s1">'X-Permitted-Cross-Domain-Policies'</span> <span class="o">=&gt;</span> <span class="s1">'none'</span><span class="p">,</span>
+  <span class="s1">'Referrer-Policy'</span> <span class="o">=&gt;</span> <span class="s1">'strict-origin-when-cross-origin'</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_dispatch.default_headers = {
   'X-Frame-Options' =&gt; 'SAMEORIGIN',
   'X-XSS-Protection' =&gt; '1; mode=block',
   'X-Content-Type-Options' =&gt; 'nosniff',
@@ -649,7 +731,7 @@ Rendered recordings/threads/_thread.html.erb in 1.5 ms [cache miss]
   'X-Permitted-Cross-Domain-Policies' =&gt; 'none',
   'Referrer-Policy' =&gt; 'strict-origin-when-cross-origin'
 }
-</code></pre>
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.action_dispatch.default_charset</code> especifica el juego de caracteres predeterminado para todas las representaciones. El valor predeterminado es <code>nil</code>.</p></li>
@@ -684,7 +766,27 @@ para más información. Su valor predeterminado es <code>true</code>.</p></li>
 <li><p><code>config.action_dispatch.rescue_responses</code> configura qué excepciones se asignan a un estado HTTP. Acepta un hash y puede especificar pares de excepción / estado. Por defecto, esto se define como:</p></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">  config.action_dispatch.rescue_responses = {
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">rescue_responses</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'ActionController::RoutingError'</span>               <span class="o">=&gt;</span> <span class="ss">:not_found</span><span class="p">,</span>
+    <span class="s1">'AbstractController::ActionNotFound'</span>           <span class="o">=&gt;</span> <span class="ss">:not_found</span><span class="p">,</span>
+    <span class="s1">'ActionController::MethodNotAllowed'</span>           <span class="o">=&gt;</span> <span class="ss">:method_not_allowed</span><span class="p">,</span>
+    <span class="s1">'ActionController::UnknownHttpMethod'</span>          <span class="o">=&gt;</span> <span class="ss">:method_not_allowed</span><span class="p">,</span>
+    <span class="s1">'ActionController::NotImplemented'</span>             <span class="o">=&gt;</span> <span class="ss">:not_implemented</span><span class="p">,</span>
+    <span class="s1">'ActionController::UnknownFormat'</span>              <span class="o">=&gt;</span> <span class="ss">:not_acceptable</span><span class="p">,</span>
+    <span class="s1">'ActionController::InvalidAuthenticityToken'</span>   <span class="o">=&gt;</span> <span class="ss">:unprocessable_entity</span><span class="p">,</span>
+    <span class="s1">'ActionController::InvalidCrossOriginRequest'</span>  <span class="o">=&gt;</span> <span class="ss">:unprocessable_entity</span><span class="p">,</span>
+    <span class="s1">'ActionDispatch::Http::Parameters::ParseError'</span> <span class="o">=&gt;</span> <span class="ss">:bad_request</span><span class="p">,</span>
+    <span class="s1">'ActionController::BadRequest'</span>                 <span class="o">=&gt;</span> <span class="ss">:bad_request</span><span class="p">,</span>
+    <span class="s1">'ActionController::ParameterMissing'</span>           <span class="o">=&gt;</span> <span class="ss">:bad_request</span><span class="p">,</span>
+    <span class="s1">'Rack::QueryParser::ParameterTypeError'</span>        <span class="o">=&gt;</span> <span class="ss">:bad_request</span><span class="p">,</span>
+    <span class="s1">'Rack::QueryParser::InvalidParameterError'</span>     <span class="o">=&gt;</span> <span class="ss">:bad_request</span><span class="p">,</span>
+    <span class="s1">'ActiveRecord::RecordNotFound'</span>                 <span class="o">=&gt;</span> <span class="ss">:not_found</span><span class="p">,</span>
+    <span class="s1">'ActiveRecord::StaleObjectError'</span>               <span class="o">=&gt;</span> <span class="ss">:conflict</span><span class="p">,</span>
+    <span class="s1">'ActiveRecord::RecordInvalid'</span>                  <span class="o">=&gt;</span> <span class="ss">:unprocessable_entity</span><span class="p">,</span>
+    <span class="s1">'ActiveRecord::RecordNotSaved'</span>                 <span class="o">=&gt;</span> <span class="ss">:unprocessable_entity</span>
+  <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.action_dispatch.rescue_responses = {
     'ActionController::RoutingError'               =&gt; :not_found,
     'AbstractController::ActionNotFound'           =&gt; :not_found,
     'ActionController::MethodNotAllowed'           =&gt; :method_not_allowed,
@@ -703,7 +805,7 @@ para más información. Su valor predeterminado es <code>true</code>.</p></li>
     'ActiveRecord::RecordInvalid'                  =&gt; :unprocessable_entity,
     'ActiveRecord::RecordNotSaved'                 =&gt; :unprocessable_entity
   }
-</code></pre>
+">Copy</button>
 </div>
 <p>Cualquier excepción que no esté configurada se asignará a 500 Internal Server Error.</p>
 <ul>
@@ -719,10 +821,14 @@ encabezado sin modificación. El valor predeterminado es <code>false</code>.</p>
 <li>
 <p><code>config.action_view.field_error_proc</code> proporciona un generador HTML para mostrar errores que provienen de Active Model. El valor predeterminado es</p>
 <div class="code_container">
-<pre><code class="language-ruby">Proc.new do |html_tag, instance|
+<pre><code class="highlight ruby"><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">html_tag</span><span class="p">,</span> <span class="n">instance</span><span class="o">|</span>
+  <span class="sx">%Q(&lt;div class="field_with_errors"&gt;</span><span class="si">#{</span><span class="n">html_tag</span><span class="si">}</span><span class="sx">&lt;/div&gt;)</span><span class="p">.</span><span class="nf">html_safe</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='Proc.new do |html_tag, instance|
   %Q(&lt;div class="field_with_errors"&gt;#{html_tag}&lt;/div&gt;).html_safe
 end
-</code></pre>
+'>Copy</button>
 </div>
 </li>
 <li><p><code>config.action_view.default_form_builder</code> le dice a Rails qué creador de formularios debe
@@ -742,8 +848,10 @@ config ajuste a <code>true</code>.</p></li>
 <li>
 <p><code>config.action_view.prefix_partial_path_with_controller_namespace</code> determina si los parciales se buscan o no desde un subdirectorio en plantillas renderizadas desde controladores con espacio de nombres. Por ejemplo, considere un controlador llamado <code>Admin::ArticlesController</code> que muestra esta plantilla:</p>
 <div class="code_container">
-<pre><code class="language-erb">&lt;%= render @article %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="vi">@article</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= render @article %&gt;
+">Copy</button>
 </div>
 <p>La configuración predeterminada es <code>true</code>, que usa el parcial en <code>/admin/articles/_article.erb</code>. Establecer el valor en <code>false</code> generaría <code>/articles/_article.erb</code>, que es el mismo comportamiento que la representación desde un controlador sin espacio de nombres como <code>ArticlesController</code>.</p>
 </li>
@@ -761,8 +869,10 @@ config ajuste a <code>true</code>.</p></li>
 <code>config.action_mailbox.logger</code> contiene el registrador utilizado por Action Mailbox. Acepta un registrador conforme a la interfaz de Log4r o la clase Ruby Logger predeterminada. El predeterminado es <code>Rails.logger</code>.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">  config.action_mailbox.logger = ActiveSupport::Logger.new(STDOUT)
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">action_mailbox</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.action_mailbox.logger = ActiveSupport::Logger.new(STDOUT)
+">Copy</button>
 </div>
 
 <ul>
@@ -770,9 +880,12 @@ config ajuste a <code>true</code>.</p></li>
 <code>config.action_mailbox.incinerate_after</code> acepta un <code>ActiveSupport::Duration</code> que indica cuánto tiempo después de procesar los registros <code>ActionMailbox::InboundEmail</code> deben ser destruidos. El valor predeterminado es <code>30 días</code>.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">   # Incinerate inbound emails 14 days after processing.
-   config.action_mailbox.incinerate_after = 14.days
+<pre><code class="highlight ruby">   <span class="c1"># Incinerate inbound emails 14 days after processing.</span>
+   <span class="n">config</span><span class="p">.</span><span class="nf">action_mailbox</span><span class="p">.</span><span class="nf">incinerate_after</span> <span class="o">=</span> <span class="mi">14</span><span class="p">.</span><span class="nf">days</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="   # Incinerate inbound emails 14 days after processing.
+   config.action_mailbox.incinerate_after = 14.days
+">Copy</button>
 </div>
 
 <ul>
@@ -820,53 +933,72 @@ config ajuste a <code>true</code>.</p></li>
 <li>
 <p><code>config.action_mailer.default_options</code> configura los valores predeterminados de Action Mailer. Úselo para configurar opciones como <code>from</code> o <code>reply_to</code> para cada correo. Estos predeterminados a:</p>
 <div class="code_container">
-<pre><code class="language-ruby">mime_version:  "1.0",
+<pre><code class="highlight ruby"><span class="ss">mime_version:  </span><span class="s2">"1.0"</span><span class="p">,</span>
+<span class="ss">charset:       </span><span class="s2">"UTF-8"</span><span class="p">,</span>
+<span class="ss">content_type: </span><span class="s2">"text/plain"</span><span class="p">,</span>
+<span class="ss">parts_order:  </span><span class="p">[</span><span class="s2">"text/plain"</span><span class="p">,</span> <span class="s2">"text/enriched"</span><span class="p">,</span> <span class="s2">"text/html"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='mime_version:  "1.0",
 charset:       "UTF-8",
 content_type: "text/plain",
 parts_order:  ["text/plain", "text/enriched", "text/html"]
-</code></pre>
+'>Copy</button>
 </div>
 <p>Assign a hash to set additional options:</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.default_options = {
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">default_options</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">from: </span><span class="s2">"noreply@example.com"</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.default_options = {
   from: "noreply@example.com"
 }
-</code></pre>
+'>Copy</button>
 </div>
 </li>
 <li>
 <p><code>config.action_mailer.observers</code> registra observadores que serán notificados cuando se entregue el correo.</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.observers = ["MailObserver"]
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">observers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MailObserver"</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.observers = ["MailObserver"]
+'>Copy</button>
 </div>
 </li>
 <li>
 <p><code>config.action_mailer.interceptors</code> registra los interceptores que serán llamados antes de que se envíe el correo.</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.interceptors = ["MailInterceptor"]
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">interceptors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MailInterceptor"</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.interceptors = ["MailInterceptor"]
+'>Copy</button>
 </div>
 </li>
 <li>
 <p><code>config.action_mailer.preview_interceptors</code> registra los interceptores que serán llamados antes de que se obtenga una vista previa del correo.</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.preview_interceptors = ["MyPreviewMailInterceptor"]
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">preview_interceptors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MyPreviewMailInterceptor"</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.preview_interceptors = ["MyPreviewMailInterceptor"]
+'>Copy</button>
 </div>
 </li>
 <li>
 <p><code>config.action_mailer.preview_path</code> especifica la ubicación de las vistas previas de correo.</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">preview_path</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/lib/mailer_previews"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+'>Copy</button>
 </div>
 </li>
 <li>
 <p><code>config.action_mailer.show_previews</code> habilitar o deshabilitar las vistas previas de correo. Por defecto, esto es <code>true</code> en desarrollo.</p>
 <div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.show_previews = false
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">show_previews</span> <span class="o">=</span> <span class="kp">false</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.show_previews = false
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.action_mailer.deliver_later_queue_name</code> especifica el nombre de la cola para
@@ -896,17 +1028,100 @@ mailers. Por defecto esto es<code>mailers</code>.</p></li>
 <li>
 <p><code>config.active_job.queue_adapter</code> establece el adaptador para el backend de cola. El adaptador predeterminado es <code>: async</code>. Para obtener una lista actualizada de adaptadores integrados, consulte la <a href="https://edgeapi.rubyonrails.org/classes/ActiveJob/QueueAdapters.html">documentación de la API de ActiveJob::QueueAdapters</a>.</p>
 <div class="code_container">
-<pre><code class="language-ruby"># Be sure to have the adapter's gem in your Gemfile
+<pre><code class="highlight ruby"><span class="c1"># Be sure to have the adapter's gem in your Gemfile</span>
+<span class="c1"># and follow the adapter's specific installation</span>
+<span class="c1"># and deployment instructions.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_adapter</span> <span class="o">=</span> <span class="ss">:sidekiq</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Be sure to have the adapter's gem in your Gemfile
 # and follow the adapter's specific installation
 # and deployment instructions.
 config.active_job.queue_adapter = :sidekiq
-</code></pre>
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.active_job.default_queue_name</code> se puede usar para cambiar el nombre de la cola predeterminado. De forma predeterminada, esto es <code>default</code>.</p></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">    config.active_job.default_queue_name = :medium_priority
+<pre><code class="highlight ruby">    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">default_queue_name</span> <span class="o">=</span> <span class="ss">:medium_priority</span>
+    <span class="sb">```
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_prefix</span><span class="sb">` Le permite establecer un prefijo de nombre de cola opcional, que no esté en blanco, para todos los trabajos. De forma predeterminada, está en blanco y no se utiliza.
+
+    La siguiente configuración pondría en cola el trabajo dado en la cola `</span><span class="n">production_high_priority</span><span class="sb">` cuando se ejecuta en producción:
+
+    ```</span><span class="n">ruby</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_prefix</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span>
+    <span class="sb">```
+
+    ```</span><span class="n">ruby</span>
+    <span class="k">class</span> <span class="nc">GuestsCleanupJob</span> <span class="o">&lt;</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">Base</span>
+      <span class="n">queue_as</span> <span class="ss">:high_priority</span>
+      <span class="c1">#....</span>
+    <span class="k">end</span>
+    <span class="sb">```
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_delimiter</span><span class="sb">` tiene un valor predeterminado de `</span><span class="s1">'_'</span><span class="sb">`. Si se establece `</span><span class="n">queue_name_prefix</span><span class="sb">`, entonces `</span><span class="n">queue_name_delimiter</span><span class="sb">` se une al prefijo y al nombre de la cola sin prefijo.
+
+   La siguiente configuración pondría en cola el trabajo proporcionado en la cola `</span><span class="n">video_server</span><span class="p">.</span><span class="nf">low_priority</span><span class="sb">`:
+
+    ```</span><span class="n">ruby</span>
+    <span class="c1"># prefix must be set for delimiter to be used</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_prefix</span> <span class="o">=</span> <span class="s1">'video_server'</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">queue_name_delimiter</span> <span class="o">=</span> <span class="s1">'.'</span>
+    <span class="sb">```
+
+    ```</span><span class="n">ruby</span>
+    <span class="k">class</span> <span class="nc">EncoderJob</span> <span class="o">&lt;</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">Base</span>
+      <span class="n">queue_as</span> <span class="ss">:low_priority</span>
+      <span class="c1">#....</span>
+    <span class="k">end</span>
+    <span class="sb">```
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">logger</span><span class="sb">` acepta un registrador que se ajusta a la interfaz de Log4r o la clase Ruby Logger predeterminada, que luego se usa para registrar información de Active Job. Puede recuperar este registrador llamando a `</span><span class="n">logger</span><span class="sb">` en una clase de trabajo activo o en una instancia de trabajo activo. Establezca en `</span><span class="kp">nil</span><span class="sb">` para deshabilitar el registro.
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">custom_serializers</span><span class="sb">` permite configurar serializadores de argumentos personalizados. Por defecto es `</span><span class="p">[]</span><span class="sb">`.
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">return_false_on_aborted_enqueue</span><span class="sb">` cambia el valor de retorno de `</span><span class="c1">#enqueue` a falso en lugar de la instancia del trabajo cuando se aborta la puesta en cola. El valor predeterminado es `false`.</span>
+
+<span class="o">*</span> <span class="sb">`config.active_job.log_arguments`</span> <span class="n">controla</span> <span class="n">si</span> <span class="n">los</span> <span class="n">argumentos</span> <span class="n">de</span> <span class="n">un</span> <span class="n">trabajo</span> <span class="n">est</span><span class="err">á</span><span class="n">n</span> <span class="n">registrados</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`true`</span><span class="p">.</span>
+
+<span class="nf">*</span> <span class="sb">`config.active_job.retry_jitter`</span> <span class="n">controla</span> <span class="n">la</span> <span class="n">cantidad</span> <span class="n">de</span><span class="s2">" jitter "</span><span class="p">(</span><span class="n">variaci</span><span class="err">ó</span><span class="n">n</span> <span class="n">aleatoria</span><span class="p">)</span> <span class="n">aplicada</span> <span class="n">al</span> <span class="n">tiempo</span> <span class="n">de</span> <span class="n">retardo</span> <span class="n">calculado</span> <span class="n">al</span> <span class="n">reintentar</span> <span class="n">trabajos</span> <span class="n">fallidos</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`0,15`</span><span class="o">.</span>
+
+<span class="c1">### Configuring Action Cable</span>
+
+<span class="o">*</span> <span class="sb">`config.action_cable.url`</span> <span class="n">acepta</span> <span class="n">una</span> <span class="n">cadena</span> <span class="n">para</span> <span class="n">la</span> <span class="no">URL</span> <span class="n">donde</span>
+ <span class="n">est</span><span class="err">á</span> <span class="n">alojando</span> <span class="n">su</span> <span class="n">servidor</span> <span class="no">Action</span> <span class="no">Cable</span><span class="o">.</span> <span class="no">Usar</span><span class="err">í</span><span class="n">as</span> <span class="n">esta</span> <span class="n">opci</span><span class="err">ó</span><span class="n">n</span>
+<span class="n">si</span> <span class="n">est</span><span class="err">á</span> <span class="n">ejecutando</span> <span class="n">servidores</span> <span class="no">Action</span> <span class="no">Cable</span> <span class="n">que</span> <span class="n">est</span><span class="err">á</span><span class="n">n</span> <span class="n">separados</span> <span class="n">de</span> <span class="n">su</span>
+<span class="n">aplicaci</span><span class="err">ó</span><span class="n">n</span> <span class="n">principal</span><span class="p">.</span>
+<span class="nf">*</span> <span class="sb">`config.action_cable.mount_path`</span> <span class="n">acepta</span> <span class="n">una</span> <span class="n">cadena</span> <span class="n">sobre</span> <span class="n">d</span><span class="err">ó</span><span class="n">nde</span> <span class="n">montar</span> <span class="n">la</span> <span class="n">acci</span><span class="err">ó</span><span class="n">n</span>
+  <span class="no">Cable</span><span class="p">,</span> <span class="n">como</span> <span class="n">parte</span> <span class="n">del</span> <span class="n">proceso</span> <span class="n">del</span> <span class="n">servidor</span> <span class="n">principal</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`/cable`</span><span class="o">.</span>
+<span class="no">Puede</span> <span class="n">configurar</span> <span class="n">esto</span> <span class="n">como</span> <span class="kp">nil</span> <span class="n">para</span> <span class="n">no</span> <span class="n">montar</span> <span class="no">Action</span> <span class="no">Cable</span> <span class="n">como</span> <span class="n">parte</span> <span class="n">de</span> <span class="n">su</span>
+<span class="n">servidor</span> <span class="n">normal</span> <span class="n">de</span> <span class="no">Rails</span><span class="o">.</span>
+
+<span class="no">Puede</span> <span class="n">encontrar</span> <span class="n">opciones</span> <span class="n">de</span> <span class="n">configuraci</span><span class="err">ó</span><span class="n">n</span> <span class="n">m</span><span class="err">á</span><span class="n">s</span> <span class="n">detalladas</span> <span class="n">en</span> <span class="n">el</span>
+<span class="p">[</span><span class="no">Action</span> <span class="no">Cable</span> <span class="no">Overview</span><span class="p">](</span><span class="n">action_cable_overview</span><span class="p">.</span><span class="nf">html</span><span class="c1">#configuration).</span>
+
+
+<span class="c1">### Configuring Active Storage</span>
+
+<span class="sb">`config.active_storage`</span> <span class="n">proporciona</span> <span class="n">las</span> <span class="n">siguientes</span> <span class="n">opciones</span> <span class="n">de</span> <span class="n">configuraci</span><span class="err">ó</span><span class="ss">n:
+
+</span><span class="o">*</span> <span class="sb">`config.active_storage.variant_processor`</span> <span class="n">acepta</span> <span class="n">un</span> <span class="n">s</span><span class="err">í</span><span class="n">mbolo</span> <span class="sb">`:mini_magick`</span> <span class="n">o</span> <span class="sb">`:vips`</span><span class="p">,</span> <span class="n">especificando</span> <span class="n">si</span> <span class="n">las</span> <span class="n">transformaciones</span> <span class="n">variantes</span> <span class="n">se</span> <span class="n">realizar</span><span class="err">á</span><span class="n">n</span> <span class="n">con</span> <span class="no">MiniMagick</span> <span class="n">o</span> <span class="n">ruby</span><span class="o">-</span><span class="n">vips</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`:mini_magick`</span><span class="p">.</span>
+
+<span class="nf">*</span> <span class="sb">`config.active_storage.analyzers`</span> <span class="n">acepta</span> <span class="n">una</span> <span class="n">matriz</span> <span class="n">de</span> <span class="n">clases</span> <span class="n">que</span> <span class="n">indican</span> <span class="n">los</span> <span class="n">analizadores</span> <span class="n">disponibles</span> <span class="n">para</span> <span class="n">los</span> <span class="n">blobs</span> <span class="n">de</span> <span class="no">Active</span> <span class="no">Storage</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`[ActiveStorage::Analyzer::ImageAnalyzer, ActiveStorage::Analyzer::VideoAnalyzer]`</span><span class="o">.</span> <span class="no">El</span> <span class="n">primero</span> <span class="n">puede</span> <span class="n">extraer</span> <span class="n">el</span> <span class="n">ancho</span> <span class="n">y</span> <span class="n">el</span> <span class="n">alto</span> <span class="n">de</span> <span class="n">una</span> <span class="n">mancha</span> <span class="n">de</span> <span class="n">imagen</span><span class="p">;</span> <span class="n">este</span> <span class="err">ú</span><span class="n">ltimo</span> <span class="n">puede</span> <span class="n">extraer</span> <span class="n">el</span> <span class="n">ancho</span><span class="p">,</span> <span class="n">alto</span><span class="p">,</span> <span class="n">duraci</span><span class="err">ó</span><span class="n">n</span><span class="p">,</span> <span class="err">á</span><span class="n">ngulo</span> <span class="n">y</span> <span class="n">relaci</span><span class="err">ó</span><span class="n">n</span> <span class="n">de</span> <span class="n">aspecto</span> <span class="n">de</span> <span class="n">un</span> <span class="n">blob</span> <span class="n">de</span> <span class="n">video</span><span class="p">.</span>
+
+<span class="nf">*</span> <span class="sb">`config.active_storage.previewers`</span> <span class="n">acepta</span> <span class="n">una</span> <span class="n">serie</span> <span class="n">de</span> <span class="n">clases</span> <span class="n">que</span> <span class="n">indican</span> <span class="n">los</span> <span class="n">previsualizadores</span> <span class="n">de</span> <span class="n">im</span><span class="err">á</span><span class="n">genes</span> <span class="n">disponibles</span> <span class="n">en</span> <span class="n">los</span> <span class="n">blobs</span> <span class="n">de</span> <span class="no">Active</span> <span class="no">Storage</span><span class="o">.</span> <span class="no">El</span> <span class="n">valor</span> <span class="n">predeterminado</span> <span class="n">es</span> <span class="sb">`[ActiveStorage::Previewer::PopplerPDFPreviewer, ActiveStorage::Previewer::MuPDFPreviewer, ActiveStorage::Previewer::VideoPreviewer]`</span><span class="p">.</span> <span class="nf">`</span><span class="no">PopplerPDFPreviewer</span><span class="sb">` y `</span><span class="no">MuPDFPreviewer</span><span class="sb">`  pueden generar una miniatura desde la primera página de un blob PDF; `</span><span class="no">VideoPreviewer</span><span class="sb">` del fotograma relevante de un blob de vídeo.
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">paths</span><span class="sb">` acepta un hash de opciones que indican la ubicación de los comandos del analizador / vista previa. El valor predeterminado es `</span><span class="p">{}</span><span class="sb">`, lo que significa que los comandos se buscarán en la ruta predeterminada. Puede incluir cualquiera de estas opciones:
+    * `</span><span class="ss">:ffprobe</span><span class="sb">` - La ubicación del ejecutable ffprobe.
+    * `</span><span class="ss">:mutool</span><span class="sb">` - La ubicación del ejecutable mutool.
+    * `</span><span class="ss">:ffmpeg</span><span class="sb">` - La ubicación del ejecutable ffmpeg.
+
+   ```</span><span class="n">ruby</span>
+   <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">paths</span><span class="p">[</span><span class="ss">:ffprobe</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'/usr/local/bin/ffprobe'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="    config.active_job.default_queue_name = :medium_priority
     ```
 
 * `config.active_job.queue_name_prefix` Le permite establecer un prefijo de nombre de cola opcional, que no esté en blanco, para todos los trabajos. De forma predeterminada, está en blanco y no se utiliza.
@@ -949,7 +1164,7 @@ config.active_job.queue_adapter = :sidekiq
 
 * `config.active_job.log_arguments` controla si los argumentos de un trabajo están registrados. El valor predeterminado es `true`.
 
-* `config.active_job.retry_jitter` controla la cantidad de" jitter "(variación aleatoria) aplicada al tiempo de retardo calculado al reintentar trabajos fallidos. El valor predeterminado es `0,15`.
+* `config.active_job.retry_jitter` controla la cantidad de&quot; jitter &quot;(variación aleatoria) aplicada al tiempo de retardo calculado al reintentar trabajos fallidos. El valor predeterminado es `0,15`.
 
 ### Configuring Action Cable
 
@@ -983,7 +1198,7 @@ Puede encontrar opciones de configuración más detalladas en el
 
    ```ruby
    config.active_storage.paths[:ffprobe] = '/usr/local/bin/ffprobe'
-</code></pre>
+">Copy</button>
 </div>
 
 <ul>
@@ -995,21 +1210,31 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
 <li>
 <p><code>config.active_storage.queues.analysis</code> acepta un símbolo que indica la cola de trabajos activos que se utilizarán para los trabajos de análisis. Cuando esta opción es <code>nil</code>, los trabajos de análisis se envían a la cola de trabajos activos predeterminada (consulte<code>config.active_job.default_queue_name</code>).</p>
 <div class="code_container">
-<pre><code class="language-ruby">  config.active_storage.queues.analysis = :low_priority
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">queues</span><span class="p">.</span><span class="nf">analysis</span> <span class="o">=</span> <span class="ss">:low_priority</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.active_storage.queues.analysis = :low_priority
+">Copy</button>
 </div>
 </li>
 <li><p><code>config.active_storage.queues.purge</code> acepta un símbolo que indica la cola de trabajos activos que se utilizará para depurar trabajos. Cuando esta opción es <code>nil</code>, los trabajos de depuración se envían a la cola de trabajos activos predeterminada (consulte <code>config.active_job.default_queue_name</code>).</p></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">    config.active_storage.queues.purge = :low_priority
+<pre><code class="highlight ruby">    <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">queues</span><span class="p">.</span><span class="nf">purge</span> <span class="o">=</span> <span class="ss">:low_priority</span>
+    <span class="sb">```
+
+* `</span><span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">queues</span><span class="p">.</span><span class="nf">mirror</span><span class="sb">` acepta un símbolo que indica la cola de trabajos activos que se utilizará para los trabajos de duplicación de carga directa. El valor predeterminado es `</span><span class="ss">:active_storage_mirror</span><span class="sb">`.
+
+ ```</span><span class="n">ruby</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">queues</span><span class="p">.</span><span class="nf">mirror</span> <span class="o">=</span> <span class="ss">:low_priority</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="    config.active_storage.queues.purge = :low_priority
     ```
 
 * `config.active_storage.queues.mirror` acepta un símbolo que indica la cola de trabajos activos que se utilizará para los trabajos de duplicación de carga directa. El valor predeterminado es `:active_storage_mirror`.
 
  ```ruby
   config.active_storage.queues.mirror = :low_priority
-</code></pre>
+">Copy</button>
 </div>
 
 <ul>
@@ -1017,8 +1242,10 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
 <code>config.active_storage.logger</code> se puede usar para configurar el registrador usado por Active Storage. Acepta un registrador conforme a la interfaz de Log4r o la clase Ruby Logger predeterminada.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">  config.active_storage.logger = ActiveSupport::Logger.new(STDOUT)
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.active_storage.logger = ActiveSupport::Logger.new(STDOUT)
+">Copy</button>
 </div>
 
 <ul>
@@ -1038,8 +1265,10 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
 <code>config.active_storage.routes_prefix</code> se puede usar para establecer el prefijo de ruta para las rutas servidas por Active Storage. Acepta una cadena que se antepondrá a las rutas generadas.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">  config.active_storage.routes_prefix = '/files'
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">routes_prefix</span> <span class="o">=</span> <span class="s1">'/files'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.active_storage.routes_prefix = '/files'
+">Copy</button>
 </div>
 <p>  El valor predeterminado es <code>/ rails / active_storage</code>.</p>
 <ul>
@@ -1141,16 +1370,24 @@ text/javascript image/svg+xml application/postscript application/x-shockwave-fla
 </li>
 </ul>
 <h4 id="configuring-a-database"><a class="anchorlink" href="#configuring-a-database">3.16 Configuring a Database</a></h4><p>Casi todas las aplicaciones de Rails interactuarán con una base de datos. Puede conectarse a la base de datos configurando una variable de entorno <code>ENV['DATABASE_URL']</code> o usando un archivo de configuración llamado <code>config/database.yml</code>.</p><p>Usando el archivo <code>config/database.yml</code> puede especificar toda la información necesaria para acceder a su base de datos:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">blog_development</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="m">5</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: postgresql
   database: blog_development
   pool: 5
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto se conectará a la base de datos llamada <code>blog_development</code> usando el adaptador <code>postgresql</code>. Esta misma información se puede almacenar en una URL y proporcionar a través de una variable de entorno como esta:</p><div class="code_container">
-<pre><code class="language-ruby">&gt; puts ENV['DATABASE_URL']
-postgresql://localhost/blog_development?pool=5
+<pre><code class="highlight ruby"><span class="o">&gt;</span> <span class="nb">puts</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'DATABASE_URL'</span><span class="p">]</span>
+<span class="n">postgresql</span><span class="ss">:/</span><span class="o">/</span><span class="n">localhost</span><span class="o">/</span><span class="n">blog_development?pool</span><span class="o">=</span><span class="mi">5</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&gt; puts ENV['DATABASE_URL']
+postgresql://localhost/blog_development?pool=5
+">Copy</button>
 </div>
 <p>El archivo <code>config/database.yml</code> contiene secciones para tres entornos diferentes en los que Rails puede ejecutarse de forma predeterminada:</p>
 <ul>
@@ -1159,106 +1396,147 @@ postgresql://localhost/blog_development?pool=5
 <li>El entorno de <code>production</code> se utiliza cuando implementas tu aplicación para que la use el mundo.</li>
 </ul>
 <p>Si lo desea, puede especificar manualmente una URL dentro de su <code>config/database.yml</code></p><div class="code_container">
-<pre><code class="language-yaml">development:
-  url: postgresql://localhost/blog_development?pool=5
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s">postgresql://localhost/blog_development?pool=5</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
+  url: postgresql://localhost/blog_development?pool=5
+">Copy</button>
 </div>
 <p>El archivo <code>config/database.yml</code> puede contener etiquetas ERB<code>&lt;% =%&gt;</code>. Cualquier cosa en las etiquetas se evaluará como código Ruby. Puede usar esto para extraer datos de una variable de entorno o realizar cálculos para generar la información de conexión necesaria.</p><div class="info"><p>No es necesario que actualice las configuraciones de la base de datos manualmente. Si observa las opciones del generador de aplicaciones, verá que una de las opciones se llama <code>--database</code>. Esta opción le permite elegir un adaptador de una lista de las bases de datos relacionales más utilizadas. Incluso puede ejecutar el generador repetidamente: <code>cd .. &amp;&amp; rails new blog --database = mysql</code>. Cuando confirme la sobrescritura del archivo <code>config/database.yml</code>, su aplicación se configurará para MySQL en lugar de SQLite. A continuación se muestran ejemplos detallados de las conexiones de bases de datos comunes.</p></div><h4 id="connection-preference"><a class="anchorlink" href="#connection-preference">3.17 Connection Preference</a></h4><p>Dado que hay dos formas de configurar su conexión (usando <code>config/database.yml</code> o usando una variable de entorno), es importante comprender cómo pueden interactuar.</p><p>Si tiene un archivo <code>config/database.yml</code> vacío pero su <code>ENV['DATABASE_URL']</code>está presente, Rails se conectará a la base de datos a través de su variable de entorno:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-
-$ echo $DATABASE_URL
-postgresql://localhost/my_database
-</code></pre>
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$DATABASE_URL</span>
+<span class="go">postgresql://localhost/my_database
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+echo $DATABASE_URL
+">Copy</button>
 </div>
 <p>Si tiene un <code>config/database.yml</code> pero no un <code>ENV['DATABASE_URL']</code>, entonces este archivo se usará para conectarse a su base de datos:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-development:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">development:
   adapter: postgresql
   database: my_database
   host: localhost
 
-$ echo $DATABASE_URL
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$DATABASE_URL</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+echo $DATABASE_URL
+">Copy</button>
 </div>
 <p>Si tiene configurados <code>config/database.yml</code> y <code>ENV['DATABASE_URL']</code>, Rails fusionará la configuración. Para entender mejor esto debemos ver algunos ejemplos.</p><p>Cuando se proporciona información de conexión duplicada, la variable de entorno tendrá prioridad:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-development:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">development:
   adapter: sqlite3
   database: NOT_my_database
   host: localhost
 
-$ echo $DATABASE_URL
-postgresql://localhost/my_database
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$DATABASE_URL</span>
+<span class="go">postgresql://localhost/my_database
 
-$ bin/rails runner 'puts ActiveRecord::Base.configurations'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
-
-$ bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations=[
-  #&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
-    @env_name="development", @spec_name="primary",
-    @config={"adapter"=&gt;"postgresql", "database"=&gt;"my_database", "host"=&gt;"localhost"}
-    @url="postgresql://localhost/my_database"&gt;
-  ]
-</code></pre>
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations.inspect'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations<span class="o">=[</span>
+<span class="gp">  #</span>&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
+<span class="go">    @env_name="development", @spec_name="primary",
+</span><span class="gp">    @config={"adapter"=&gt;</span><span class="s2">"postgresql"</span>, <span class="s2">"database"</span><span class="o">=&gt;</span><span class="s2">"my_database"</span>, <span class="s2">"host"</span><span class="o">=&gt;</span><span class="s2">"localhost"</span><span class="o">}</span>
+<span class="gp">    @url="postgresql://localhost/my_database"&gt;</span><span class="w">
+</span><span class="go">  ]
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+echo $DATABASE_URL
+bin/rails runner 'puts ActiveRecord::Base.configurations'
+bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
+">Copy</button>
 </div>
 <p>Aquí, el adaptador, el host y la base de datos coinciden con la información de <code>ENV['DATABASE_URL']</code>.</p><p>Si se proporciona información no duplicada, obtendrá todos los valores únicos, la variable de entorno aún tiene prioridad en casos de conflictos.</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-development:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">development:
   adapter: sqlite3
   pool: 5
 
-$ echo $DATABASE_URL
-postgresql://localhost/my_database
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$DATABASE_URL</span>
+<span class="go">postgresql://localhost/my_database
 
-$ bin/rails runner 'puts ActiveRecord::Base.configurations'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
-
-$ bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations=[
-  #&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
-    @env_name="development", @spec_name="primary",
-    @config={"adapter"=&gt;"postgresql", "database"=&gt;"my_database", "host"=&gt;"localhost", "pool"=&gt;5}
-    @url="postgresql://localhost/my_database"&gt;
-  ]
-</code></pre>
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations.inspect'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations<span class="o">=[</span>
+<span class="gp">  #</span>&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
+<span class="go">    @env_name="development", @spec_name="primary",
+</span><span class="gp">    @config={"adapter"=&gt;</span><span class="s2">"postgresql"</span>, <span class="s2">"database"</span><span class="o">=&gt;</span><span class="s2">"my_database"</span>, <span class="s2">"host"</span><span class="o">=&gt;</span><span class="s2">"localhost"</span>, <span class="s2">"pool"</span><span class="o">=&gt;</span>5<span class="o">}</span>
+<span class="gp">    @url="postgresql://localhost/my_database"&gt;</span><span class="w">
+</span><span class="go">  ]
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+echo $DATABASE_URL
+bin/rails runner 'puts ActiveRecord::Base.configurations'
+bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
+">Copy</button>
 </div>
 <p>Dado que el grupo no está en la información de conexión <code>ENV['DATABASE_URL']</code> proporcionada, su información se fusiona. Dado que el <code>adapter</code> está duplicado, la información de conexión <code>ENV['DATABASE_URL']</code> gana.</p><p>La única forma de no usar explícitamente la información de conexión en <code>ENV['DATABASE_URL']</code> es especificar una conexión URL explícita usando la subclave <code>"url"</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-development:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">development:
   url: sqlite3:NOT_my_database
 
-$ echo $DATABASE_URL
-postgresql://localhost/my_database
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">echo</span> <span class="nv">$DATABASE_URL</span>
+<span class="go">postgresql://localhost/my_database
 
-$ bin/rails runner 'puts ActiveRecord::Base.configurations'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
-
-$ bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
-#&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations=[
-  #&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
-    @env_name="development", @spec_name="primary",
-    @config={"adapter"=&gt;"sqlite3", "database"=&gt;"NOT_my_database"}
-    @url="sqlite3:NOT_my_database"&gt;
-  ]
-</code></pre>
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fd50e209a28&gt;
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'puts ActiveRecord::Base.configurations.inspect'</span>
+<span class="gp">#</span>&lt;ActiveRecord::DatabaseConfigurations:0x00007fc8eab02880 @configurations<span class="o">=[</span>
+<span class="gp">  #</span>&lt;ActiveRecord::DatabaseConfigurations::UrlConfig:0x00007fc8eab020b0
+<span class="go">    @env_name="development", @spec_name="primary",
+</span><span class="gp">    @config={"adapter"=&gt;</span><span class="s2">"sqlite3"</span>, <span class="s2">"database"</span><span class="o">=&gt;</span><span class="s2">"NOT_my_database"</span><span class="o">}</span>
+<span class="gp">    @url="sqlite3:NOT_my_database"&gt;</span><span class="w">
+</span><span class="go">  ]
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+echo $DATABASE_URL
+bin/rails runner 'puts ActiveRecord::Base.configurations'
+bin/rails runner 'puts ActiveRecord::Base.configurations.inspect'
+">Copy</button>
 </div>
 <p>Aquí se ignora la información de conexión en <code>ENV['DATABASE_URL']</code>, observe el adaptador y el nombre de la base de datos diferentes.</p><p>Dado que es posible incrustar ERB en su <code>config/database.yml</code>, es una buena práctica mostrar explícitamente que está utilizando el <code>ENV['DATABASE_URL']</code> para conectarse a su base de datos. Esto es especialmente útil en producción, ya que no debe enviar secretos como la contraseña de su base de datos en su control de código fuente (como Git).</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-production:
-  url: &lt;%= ENV['DATABASE_URL'] %&gt;
-</code></pre>
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="go">production:
+</span><span class="gp">  url: &lt;%= ENV['DATABASE_URL'] %&gt;</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+">Copy</button>
 </div>
 <p>Ahora el comportamiento es claro, que solo estamos usando la información de conexión en <code>ENV['DATABASE_URL']</code>.</p><h5 id="configuring-an-sqlite3-database"><a class="anchorlink" href="#configuring-an-sqlite3-database">3.17.1 Configuring an SQLite3 Database</a></h5><p>Rails viene con soporte integrado para <a href="http://www.sqlite.org">SQLite3</a>, que es una aplicación de base de datos liviana sin servidor. Si bien un entorno de producción ajetreado puede sobrecargar SQLite, funciona bien para el desarrollo y las pruebas. Rails utiliza de forma predeterminada una base de datos SQLite al crear un nuevo proyecto, pero siempre puede cambiarlo más tarde.</p><p>Aquí está la sección del archivo de configuración predeterminado (<code>config/database.yml</code>) con información de conexión para el entorno de desarrollo:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">sqlite3</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">db/development.sqlite3</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="m">5</span>
+  <span class="na">timeout</span><span class="pi">:</span> <span class="m">5000</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: sqlite3
   database: db/development.sqlite3
   pool: 5
   timeout: 5000
-</code></pre>
+">Copy</button>
 </div>
 <p>NOTA: Rails usa una base de datos SQLite3 para el almacenamiento de datos de forma predeterminada porque es una base de datos de configuración cero que simplemente funciona. Rails también es compatible con MySQL (incluido MariaDB) y PostgreSQL "listo para usar", y tiene complementos para muchos sistemas de bases de datos. Si está utilizando una base de datos en un entorno de producción, lo más probable es que Rails tenga un adaptador para ella.</p><h5 id="configuring-a-mysql-or-mariadb-database"><a class="anchorlink" href="#configuring-a-mysql-or-mariadb-database">3.17.2 Configuring a MySQL or MariaDB Database</a></h5><p>Si elige usar MySQL o MariaDB en lugar de la base de datos SQLite3 enviada, su <code>config/database.yml</code> se verá un poco diferente. Aquí está la sección de desarrollo:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">utf8mb4</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">blog_development</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="m">5</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">root</span>
+  <span class="na">password</span><span class="pi">:</span>
+  <span class="na">socket</span><span class="pi">:</span> <span class="s">/tmp/mysql.sock</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: mysql2
   encoding: utf8mb4
   database: blog_development
@@ -1266,69 +1544,106 @@ production:
   username: root
   password:
   socket: /tmp/mysql.sock
-</code></pre>
+">Copy</button>
 </div>
 <p>Si su base de datos de desarrollo tiene un usuario root con una contraseña vacía, esta configuración debería funcionar para usted. De lo contrario, cambie el nombre de usuario y la contraseña en la sección de desarrollo según corresponda.</p><div class="note"><p>Si su versión de MySQL es 5.5 o 5.6 y desea usar el juego de caracteres <code>utf8mb4</code> por defecto, configure su servidor MySQL para que admita el prefijo de clave más largo habilitando la variable de sistema <code>innodb_large_prefix</code>.</p></div><p>Los bloqueos de aviso están habilitados de forma predeterminada en MySQL y se utilizan para hacer que las migraciones de bases de datos sean seguras al mismo tiempo. Puede deshabilitar los bloqueos de aviso configurando <code>advisory_locks</code> en <code>false</code>:</p><div class="code_container">
-<pre><code class="language-yaml">production:
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">advisory_locks</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
   adapter: mysql2
   advisory_locks: false
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="configuring-a-postgresql-database"><a class="anchorlink" href="#configuring-a-postgresql-database">3.17.3 Configuring a PostgreSQL Database</a></h5><p>Si elige usar PostgreSQL, su <code>config/database.yml</code> se personalizará para usar bases de datos PostgreSQL:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">unicode</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">blog_development</span>
+  <span class="na">pool</span><span class="pi">:</span> <span class="m">5</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: postgresql
   encoding: unicode
   database: blog_development
   pool: 5
-</code></pre>
+">Copy</button>
 </div>
 <p>Si está habilitado, Active Record creará hasta <code>1000</code> declaraciones preparadas por conexión de base de datos de forma predeterminada. Para modificar este comportamiento, puede establecer <code>statement_limit</code> en un valor diferente:</p><div class="code_container">
-<pre><code class="language-yaml">production:
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">statement_limit</span><span class="pi">:</span> <span class="m">200</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
   adapter: postgresql
   statement_limit: 200
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuantas más declaraciones preparadas se utilicen: más memoria necesitará su base de datos. Si su base de datos PostgreSQL está alcanzando los límites de memoria, intente reducir <code>statement_limit</code> o deshabilitar las declaraciones preparadas.</p><h5 id="configuring-an-sqlite3-database-for-jruby-platform"><a class="anchorlink" href="#configuring-an-sqlite3-database-for-jruby-platform">3.17.4 Configuring an SQLite3 Database for JRuby Platform</a></h5><p>Si elige usar SQLite3 y está usando JRuby, su <code>config/database.yml</code> se verá un poco diferente. Aquí está la sección de desarrollo:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">jdbcsqlite3</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">db/development.sqlite3</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: jdbcsqlite3
   database: db/development.sqlite3
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="configuring-a-mysql-or-mariadb-database-for-jruby-platform"><a class="anchorlink" href="#configuring-a-mysql-or-mariadb-database-for-jruby-platform">3.17.5 Configuring a MySQL or MariaDB Database for JRuby Platform</a></h5><p>Si elige usar MySQL o MariaDB y está usando JRuby, su <code>config/database.yml</code> se verá un poco diferente. Aquí está la sección de desarrollo:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">jdbcmysql</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">blog_development</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">root</span>
+  <span class="na">password</span><span class="pi">:</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: jdbcmysql
   database: blog_development
   username: root
   password:
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="configuring-a-postgresql-database-for-jruby-platform"><a class="anchorlink" href="#configuring-a-postgresql-database-for-jruby-platform">3.17.6 Configuring a PostgreSQL Database for JRuby Platform</a></h5><p>Si elige utilizar PostgreSQL y está utilizando JRuby, su <code>config/database.yml</code> se verá un poco diferente. Aquí está la sección de desarrollo:</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">jdbcpostgresql</span>
+  <span class="na">encoding</span><span class="pi">:</span> <span class="s">unicode</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">blog_development</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">blog</span>
+  <span class="na">password</span><span class="pi">:</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: jdbcpostgresql
   encoding: unicode
   database: blog_development
   username: blog
   password:
-</code></pre>
+">Copy</button>
 </div>
 <p>Change the username and password in the <code>development</code> section as appropriate.</p><h5 id="configuring-metadata-storage"><a class="anchorlink" href="#configuring-metadata-storage">3.17.7 Configuring Metadata Storage</a></h5><p>De forma predeterminada, Rails almacenará información sobre su entorno y esquema de Rails
 en una tabla interna llamada <code>ar_internal_metadata</code>.</p><p>Para desactivar esto por conexión, configure <code>use_metadata_table</code> en su base de datos
 configuración. Esto es útil cuando se trabaja con una base de datos compartida y / o
 usuario de la base de datos que no puede crear tablas.</p><div class="code_container">
-<pre><code class="language-yaml">development:
+<pre><code class="highlight yaml"><span class="na">development</span><span class="pi">:</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">postgresql</span>
+  <span class="na">use_metadata_table</span><span class="pi">:</span> <span class="no">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: postgresql
   use_metadata_table: false
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="creating-rails-environments"><a class="anchorlink" href="#creating-rails-environments">3.18 Creating Rails Environments</a></h4><p>Por defecto, Rails viene con tres entornos: "desarrollo", "prueba" y "producción". Si bien estos son suficientes para la mayoría de los casos de uso, hay circunstancias en las que desea más entornos.</p><p>Imagine que tiene un servidor que refleja el entorno de producción pero que solo se utiliza para realizar pruebas. Este tipo de servidor se denomina comúnmente "servidor provisional". Para definir un entorno llamado "staging" para este servidor, simplemente cree un archivo llamado <code>config/environment/staging.rb</code>. Utilice el contenido de cualquier archivo existente en <code>config/environment</code> como punto de partida y realice los cambios necesarios desde allí.</p><p>Ese entorno no es diferente a los predeterminados, inicie un servidor con <code>bin/rails server -e staging</code>, una consola con <code>bin/rails console -e staging</code>, <code>Rails.env.staging?</code> Funciona, etc.</p><h4 id="deploy-to-a-subdirectory-relative-url-root"><a class="anchorlink" href="#deploy-to-a-subdirectory-relative-url-root">3.19 Deploy to a Subdirectory (relative URL root)</a></h4><p>De forma predeterminada, Rails espera que su aplicación se ejecute en la raíz
 (por ejemplo, <code>/</code>). Esta sección explica cómo ejecutar su aplicación dentro de un directorio.</p><p>Supongamos que queremos implementar nuestra aplicación en "/app1". Rails necesita saber
 este directorio para generar las rutas apropiadas:</p><div class="code_container">
-<pre><code class="language-ruby">config.relative_url_root = "/app1"
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">relative_url_root</span> <span class="o">=</span> <span class="s2">"/app1"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.relative_url_root = "/app1"
+'>Copy</button>
 </div>
 <p>alternativamente, puede configurar el entorno <code>RAILS_RELATIVE_URL_ROOT</code>
 variable.</p><p>Los carriles ahora antepondrán "/ app1" al generar enlaces.</p><h5 id="using-passenger"><a class="anchorlink" href="#using-passenger">3.19.1 Using Passenger</a></h5><p>Passenger facilita la ejecución de su aplicación en un subdirectorio. Puede encontrar la configuración correspondiente en el <a href="https://www.phusionpassenger.com/library/deploy/apache/deploy/ruby/#deploying-an-app-to-a-sub-uri-or-subdirectorio">Manual del pasajero</a>.</p><h5 id="using-a-reverse-proxy"><a class="anchorlink" href="#using-a-reverse-proxy">3.19.2 Using a Reverse Proxy</a></h5><p>La implementación de su aplicación utilizando un proxy inverso tiene claras ventajas sobre las implementaciones tradicionales. Le permiten tener más control sobre su servidor al colocar en capas los componentes requeridos por su aplicación.</p><p>Muchos servidores web modernos se pueden utilizar como servidor proxy para equilibrar elementos de terceros, como servidores de almacenamiento en caché o servidores de aplicaciones.</p><p>Uno de esos servidores de aplicaciones que puede usar es <a href="https://bogomips.org/unicorn/">Unicorn</a> para ejecutarse detrás de un proxy inverso.</p><p>En este caso, necesitaría configurar el servidor proxy (NGINX, Apache, etc.) para aceptar conexiones desde su servidor de aplicaciones (Unicorn). De forma predeterminada, Unicorn escuchará las conexiones TCP en el puerto 8080, pero puede cambiar el puerto o configurarlo para usar sockets en su lugar.</p><p>Puede encontrar más información en el <a href="https://bogomips.org/unicorn/README.html">Léame de Unicornio</a> y comprender la <a href="https://bogomips.org/unicorn/PHILOSOPHY.html">filosofía</a> que hay detrás.</p><p>Una vez que haya configurado el servidor de aplicaciones, debe enviarle solicitudes mediante proxy configurando su servidor web de manera adecuada. Por ejemplo, su configuración de NGINX puede incluir:</p><div class="code_container">
-<pre><code class="language-plain">upstream application_server {
+<pre><code class="highlight plaintext">upstream application_server {
   server 0.0.0.0:8080;
 }
 
@@ -1350,6 +1665,28 @@ server {
   # some other configuration
 }
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="upstream application_server {
+  server 0.0.0.0:8080;
+}
+
+server {
+  listen 80;
+  server_name localhost;
+
+  root /root/path/to/your_app/public;
+
+  try_files $uri/index.html $uri.html @app;
+
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://application_server;
+  }
+
+  # some other configuration
+}
+">Copy</button>
 </div>
 <p>Asegúrese de leer la <a href="https://nginx.org/en/docs/">documentación de NGINX</a> para obtener la información más actualizada.</p><h3 id="rails-environment-settings"><a class="anchorlink" href="#rails-environment-settings">4 Rails Environment Settings</a></h3><p>Algunas partes de Rails también se pueden configurar externamente proporcionando variables de entorno. Varias partes de Rails reconocen las siguientes variables de entorno:</p>
 <ul>
@@ -1366,26 +1703,42 @@ server {
 <li><p><code>after_initialize</code>: se ejecuta directamente después de la inicialización de la aplicación, después de que se ejecutan los inicializadores de la aplicación en <code>config/initializers</code>.</p></li>
 </ul>
 <p>Para definir un evento para estos ganchos, use la sintaxis de bloque dentro de una subclase <code>Rails::Application</code>, <code>Rails::Railtie</code> o <code>Rails::Engine</code>:</p><div class="code_container">
-<pre><code class="language-ruby">module YourApp
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">YourApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">before_initialize</span> <span class="k">do</span>
+      <span class="c1"># initialization code goes here</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module YourApp
   class Application &lt; Rails::Application
     config.before_initialize do
       # initialization code goes here
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Alternativamente, también puede hacerlo a través del método <code>config</code> en el objeto<code>Rails.application</code>:</p><div class="code_container">
-<pre><code class="language-plain">Rails.application.config.before_initialize hacer
+<pre><code class="highlight plaintext">Rails.application.config.before_initialize hacer
   # código de inicialización va aquí
 final
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.before_initialize hacer
+  # código de inicialización va aquí
+final
+">Copy</button>
 </div>
 <div class="warning"><p>Algunas partes de su aplicación, en particular el enrutamiento, aún no están configuradas en el punto donde se llama al bloque <code>after_initialize</code>.</p></div><h4 id="rails-railtie-initializer"><a class="anchorlink" href="#rails-railtie-initializer">6.1 <code>Rails::Railtie#initializer</code></a></h4><p>Rails tiene varios inicializadores que se ejecutan al inicio y que se definen utilizando el método <code>initializer</code> de<code>Rails::Railtie</code>. Aquí hay un ejemplo del inicializador <code>set_helpers_path</code> de Action Controller:</p><div class="code_container">
-<pre><code class="language-ruby">initializer "action_controller.set_helpers_path" do |app|
+<pre><code class="highlight ruby"><span class="n">initializer</span> <span class="s2">"action_controller.set_helpers_path"</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+  <span class="no">ActionController</span><span class="o">::</span><span class="no">Helpers</span><span class="p">.</span><span class="nf">helpers_path</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="nf">helpers_paths</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='initializer "action_controller.set_helpers_path" do |app|
   ActionController::Helpers.helpers_path = app.helpers_paths
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El método <code>initializer</code> toma tres argumentos, el primero es el nombre del inicializador y el segundo es un hash de opciones (no se muestra aquí) y el tercero es un bloque. La clave <code>:before</code> en el hash de opciones se puede especificar para especificar qué inicializador debe ejecutar este nuevo inicializador, y la clave <code>:after</code> especificará qué inicializador ejecutar este inicializador <em>después</em>.</p><p>Los inicializadores definidos mediante el método <code>initializer</code> se ejecutarán en el orden en el que están definidos, con la excepción de los que utilizan los métodos <code>:before</code> o <code>:after</code>.</p><p>ADVERTENCIA: Puede poner su inicializador antes o después de cualquier otro inicializador en la cadena, siempre que sea lógico. Supongamos que tiene 4 inicializadores llamados "uno" a "cuatro" (definidos en ese orden) y define "cuatro" para ir <em>antes</em> "cuatro" pero <em>después</em> "tres", eso no es lógico y Rails no podrá Determine su orden de inicializador.</p><p>El argumento de bloque del método <code>initializer</code> es la instancia de la aplicación en sí, por lo que podemos acceder a la configuración usando el método <code>config</code> como se hizo en el ejemplo.</p><p>Debido a que <code>Rails::Application</code> hereda de<code>Rails :: Railtie</code> (indirectamente), puede usar el método <code>initializer</code> en <code>config/application.rb</code> para definir inicializadores para la aplicación.</p><h4 id="initializers"><a class="anchorlink" href="#initializers">6.2 Initializers</a></h4><p>A continuación se muestra una lista completa de todos los inicializadores que se encuentran en Rails en el orden en que están definidos (y por lo tanto se ejecutan, a menos que se indique lo contrario).</p>
 <ul>
@@ -1444,18 +1797,26 @@ a <code>Rails.logger</code>.</p></li>
 <li><p><code>disable_dependency_loading</code>: Desactiva la carga automática de dependencias si <code>config.eager_load</code> se establece en <code>true</code>.</p></li>
 </ul>
 <p>Las conexiones de la base de datos de Active Record son administradas por <code>ActiveRecord::ConnectionAdapters::ConnectionPool</code>, que asegura que un grupo de conexiones sincronice la cantidad de acceso de subprocesos a un número limitado de conexiones de base de datos. Este límite predeterminado es 5 y se puede configurar en <code>database.yml</code>.</p><div class="code_container">
-<pre><code class="language-ruby">development:
+<pre><code class="highlight ruby"><span class="ss">development:
+  adapter: </span><span class="n">sqlite3</span>
+  <span class="ss">database: </span><span class="n">db</span><span class="o">/</span><span class="n">development</span><span class="p">.</span><span class="nf">sqlite3</span>
+  <span class="ss">pool: </span><span class="mi">5</span>
+  <span class="ss">timeout: </span><span class="mi">5000</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
   adapter: sqlite3
   database: db/development.sqlite3
   pool: 5
   timeout: 5000
-</code></pre>
+">Copy</button>
 </div>
 <p>Dado que la agrupación de conexiones se maneja dentro de Active Record de forma predeterminada, todos los servidores de aplicaciones (Thin, Puma, Unicorn, etc.) deberían comportarse de la misma manera. El grupo de conexiones de la base de datos está inicialmente vacío. A medida que aumenta la demanda de conexiones, las creará hasta que alcance el límite del grupo de conexiones.</p><p>Cualquier solicitud comprobará una conexión la primera vez que requiera acceso a la base de datos. Al final de la solicitud, volverá a verificar la conexión. Esto significa que la ranura de conexión adicional estará disponible nuevamente para la siguiente solicitud en la cola.</p><p>Si intenta utilizar más conexiones de las disponibles, Active Record bloqueará
 usted y espere una conexión desde el grupo. Si no puede obtener una conexión,
 Se producirá un error de tiempo de espera similar al que se indica a continuación.</p><div class="code_container">
-<pre><code class="language-ruby">ActiveRecord::ConnectionTimeoutError - could not obtain a database connection within 5.000 seconds (waited 5.000 seconds)
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">ConnectionTimeoutError</span> <span class="o">-</span> <span class="n">could</span> <span class="n">not</span> <span class="n">obtain</span> <span class="n">a</span> <span class="n">database</span> <span class="n">connection</span> <span class="n">within</span> <span class="mf">5.000</span> <span class="n">seconds</span> <span class="p">(</span><span class="n">waited</span> <span class="mf">5.000</span> <span class="n">seconds</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::ConnectionTimeoutError - could not obtain a database connection within 5.000 seconds (waited 5.000 seconds)
+">Copy</button>
 </div>
 <p>Si obtiene el error anterior, es posible que desee aumentar el tamaño del
 grupo de conexiones incrementando la opción <code>grupo</code> en<code>database.yml</code></p><div class="note"><p>Si está ejecutando en un entorno de subprocesos múltiples, podría existir la posibilidad de que varios subprocesos accedan a múltiples conexiones simultáneamente. Entonces, dependiendo de la carga de su solicitud actual, es muy posible que tenga varios subprocesos compitiendo por un número limitado de conexiones.</p></div><h3 id="custom-configuration"><a class="anchorlink" href="#custom-configuration">7 Custom configuration</a></h3><p>Puede configurar su propio código a través del objeto de configuración Rails con
@@ -1463,20 +1824,49 @@ configuración personalizada en el espacio de nombres <code>config.x</code> o en
 La diferencia clave entre estos dos es que debería usar <code>config.x</code> si
 están definiendo la configuración <em>nested</em> (ej: <code>config.x.nested.hi</code>), y solo
 <code>config</code> para la configuración de <em>un nivel</em> (por ejemplo,<code>config.hello</code>).</p><div class="code_container">
-<pre><code class="language-ruby">  config.x.payment_processing.schedule = :daily
+<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">payment_processing</span><span class="p">.</span><span class="nf">schedule</span> <span class="o">=</span> <span class="ss">:daily</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">payment_processing</span><span class="p">.</span><span class="nf">retries</span>  <span class="o">=</span> <span class="mi">3</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">super_debugger</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  config.x.payment_processing.schedule = :daily
   config.x.payment_processing.retries  = 3
   config.super_debugger = true
-</code></pre>
+">Copy</button>
 </div>
 <p>Estos puntos de configuración están disponibles a través del objeto de configuración:</p><div class="code_container">
-<pre><code class="language-ruby">  Rails.configuration.x.payment_processing.schedule # =&gt; :daily
+<pre><code class="highlight ruby">  <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">payment_processing</span><span class="p">.</span><span class="nf">schedule</span> <span class="c1"># =&gt; :daily</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">payment_processing</span><span class="p">.</span><span class="nf">retries</span>  <span class="c1"># =&gt; 3</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">payment_processing</span><span class="p">.</span><span class="nf">not_set</span>  <span class="c1"># =&gt; nil</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">super_debugger</span>                <span class="c1"># =&gt; true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  Rails.configuration.x.payment_processing.schedule # =&gt; :daily
   Rails.configuration.x.payment_processing.retries  # =&gt; 3
   Rails.configuration.x.payment_processing.not_set  # =&gt; nil
   Rails.configuration.super_debugger                # =&gt; true
-</code></pre>
+">Copy</button>
 </div>
 <p>También puede usar <code>Rails::Application.config_for</code> para cargar archivos de configuración completos:</p><div class="code_container">
-<pre><code class="language-yaml">  # config/payment.yml:
+<pre><code class="highlight yaml">  <span class="c1"># config/payment.yml:</span>
+  <span class="na">production</span><span class="pi">:</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">production</span>
+    <span class="na">merchant_id</span><span class="pi">:</span> <span class="s">production_merchant_id</span>
+    <span class="na">public_key</span><span class="pi">:</span>  <span class="s">production_public_key</span>
+    <span class="na">private_key</span><span class="pi">:</span> <span class="s">production_private_key</span>
+
+  <span class="na">development</span><span class="pi">:</span>
+    <span class="na">environment</span><span class="pi">:</span> <span class="s">sandbox</span>
+    <span class="na">merchant_id</span><span class="pi">:</span> <span class="s">development_merchant_id</span>
+    <span class="na">public_key</span><span class="pi">:</span>  <span class="s">development_public_key</span>
+    <span class="na">private_key</span><span class="pi">:</span> <span class="s">development_private_key</span>
+
+  <span class="c1"># config/application.rb</span>
+  <span class="s">module MyApp</span>
+    <span class="s">class Application &lt; Rails::Application</span>
+      <span class="s">config.payment = config_for(:payment)</span>
+    <span class="s">end</span>
+  <span class="s">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  # config/payment.yml:
   production:
     environment: production
     merchant_id: production_merchant_id
@@ -1495,16 +1885,29 @@ están definiendo la configuración <em>nested</em> (ej: <code>config.x.nested.h
       config.payment = config_for(:payment)
     end
   end
-</code></pre>
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby">  Rails.configuration.payment['merchant_id'] # =&gt; production_merchant_id or development_merchant_id
+<pre><code class="highlight ruby">  <span class="no">Rails</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">payment</span><span class="p">[</span><span class="s1">'merchant_id'</span><span class="p">]</span> <span class="c1"># =&gt; production_merchant_id or development_merchant_id</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  Rails.configuration.payment['merchant_id'] # =&gt; production_merchant_id or development_merchant_id
+">Copy</button>
 </div>
 <p><code>Rails::Application.config_for</code> supports a <code>shared</code> configuration to group common
 configurations. The shared configuration will be merged into the environment
 configuration.</p><div class="code_container">
-<pre><code class="language-yaml">  # config/example.yml
+<pre><code class="highlight yaml">  <span class="c1"># config/example.yml</span>
+  <span class="na">shared</span><span class="pi">:</span>
+    <span class="na">foo</span><span class="pi">:</span>
+      <span class="na">bar</span><span class="pi">:</span>
+        <span class="na">baz</span><span class="pi">:</span> <span class="m">1</span>
+
+  <span class="na">development</span><span class="pi">:</span>
+    <span class="na">foo</span><span class="pi">:</span>
+      <span class="na">bar</span><span class="pi">:</span>
+        <span class="na">qux</span><span class="pi">:</span> <span class="m">2</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  # config/example.yml
   shared:
     foo:
       bar:
@@ -1514,12 +1917,15 @@ configuration.</p><div class="code_container">
     foo:
       bar:
         qux: 2
-</code></pre>
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby">  # development environment
-  Rails.application.config_for(:example)[:foo][:bar] #=&gt; { baz: 1, qux: 2 }
+<pre><code class="highlight ruby">  <span class="c1"># development environment</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config_for</span><span class="p">(</span><span class="ss">:example</span><span class="p">)[</span><span class="ss">:foo</span><span class="p">][</span><span class="ss">:bar</span><span class="p">]</span> <span class="c1">#=&gt; { baz: 1, qux: 2 }</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  # development environment
+  Rails.application.config_for(:example)[:foo][:bar] #=&gt; { baz: 1, qux: 2 }
+">Copy</button>
 </div>
 <h3 id="search-engines-indexing"><a class="anchorlink" href="#search-engines-indexing">8 Search Engines Indexing</a></h3><p>A veces, es posible que desee evitar que algunas páginas de su aplicación sean visibles
 en sitios de búsqueda como Google, Bing, Yahoo o Duck Duck Go. Los robots que indexan
@@ -1527,18 +1933,25 @@ estos sitios analizarán primero el archivo <code>http://your-site.com/robots.tx
 saber qué páginas está permitido indexar.</p><p>Rails crea este archivo para usted dentro de la carpeta <code>/public</code>. Por defecto, permite
 motores de búsqueda para indexar todas las páginas de su aplicación. Si quieres bloquear
 indexando en todas las páginas de su aplicación, use esto:</p><div class="code_container">
-<pre><code class="language-plain">User-agent: *
+<pre><code class="highlight plaintext">User-agent: *
 Disallow: /
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="User-agent: *
+Disallow: /
+">Copy</button>
 </div>
 <p>Para bloquear solo páginas específicas, es necesario utilizar una sintaxis más compleja. Aprender
 en el <a href="https://www.robotstxt.org/robotstxt.html">official documentation</a>.</p><h3 id="evented-file-system-monitor"><a class="anchorlink" href="#evented-file-system-monitor">9 Evented File System Monitor</a></h3><p>Si se carga <a href="https://github.com/guard/listen">listen gem</a>, Rails usa un
 monitor del sistema de archivos para detectar cambios cuando <code>config.cache_classes</code> es
 <code>false</code>:</p><div class="code_container">
-<pre><code class="language-ruby">group :development do
+<pre><code class="highlight ruby"><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'listen'</span><span class="p">,</span> <span class="s1">'~&gt; 3.2'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="group :development do
   gem 'listen', '~&gt; 3.2'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>De lo contrario, en cada solicitud, Rails recorre el árbol de la aplicación para comprobar si
 nada ha cambiado.</p><p>En Linux y macOS no se necesitan gemas adicionales, pero se requieren algunas

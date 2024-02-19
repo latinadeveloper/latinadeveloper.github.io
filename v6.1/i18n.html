@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rails API de Internacionalización (I18n) — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Rails API de Internacionalización (I18n) — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Rails API de Internacionalización (I18n)La gema Ruby I18n (abreviatura de internationalization) que se envía con Ruby on Rails (a partir de Rails 2.2) proporciona un marco extensible y fácil de usar para traducir su aplicación a un solo idioma personalizado que no sea inglés o para proporcionando soporte en varios idiomas en su aplicación.El proceso de &quot;internacionalización&quot; generalmente significa extraer todas las cadenas y otros bits específicos de la configuración regional (como los formatos de fecha o moneda) de su aplicación. El proceso de &quot;localización&quot; significa proporcionar traducciones y formatos localizados para estos bits. [^ 1]Entonces, en el proceso de internationalizing su aplicación Rails, tiene que: Asegúrese de tener soporte para i18n. Dígale a Rails dónde encontrar los diccionarios locales. Indique a Rails cómo configurar, conservar y cambiar de configuración regional. En el proceso de localizar su aplicación, probablemente querrá hacer las siguientes tres cosas: Reemplazar o complementar la configuración regional predeterminada de Rails, p. Ej. formatos de fecha y hora, nombres de meses, nombres de modelos de Active Record, etc. Resumen de cadenas de su aplicación en diccionarios con clave, p. Ej. mensajes flash, texto estático en sus vistas, etc. Guarde los diccionarios resultantes en algún lugar. Esta guía lo guiará a través de la API I18n y contiene un tutorial sobre cómo internacionalizar una aplicación Rails desde el principio.Después de leer esta guía, sabrá: Cómo funciona I18n en Ruby on Rails Cómo utilizar correctamente I18n en una aplicación RESTful de varias formas Cómo utilizar I18n para traducir errores de Active Record o asuntos de correo electrónico de Action Mailer Algunas otras herramientas para ir más allá con el proceso de traducción de su solicitud" />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Rails API de Internacionalización (I18n)La gema Ruby I18n (abreviatura de internationalization) que se envía con Ruby on Rails (a partir de Rails 2.2) proporciona un marco extensible y fácil de usar para traducir su aplicación a un solo idioma personalizado que no sea inglés o para proporcionando soporte en varios idiomas en su aplicación.El proceso de &quot;internacionalización&quot; generalmente significa extraer todas las cadenas y otros bits específicos de la configuración regional (como los formatos de fecha o moneda) de su aplicación. El proceso de &quot;localización&quot; significa proporcionar traducciones y formatos localizados para estos bits. [^ 1]Entonces, en el proceso de internationalizing su aplicación Rails, tiene que: Asegúrese de tener soporte para i18n. Dígale a Rails dónde encontrar los diccionarios locales. Indique a Rails cómo configurar, conservar y cambiar de configuración regional. En el proceso de localizar su aplicación, probablemente querrá hacer las siguientes tres cosas: Reemplazar o complementar la configuración regional predeterminada de Rails, p. Ej. formatos de fecha y hora, nombres de meses, nombres de modelos de Active Record, etc. Resumen de cadenas de su aplicación en diccionarios con clave, p. Ej. mensajes flash, texto estático en sus vistas, etc. Guarde los diccionarios resultantes en algún lugar. Esta guía lo guiará a través de la API I18n y contiene un tutorial sobre cómo internacionalizar una aplicación Rails desde el principio.Después de leer esta guía, sabrá: Cómo funciona I18n en Ruby on Rails Cómo utilizar correctamente I18n en una aplicación RESTful de varias formas Cómo utilizar I18n para traducir errores de Active Record o asuntos de correo electrónico de Action Mailer Algunas otras herramientas para ir más allá con el proceso de traducción de su solicitud" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Rails API de Internacionalización (I18n)</h2><p>La gema Ruby I18n (abreviatura de <em>internationalization</em>) que se envía con Ruby on Rails (a partir de Rails 2.2) proporciona un marco extensible y fácil de usar para <strong>traducir su aplicación a un solo idioma personalizado</strong> que no sea inglés o para <strong>proporcionando soporte en varios idiomas</strong> en su aplicación.</p><p>El proceso de &quot;internacionalización&quot; generalmente significa extraer todas las cadenas y otros bits específicos de la configuración regional (como los formatos de fecha o moneda) de su aplicación. El proceso de &quot;localización&quot; significa proporcionar traducciones y formatos localizados para estos bits. [^ 1]</p><p>Entonces, en el proceso de <em>internationalizing</em> su aplicación Rails, tiene que:</p>
+<ul>
+<li>Asegúrese de tener soporte para i18n.</li>
+<li>Dígale a Rails dónde encontrar los diccionarios locales.</li>
+<li>Indique a Rails cómo configurar, conservar y cambiar de configuración regional.</li>
+</ul>
+<p>En el proceso de <em>localizar</em> su aplicación, probablemente querrá hacer las siguientes tres cosas:</p>
+<ul>
+<li>Reemplazar o complementar la configuración regional predeterminada de Rails, p. Ej. formatos de fecha y hora, nombres de meses, nombres de modelos de Active Record, etc.</li>
+<li>Resumen de cadenas de su aplicación en diccionarios con clave, p. Ej. mensajes flash, texto estático en sus vistas, etc.</li>
+<li>Guarde los diccionarios resultantes en algún lugar.</li>
+</ul>
+<p>Esta guía lo guiará a través de la API I18n y contiene un tutorial sobre cómo internacionalizar una aplicación Rails desde el principio.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Cómo funciona I18n en Ruby on Rails</li>
+<li>Cómo utilizar correctamente I18n en una aplicación RESTful de varias formas</li>
+<li>Cómo utilizar I18n para traducir errores de Active Record o asuntos de correo electrónico de Action Mailer</li>
+<li>Algunas otras herramientas para ir más allá con el proceso de traducción de su solicitud</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li>
+<a href="#how-i18n-in-ruby-on-rails-works">How I18n in Ruby on Rails Works</a>
+
+<ul>
+<li><a href="#the-overall-architecture-of-the-library">The Overall Architecture of the Library</a></li>
+<li><a href="#the-public-i18n-api">The Public I18n API</a></li>
+</ul>
+</li>
+<li>
+<a href="#setup-the-rails-application-for-internationalization">Setup the Rails Application for Internationalization</a>
+
+<ul>
+<li><a href="#configure-the-i18n-modu">Configure the I18n Modu</a></li>
+<li><a href="#managing-the-locale-across-requests">Managing the Locale across Requests</a></li>
+</ul>
+</li>
+<li>
+<a href="#internationalization-and-localization">Internationalization and Localization</a>
+
+<ul>
+<li><a href="#abstracting-localized-code">Abstracting Localized Code</a></li>
+<li><a href="#providing-translations-for-internationalized-strings">Providing Translations for Internationalized Strings</a></li>
+<li><a href="#passing-variables-to-translations">Passing Variables to Translations</a></li>
+<li><a href="#adding-date-time-formats">Adding Date/Time Formats</a></li>
+<li><a href="#inflection-rules-for-other-locales">Inflection Rules for Other Locales</a></li>
+<li><a href="#localized-views">Localized Views</a></li>
+<li><a href="#organization-of-locale-files">Organization of Locale Files</a></li>
+</ul>
+</li>
+<li>
+<a href="#overview-of-the-i18n-api-features">Overview of the I18n API Features</a>
+
+<ul>
+<li><a href="#looking-up-translations">Looking up Translations</a></li>
+<li><a href="#pluralization">Pluralization</a></li>
+<li><a href="#setting-and-passing-a-locale">Setting and Passing a Locale</a></li>
+<li><a href="#using-safe-html-translations">Using Safe HTML Translations</a></li>
+<li><a href="#translations-for-active-record-models">Translations for Active Record Models</a></li>
+<li><a href="#translations-for-action-mailer-e-mail-subjects">Translations for Action Mailer E-Mail Subjects</a></li>
+<li><a href="#overview-of-other-built-in-methods-that-provide-i18n-support">Overview of Other Built-In Methods that Provide I18n Support</a></li>
+</ul>
+</li>
+<li><a href="#how-to-store-your-custom-translations">How to Store your Custom Translations</a></li>
+<li>
+<a href="#customize-your-i18n-setup">Customize your I18n Setup</a>
+
+<ul>
+<li><a href="#using-different-backends">Using Different Backends</a></li>
+<li><a href="#using-different-exception-handlers">Using Different Exception Handlers</a></li>
+</ul>
+</li>
+<li><a href="#translating-model-content">Translating Model Content</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#contributing-to-rails-i18n">Contributing to Rails I18n</a></li>
+<li><a href="#resources">Resources</a></li>
+<li><a href="#authors">Authors</a></li>
+<li><a href="#footnotes">Footnotes</a></li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <div class="note"><p>El marco Ruby I18n le proporciona todos los medios necesarios para la internacionalización/localización de su aplicación Rails. También puede usar varias gemas disponibles para agregar funciones o características adicionales. Consulte la <a href="https://github.com/svenfuchs/rails-i18n">gema rails-i18n</a> para obtener más información.</p></div><h3 id="how-i18n-in-ruby-on-rails-works"><a class="anchorlink" href="#how-i18n-in-ruby-on-rails-works">1 How I18n in Ruby on Rails Works</a></h3><p>La internacionalización es un problema complejo. Los lenguajes naturales difieren de tantas maneras (por ejemplo, en las reglas de pluralización) que es difícil proporcionar herramientas para resolver todos los problemas a la vez. Por esa razón, la API Rails I18n se centra en:</p>
+<ul>
+<li>proporciona soporte para inglés y otros idiomas similares desde el primer momento.</li>
+<li>facilita la personalización y ampliación de todo para otros idiomas</li>
+</ul>
+<p>Como parte de esta solución, <strong>cada cadena estática en el marco de Rails</strong>, p. Ej. Mensajes de validación de Active Record, formatos de fecha y hora - <strong>se ha internacionalizado</strong>. <em>Localización</em> de una aplicación Rails significa definir valores traducidos para estas cadenas en los idiomas deseados.</p><p>Para localizar, almacenar y actualizar <em>contenido</em> en su aplicación (por ejemplo, traducir publicaciones de blog), consulte la sección <a href="#translating-model-content">Translating model content</a>.</p><h4 id="the-overall-architecture-of-the-library"><a class="anchorlink" href="#the-overall-architecture-of-the-library">1.1 The Overall Architecture of the Library</a></h4><p>Por lo tanto, la gema Ruby I18n se divide en dos partes:</p>
+<ul>
+<li>La API pública del marco i18n: un módulo Ruby con métodos públicos que definen cómo funciona la biblioteca.</li>
+<li>Un backend predeterminado (que se llama intencionalmente <em>Simple</em> backend) que implementa estos métodos</li>
+</ul>
+<p>Como usuario, siempre debe acceder solo a los métodos públicos en el módulo I18n, pero es útil conocer las capacidades del backend.</p><div class="note"><p>Es posible intercambiar el backend Simple enviado por uno más potente, que almacenaría datos de traducción en una base de datos relacional, diccionario GetText o similar. Consulte la sección <a href="#using-different-backends">Using different backends</a> a continuación.</p></div><h4 id="the-public-i18n-api"><a class="anchorlink" href="#the-public-i18n-api">1.2 The Public I18n API</a></h4><p>Los métodos más importantes de la API I18n son:</p><div class="code_container">
+<pre><code class="language-ruby">translate # Lookup text translations
+localize  # Localize Date and Time objects to local formats
+</code></pre>
+</div>
+<p>Estos tienen los alias #t y #l, por lo que puede usarlos así:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t 'store.title'
+I18n.l Time.now
+</code></pre>
+</div>
+<p>También hay lectores y escritores de atributos para los siguientes atributos:</p><div class="code_container">
+<pre><code class="language-ruby">load_path                 # Announce your custom translation files
+locale                    # Get and set the current locale
+default_locale            # Get and set the default locale
+available_locales         # Permitted locales available for the application
+enforce_available_locales # Enforce locale permission (true or false)
+exception_handler         # Use a different exception_handler
+backend                   # Use a different backend
+</code></pre>
+</div>
+<p>Entonces, ¡Internacionalicemos una aplicación Rails simple desde cero en los próximos capítulos!</p><h3 id="setup-the-rails-application-for-internationalization"><a class="anchorlink" href="#setup-the-rails-application-for-internationalization">2 Setup the Rails Application for Internationalization</a></h3><p>Hay algunos pasos para comenzar a utilizar el soporte I18n para una aplicación Rails.</p><h4 id="configure-the-i18n-modu"><a class="anchorlink" href="#configure-the-i18n-modu">2.1 Configure the I18n Modu</a></h4><p>Siguiendo la filosofía de <em>convención sobre la configuración</em>, Rails I18n proporciona cadenas de traducción predeterminadas razonables. Cuando se necesitan diferentes cadenas de traducción, se pueden anular.</p><p>Rails agrega todos los archivos <code>.rb</code> y <code>.yml</code> del directorio <code>config/locales</code> a la ** ruta de carga de traducciones **, automáticamente.</p><p>La configuración regional predeterminada <code>en.yml</code> en este directorio contiene un par de ejemplos de cadenas de traducción:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  hello: "Hello world"
+</code></pre>
+</div>
+<p>This means, that in the <code>:en</code> locale, the key <em>hello</em> will map to the <em>Hello world</em> string. Every string inside Rails is internationalized in this way, see for instance Active Model validation messages in the <a href="https://github.com/rails/rails/blob/master/activemodel/lib/active_model/locale/en.yml"><code>activemodel/lib/active_model/locale/en.yml</code></a> file or time and date formats in the <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml"><code>activesupport/lib/active_support/locale/en.yml</code></a> file. You can use YAML or standard Ruby Hashes to store translations in the default (Simple) backend.
+Esto significa que en la configuración regional <code>:en</code>, la clave <em>hello</em> se asignará a la cadena <em>Hello world</em>. Cada cadena dentro de Rails se internacionaliza de esta manera, vea, por ejemplo, los mensajes de validación del modelo activo en el <a href="https://github.com/rails/rails/blob/master/activemodel/lib/active_model/locale/en.yml"><code>activemodel/lib/active_model/locale/en.yml</code></a> o formatos de fecha y hora en <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml"><code>activesupport/lib/active_support/locale/en.yml</code></a>. Puede usar YAML o Ruby Hashes estándar para almacenar traducciones en el backend predeterminado (Simple).</p><p>La biblioteca I18n usará <strong>inglés</strong> como <strong>configuración regional predeterminada</strong>, es decir, si no se establece una configuración regional diferente, se usará <code>:en</code> para buscar traducciones.</p><div class="note"><p>La biblioteca i18n adopta un <strong>enfoque pragmático</strong> para las claves de configuración regional (después de <a href="https://groups.google.com/forum/#!topic/rails-i18n/FN7eLH2-lHA">some discussion</a>), que incluye solo la parte <em>locale</em> ("idioma"), como <code>en</code>, <code>:pl</code>, no la parte <em>region</em>, como <code>:" en-US "</code> o <code>:" en-GB "</code>, que se utilizan tradicionalmente para separando "idiomas" y "entorno regional" o "dialectos". Muchas aplicaciones internacionales usan solo el elemento "idioma" de una configuración regional como <code>cs</code>,<code>:th</code> o <code>:es</code> (para checo, tailandés y español). Sin embargo, también existen diferencias regionales dentro de los diferentes grupos de idiomas que pueden ser importantes. Por ejemplo, en la configuración regional <code>:" en-US "</code> tendría $ como símbolo de moneda, mientras que en <code>:" en-GB "</code>, tendría £. Nada le impide separar la configuración regional de otra de esta manera: solo tiene que proporcionar la configuración regional completa "Inglés - Reino Unido" en un diccionario <code>:" en-GB "</code>.</p></div><p>La <strong>ruta de carga de traducciones</strong> (<code>I18n.load_path</code>) es una matriz de rutas a archivos que se cargarán automáticamente. La configuración de esta ruta permite personalizar la estructura del directorio de traducciones y el esquema de nombres de archivos.</p><div class="note"><p>El backend carga lentamente estas traducciones cuando se busca una traducción por primera vez. Este backend se puede intercambiar con otra cosa incluso después de que ya se hayan anunciado las traducciones.</p></div><p>Puede cambiar la configuración regional predeterminada y configurar las rutas de carga de traducciones en <code>config/application.rb</code> de la siguiente manera:</p><div class="code_container">
+<pre><code class="language-ruby">  config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+  config.i18n.default_locale = :de
+</code></pre>
+</div>
+<p>La ruta de carga debe especificarse antes de buscar cualquier traducción. Para cambiar la configuración regional predeterminada de un inicializador en lugar de <code>config/application.rb</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># config/initializers/locale.rb
+
+# Where the I18n library should search for translation files
+I18n.load_path += Dir[Rails.root.join('lib', 'locale', '*.{rb,yml}')]
+
+# Permitted locales available for the application
+I18n.available_locales = [:en, :pt]
+
+# Set default locale to something other than :en
+I18n.default_locale = :pt
+</code></pre>
+</div>
+<p>Tenga en cuenta que agregar directamente a <code>I18n.load_path</code> en lugar de al i18n configurado de la aplicación <em>no</em> anulará las traducciones de gemas externas.</p><h4 id="managing-the-locale-across-requests"><a class="anchorlink" href="#managing-the-locale-across-requests">2.2 Managing the Locale across Requests</a></h4><p>Es probable que una aplicación localizada deba brindar soporte para múltiples configuraciones regionales. Para lograr esto, la configuración regional debe establecerse al principio de cada solicitud para que todas las cadenas se traduzcan utilizando la configuración regional deseada durante la vida útil de esa solicitud.</p><p>La configuración regional predeterminada se usa para todas las traducciones a menos que se use <code>I18n.locale=</code> o <code>I18n.with_locale</code>.</p><p><code>I18n.locale</code> puede filtrarse en las solicitudes posteriores atendidas por el mismo hilo / proceso si no se configura de manera consistente en todos los controladores. Por ejemplo, la ejecución de <code>I18n.locale =: es</code> en una solicitud POST tendrá efectos para todas las solicitudes posteriores a los controladores que no establecen la configuración regional, sino solo en ese hilo/proceso en particular. Por esa razón, en lugar de <code>I18n.locale=</code> puede usar <code>I18n.with_locale</code>, que no tiene este problema de fuga.</p><p>La configuración regional se puede establecer en un <code>around_action</code> en el<code>ApplicationController</code>:</p><div class="code_container">
+<pre><code class="language-ruby">around_action :switch_locale
+
+def switch_locale(&amp;action)
+  locale = params[:locale] || I18n.default_locale
+  I18n.with_locale(locale, &amp;action)
+end
+</code></pre>
+</div>
+<p>Este ejemplo ilustra esto usando un parámetro de consulta de URL para establecer la configuración regional (por ejemplo, <code>http://example.com/books?locale=pt</code>). Con este enfoque, <code>http://localhost:3000?locale=pt</code> representa la localización portuguesa, mientras que <code>http://localhost:3000?locale=de</code> carga una localización alemana.</p><p>La configuración regional se puede establecer mediante uno de los muchos enfoques diferentes.</p><h5 id="setting-the-locale-from-the-domain-name"><a class="anchorlink" href="#setting-the-locale-from-the-domain-name">2.2.1 Setting the Locale from the Domain Name</a></h5><p>Una opción que tiene es establecer la configuración regional desde el nombre de dominio donde se ejecuta su aplicación. Por ejemplo, queremos que <code>www.example.com</code> cargue la configuración regional en inglés (o la predeterminada) y <code>www.example.es</code> para cargar la configuración regional en español. Por tanto, el <em>nombre de dominio de nivel superior</em> se utiliza para la configuración regional. Esto tiene varias ventajas:</p>
+<ul>
+<li>La configuración regional es una parte <em>obvia</em> de la URL.</li>
+<li>Las personas comprenden intuitivamente en qué idioma se mostrará el contenido.</li>
+<li>Es muy trivial de implementar en Rails.</li>
+<li>A los motores de búsqueda parece gustarles que el contenido en diferentes idiomas se encuentre en dominios diferentes e interconectados.</li>
+</ul>
+<p>Puedes implementarlo así en tu <code>ApplicationController</code>:</p><div class="code_container">
+<pre><code class="language-ruby">around_action :switch_locale
+
+def switch_locale(&amp;action)
+  locale = extract_locale_from_tld || I18n.default_locale
+  I18n.with_locale(locale, &amp;action)
+end
+
+# Get locale from top-level domain or return +nil+ if such locale is not available
+# You have to put something like:
+#   127.0.0.1 application.com
+#   127.0.0.1 application.it
+#   127.0.0.1 application.pl
+# in your /etc/hosts file to try this out locally
+def extract_locale_from_tld
+  parsed_locale = request.host.split('.').last
+  I18n.available_locales.map(&amp;:to_s).include?(parsed_locale) ? parsed_locale : nil
+end
+</code></pre>
+</div>
+<p>También podemos configurar la configuración regional desde el <em>subdominio</em> de una manera muy similar:</p><div class="code_container">
+<pre><code class="language-ruby"># Get locale code from request subdomain (like http://it.application.local:3000)
+# You have to put something like:
+#   127.0.0.1 gr.application.local
+# in your /etc/hosts file to try this out locally
+def extract_locale_from_subdomain
+  parsed_locale = request.subdomains.first
+  I18n.available_locales.map(&amp;:to_s).include?(parsed_locale) ? parsed_locale : nil
+end
+</code></pre>
+</div>
+<p>Si su aplicación incluye un menú de cambio de configuración regional, entonces tendría algo como esto:</p><div class="code_container">
+<pre><code class="language-ruby">link_to("Deutsch", "#{APP_CONFIG[:deutsch_website_url]}#{request.env['PATH_INFO']}")
+</code></pre>
+</div>
+<p>asumiendo que establecería <code>APP_CONFIG[:deutsch_website_url]</code> en algún valor como <code>http://www.application.de</code>.</p><p>Esta solución tiene las ventajas mencionadas anteriormente, sin embargo, es posible que no pueda o no desee proporcionar diferentes localizaciones ("versiones de idioma") en diferentes dominios. La solución más obvia sería incluir el código local en los parámetros de la URL (o la ruta de la solicitud).</p><h5 id="setting-the-locale-from-url-params"><a class="anchorlink" href="#setting-the-locale-from-url-params">2.2.2 Setting the Locale from URL Params</a></h5><p>La forma más habitual de configurar (y pasar) la configuración regional sería incluirla en los parámetros de la URL, como hicimos en <code>I18n.with_locale (params [: locale], &amp; action)</code> <em>around_action</em> en el primer ejemplo. Nos gustaría tener URL como <code>www.example.com/books?Locale=ja</code> o <code>www.example.com/ja/books</code> en este caso.</p><p>Este enfoque tiene casi el mismo conjunto de ventajas que establecer la configuración regional desde el nombre de dominio: es decir, que es RESTful y está de acuerdo con el resto de la World Wide Web. Sin embargo, requiere un poco más de trabajo para implementar.</p><p>Obtener la configuración regional de <code>params</code> y configurarla en consecuencia no es difícil; incluirlo en cada URL y, por lo tanto, ** pasarlo a través de las solicitudes ** es. Para incluir una opción explícita en cada URL, p. Ej. <code>link_to (books_url (locale: I18n.locale))</code>, sería tedioso y probablemente imposible, por supuesto.</p><p>Rails contiene infraestructura para "centralizar decisiones dinámicas sobre las URL" en su <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Base.html#method-i-default_url_options"><code>ApplicationController#default_url_options</code></a>, que es útil precisamente en este escenario: nos permite establecer "valores predeterminados" para <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Routing/UrlFor.html#method-i-url_for"><code>url_for</code></a> y métodos auxiliares que dependen de él (mediante la implementación/anulación <code>default_url_options</code>).</p><p>Podemos incluir algo como esto en nuestro <code>ApplicationController</code> entonces:</p><div class="code_container">
+<pre><code class="language-ruby"># app/controllers/application_controller.rb
+def default_url_options
+  { locale: I18n.locale }
+end
+</code></pre>
+</div>
+<p>Todos los métodos auxiliares que dependen de <code>url_for</code> (por ejemplo, ayudantes para rutas con nombre como <code>root_path</code> o <code>root_url</code>, rutas de recursos como <code>books_path</code> o <code>books_url</code>, etc.) ahora <strong>incluirán automáticamente la configuración regional en la cadena de consulta</strong>, así: <code>http://localhost:3001/?locale=ja</code>.</p><p>Puede estar satisfecho con esto. Sin embargo, sí afecta la legibilidad de las URL cuando la configuración regional "cuelga" al final de cada URL en su aplicación. Además, desde el punto de vista de la arquitectura, la configuración regional suele estar jerárquicamente por encima de las otras partes del dominio de la aplicación: y las URL deben reflejar esto.</p><p>Probablemente desee que las URL se vean así: <code>http://www.example.com/en/books</code> (que carga la configuración regional en inglés) y<code>http: // www.example.com / nl / books</code> (que carga la configuración regional holandesa). Esto se puede lograr con la estrategia "over-riding<code>default_url_options</code> "de arriba: solo tienes que configurar tus rutas con <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/%20Scoping.html"><code>scope</code></a>:</p><div class="code_container">
+<pre><code class="language-ruby"># config/routes.rb
+scope "/:locale" do
+  resources :books
+end
+</code></pre>
+</div>
+<p>Ahora, cuando llame al método <code>books_path</code> debería obtener<code>"/en/books"</code>(para la configuración regional predeterminada). Una URL como <code>http://localhost:3001/nl/books</code> debería cargar la configuración regional holandesa, luego, y las siguientes llamadas a <code>books_path</code> deberían devolver <code>"/nl/books "</code> (porque la configuración regional cambió).</p><div class="warning"><p>Dado que el valor de retorno de <code>default_url_options</code> se almacena en caché por solicitud, las URL en un selector de configuración regional no se pueden generar invocando ayudantes en un bucle que establece el correspondiente <code>I18n.locale</code> en cada iteración. En su lugar, deje intacto <code>I18n.locale</code> y pase una opción explícita <code>:locale</code> al asistente, o edite <code>request.original_fullpath</code>.</p></div><p>Si no desea forzar el uso de una configuración regional en sus rutas, puede usar un alcance de ruta opcional (indicado por los paréntesis) así:</p><div class="code_container">
+<pre><code class="language-ruby"># config/routes.rb
+scope "(:locale)", locale: /en|nl/ do
+  resources :books
+end
+</code></pre>
+</div>
+<p>Con este enfoque, no obtendrá un <code>Routing Error</code> cuando acceda a sus recursos como <code>http://localhost:3001/books</code> sin una configuración regional. Esto es útil cuando desea utilizar la configuración regional predeterminada cuando no se especifica ninguna.</p><p>Por supuesto, debe tener especial cuidado con la URL raíz (generalmente "página de inicio" o "tablero") de su aplicación. Una URL como <code>http://localhost:3001/nl</code> no funcionará automáticamente, porque la declaración <code>root to: "books#index"</code> en tu <code>routes.rb</code> no tiene en cuenta la configuración regional. (Y con razón: solo hay una URL "root").</p><p>Probablemente necesite mapear URL como estas:</p><div class="code_container">
+<pre><code class="language-ruby"># config/routes.rb
+get '/:locale' =&gt; 'dashboard#index'
+</code></pre>
+</div>
+<p>Tenga especial cuidado con el <strong>orden de sus rutas</strong>, para que esta declaración de ruta no se "coma" a otras. (Es posible que desee agregarlo directamente antes de la declaración <code>root: to</code>).</p><div class="note"><p>Eche un vistazo a varias gemas que simplifican el trabajo con rutas: <a href="https://github.com/svenfuchs/routing-filter/tree/master">routing_filter</a>, <a href="https://github.com/francesc/rails-translate-routes">rails-translate-routes</a>, <a href="https://github.com/enriclluelles/route_translator">route_translator</a>.</p></div><h5 id="setting-the-locale-from-user-preferences"><a class="anchorlink" href="#setting-the-locale-from-user-preferences">2.2.3 Setting the Locale from User Preferences</a></h5><p>Una aplicación con usuarios autenticados puede permitir a los usuarios establecer una preferencia de configuración regional a través de la interfaz de la aplicación. Con este enfoque, la preferencia de configuración regional seleccionada por un usuario se conserva en la base de datos y se utiliza para establecer la configuración regional para las solicitudes autenticadas de ese usuario.</p><div class="code_container">
+<pre><code class="language-ruby">around_action :switch_locale
+
+def switch_locale(&amp;action)
+  locale = current_user.try(:locale) || I18n.default_locale
+  I18n.with_locale(locale, &amp;action)
+end
+</code></pre>
+</div>
+<h5 id="choosing-an-implied-locale"><a class="anchorlink" href="#choosing-an-implied-locale">2.2.4 Choosing an Implied Locale</a></h5><p>Cuando no se ha establecido una configuración regional explícita para una solicitud (por ejemplo, a través de uno de los métodos anteriores), una aplicación debe intentar inferir la configuración regional deseada.</p><h6 id="inferring-locale-from-the-language-header"><a class="anchorlink" href="#inferring-locale-from-the-language-header">2.2.4.1 Inferring Locale from the Language Header</a></h6><p>El encabezado HTTP <code>Accept-Language</code> indica el idioma preferido para la respuesta de la solicitud. Navegadores  <a href="http://www.w3.org/International/questions/qa-lang-priorities">set this header value based on the user's language preference settings</a>, lo que lo convierte en una buena primera opción al inferir una configuración regional.</p><p>Una implementación trivial de usar un encabezado <code>Accept-Language</code> sería:</p><div class="code_container">
+<pre><code class="language-ruby">def switch_locale(&amp;action)
+  logger.debug "* Accept-Language: #{request.env['HTTP_ACCEPT_LANGUAGE']}"
+  locale = extract_locale_from_accept_language_header
+  logger.debug "* Locale set to '#{locale}'"
+  I18n.with_locale(locale, &amp;action)
+end
+
+private
+  def extract_locale_from_accept_language_header
+    request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+  end
+</code></pre>
+</div>
+<p>En la práctica, se necesita un código más robusto para hacer esto de manera confiable. La biblioteca de Iain Hecker <a href="https://github.com/iain/http_accept_language/tree/master">http_accept_language</a>  o de Ryan Tomayko <a href="https://github.com/rack/rack-contrib/blob/master/lib/rack/contrib/locale.rb">locale</a> el middleware en rack proporciona soluciones a este problema.</p><h6 id="inferring-the-locale-from-ip-geolocation"><a class="anchorlink" href="#inferring-the-locale-from-ip-geolocation">2.2.4.2 Inferring the Locale from IP Geolocation</a></h6><p>La dirección IP del cliente que realiza la solicitud se puede utilizar para inferir la región del cliente y, por lo tanto, su ubicación. Se pueden utilizar servicios como <a href="http://www.maxmind.com/app/geolitecountry">GeoIP Lite Country</a> o gemas como <a href="https://github.com/alexreisner/geocoder">geocoder</a> para implementar este enfoque.</p><p>En general, este enfoque es mucho menos confiable que usar el encabezado de idioma y no se recomienda para la mayoría de las aplicaciones web.</p><h5 id="storing-the-locale-from-the-session-or-cookies"><a class="anchorlink" href="#storing-the-locale-from-the-session-or-cookies">2.2.5 Storing the Locale from the Session or Cookies</a></h5><div class="warning"><p>Puede tener la tentación de almacenar la configuración regional elegida en una <em>sesión</em> o una <em>cookie</em>. Sin embargo, <strong>no hagas esto</strong>. La configuración regional debe ser transparente y formar parte de la URL. De esta manera, no romperá las suposiciones básicas de las personas sobre la web en sí: si envía una URL a un amigo, debería ver la misma página y el mismo contenido que usted. Una palabra elegante para esto sería que estás siendo <a href="https://en.wikipedia.org/wiki/Representational_State_Transfer"><em>RESTful</em></a>. Lea más sobre el enfoque RESTful en los <a href="https://www.infoq.com/articles/rest-introduction">Stefan Tilkov's articles</a>. A veces hay excepciones a esta regla y se analizan a continuación.</p></div><h3 id="internationalization-and-localization"><a class="anchorlink" href="#internationalization-and-localization">3 Internationalization and Localization</a></h3><p>¡OKAY! Ahora ha inicializado la compatibilidad con I18n para su aplicación Ruby on Rails y le ha dicho qué configuración regional debe usar y cómo conservarla entre solicitudes.</p><p>A continuación, necesitamos <em>internationalize</em> nuestra aplicación abstrayendo cada elemento específico de la configuración regional. Finalmente, necesitamos <em>localizar</em> proporcionando las traducciones necesarias para estos resúmenes.</p><p>Dado el siguiente ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby"># config/routes.rb
+Rails.application.routes.draw do
+  root to: "home#index"
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby"># app/controllers/application_controller.rb
+class ApplicationController &lt; ActionController::Base
+
+  around_action :switch_locale
+
+  def switch_locale(&amp;action)
+    locale = params[:locale] || I18n.default_locale
+    I18n.with_locale(locale, &amp;action)
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby"># app/controllers/home_controller.rb
+class HomeController &lt; ApplicationController
+  def index
+    flash[:notice] = "Hello Flash"
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-erb"># app/views/home/index.html.erb
+&lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;p&gt;&lt;%= flash[:notice] %&gt;&lt;/p&gt;
+</code></pre>
+</div>
+<p><img src="images/i18n/demo_untranslated.png" alt="rails i18n demo untranslated"></p><h4 id="abstracting-localized-code"><a class="anchorlink" href="#abstracting-localized-code">3.1 Abstracting Localized Code</a></h4><p>Hay dos cadenas en nuestro código que están en inglés y que los usuarios aparecerán en nuestra respuesta ("Hello Flash" y "Hello World"). Para internacionalizar este código, estas cadenas deben ser reemplazadas por llamadas al ayudante <code># t</code> de Rails con una clave apropiada para cada cadena:</p><div class="code_container">
+<pre><code class="language-ruby"># app/controllers/home_controller.rb
+class HomeController &lt; ApplicationController
+  def index
+    flash[:notice] = t(:hello_flash)
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-erb"># app/views/home/index.html.erb
+&lt;h1&gt;&lt;%= t :hello_world %&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%= flash[:notice] %&gt;&lt;/p&gt;
+</code></pre>
+</div>
+<p>Ahora, cuando se renderice esta vista, mostrará un mensaje de error que le indicará que faltan las traducciones de las claves <code>:hello_world</code> y <code>:hello_flash</code>.</p><p><img src="images/i18n/demo_translation_missing.png" alt="rails i18n demo translation missing"></p><div class="note"><p>Rails agrega un método auxiliar <code>t</code> (<code>translate</code>) a sus vistas para que no tenga que escribir <code>I18n.t</code> todo el tiempo. Además, este ayudante detectará las traducciones que falten y envolverá el mensaje de error resultante en un <code>&lt;span class ="translation_missing"&gt;</code>.</p></div><h4 id="providing-translations-for-internationalized-strings"><a class="anchorlink" href="#providing-translations-for-internationalized-strings">3.2 Providing Translations for Internationalized Strings</a></h4><p>Agregue las traducciones que faltan en los archivos del diccionario de traducción:</p><div class="code_container">
+<pre><code class="language-yaml"># config/locales/en.yml
+en:
+  hello_world: Hello world!
+  hello_flash: Hello flash!
+
+# config/locales/pirate.yml
+pirate:
+  hello_world: Ahoy World
+  hello_flash: Ahoy Flash
+</code></pre>
+</div>
+<p>Debido a que el <code>default_locale</code> no ha cambiado, las traducciones usan el locale <code>:en</code> y la respuesta muestra las cadenas en inglés:</p><p><img src="images/i18n/demo_translated_en.png" alt="rails i18n demo translated to English"></p><p>Si la configuración regional se establece a través de la URL a la configuración regional pirata  (<code>http://localhost:3000?locale=pirate</code>), la respuesta muestra las cadenas piratas:</p><p><img src="images/i18n/demo_translated_pirate.png" alt="rails i18n demo translated to pirate"></p><p>NOTA: debe reiniciar el servidor cuando agregue nuevos archivos de configuración regional.</p><p>Puede usar archivos YAML (<code>.yml</code>) o simples Ruby (<code>.rb</code>) para almacenar sus traducciones en SimpleStore. YAML es la opción preferida entre los desarrolladores de Rails. Sin embargo, tiene una gran desventaja. YAML es muy sensible a los espacios en blanco y a los caracteres especiales, por lo que es posible que la aplicación no cargue su diccionario correctamente. Los archivos Ruby bloquearán su aplicación en la primera solicitud, por lo que puede encontrar fácilmente lo que está mal. (Si encuentra algún "problema extraño" con los diccionarios YAML, intente poner la parte relevante de su diccionario en un archivo Ruby).</p><p>Si sus traducciones se almacenan en archivos YAML, ciertas claves deben escaparse. Son:</p>
+<ul>
+<li>cierto, encendido, sí</li>
+<li>falso, apagado, no</li>
+</ul>
+<p>Ejemplos:</p><div class="code_container">
+<pre><code class="language-yaml"># config/locales/en.yml
+en:
+  success:
+    'true':  'True!'
+    'on':    'On!'
+    'false': 'False!'
+  failure:
+    true:    'True!'
+    off:     'Off!'
+    false:   'False!'
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby">I18n.t 'success.true'  # =&gt; 'True!'
+I18n.t 'success.on'    # =&gt; 'On!'
+I18n.t 'success.false' # =&gt; 'False!'
+I18n.t 'failure.false' # =&gt; Translation Missing
+I18n.t 'failure.off'   # =&gt; Translation Missing
+I18n.t 'failure.true'  # =&gt; Translation Missing
+</code></pre>
+</div>
+<h4 id="passing-variables-to-translations"><a class="anchorlink" href="#passing-variables-to-translations">3.3 Passing Variables to Translations</a></h4><p>Una consideración clave para internacionalizar con éxito una aplicación es
+Evite hacer suposiciones incorrectas sobre las reglas gramaticales al abstraer localizadas.
+código. Las reglas gramaticales que parecen fundamentales en un lugar pueden no ser ciertas en
+otro.</p><p>La abstracción incorrecta se muestra en el siguiente ejemplo, donde los supuestos son
+sobre el ordenamiento de las diferentes partes de la traducción. Tenga en cuenta que Rails
+proporciona un ayudante <code>number_to_currency</code> para manejar el siguiente caso.</p><div class="code_container">
+<pre><code class="language-erb"># app/views/products/show.html.erb
+&lt;%= "#{t('currency')}#{@product.price}" %&gt;
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-yaml"># config/locales/en.yml
+en:
+  currency: "$"
+
+# config/locales/es.yml
+es:
+  currency: "€"
+</code></pre>
+</div>
+<p>Si el precio del producto es 10, la traducción correcta al español es "10 €".
+en lugar de "10 €" pero la abstracción no puede darlo.</p><p>Para crear una abstracción adecuada, la gema I18n se envía con una característica llamada variable
+interpolación que le permite utilizar variables en definiciones de traducción y
+pasar los valores de estas variables al método de traducción.</p><p>La abstracción adecuada se muestra en el siguiente ejemplo:</p><div class="code_container">
+<pre><code class="language-erb"># app/views/products/show.html.erb
+&lt;%= t('product_price', price: @product.price) %&gt;
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-yaml"># config/locales/en.yml
+en:
+  product_price: "$%{price}"
+
+# config/locales/es.yml
+es:
+  product_price: "%{price} €"
+</code></pre>
+</div>
+<p>Todas las decisiones gramaticales y de puntuación se toman en la propia definición, por lo que
+la abstracción puede dar una traducción adecuada.</p><div class="note"><p>Las palabras clave <code>default</code> y <code>scope</code> están reservadas y no se pueden usar como
+nombres de variables. Si se usa, se genera una excepción <code>I18n::ReservedInterpolationKey</code>.
+Si una traducción espera una variable de interpolación, pero esta no se ha pasado
+a <code>#translate</code>, se genera una excepción <code>I18n::MissingInterpolationArgument</code>.</p></div><h4 id="adding-date-time-formats"><a class="anchorlink" href="#adding-date-time-formats">3.4 Adding Date/Time Formats</a></h4><p>¡OKAY! Ahora agreguemos una marca de tiempo a la vista, para que también podamos hacer una demostración de la función de <strong>date/time localization</strong>. Para localizar el formato de hora, pasa el objeto Time a <code>I18n.l</code> o (preferiblemente) usa el asistente <code>#l</code> de Rails. Puede elegir un formato pasando la opción <code>:formato</code>; por defecto, se usa el formato <code>:predeterminado</code>.</p><div class="code_container">
+<pre><code class="language-erb"># app/views/home/index.html.erb
+&lt;h1&gt;&lt;%= t :hello_world %&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%= flash[:notice] %&gt;&lt;/p&gt;
+&lt;p&gt;&lt;%= l Time.now, format: :short %&gt;&lt;/p&gt;
+</code></pre>
+</div>
+<p>Y en nuestro archivo de traducciones piratas agreguemos un formato de hora (ya está allí en los valores predeterminados de Rails para inglés):</p><div class="code_container">
+<pre><code class="language-yaml"># config/locales/pirate.yml
+pirate:
+  time:
+    formats:
+      short: "arrrround %H'ish"
+</code></pre>
+</div>
+<p>Entonces eso te daría:</p><p><img src="images/i18n/demo_localized_pirate.png" alt="rails i18n demo localized time to pirate"></p><div class="info"><p>En este momento, es posible que deba agregar algunos formatos de fecha/hora más para que el backend I18n funcione como se espera (al menos para la configuración regional 'pirata'). Por supuesto, existe una gran posibilidad de que alguien ya haya hecho todo el trabajo ** traduciendo los valores predeterminados de Rails para su configuración regional **. Consulte el  <a href="https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale">rails-i18n repository at GitHub</a> para obtener un archivo de varios archivos de configuración regional. Cuando coloque dichos archivos en el directorio <code>config/locales/</code>, automáticamente estarán listos para su uso.</p></div><h4 id="inflection-rules-for-other-locales"><a class="anchorlink" href="#inflection-rules-for-other-locales">3.5 Inflection Rules for Other Locales</a></h4><p>Rails le permite definir reglas de inflexión (como reglas de singularización y pluralización) para configuraciones regionales distintas del inglés. En <code>config/initializers/inflections.rb</code>, puede definir estas reglas para múltiples configuraciones regionales. El inicializador contiene un ejemplo predeterminado para especificar reglas adicionales para inglés; siga ese formato para otras configuraciones regionales como mejor le parezca.</p><h4 id="localized-views"><a class="anchorlink" href="#localized-views">3.6 Localized Views</a></h4><p>Supongamos que tiene un <em>BooksController</em> en su aplicación. Su acción <em>index</em> muestra el contenido en la plantilla <code>app/views/books/index.html.erb</code>. Cuando pones una <em>variante localizada</em> de esta plantilla: <code>index.es.html.erb</code> en el mismo directorio, Rails renderizará el contenido en esta plantilla, cuando la configuración regional esté configurada en <code>:es</code>. Cuando la configuración regional se establece en la configuración regional predeterminada, se utilizará la vista genérica <code>index.html.erb</code>. (Las versiones de Future Rails bien pueden llevar esta localización <em>automagic</em> a los activos en <code>public</code>, etc.)</p><p>Puede hacer uso de esta función, p. Ej. cuando se trabaja con una gran cantidad de contenido estático, que sería torpe de poner dentro de los diccionarios YAML o Ruby. Sin embargo, tenga en cuenta que cualquier cambio que desee hacer más adelante en la plantilla debe propagarse a todos ellos.</p><h4 id="organization-of-locale-files"><a class="anchorlink" href="#organization-of-locale-files">3.7 Organization of Locale Files</a></h4><p>Cuando utiliza SimpleStore predeterminado que se envía con la biblioteca i18n,
+los diccionarios se almacenan en archivos de texto sin formato en el disco. Poner traducciones
+para todas las partes de su aplicación en un archivo por configuración regional podría ser difícil de
+gestionar. Puede almacenar estos archivos en una jerarquía que tenga sentido para usted.</p><p>Por ejemplo, su directorio <code>config/locales</code> podría verse así:</p><div class="code_container">
+<pre><code class="language-plain">|-defaults
+|---es.yml
+|---en.yml
+|-models
+|---book
+|-----es.yml
+|-----en.yml
+|-views
+|---defaults
+|-----es.yml
+|-----en.yml
+|---books
+|-----es.yml
+|-----en.yml
+|---users
+|-----es.yml
+|-----en.yml
+|---navigation
+|-----es.yml
+|-----en.yml
+</code></pre>
+</div>
+<p>De esta manera, puede separar el modelo y los nombres de los atributos del modelo del texto dentro de las vistas, y todo esto de los "valores predeterminados" (por ejemplo, formatos de fecha y hora). Otras tiendas de la biblioteca i18n podrían proporcionar diferentes medios de separación.</p><div class="note"><p>El mecanismo de carga de configuración regional predeterminado en Rails no carga archivos de configuración regional en diccionarios anidados, como lo tenemos aquí. Entonces, para que esto funcione, debemos decirle explícitamente a Rails que busque más:</p></div><div class="code_container">
+<pre><code class="language-ruby">  # config/application.rb
+  config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+
+</code></pre>
+</div>
+<h3 id="overview-of-the-i18n-api-features"><a class="anchorlink" href="#overview-of-the-i18n-api-features">4 Overview of the I18n API Features</a></h3><p>Debe tener una buena comprensión del uso de la biblioteca i18n ahora y saber cómo
+para internacionalizar una aplicación básica de Rails. En los siguientes capítulos,
+cubrir sus características con más profundidad.</p><p>Estos capítulos mostrarán ejemplos que utilizan tanto el método <code>I18n.translate</code> como el <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TranslationHelper.html#method-i%20-translate"><code>translate</code> view helper method</a> (teniendo en cuenta la característica adicional proporcionada por el método de ayuda de vista).</p><p>Se cubren características como estas:</p>
+<ul>
+<li>buscar traducciones</li>
+<li>interpolar datos en traducciones</li>
+<li>traducciones pluralizadas</li>
+<li>usando traducciones HTML seguras (ver solo el método auxiliar)</li>
+<li>localización de fechas, números, moneda, etc.</li>
+</ul>
+<h4 id="looking-up-translations"><a class="anchorlink" href="#looking-up-translations">4.1 Looking up Translations</a></h4><h5 id="basic-lookup-scopes-and-nested-keys"><a class="anchorlink" href="#basic-lookup-scopes-and-nested-keys">4.1.1 Basic Lookup, Scopes, and Nested Keys</a></h5><p>Las traducciones se buscan mediante claves que pueden ser tanto símbolos como cadenas, por lo que estas llamadas son equivalentes:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :message
+I18n.t 'message'
+</code></pre>
+</div>
+<p>El método <code>translate</code> también toma una opción <code>:scope</code> que puede contener una o más claves adicionales que se usarán para especificar un "namespace" o alcance para una clave de traducción:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :record_invalid, scope: [:activerecord, :errors, :messages]
+</code></pre>
+</div>
+<p>Esto busca el mensaje <code>:record_invalid</code> en los mensajes de error de Active Record.</p><p>Además, tanto la clave como los ámbitos se pueden especificar como claves separadas por puntos como en:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.translate "activerecord.errors.messages.record_invalid"
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-ruby">I18n.t 'activerecord.errors.messages.record_invalid'
+I18n.t 'errors.messages.record_invalid', scope: :activerecord
+I18n.t :record_invalid, scope: 'activerecord.errors.messages'
+I18n.t :record_invalid, scope: [:activerecord, :errors, :messages]
+</code></pre>
+</div>
+<p>Thus the following calls are equivalent:</p><h5 id="defaults"><a class="anchorlink" href="#defaults">4.1.2 Defaults</a></h5><p>Cuando se da una opción <code>:default</code>, su valor se devolverá si falta la traducción:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :missing, default: 'Not here'
+# =&gt; 'Not here'
+</code></pre>
+</div>
+<p>Si el valor <code>:default</code> es un símbolo, se utilizará como clave y se traducirá. Se pueden proporcionar varios valores por defecto. Se devolverá el primero que dé como resultado un valor.</p><p>Por ejemplo, lo siguiente primero intenta traducir la clave <code>: missing</code> y luego la clave<code>:missing</code>. Dado que ambos no dan un resultado, se devolverá la cadena "No aquí":</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :missing, default: [:also_missing, 'Not here']
+# =&gt; 'Not here'
+</code></pre>
+</div>
+<h5 id="bulk-and-namespace-lookup"><a class="anchorlink" href="#bulk-and-namespace-lookup">4.1.3 Bulk and Namespace Lookup</a></h5><p>Para buscar varias traducciones a la vez, se puede pasar una matriz de claves:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t [:odd, :even], scope: 'errors.messages'
+# =&gt; ["must be odd", "must be even"]
+</code></pre>
+</div>
+<p>Además, una clave puede traducirse en un hash (potencialmente anidado) de traducciones agrupadas. Por ejemplo, uno puede recibir <em>todos</em> los mensajes de error de Active Record como un Hash con:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t 'activerecord.errors.messages'
+# =&gt; {:inclusion=&gt;"is not included in the list", :exclusion=&gt; ... }
+</code></pre>
+</div>
+<p>Si desea realizar la interpolación en un hash masivo de traducciones, debe pasar <code>deep_interpolation: true</code> como parámetro. Cuando tenga el siguiente diccionario:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  welcome:
+    title: "Welcome!"
+    content: "Welcome to the %{app_name}"
+</code></pre>
+</div>
+<p>entonces la interpolación anidada se ignorará sin la configuración:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t 'welcome', app_name: 'book store'
+# =&gt; {:title=&gt;"Welcome!", :content=&gt;"Welcome to the %{app_name}"}
+
+I18n.t 'welcome', deep_interpolation: true, app_name: 'book store'
+# =&gt; {:title=&gt;"Welcome!", :content=&gt;"Welcome to the book store"}
+</code></pre>
+</div>
+<h5 id="lazy-lookup"><a class="anchorlink" href="#lazy-lookup">4.1.4 "Lazy" Lookup</a></h5><p>Rails implementa una forma conveniente de buscar la configuración regional dentro de <em>views</em>. Cuando tenga el siguiente diccionario:</p><div class="code_container">
+<pre><code class="language-yaml">es:
+  books:
+    index:
+      title: "Título"
+</code></pre>
+</div>
+<p>puede buscar el valor <code>books.index.title</code> ** dentro de la plantilla **<code>app/views/books/index.html.erb</code> como esta (observe el punto):</p><div class="code_container">
+<pre><code class="language-erb">&lt;%= t '.title' %&gt;
+</code></pre>
+</div>
+<div class="note"><p>El alcance de la traducción automática por parcial solo está disponible desde el método de ayuda de vista <code>translate</code>.</p></div><p>La búsqueda "Lazy" también se puede utilizar en controladores:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  books:
+    create:
+      success: Book created!
+</code></pre>
+</div>
+<p>Esto es útil para configurar mensajes flash, por ejemplo:</p><div class="code_container">
+<pre><code class="language-ruby">class BooksController &lt; ApplicationController
+  def create
+    # ...
+    redirect_to books_url, notice: t('.success')
+  end
+end
+</code></pre>
+</div>
+<h4 id="pluralization"><a class="anchorlink" href="#pluralization">4.2 Pluralization</a></h4><p>En muchos idiomas, incluido el inglés, solo hay dos formas, un singular y un plural, para
+una cadena dada, p. ej. "1 mensaje" y "2 mensajes". Otros idiomas (<a href="http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#ar">Arabic</a>, <a href="http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#ja">Japanese</a>, <a href="http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html#ru">Russian</a> y muchas más) tienen diferentes gramáticas que tienen menos  <a href="http://cldr.unicode.org/index/cldr-spec/plural-rules">plural forms</a>. Por tanto, la API I18n proporciona una característica de pluralización flexible.</p><p>La variable de interpolación <code>:count</code> tiene un papel especial en el sentido de que se interpola a la traducción y se utiliza para elegir una pluralización de las traducciones de acuerdo con las reglas de pluralización definidas en el
+backend de pluralización. De forma predeterminada, solo se aplican las reglas de pluralización en inglés.</p><div class="code_container">
+<pre><code class="language-ruby">I18n.backend.store_translations :en, inbox: {
+  zero: 'no messages', # optional
+  one: 'one message',
+  other: '%{count} messages'
+}
+I18n.translate :inbox, count: 2
+# =&gt; '2 messages'
+
+I18n.translate :inbox, count: 1
+# =&gt; 'one message'
+
+I18n.translate :inbox, count: 0
+# =&gt; 'no messages'
+</code></pre>
+</div>
+<p>El algoritmo para pluralizaciones en <code>: en</code> es tan simple como:</p><div class="code_container">
+<pre><code class="language-ruby">lookup_key = :zero if count == 0 &amp;&amp; entry.has_key?(:zero)
+lookup_key ||= count == 1 ? :one : :other
+entry[lookup_key]
+</code></pre>
+</div>
+<p>La traducción indicada como <code>:one</code> se considera singular, y el <code>:other</code> se usa como plural. Si el recuento es cero y hay una entrada <code>:zero</code>, se utilizará en lugar de <code>:other</code>.</p><p>Si la búsqueda de la clave no devuelve un Hash adecuado para la pluralización, se genera una excepción <code>I18n::InvalidPluralizationData</code>.</p><h5 id="locale-specific-rules"><a class="anchorlink" href="#locale-specific-rules">4.2.1 Locale-specific rules</a></h5><p>La gema I18n proporciona un backend de pluralización que se puede utilizar para habilitar reglas específicas de la configuración regional. Incluirlo
+al backend simple, luego agregue los algoritmos de pluralización localizados al almacén de traducción, como <code>i18n.plural.rule</code>.</p><div class="code_container">
+<pre><code class="language-ruby">I18n::Backend::Simple.include(I18n::Backend::Pluralization)
+I18n.backend.store_translations :pt, i18n: { plural: { rule: lambda { |n| [0, 1].include?(n) ? :one : :other } } }
+I18n.backend.store_translations :pt, apples: { one: 'one or none', other: 'more than one' }
+
+I18n.t :apples, count: 0, locale: :pt
+# =&gt; 'one or none'
+</code></pre>
+</div>
+<p>Alternativamente, la gem separada <a href="https://github.com/svenfuchs/rails-i18n">rails-i18n</a> can be used to provide a fuller set of locale-specific pluralization rules.</p><h4 id="setting-and-passing-a-locale"><a class="anchorlink" href="#setting-and-passing-a-locale">4.3 Setting and Passing a Locale</a></h4><p>La configuración regional se puede establecer pseudo-globalmente en <code>I18n.locale</code> (que usa<code>Thread.current</code> como, por ejemplo, <code>Time.zone</code>) o se puede pasar como una opción a <code>#translate</code> y <code>#localize</code> .
+If no locale is passed, <code>I18n.locale</code> is used:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.locale = :de
+I18n.t :foo
+I18n.l Time.now
+</code></pre>
+</div>
+<p>Pasar explícitamente una configuración regional:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :foo, locale: :de
+I18n.l Time.now, locale: :de
+</code></pre>
+</div>
+<p>The <code>I18n.locale</code> defaults to<code>I18n.default_locale</code> which defaults to: <code>en</code>. The default locale can be set like this:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.default_locale = :de
+</code></pre>
+</div>
+<h4 id="using-safe-html-translations"><a class="anchorlink" href="#using-safe-html-translations">4.4 Using Safe HTML Translations</a></h4><p>Las claves con un sufijo '_html' y las claves llamadas 'html' están marcadas como seguras para HTML. Cuando los use en las vistas, el HTML no se escapará.</p><div class="code_container">
+<pre><code class="language-yaml"># config/locales/en.yml
+en:
+  welcome: &lt;b&gt;welcome!&lt;/b&gt;
+  hello_html: &lt;b&gt;hello!&lt;/b&gt;
+  title:
+    html: &lt;b&gt;title!&lt;/b&gt;
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-erb"># app/views/home/index.html.erb
+&lt;div&gt;&lt;%= t('welcome') %&gt;&lt;/div&gt;
+&lt;div&gt;&lt;%= raw t('welcome') %&gt;&lt;/div&gt;
+&lt;div&gt;&lt;%= t('hello_html') %&gt;&lt;/div&gt;
+&lt;div&gt;&lt;%= t('title.html') %&gt;&lt;/div&gt;
+</code></pre>
+</div>
+<p>Sin embargo, la interpolación escapa según sea necesario. Por ejemplo, dado:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  welcome_html: "&lt;b&gt;Welcome %{username}!&lt;/b&gt;"
+</code></pre>
+</div>
+<p>puede pasar de forma segura el nombre de usuario establecido por el usuario:</p><div class="code_container">
+<pre><code class="language-erb">&lt;%# This is safe, it is going to be escaped if needed. %&gt;
+&lt;%= t('welcome_html', username: @current_user.username) %&gt;
+</code></pre>
+</div>
+<p>Las cadenas seguras, por otro lado, se interpolan literalmente.</p><div class="note"><p>La conversión automática a texto de traducción segura HTML solo está disponible desde el método auxiliar de visualización <code>translate</code>.</p></div><p><img src="images/i18n/demo_html_safe.png" alt="i18n demo html safe"></p><h4 id="translations-for-active-record-models"><a class="anchorlink" href="#translations-for-active-record-models">4.5 Translations for Active Record Models</a></h4><p>Puede utilizar los métodos <code>Model.model_name.human</code> y <code>Model.human_attribute_name(atributo)</code> para buscar de forma transparente las traducciones de sus nombres de modelo y atributo.</p><p>For example when you add the following translations:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  activerecord:
+    models:
+      user: Customer
+    attributes:
+      user:
+        login: "Handle"
+      # will translate User attribute "login" as "Handle"
+</code></pre>
+</div>
+<p>Entonces <code>User.model_name.human (count: 2)</code> devolverá "Clientes". Con <code>count: 1</code> o sin params devolverá" Customer ".</p><div class="note"><p>Si está utilizando una clase que incluye <code>ActiveModel</code> y no hereda de <code>ActiveRecord::Base</code>, reemplace <code>activerecord</code> por <code>activemodel</code> en las rutas clave anteriores.</p></div><h5 id="error-message-scopes"><a class="anchorlink" href="#error-message-scopes">4.5.1 Error Message Scopes</a></h5><p>Los mensajes de error de validación de Active Record también se pueden traducir fácilmente. Active Record le brinda un par de espacios de nombres donde puede colocar las traducciones de sus mensajes para proporcionar diferentes mensajes y traducciones para ciertos modelos, atributos y / o validaciones. También tiene en cuenta de forma transparente la herencia de una sola tabla.</p><p>Esto le brinda un medio bastante poderoso para ajustar de manera flexible sus mensajes a las necesidades de su aplicación.</p><p>Considere un modelo de usuario con una validación para el atributo de nombre como este:</p><div class="code_container">
+<pre><code class="language-ruby">class User &lt; ApplicationRecord
+  validates :name, presence: true
+end
+</code></pre>
+</div>
+<p>La clave para el mensaje de error en este caso es <code>:blank</code>. Active Record buscará esta clave en los espacios de nombres:</p><div class="code_container">
+<pre><code class="language-ruby">activerecord.errors.models.[model_name].attributes.[attribute_name]
+activerecord.errors.models.[model_name]
+activerecord.errors.messages
+errors.attributes.[attribute_name]
+errors.messages
+</code></pre>
+</div>
+<p>Por lo tanto, en nuestro ejemplo probará las siguientes claves en este orden y devolverá el primer resultado:</p><div class="code_container">
+<pre><code class="language-ruby">activerecord.errors.models.user.attributes.name.blank
+activerecord.errors.models.user.blank
+activerecord.errors.messages.blank
+errors.attributes.name.blank
+errors.messages.blank
+</code></pre>
+</div>
+<p>Cuando sus modelos utilizan adicionalmente la herencia, los mensajes se buscan en la cadena de herencia.</p><p>Por ejemplo, puede tener un modelo de administrador heredado de Usuario:</p><div class="code_container">
+<pre><code class="language-ruby">class Admin &lt; User
+  validates :name, presence: true
+end
+</code></pre>
+</div>
+<p>Entonces Active Record buscará mensajes en este orden:</p><div class="code_container">
+<pre><code class="language-ruby">activerecord.errors.models.admin.attributes.name.blank
+activerecord.errors.models.admin.blank
+activerecord.errors.models.user.attributes.name.blank
+activerecord.errors.models.user.blank
+activerecord.errors.messages.blank
+errors.attributes.name.blank
+errors.messages.blank
+</code></pre>
+</div>
+<p>De esta manera, puede proporcionar traducciones especiales para varios mensajes de error en diferentes puntos de la cadena de herencia de sus modelos y en los atributos, modelos o ámbitos predeterminados.</p><h5 id="error-message-interpolation"><a class="anchorlink" href="#error-message-interpolation">4.5.2 Error Message Interpolation</a></h5><p>El nombre del modelo traducido, el nombre del atributo traducido y el valor siempre están disponibles para interpolación como <code>model</code>, <code>attribute</code> y <code>value</code> respectivamente.</p><p>Entonces, por ejemplo, en lugar del mensaje de error predeterminado<code>"cannot be blank"</code>, puede usar el nombre del atributo así: <code>"Please fill in your %{attribute}"</code>.</p>
+<ul>
+<li>
+<code>count</code>, cuando esté disponible, se puede usar para pluralizar si está presente:</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>validation</th>
+<th>with option</th>
+<th>message</th>
+<th>interpolation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>confirmation</td>
+<td>-</td>
+<td>:confirmation</td>
+<td>attribute</td>
+</tr>
+<tr>
+<td>acceptance</td>
+<td>-</td>
+<td>:accepted</td>
+<td>-</td>
+</tr>
+<tr>
+<td>presence</td>
+<td>-</td>
+<td>:blank</td>
+<td>-</td>
+</tr>
+<tr>
+<td>absence</td>
+<td>-</td>
+<td>:present</td>
+<td>-</td>
+</tr>
+<tr>
+<td>length</td>
+<td>:within, :in</td>
+<td>:too_short</td>
+<td>count</td>
+</tr>
+<tr>
+<td>length</td>
+<td>:within, :in</td>
+<td>:too_long</td>
+<td>count</td>
+</tr>
+<tr>
+<td>length</td>
+<td>:is</td>
+<td>:wrong_length</td>
+<td>count</td>
+</tr>
+<tr>
+<td>length</td>
+<td>:minimum</td>
+<td>:too_short</td>
+<td>count</td>
+</tr>
+<tr>
+<td>length</td>
+<td>:maximum</td>
+<td>:too_long</td>
+<td>count</td>
+</tr>
+<tr>
+<td>uniqueness</td>
+<td>-</td>
+<td>:taken</td>
+<td>-</td>
+</tr>
+<tr>
+<td>format</td>
+<td>-</td>
+<td>:invalid</td>
+<td>-</td>
+</tr>
+<tr>
+<td>inclusion</td>
+<td>-</td>
+<td>:inclusion</td>
+<td>-</td>
+</tr>
+<tr>
+<td>exclusion</td>
+<td>-</td>
+<td>:exclusion</td>
+<td>-</td>
+</tr>
+<tr>
+<td>associated</td>
+<td>-</td>
+<td>:invalid</td>
+<td>-</td>
+</tr>
+<tr>
+<td>non-optional association</td>
+<td>-</td>
+<td>:required</td>
+<td>-</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>-</td>
+<td>:not_a_number</td>
+<td>-</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:greater_than</td>
+<td>:greater_than</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:greater_than_or_equal_to</td>
+<td>:greater_than_or_equal_to</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:equal_to</td>
+<td>:equal_to</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:less_than</td>
+<td>:less_than</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:less_than_or_equal_to</td>
+<td>:less_than_or_equal_to</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:other_than</td>
+<td>:other_than</td>
+<td>count</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:only_integer</td>
+<td>:not_an_integer</td>
+<td>-</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:odd</td>
+<td>:odd</td>
+<td>-</td>
+</tr>
+<tr>
+<td>numericality</td>
+<td>:even</td>
+<td>:even</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="translations-for-action-mailer-e-mail-subjects"><a class="anchorlink" href="#translations-for-action-mailer-e-mail-subjects">4.6 Translations for Action Mailer E-Mail Subjects</a></h4><p>Si no pasa un asunto al método <code>mail</code>, Action Mailer intentará encontrar
+en sus traducciones. La búsqueda realizada usará el patrón
+<code>&lt;mailer_scope&gt;.&lt;action_name&gt;.subject</code> para construir la clave.</p><div class="code_container">
+<pre><code class="language-ruby"># user_mailer.rb
+class UserMailer &lt; ActionMailer::Base
+  def welcome(user)
+    #...
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-yaml">en:
+  user_mailer:
+    welcome:
+      subject: "Welcome to Rails Guides!"
+</code></pre>
+</div>
+<p>Para enviar parámetros a la interpolación, use el método <code>default_i18n_subject</code> en el correo.</p><div class="code_container">
+<pre><code class="language-ruby"># user_mailer.rb
+class UserMailer &lt; ActionMailer::Base
+  def welcome(user)
+    mail(to: user.email, subject: default_i18n_subject(user: user.name))
+  end
+end
+</code></pre>
+</div>
+<div class="code_container">
+<pre><code class="language-yaml">en:
+  user_mailer:
+    welcome:
+      subject: "%{user}, welcome to Rails Guides!"
+</code></pre>
+</div>
+<h4 id="overview-of-other-built-in-methods-that-provide-i18n-support"><a class="anchorlink" href="#overview-of-other-built-in-methods-that-provide-i18n-support">4.7 Overview of Other Built-In Methods that Provide I18n Support</a></h4><p>Rails usa cadenas fijas y otras localizaciones, como cadenas de formato y otra información de formato en un par de ayudantes. He aquí una breve descripción general.</p><h5 id="action-view-helper-methods"><a class="anchorlink" href="#action-view-helper-methods">4.7.1 Action View Helper Methods</a></h5>
+<ul>
+<li><p><code>distance_of_time_in_words</code> traduce y pluraliza su resultado e interpola el número de segundos, minutos, horas, etc. Consulte las traducciones de <a href="https://github.com/rails/rails/blob/master/actionview/lib/action_view/locale/en.yml#L4">datetime.distance_in_words</a>.</p></li>
+<li><p><code>datetime_select</code> y <code>select_month</code> utilice nombres de meses traducidos para completar la etiqueta de selección resultante. Consulte <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml#L15">date.month_names</a> para ver las traducciones. <code>datetime_select</code> también busca la opción de pedido de  <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml#L18">date.order</a> (a menos que pase la opción explícitamente). Todos los ayudantes de selección de fecha traducen el mensaje usando las traducciones en el alcance <a href="https://github.com/rails/rails/blob/master/actionview/lib/action_view/locale/en.yml#L39">datetime.prompts</a> alcance si es aplicable.</p></li>
+<li><p>Los <code>number_to_currency</code>, <code>number_with_precision</code>, <code>number_to_percentage</code>, <code>number_with_delimiter</code>, y <code>number_to_human_size</code> los ayudantes usan la configuración de formato de número ubicada en el alcance <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml#L37">number</a>.</p></li>
+</ul>
+<h5 id="active-model-methods"><a class="anchorlink" href="#active-model-methods">4.7.2 Active Model Methods</a></h5>
+<ul>
+<li><p><code>model_name.human</code> y <code>human_attribute_name</code> utilizar traducciones para nombres de modelos y nombres de atributos si están disponibles en el alcance <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record/locale/en.yml#L36">activerecord.models</a>. También admiten traducciones de nombres de clases heredados (por ejemplo, para su uso con STI) como se explicó anteriormente en "Error message scopes".</p></li>
+<li><p><code>ActiveModel::Errors#generate_message</code> (que se utiliza en las validaciones de Active Model pero también se puede utilizar manualmente) <code>model_name.human</code> y <code>human_attribute_name</code> (véase más arriba). También traduce el mensaje de error y admite traducciones para nombres de clases heredados como se explicó anteriormente en "Error message scopes".</p></li>
+<li><p><code>ActiveModel::Errors#full_messages</code> prepends the attribute name to the error message using a separator that will be looked up from <a href="https://github.com/rails/rails/blob/master/activemodel/lib/active_model/locale/en.yml#L4">errors.format</a> (and which defaults to <code>"%{attribute} %{message}"</code>).</p></li>
+</ul>
+<h5 id="active-support-methods"><a class="anchorlink" href="#active-support-methods">4.7.3 Active Support Methods</a></h5>
+<ul>
+<li>
+<code>Array#to_sentence</code> utiliza la configuración de formato como se indica en el alcance <a href="https://github.com/rails/rails/blob/master/activesupport/lib/active_support/locale/en.yml#L33">support.array</a>.</li>
+</ul>
+<h3 id="how-to-store-your-custom-translations"><a class="anchorlink" href="#how-to-store-your-custom-translations">5 How to Store your Custom Translations</a></h3><p>El backend simple que se envía con Active Support le permite almacenar traducciones tanto en formato Ruby como en YAML. <sup class="footnote" id="footnote-2-ref"><a href="#footnote-2">2</a></sup></p><p>Por ejemplo, un Ruby Hash que proporcione traducciones puede verse así:</p><div class="code_container">
+<pre><code class="language-ruby">{
+  pt: {
+    foo: {
+      bar: "baz"
+    }
+  }
+}
+</code></pre>
+</div>
+<p>El archivo YAML equivalente se vería así:</p><div class="code_container">
+<pre><code class="language-yaml">pt:
+  foo:
+    bar: baz
+</code></pre>
+</div>
+<p>Como puede ver, en ambos casos la clave de nivel superior es la configuración regional. <code>:foo</code> es una clave de espacio de nombres y <code>:bar</code> es la clave para la traducción "baz".</p><p>Aquí hay un ejemplo "real" del archivo YAML de traducciones <code>en.yml</code> de Active Support:</p><div class="code_container">
+<pre><code class="language-yaml">en:
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+</code></pre>
+</div>
+<p>Por lo tanto, todas las siguientes búsquedas equivalentes devolverán el formato de fecha <code>:short</code> <code>"%b %d"</code>:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t 'date.formats.short'
+I18n.t 'formats.short', scope: :date
+I18n.t :short, scope: 'date.formats'
+I18n.t :short, scope: [:date, :formats]
+</code></pre>
+</div>
+<p>Generalmente recomendamos usar YAML como formato para almacenar traducciones. Sin embargo, hay casos en los que desea almacenar ruby ​​lambdas como parte de sus datos de configuración regional, por ejemplo para formatos de fecha especiales.</p><h3 id="customize-your-i18n-setup"><a class="anchorlink" href="#customize-your-i18n-setup">6 Customize your I18n Setup</a></h3><h4 id="using-different-backends"><a class="anchorlink" href="#using-different-backends">6.1 Using Different Backends</a></h4><p>Por varias razones, el backend simple enviado con Active Support solo hace "lo más simple que podría funcionar" <em>para Ruby on Rails</em><sup class="footnote" id="footnote-3-ref"><a href="#footnote-3">3</a></sup> ... lo que significa que solo se garantiza que funcione para inglés y, como efecto secundario, idiomas que son muy similares al inglés. Además, el backend simple solo es capaz de leer traducciones, pero no puede almacenarlas dinámicamente en ningún formato.</p><p>Sin embargo, eso no significa que esté atrapado con estas limitaciones. La gem Ruby I18n hace que eso sea fácil de intercambiar la implementación de backend simple con algo más que se adapte mejor a sus necesidades, pasando una instancia de backend al setter <code>I18n.backend=</code>.</p><p>Por ejemplo, puede reemplazar el backend simple con el backend de cadena para encadenar varios backend juntos. Esto es útil cuando desea utilizar traducciones estándar con un backend simple pero almacenar traducciones de aplicaciones personalizadas en una base de datos u otros backend.</p><p>Con el backend de Chain, puede usar el backend de Active Record y volver al backend simple (predeterminado):</p><div class="code_container">
+<pre><code class="language-ruby">I18n.backend = I18n::Backend::Chain.new(I18n::Backend::ActiveRecord.new, I18n.backend)
+</code></pre>
+</div>
+<h4 id="using-different-exception-handlers"><a class="anchorlink" href="#using-different-exception-handlers">6.2 Using Different Exception Handlers</a></h4><p>La API I18n define las siguientes excepciones que generarán los backends cuando se produzcan las condiciones inesperadas correspondientes:</p><div class="code_container">
+<pre><code class="language-ruby">MissingTranslationData       # no translation was found for the requested key
+InvalidLocale                # the locale set to I18n.locale is invalid (e.g. nil)
+InvalidPluralizationData     # a count option was passed but the translation data is not suitable for pluralization
+MissingInterpolationArgument # the translation expects an interpolation argument that has not been passed
+ReservedInterpolationKey     # the translation contains a reserved interpolation variable name (i.e. one of: scope, default)
+UnknownFileType              # the backend does not know how to handle a file type that was added to I18n.load_path
+</code></pre>
+</div>
+<p>El API I18n detectará todas estas excepciones cuando se introduzcan en el backend y las pase al método default_exception_handler. Este método volverá a generar todas las excepciones excepto las excepciones "MissingTranslationData". Cuando se detecta una excepción "MissingTranslationData", devolverá la cadena del mensaje de error de la excepción que contiene la clave / alcance que falta.</p><p>El razón de esto es que durante el desarrollo, por lo general, querrá que sus vistas aún se muestren aunque falte una traducción.</p><p>Sin embargo, en otros contextos, es posible que desee cambiar este comportamiento. P.ej. el manejo de excepciones predeterminado no permite detectar fácilmente las traducciones que faltan durante las pruebas automatizadas. Para este propósito, se puede especificar un manejador de excepciones diferente. El manejador de excepciones especificado debe ser un método en el módulo I18n o una clase con el método <code>#call</code>:</p><div class="code_container">
+<pre><code class="language-ruby">module I18n
+  class JustRaiseExceptionHandler &lt; ExceptionHandler
+    def call(exception, locale, key, options)
+      if exception.is_a?(MissingTranslation)
+        raise exception.to_exception
+      else
+        super
+      end
+    end
+  end
+end
+
+I18n.exception_handler = I18n::JustRaiseExceptionHandler.new
+</code></pre>
+</div>
+<p>Esto volvería a generar solo la excepción <code>MissingTranslationData</code>, pasando todas las demás entradas al controlador de excepciones predeterminado.</p><p>Sin embargo, si está utilizando <code>I18n::Backend::Pluralization</code>, este controlador también generará la excepción <code>I18n::MissingTranslationData: translation missing: en.i18n.plural.rule</code> que normalmente debería ignorarse para volver a la pluralización predeterminada regla para la configuración regional en inglés. Para evitar esto, puede usar una verificación adicional para la clave de traducción:</p><div class="code_container">
+<pre><code class="language-ruby">if exception.is_a?(MissingTranslation) &amp;&amp; key.to_s != 'i18n.plural.rule'
+  raise exception.to_exception
+else
+  super
+end
+</code></pre>
+</div>
+<p>Otro ejemplo en el que el comportamiento predeterminado es menos deseable es Rails TranslationHelper, que proporciona el método <code>#t</code> (además de <code>#translate</code>). Cuando se produce una excepción "MissingTranslationData" en este contexto, el asistente envuelve el mensaje en un intervalo con la clase CSS <code>translation_missing</code>.</p><p>Para hacerlo, el ayudante fuerza a <code>I18n#translate</code> a generar excepciones sin importar qué controlador de excepciones se defina estableciendo la opción <code>:raise</code>:</p><div class="code_container">
+<pre><code class="language-ruby">I18n.t :foo, raise: true # always re-raises exceptions from the backend
+</code></pre>
+</div>
+<h3 id="translating-model-content"><a class="anchorlink" href="#translating-model-content">7 Translating Model Content</a></h3><p>La API I18n descrita en esta guía está diseñada principalmente para traducir cadenas de interfaz. Si está buscando traducir contenido modelo (por ejemplo, publicaciones de blog), necesitará una solución diferente para ayudar con esto.</p><p>Varias gemas pueden ayudar con esto:</p>
+<ul>
+<li>
+<a href="https://github.com/globalize/globalize">Globalize</a>: Almacene las traducciones en tablas de traducción independientes, una para cada modelo traducido</li>
+<li>
+<a href="https://github.com/shioyama/mobility">Mobility</a>: Brinda soporte para almacenar traducciones en muchos formatos, incluidas tablas de traducción, columnas json (PostgreSQL), etc.</li>
+<li>
+<a href="https://github.com/barsoom/traco">Traco</a>: Columnas traducibles almacenadas en la propia tabla del modelo</li>
+</ul>
+<h3 id="conclusion"><a class="anchorlink" href="#conclusion">8 Conclusion</a></h3><p>En este punto, debería tener una buena descripción general de cómo funciona el soporte de I18n en Ruby on Rails y estar listo para comenzar a traducir su proyecto.</p><h3 id="contributing-to-rails-i18n"><a class="anchorlink" href="#contributing-to-rails-i18n">9 Contributing to Rails I18n</a></h3><p>La compatibilidad con I18n en Ruby on Rails se introdujo en la versión 2.2 y aún está evolucionando. El proyecto sigue la buena tradición de desarrollo de Ruby on Rails de desarrollar soluciones en gems y aplicaciones reales primero, y solo luego seleccionar las mejores de las características más útiles para su inclusión en el núcleo.</p><p>Por lo tanto, alentamos a todos a experimentar con nuevas ideas y características en gems u otras bibliotecas y ponerlas a disposición de la comunidad. (¡No olvide anunciar su trabajo en nuestra  <a href="https://groups.google.com/forum/#!forum/rails-i18n">mailing list</a>!)</p><p>Si encuentra que falta su propia configuración regional (idioma) en nuestro <a href="https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale">example translations data</a> repositorio para Ruby on Rails, por favor <a href="https://github.com/guides/fork-a-project-and-submit-your-modifications"><em>fork</em></a> el repositorio, agregue sus datos y envíe una <a href="https://help.github.com/articles/about-pull-requests/">pull request</a>.</p><h3 id="resources"><a class="anchorlink" href="#resources">10 Resources</a></h3>
+<ul>
+<li>
+<a href="https://groups.google.com/forum/#!forum/rails-i18n">Google group: rails-i18n</a> - La lista de correo del proyecto.</li>
+<li>
+<a href="https://github.com/svenfuchs/rails-i18n">GitHub: rails-i18n</a> - Repositorio de código y rastreador de problemas para el proyecto rails-i18n. Lo más importante es que puede encontrar muchas <a href="https://github.com/svenfuchs/rails-i18n/tree/master/rails/locale">example transalations</a> para Rails que deberían funcionar para su aplicación en la mayoría de los casos.</li>
+<li>
+<a href="https://github.com/svenfuchs/i18n">GitHub: i18n</a> - Repositorio de código y rastreador de problemas para la gema i18n.</li>
+</ul>
+<h3 id="authors"><a class="anchorlink" href="#authors">11 Authors</a></h3>
+<ul>
+<li>
+<a href="http://svenfuchs.com">Sven Fuchs</a> (autor inicial)</li>
+<li><a href="http://www.karmi.cz">Karel Minařík</a></li>
+</ul>
+<h3 id="footnotes"><a class="anchorlink" href="#footnotes">12 Footnotes</a></h3><p class="footnote" id="footnote-1"><a href="#footnote-1-ref"><sup>1</sup></a> O, para citar <a href="https://en.wikipedia.org/wiki/Internationalization_and_localization">Wikipedia</a>: <em>"Internationalization is the process of designing a software application so that it can be adapted to various languages and regions without engineering changes. Localization is the process of adapting software for a specific region or language by adding locale-specific components and translating text."</em></p><p class="footnote" id="footnote-2"><a href="#footnote-2-ref"><sup>2</sup></a> Otros backends pueden permitir o requerir el uso de otros formatos, p. Ej. un backend GetText podría permitir leer archivos GetText.</p><p class="footnote" id="footnote-3"><a href="#footnote-3-ref"><sup>3</sup></a> Una de estas razones es que no queremos implicar una carga innecesaria para las aplicaciones que no necesitan ninguna capacidad de I18n, por lo que debemos mantener la biblioteca I18n lo más simple posible para el inglés. Otra razón es que es prácticamente imposible implementar una solución única para todos los problemas relacionados con I18n para todos los idiomas existentes. Por lo tanto, una solución que nos permita intercambiar toda la implementación fácilmente es apropiada de todos modos. Esto también hace que sea mucho más fácil experimentar con funciones y extensiones personalizadas.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

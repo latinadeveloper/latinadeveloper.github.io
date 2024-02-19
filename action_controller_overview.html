@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -262,20 +262,59 @@
     <div class="wrapper">
       <div id="mainCol">
         <h3 id="what-does-a-controller-do-questionmark"><a class="anchorlink" href="#what-does-a-controller-do-questionmark">1 What Does a Controller Do?</a></h3><p>Action Controller es la C en <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC</a>. Una vez que el enrutador ha determinado qué controlador se usara para una solicitud, el controlador es responsable de dar sentido a la solicitud y producir la salida adecuada. Afortunadamente, Action Controller hace la mayor parte del trabajo preliminar por usted y utiliza convenciones inteligentes para que esto sea lo más sencillo posible.</p><p>For most conventional <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful</a> aplicaciones, el controlador recibirá la solicitud (esto es invisible para usted como desarrollador), buscará o guardará datos de un modelo y usará una vista para crear una salida HTML. Si su controlador necesita hacer las cosas de manera un poco diferente, eso no es un problema, esta es solo la forma más común de que funcione un controlador.</p><p>Por tanto, se puede pensar en un controlador como un intermediario entre modelos y vistas. Hace que los datos del modelo estén disponibles para la vista para que pueda mostrar esos datos al usuario y guarda o actualiza los datos del usuario en el modelo.</p><div class="note"><p>Para obtener más detalles sobre el proceso de enrutamiento, consulte <a href="routing.html">Rails Routing from the Outside In</a>.</p></div><h3 id="controller-naming-convention"><a class="anchorlink" href="#controller-naming-convention">2 Controller Naming Convention</a></h3><p>La convención de nomenclatura de los controladores en Rails favorece la pluralización de la última palabra en el nombre del controlador, aunque no es estrictamente necesario (por ejemplo, <code>ApplicationController</code>). Por ejemplo, <code>ClientsController</code> es preferible a <code>ClientController</code>, <code>SiteAdminsController</code> es preferible a <code>SiteAdminController</code> o <code>SitesAdminsController</code>, y así sucesivamente.</p><p>Seguir esta convención te permitirá usar los generadores de ruta predeterminados (por ejemplo, <code>resources</code>, etc.) sin necesidad de calificar cada<code>:route</code> o <code>:controller</code>, y mantendrá el uso de los ayudantes de ruta nombrados consistente en toda tu aplicación. Consulte la <a href="layouts_and_rendering.html">Layouts &amp; Rendering Guide</a> para obtener más detalles.</p><div class="note"><p>La convención de nomenclatura del controlador difiere de la convención de nomenclatura de los modelos, que se espera que sean nombrados en forma singular.</p></div><h3 id="methods-and-actions"><a class="anchorlink" href="#methods-and-actions">3 Methods and Actions</a></h3><p>Un controlador es una clase Ruby que hereda de <code>ApplicationController</code> y tiene métodos como cualquier otra clase. Cuando su aplicación recibe una solicitud, el enrutamiento determinará qué controlador y acción ejecutar, luego Rails crea una instancia de ese controlador y ejecuta el método con el mismo nombre que la acción.</p><div class="code_container">
-<pre><code class="language-ruby">class ClientsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ClientsController &lt; ApplicationController
   def new
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Como ejemplo, si un usuario va a <code>/clients/new</code> en su aplicación para agregar un nuevo cliente, Rails creará una instancia de <code>ClientsController</code> y llamará a su método <code>new</code>. Tenga en cuenta que el método vacío del ejemplo anterior funcionaría bien porque Rails representará por defecto la vista <code>new.html.erb</code> a ​​menos que la acción indique lo contrario. Al crear un nuevo <code>Client</code>, el método <code>new</code> puede hacer que un variable de instancia de <code>@client</code> sea accesible en la vista:</p><div class="code_container">
-<pre><code class="language-ruby">def new
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">new</span>
+  <span class="vi">@client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def new
   @client = Client.new
 end
-</code></pre>
+">Copy</button>
 </div>
 <p><a href="layouts_and_rendering.html">Layouts &amp; Rendering Guide</a> explica esto con más detalle.</p><p><code>ApplicationController</code> hereda de<code>ActionController::Base</code>, que define una serie de métodos útiles. Esta guía cubrirá algunos de estos, pero si tiene curiosidad por ver qué hay allí, puede verlos todos en la <a href="https://edgeapi.rubyonrails.org/classes/ActionController.html">API documentation</a> o en la propia fuente.</p><p>Solo los métodos públicos se pueden llamar como acciones. Es una buena práctica reducir la visibilidad de los métodos (con "privado" o "protegido") que no pretenden ser acciones, como métodos auxiliares o filtros.</p><h3 id="parameters"><a class="anchorlink" href="#parameters">4 Parameters</a></h3><p>Probablemente desee acceder a los datos enviados por el usuario u otros parámetros en las acciones de su controlador. Hay dos tipos de parámetros posibles en una aplicación web. Los primeros son parámetros que se envían como parte de la URL, llamados parámetros de cadena de consulta. La cadena de consulta es todo después de "?" en la URL. El segundo tipo de parámetro generalmente se conoce como datos POST. Esta información generalmente proviene de un formulario HTML que ha sido completado por el usuario. Se denominan datos POST porque solo se pueden enviar como parte de una solicitud HTTP POST. Rails no hace ninguna distinción entre los parámetros de la cadena de consulta y los parámetros POST, y ambos están disponibles en el hash <code>params</code> de su controlador:</p><div class="code_container">
-<pre><code class="language-ruby">class ClientsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># This action uses query string parameters because it gets run</span>
+  <span class="c1"># by an HTTP GET request, but this does not make any difference</span>
+  <span class="c1"># to the way in which the parameters are accessed. The URL for</span>
+  <span class="c1"># this action would look like this in order to list activated</span>
+  <span class="c1"># clients: /clients?status=activated</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:status</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"activated"</span>
+      <span class="vi">@clients</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">activated</span>
+    <span class="k">else</span>
+      <span class="vi">@clients</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">inactivated</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># This action uses POST parameters. They are most likely coming</span>
+  <span class="c1"># from an HTML form which the user has submitted. The URL for</span>
+  <span class="c1"># this RESTful request will be "/clients", and the data will be</span>
+  <span class="c1"># sent as part of the request body.</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:client</span><span class="p">])</span>
+    <span class="k">if</span> <span class="vi">@client</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="vi">@client</span>
+    <span class="k">else</span>
+      <span class="c1"># This line overrides the default rendering behavior, which</span>
+      <span class="c1"># would have been to render the "create" view.</span>
+      <span class="n">render</span> <span class="s2">"new"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ClientsController &lt; ApplicationController
   # This action uses query string parameters because it gets run
   # by an HTTP GET request, but this does not make any difference
   # to the way in which the parameters are accessed. The URL for
@@ -304,42 +343,63 @@ end
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="hash-and-array-parameters"><a class="anchorlink" href="#hash-and-array-parameters">4.1 Hash and Array Parameters</a></h4><p>El hash <code>params</code> no se limita a claves y valores unidimensionales. Puede contener matrices anidadas y hashes. Para enviar una matriz de valores, agregue un par de corchetes vacíos "[]" al nombre de la clave:</p><div class="code_container">
-<pre><code class="language-plain">GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
+<pre><code class="highlight plaintext">GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="GET /clients?ids[]=1&amp;ids[]=2&amp;ids[]=3
+">Copy</button>
 </div>
 <p>NOTA: La URL real en este ejemplo se codificará como "/clients?ids%5b%5d=1&amp;ids%5b%5d=2&amp;ids%5b%5d=3" ya que los caracteres "[" and "]" no están permitidos en URLs. La mayoría de las veces no tiene que preocuparse por esto porque el navegador lo codificará por usted, y Rails lo decodificará automáticamente, pero si alguna vez tiene que enviar esas solicitudes al servidor manualmente, debe tener esto en cuenta. .</p><p>El valor de <code>params[:ids]</code> ahora será <code>["1", "2", "3"]</code>. Tenga en cuenta que los valores de los parámetros son siempre cadenas; Rails no intenta adivinar o lanzar el tipo.</p><p>NOTA: Los valores como <code>[nil]</code> o <code>[nil, nil, ...]</code> en <code>params</code> se reemplazan
 con <code>[]</code> por razones de seguridad de forma predeterminada. Consulta la <a href="security.html#unsafe-query-generation">Security Guide</a>
 para más información.</p><p>Para enviar un hash, incluya el nombre de la clave entre corchetes:</p><div class="code_container">
-<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/clients" method="post"&gt;
+<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">accept-charset=</span><span class="s">"UTF-8"</span> <span class="na">action=</span><span class="s">"/clients"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"client[name]"</span> <span class="na">value=</span><span class="s">"Acme"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"client[phone]"</span> <span class="na">value=</span><span class="s">"12345"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"client[address][postcode]"</span> <span class="na">value=</span><span class="s">"12345"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"client[address][city]"</span> <span class="na">value=</span><span class="s">"Carrot City"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;form accept-charset="UTF-8" action="/clients" method="post"&gt;
   &lt;input type="text" name="client[name]" value="Acme" /&gt;
   &lt;input type="text" name="client[phone]" value="12345" /&gt;
   &lt;input type="text" name="client[address][postcode]" value="12345" /&gt;
   &lt;input type="text" name="client[address][city]" value="Carrot City" /&gt;
 &lt;/form&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Cuando se envía este formulario, el valor de <code>params[:client]</code> será <code>{ "name" =&gt; "Acme", "phone" =&gt; "12345", "address" =&gt; { "postcode" =&gt; "12345", "city" =&gt; "Carrot City" } }</code>. Tenga en cuenta el hash anidado en <code>params[:client][:address]</code>.</p><p>El objeto <code>params</code> actúa como un Hash, pero le permite usar símbolos y cadenas indistintamente como claves.</p><h4 id="json-parameters"><a class="anchorlink" href="#json-parameters">4.2 JSON parameters</a></h4><p>Si está escribiendo una aplicación de servicio web, es posible que se sienta más cómodo aceptando parámetros en formato JSON. Si el encabezado "Content-Type" de su solicitud está configurado como "application/json", Rails cargará automáticamente sus parámetros en el hash <code>params</code>, al que puede acceder como lo haría normalmente.</p><p>Entonces, por ejemplo, si está enviando este contenido JSON:</p><div class="code_container">
-<pre><code class="language-plain">{ "company": { "name": "acme", "address": "123 Carrot Street" } }
-</code></pre>
+<pre><code class="highlight json"><span class="p">{</span><span class="w"> </span><span class="nl">"company"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w"> </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Carrot Street"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text='{ "company": { "name": "acme", "address": "123 Carrot Street" } }
+'>Copy</button>
 </div>
 <p>Su controlador recibirá <code>params[:company]</code> como <code>{ "name" =&gt; "acme", "address" =&gt; "123 Carrot Street" }</code>.</p><p>Además, si ha activado <code>config.wrap_parameters</code> en su inicializador o llamado <code>wrap_parameters</code> en su controlador, puede omitir con seguridad el elemento raíz en el parámetro JSON. En este caso, los parámetros se clonarán y se ajustarán con una clave elegida en función del nombre de su controlador. Entonces, la solicitud JSON anterior se puede escribir como:</p><div class="code_container">
-<pre><code class="language-plain">{ "name": "acme", "address": "123 Carrot Street" }
-</code></pre>
+<pre><code class="highlight json"><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"acme"</span><span class="p">,</span><span class="w"> </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Carrot Street"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text='{ "name": "acme", "address": "123 Carrot Street" }
+'>Copy</button>
 </div>
 <p>Y, asumiendo que está enviando los datos a <code>CompaniesController</code>, entonces se incluirán dentro de la clave <code>:company</code> así:</p><p>Puede personalizar el nombre de la clave o los parámetros específicos que desea ajustar consultando la <a href="https://edgeapi.rubyonrails.org/classes/ActionController/ParamsWrapper.html">API documentation</a></p><div class="note"><p>El soporte para analizar parámetros XML se ha extraído en una gema llamada <code>actionpack-xml_parser</code>.</p></div><h4 id="routing-parameters"><a class="anchorlink" href="#routing-parameters">4.3 Routing Parameters</a></h4><p>El hash <code>params</code> siempre contendrá las claves <code>:controller</code> y <code>:action</code>, pero debes usar los métodos <code>controller_name</code> y <code>action_name</code> en su lugar para acceder a estos valores. Cualquier otro parámetro definido por el enrutamiento, como <code>:id</code>, también estará disponible. Como ejemplo, considere una lista de clientes donde la lista puede mostrar clientes activos o inactivos. Podemos agregar una ruta que capture el parámetro <code>:status</code> en una URL "pretty":</p><div class="code_container">
-<pre><code class="language-ruby">get '/clients/:status', to: 'clients#index', foo: 'bar'
+<pre><code class="highlight ruby"><span class="n">get</span> <span class="s1">'/clients/:status'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'clients#index'</span><span class="p">,</span> <span class="ss">foo: </span><span class="s1">'bar'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="get '/clients/:status', to: 'clients#index', foo: 'bar'
+">Copy</button>
 </div>
 <p>En este caso, cuando un usuario abre la URL <code>/clients/active</code>, <code>params[:status]</code>se configurará como" activo ". Cuando se utiliza esta ruta, <code>params[:foo]</code> también se establecerá en "bar", como si se pasara en la cadena de consulta. Su controlador también recibirá <code>params[:action]</code> como "índice" y <code>params[:controller]</code> como "clients".</p><h4 id="default-url-options"><a class="anchorlink" href="#default-url-options">4.4 <code>default_url_options</code></a></h4><p>Puede establecer parámetros predeterminados globales para la generación de URL definiendo un método llamado <code>default_url_options</code> en su controlador. Dicho método debe devolver un hash con los valores predeterminados deseados, cuyas claves deben ser símbolos:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">default_url_options</span>
+    <span class="p">{</span> <span class="ss">locale: </span><span class="no">I18n</span><span class="p">.</span><span class="nf">locale</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationController &lt; ActionController::Base
   def default_url_options
     { locale: I18n.locale }
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Estas opciones se usarán como punto de partida al generar URL, por lo que es posible que sean anuladas por las opciones pasadas a las llamadas <code>url_for</code>.</p><p>Si define <code>default_url_options</code> en<code>ApplicationController</code>, como en el ejemplo anterior, estos valores predeterminados se utilizarán para toda la generación de URL. El método también se puede definir en un controlador específico, en cuyo caso solo afecta a las URL generadas allí.</p><p>En una solicitud determinada, el método no se llama realmente para cada URL generada; por razones de rendimiento, el hash devuelto se almacena en caché, hay como máximo una invocación por solicitud.</p><h4 id="strong-parameters"><a class="anchorlink" href="#strong-parameters">4.5 Strong Parameters</a></h4><p>Con parámetros fuertes, los parámetros del controlador de acción están prohibidos
 utilizarse en asignaciones masivas de modelos activos hasta que hayan sido
@@ -349,7 +409,36 @@ práctica para ayudar a evitar permitir accidentalmente a los usuarios actualiza
 atributos del modelo.</p><p>Además, los parámetros se pueden marcar según sea necesario y fluirán a través de un
 flujo de subida/rescate predefinido que dará como resultado una solicitud incorrecta devuelve 400
 si no se pasan todos los parámetros requeridos.</p><div class="code_container">
-<pre><code class="language-ruby">class PeopleController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># This will raise an ActiveModel::ForbiddenAttributesError exception</span>
+  <span class="c1"># because it's using mass assignment without an explicit permit</span>
+  <span class="c1"># step.</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:person</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="c1"># This will pass with flying colors as long as there's a person key</span>
+  <span class="c1"># in the parameters, otherwise it'll raise an</span>
+  <span class="c1"># ActionController::ParameterMissing exception, which will get</span>
+  <span class="c1"># caught by ActionController::Base and turned into a 400 Bad</span>
+  <span class="c1"># Request error.</span>
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">current_account</span><span class="p">.</span><span class="nf">people</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">person</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="n">person_params</span><span class="p">)</span>
+    <span class="n">redirect_to</span> <span class="n">person</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="c1"># Using a private method to encapsulate the permissible parameters</span>
+    <span class="c1"># is just a good pattern since you'll be able to reuse the same</span>
+    <span class="c1"># permit list between create and update. Also, you can specialize</span>
+    <span class="c1"># this method with per-user checking of permissible attributes.</span>
+    <span class="k">def</span> <span class="nf">person_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:person</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:age</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PeopleController &lt; ActionController::Base
   # This will raise an ActiveModel::ForbiddenAttributesError exception
   # because it's using mass assignment without an explicit permit
   # step.
@@ -377,11 +466,13 @@ si no se pasan todos los parámetros requeridos.</p><div class="code_container">
       params.require(:person).permit(:name, :age)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="permitted-scalar-values"><a class="anchorlink" href="#permitted-scalar-values">4.5.1 Permitted Scalar Values</a></h5><p>Dado</p><div class="code_container">
-<pre><code class="language-ruby">params.permit(:id)
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="params.permit(:id)
+">Copy</button>
 </div>
 <p>se permitirá la inclusión de la clave <code>:id</code> si aparece en <code>params</code> y
 tiene asociado un valor escalar permitido. De lo contrario, la clave va
@@ -391,29 +482,39 @@ inyectado.</p><p>Los tipos escalares permitidos son <code>String</code>, <code>S
 <code>StringIO</code>, <code>IO</code>, <code>ActionDispatch::Http::UploadedFile</code>, y
 <code>Rack::Test::UploadedFile</code>.</p><p>Para declarar que el valor en <code>params</code> debe ser una matriz de permitidos
 valores escalares, asigne la clave a una matriz vacía:</p><div class="code_container">
-<pre><code class="language-ruby">params.permit(id: [])
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">(</span><span class="ss">id: </span><span class="p">[])</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="params.permit(id: [])
+">Copy</button>
 </div>
 <p>A veces no es posible o conveniente declarar las claves válidas de
 un parámetro hash o su estructura interna. Simplemente mapee a un hash vacío:</p><div class="code_container">
-<pre><code class="language-ruby">params.permit(preferences: {})
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">(</span><span class="ss">preferences: </span><span class="p">{})</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="params.permit(preferences: {})
+">Copy</button>
 </div>
 <p>pero tenga cuidado porque esto abre la puerta a entradas arbitrarias. En esto
 caso, <code>permit</code> asegura que los valores en la estructura devuelta estén permitidos
 escalares y filtra cualquier otra cosa.</p><p>Para permitir un hash completo de parámetros, el método <code>permit!</code> puede ser
 usado:</p><div class="code_container">
-<pre><code class="language-ruby">params.require(:log_entry).permit!
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:log_entry</span><span class="p">).</span><span class="nf">permit!</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="params.require(:log_entry).permit!
+">Copy</button>
 </div>
 <p>Esto marca el hash de los parámetros <code>:log_entry</code> y cualquier sub-hash del mismo como
 permitido y no comprueba los escalares permitidos, se acepta cualquier cosa.
 Se debe tener mucho cuidado al usar <code>permit!</code>, Ya que permitirá que todas las
 y los atributos del modelo futuro que se asignarán en masa.</p><h5 id="nested-parameters"><a class="anchorlink" href="#nested-parameters">4.5.2 Nested Parameters</a></h5><p>También puede usar <code>permit</code> en parámetros anidados, como:</p><div class="code_container">
-<pre><code class="language-ruby">params.permit(:name, { emails: [] },
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="p">{</span> <span class="ss">emails: </span><span class="p">[]</span> <span class="p">},</span>
+              <span class="ss">friends: </span><span class="p">[</span> <span class="ss">:name</span><span class="p">,</span>
+                         <span class="p">{</span> <span class="ss">family: </span><span class="p">[</span> <span class="ss">:name</span> <span class="p">],</span> <span class="ss">hobbies: </span><span class="p">[]</span> <span class="p">}])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="params.permit(:name, { emails: [] },
               friends: [ :name,
                          { family: [ :name ], hobbies: [] }])
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta declaración permite los atributos <code>name</code>,<code>emails</code> y <code>friends</code>.
 Se espera que los <code>emails</code> sean una variedad de
@@ -423,38 +524,56 @@ valores escalares permitidos, y un atributo <code>family</code> que está restri
 a tener un <code>name</code> (cualquier valor escalar también esta permitido aquí ).</p><h5 id="more-examples"><a class="anchorlink" href="#more-examples">4.5.3 More Examples</a></h5><p>Es posible que desee utilizar también los atributos permitidos en su "nuevo"
 acción. Esto plantea el problema de que no puede utilizar "require" en el
 clave raíz porque, normalmente, no existe cuando se llama a <code>new</code>:</p><div class="code_container">
-<pre><code class="language-ruby"># using `fetch` you can supply a default and use
+<pre><code class="highlight ruby"><span class="c1"># using `fetch` you can supply a default and use</span>
+<span class="c1"># the Strong Parameters API from there.</span>
+<span class="n">params</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="ss">:blog</span><span class="p">,</span> <span class="p">{}).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:author</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# using `fetch` you can supply a default and use
 # the Strong Parameters API from there.
 params.fetch(:blog, {}).permit(:title, :author)
-</code></pre>
+">Copy</button>
 </div>
 <p>El método de clase de modelo <code>accept_nested_attributes_for</code> le permite
 actualizar y destruir registros asociados. Esto se basa en el <code>id</code> y <code>_destroy</code>
 parámetros:</p><div class="code_container">
-<pre><code class="language-ruby"># permit :id and :_destroy
-params.require(:author).permit(:name, books_attributes: [:title, :id, :_destroy])
+<pre><code class="highlight ruby"><span class="c1"># permit :id and :_destroy</span>
+<span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:author</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">books_attributes: </span><span class="p">[</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="p">])</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="# permit :id and :_destroy
+params.require(:author).permit(:name, books_attributes: [:title, :id, :_destroy])
+">Copy</button>
 </div>
 <p>Los hash con claves enteras se tratan de forma diferente y puedes declarar
 los atributos como si fueran hijos directos. Obtienes este tipo de
 parámetros cuando se usa <code>accept_nested_attributes_for</code> en combinación
 con una asociación <code>has_many</code>:</p><div class="code_container">
-<pre><code class="language-ruby"># To permit the following data:
+<pre><code class="highlight ruby"><span class="c1"># To permit the following data:</span>
+<span class="c1"># {"book" =&gt; {"title" =&gt; "Some Book",</span>
+<span class="c1">#             "chapters_attributes" =&gt; { "1" =&gt; {"title" =&gt; "First Chapter"},</span>
+<span class="c1">#                                        "2" =&gt; {"title" =&gt; "Second Chapter"}}}}</span>
+
+<span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:book</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">chapters_attributes: </span><span class="p">[</span><span class="ss">:title</span><span class="p">])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='# To permit the following data:
 # {"book" =&gt; {"title" =&gt; "Some Book",
 #             "chapters_attributes" =&gt; { "1" =&gt; {"title" =&gt; "First Chapter"},
 #                                        "2" =&gt; {"title" =&gt; "Second Chapter"}}}}
 
 params.require(:book).permit(:title, chapters_attributes: [:title])
-</code></pre>
+'>Copy</button>
 </div>
 <p>Imagina un escenario en el que tienes parámetros que representan un producto
 nombre y un hash de datos arbitrarios asociados con ese producto, y
 desea permitir el atributo de nombre del producto y también el
 hash de datos:</p><div class="code_container">
-<pre><code class="language-ruby">def product_params
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">product_params</span>
+  <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:product</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">data: </span><span class="p">{})</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def product_params
   params.require(:product).permit(:name, data: {})
 end
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="outside-the-scope-of-strong-parameters"><a class="anchorlink" href="#outside-the-scope-of-strong-parameters">4.5.4 Outside the Scope of Strong Parameters</a></h5><p>La API de parámetros sólidos se diseñó con los casos de uso más comunes. 
 No pretende ser una solución milagrosa para manejar todos sus
@@ -471,33 +590,65 @@ propio código para adaptarse a su situación.</p><h3 id="session"><a class="anc
 <code>ActionDispatch::Session::MemCacheStore</code>: Almacena los datos en un clúster Memcached (esta es una implementación heredada; considere usar CacheStore en su lugar).</li>
 </ul>
 <p>Todas las tiendas de sesiones usan una cookie para almacenar una ID única para cada sesión (debe usar una cookie, Rails no le permitirá pasar la ID de la sesión en la URL ya que esto es menos seguro).</p><p>Para la mayoría de las tiendas, esta ID se usa para buscar los datos de la sesión en el servidor, p. Ej. en una tabla de base de datos. Hay una excepción, y ese es el almacén de sesiones predeterminado y recomendado, el CookieStore, que almacena todos los datos de la sesión en la propia cookie (el ID todavía está disponible para usted si lo necesita). Esto tiene la ventaja de ser muy ligero y no requiere ninguna configuración en una nueva aplicación para poder usar la sesión. Los datos de las cookies están firmados criptográficamente para que sean a prueba de manipulaciones. Y también está encriptado para que cualquier persona con acceso no pueda leer su contenido. (Rails no lo aceptará si ha sido editado).</p><p>CookieStore puede almacenar alrededor de 4kB de datos, mucho menos que los demás, pero esto suele ser suficiente. No se recomienda almacenar grandes cantidades de datos en la sesión, independientemente del almacén de sesiones que utilice su aplicación. En especial, debe evitar almacenar objetos complejos (cualquier cosa que no sean objetos básicos de Ruby, el ejemplo más común son las instancias de modelo) en la sesión, ya que es posible que el servidor no pueda volver a ensamblarlos entre solicitudes, lo que resultará en un error.</p><p>Si sus sesiones de usuario no almacenan datos críticos o no necesitan estar disponibles por períodos prolongados (por ejemplo, si solo usa el flash para mensajería), puede considerar usar <code>ActionDispatch::Session::CacheStore</code>. Esto almacenará sesiones usando la implementación de caché que ha configurado para su aplicación. La ventaja de esto es que puede usar su infraestructura de caché existente para almacenar sesiones sin requerir ninguna configuración o administración adicional. La desventaja, por supuesto, es que las sesiones serán efímeras y podrían desaparecer en cualquier momento.</p><p>Obtenga más información sobre el almacenamiento de sesiones en el <a href="security.html">Security Guide</a>.</p><p>Si necesita un mecanismo de almacenamiento de sesión diferente, puede cambiarlo en un inicializador:</p><div class="code_container">
-<pre><code class="language-ruby"># Use the database for sessions instead of the cookie-based default,
-# which shouldn't be used to store highly confidential information
-# (create the session table with "rails g active_record:session_migration")
-# Rails.application.config.session_store :active_record_store
+<pre><code class="highlight ruby"><span class="c1"># Use the database for sessions instead of the cookie-based default,</span>
+<span class="c1"># which shouldn't be used to store highly confidential information</span>
+<span class="c1"># (create the session table with "rails g active_record:session_migration")</span>
+<span class="c1"># Rails.application.config.session_store :active_record_store</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="# Use the database for sessions instead of the cookie-based default,
+# which shouldn't be used to store highly confidential information
+# (create the session table with &quot;rails g active_record:session_migration&quot;)
+# Rails.application.config.session_store :active_record_store
+">Copy</button>
 </div>
 <p>Rails configura una clave de sesión (el nombre de la cookie) al firmar los datos de la sesión. Estos también se pueden cambiar en un inicializador:</p><div class="code_container">
-<pre><code class="language-ruby"># Be sure to restart your server when you modify this file.
-Rails.application.config.session_store :cookie_store, key: '_your_app_session'
+<pre><code class="highlight ruby"><span class="c1"># Be sure to restart your server when you modify this file.</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">session_store</span> <span class="ss">:cookie_store</span><span class="p">,</span> <span class="ss">key: </span><span class="s1">'_your_app_session'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="# Be sure to restart your server when you modify this file.
+Rails.application.config.session_store :cookie_store, key: '_your_app_session'
+">Copy</button>
 </div>
 <p>También puede pasar una clave <code>:domain</code> y especificar el nombre de dominio para la cookie:</p><div class="code_container">
-<pre><code class="language-ruby"># Be sure to restart your server when you modify this file.
-Rails.application.config.session_store :cookie_store, key: '_your_app_session', domain: ".example.com"
+<pre><code class="highlight ruby"><span class="c1"># Be sure to restart your server when you modify this file.</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">session_store</span> <span class="ss">:cookie_store</span><span class="p">,</span> <span class="ss">key: </span><span class="s1">'_your_app_session'</span><span class="p">,</span> <span class="ss">domain: </span><span class="s2">".example.com"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="# Be sure to restart your server when you modify this file.
+Rails.application.config.session_store :cookie_store, key: '_your_app_session', domain: &quot;.example.com&quot;
+">Copy</button>
 </div>
 <p>Rails configura (para CookieStore) una clave secreta que se utiliza para firmar los datos de la sesión en <code>config/credentials.yml.enc</code>. Esto se puede cambiar con <code>bin/rails credentials:edit</code>.</p><div class="code_container">
-<pre><code class="language-yaml"># aws:
+<pre><code class="highlight yaml"><span class="c1"># aws:</span>
+<span class="c1">#   access_key_id: 123</span>
+<span class="c1">#   secret_access_key: 345</span>
+
+<span class="c1"># Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.</span>
+<span class="na">secret_key_base</span><span class="pi">:</span> <span class="s">492f...</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# aws:
 #   access_key_id: 123
 #   secret_access_key: 345
 
 # Used as the base secret for all MessageVerifiers in Rails, including the one protecting cookies.
 secret_key_base: 492f...
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Cambiar la base_clave_secreta cuando se usa <code>CookieStore</code> invalidará todas las sesiones existentes.</p></div><h4 id="accessing-the-session"><a class="anchorlink" href="#accessing-the-session">5.1 Accessing the Session</a></h4><p>En su controlador puede acceder a la sesión a través del método de instancia <code>session</code>.</p><div class="note"><p>Las sesiones se cargan de forma diferida. Si no accede a las sesiones en el código de su acción, no se cargarán. Por lo tanto, nunca necesitará deshabilitar las sesiones, simplemente no acceder a ellas hará el trabajo.</p></div><p>Los valores de sesión se almacenan utilizando pares clave/valor como un hash:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="kp">private</span>
+
+  <span class="c1"># Finds the User with the ID stored in the session with the key</span>
+  <span class="c1"># :current_user_id This is a common way to handle user login in</span>
+  <span class="c1"># a Rails application; logging in sets the session value and</span>
+  <span class="c1"># logging out removes it.</span>
+  <span class="k">def</span> <span class="nf">current_user</span>
+    <span class="vi">@_current_user</span> <span class="o">||=</span> <span class="n">session</span><span class="p">[</span><span class="ss">:current_user_id</span><span class="p">]</span> <span class="o">&amp;&amp;</span>
+      <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="n">session</span><span class="p">[</span><span class="ss">:current_user_id</span><span class="p">])</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationController &lt; ActionController::Base
 
   private
 
@@ -510,10 +661,22 @@ secret_key_base: 492f...
       User.find_by(id: session[:current_user_id])
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para almacenar algo en la sesión, simplemente asígnelo a la clave como un hash:</p><div class="code_container">
-<pre><code class="language-ruby">class LoginsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LoginsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># "Create" a login, aka "log the user in"</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="k">if</span> <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:username</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="ss">:password</span><span class="p">])</span>
+      <span class="c1"># Save the user ID in the session so it can be used in</span>
+      <span class="c1"># subsequent requests</span>
+      <span class="n">session</span><span class="p">[</span><span class="ss">:current_user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="nf">id</span>
+      <span class="n">redirect_to</span> <span class="n">root_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class LoginsController &lt; ApplicationController
   # "Create" a login, aka "log the user in"
   def create
     if user = User.authenticate(params[:username], params[:password])
@@ -524,10 +687,21 @@ end
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Para eliminar algo de la sesión, elimine el par clave/valor:</p><div class="code_container">
-<pre><code class="language-ruby">class LoginsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LoginsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># "Delete" a login, aka "log the user out"</span>
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="c1"># Remove the user id from the session</span>
+    <span class="n">session</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:current_user_id</span><span class="p">)</span>
+    <span class="c1"># Clear the memoized current user</span>
+    <span class="vi">@_current_user</span> <span class="o">=</span> <span class="kp">nil</span>
+    <span class="n">redirect_to</span> <span class="n">root_url</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class LoginsController &lt; ApplicationController
   # "Delete" a login, aka "log the user out"
   def destroy
     # Remove the user id from the session
@@ -537,26 +711,49 @@ end
     redirect_to root_url
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Para restablecer toda la sesión, use <code>reset_session</code>.</p><h4 id="the-flash"><a class="anchorlink" href="#the-flash">5.2 The Flash</a></h4><p>El flash es una parte especial de la sesión que se borra con cada solicitud. Esto significa que los valores almacenados allí solo estarán disponibles en la próxima solicitud, lo que es útil para pasar mensajes de error, etc.</p><p>Se accede a ella de la misma forma que a la sesión, como un hash (es una instancia de <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Flash/FlashHash.html">FlashHash</a>).</p><p>Usemos el acto de cerrar la sesión como ejemplo. El controlador puede enviar un mensaje que se mostrará al usuario en la siguiente solicitud:</p><div class="code_container">
-<pre><code class="language-ruby">class LoginsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LoginsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="n">session</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:current_user_id</span><span class="p">)</span>
+    <span class="n">flash</span><span class="p">[</span><span class="ss">:notice</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You have successfully logged out."</span>
+    <span class="n">redirect_to</span> <span class="n">root_url</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class LoginsController &lt; ApplicationController
   def destroy
     session.delete(:current_user_id)
     flash[:notice] = "You have successfully logged out."
     redirect_to root_url
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Tenga en cuenta que también es posible asignar un mensaje flash como parte de la redirección. Puede asignar <code>:notice</code>,<code>:alert</code> o el propósito general <code>:flash</code>:</p><div class="code_container">
-<pre><code class="language-ruby">redirect_to root_url, notice: "You have successfully logged out."
-redirect_to root_url, alert: "You're stuck here!"
-redirect_to root_url, flash: { referral_code: 1234 }
+<pre><code class="highlight ruby"><span class="n">redirect_to</span> <span class="n">root_url</span><span class="p">,</span> <span class="ss">notice: </span><span class="s2">"You have successfully logged out."</span>
+<span class="n">redirect_to</span> <span class="n">root_url</span><span class="p">,</span> <span class="ss">alert: </span><span class="s2">"You're stuck here!"</span>
+<span class="n">redirect_to</span> <span class="n">root_url</span><span class="p">,</span> <span class="ss">flash: </span><span class="p">{</span> <span class="ss">referral_code: </span><span class="mi">1234</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="redirect_to root_url, notice: &quot;You have successfully logged out.&quot;
+redirect_to root_url, alert: &quot;You're stuck here!&quot;
+redirect_to root_url, flash: { referral_code: 1234 }
+">Copy</button>
 </div>
 <p>La acción <code>destroy</code> redirige a la aplicación <code>root_url</code>, donde se mostrará el mensaje. Tenga en cuenta que depende totalmente de la siguiente acción decidir qué hará, si es que hará algo, con lo que la acción anterior puso en el flash. Es convencional mostrar cualquier alerta de error o avisos del flash en el diseño de la aplicación:</p><div class="code_container">
-<pre><code class="language-erb">&lt;html&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;html&gt;</span>
+  <span class="c">&lt;!-- &lt;head/&gt; --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="cp">&lt;%</span> <span class="n">flash</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="p">,</span> <span class="n">msg</span><span class="o">|</span> <span class="cp">-%&gt;</span>
+      <span class="cp">&lt;%=</span> <span class="n">content_tag</span> <span class="ss">:div</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="ss">class: </span><span class="nb">name</span> <span class="cp">%&gt;</span>
+    <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">-%&gt;</span>
+
+    <span class="c">&lt;!-- more content --&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;html&gt;
   &lt;!-- &lt;head/&gt; --&gt;
   &lt;body&gt;
     &lt;% flash.each do |name, msg| -%&gt;
@@ -566,16 +763,36 @@ redirect_to root_url, flash: { referral_code: 1234 }
     &lt;!-- more content --&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>De esta manera, si una acción establece un aviso o un mensaje de alerta, el diseño lo mostrará automáticamente.</p><p>Puede pasar cualquier cosa que la sesión pueda almacenar; no está limitado a avisos y alertas:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% if flash[:just_signed_up] %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">flash</span><span class="p">[</span><span class="ss">:just_signed_up</span><span class="p">]</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"welcome"</span><span class="nt">&gt;</span>Welcome to our site!<span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;% if flash[:just_signed_up] %&gt;
   &lt;p class="welcome"&gt;Welcome to our site!&lt;/p&gt;
 &lt;% end %&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Si desea que un valor flash se transfiera a otra solicitud, use el método <code>keep</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class MainController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MainController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># Let's say this action corresponds to root_url, but you want</span>
+  <span class="c1"># all requests here to be redirected to UsersController#index.</span>
+  <span class="c1"># If an action sets the flash and redirects here, the values</span>
+  <span class="c1"># would normally be lost when another redirect happens, but you</span>
+  <span class="c1"># can use 'keep' to make it persist for another request.</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="c1"># Will persist all flash values.</span>
+    <span class="n">flash</span><span class="p">.</span><span class="nf">keep</span>
+
+    <span class="c1"># You can also use a key to keep only some kind of value.</span>
+    <span class="c1"># flash.keep(:notice)</span>
+    <span class="n">redirect_to</span> <span class="n">users_url</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MainController &lt; ApplicationController
   # Let's say this action corresponds to root_url, but you want
   # all requests here to be redirected to UsersController#index.
   # If an action sets the flash and redirects here, the values
@@ -590,10 +807,22 @@ redirect_to root_url, flash: { referral_code: 1234 }
     redirect_to users_url
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="flash-now"><a class="anchorlink" href="#flash-now">5.2.1 <code>flash.now</code></a></h5><p>De forma predeterminada, agregar valores a la memoria flash los hará disponibles para la próxima solicitud, pero a veces es posible que desee acceder a esos valores en la misma solicitud. Por ejemplo, si la acción <code>create</code> falla al guardar un recurso y renderiza la plantilla <code>new</code> directamente, eso no dará como resultado una nueva solicitud, pero es posible que aún desee mostrar un mensaje usando el flash. Para hacer esto, puede usar <code>flash.now</code> de la misma manera que usa el <code>flash</code> normal:</p><div class="code_container">
-<pre><code class="language-ruby">class ClientsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">client_params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@client</span><span class="p">.</span><span class="nf">save</span>
+      <span class="c1"># ...</span>
+    <span class="k">else</span>
+      <span class="n">flash</span><span class="p">.</span><span class="nf">now</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Could not save client"</span>
+      <span class="n">render</span> <span class="ss">action: </span><span class="s2">"new"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ClientsController &lt; ApplicationController
   def create
     @client = Client.new(client_params)
     if @client.save
@@ -604,10 +833,34 @@ end
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="cookies"><a class="anchorlink" href="#cookies">6 Cookies</a></h3><p>Su aplicación puede almacenar pequeñas cantidades de datos en el cliente, llamadas cookies, que se mantendrán en las solicitudes e incluso en las sesiones. Rails proporciona un fácil acceso a las cookies a través del método <code>cookies</code>, que, al igual que la <code>sesión</code>, funciona como un hash:</p><div class="code_container">
-<pre><code class="language-ruby">class CommentsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CommentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="c1"># Auto-fill the commenter's name if it has been stored in a cookie</span>
+    <span class="vi">@comment</span> <span class="o">=</span> <span class="no">Comment</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">author: </span><span class="n">cookies</span><span class="p">[</span><span class="ss">:commenter_name</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@comment</span> <span class="o">=</span> <span class="no">Comment</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">comment_params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@comment</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">flash</span><span class="p">[</span><span class="ss">:notice</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Thanks for your comment!"</span>
+      <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="ss">:remember_name</span><span class="p">]</span>
+        <span class="c1"># Remember the commenter's name.</span>
+        <span class="n">cookies</span><span class="p">[</span><span class="ss">:commenter_name</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@comment</span><span class="p">.</span><span class="nf">author</span>
+      <span class="k">else</span>
+        <span class="c1"># Delete cookie for the commenter's name cookie, if any.</span>
+        <span class="n">cookies</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:commenter_name</span><span class="p">)</span>
+      <span class="k">end</span>
+      <span class="n">redirect_to</span> <span class="vi">@comment</span><span class="p">.</span><span class="nf">article</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">action: </span><span class="s2">"new"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CommentsController &lt; ApplicationController
   def new
     # Auto-fill the commenter's name if it has been stored in a cookie
     @comment = Comment.new(author: cookies[:commenter_name])
@@ -616,7 +869,7 @@ end
   def create
     @comment = Comment.new(comment_params)
     if @comment.save
-      flash[:notice] = "Thanks for your comment!"
+      flash[:notice] = &quot;Thanks for your comment!&quot;
       if params[:remember_name]
         # Remember the commenter's name.
         cookies[:commenter_name] = @comment.author
@@ -626,11 +879,11 @@ end
       end
       redirect_to @comment.article
     else
-      render action: "new"
+      render action: &quot;new&quot;
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Tenga en cuenta que si bien para los valores de sesión establece la clave en <code>nil</code>, para eliminar un valor de cookie debe usar <code>cookies.delete(:key)</code>.</p><p>Rails también proporciona un tarro de galletas firmado y un tarro de galletas encriptado para almacenar
 informacion delicada. El tarro de galletas firmado agrega una firma criptográfica en el
@@ -639,8 +892,10 @@ valores además de firmarlos, para que el usuario final no pueda leerlos.
 Referirse a <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Cookies.html">API documentation</a>
 for more details.</p><p>Estos tarros de cookies especiales utilizan un serializador para serializar los valores asignados en
 strings y deserializa en objetos Ruby en read.</p><p>Puede especificar qué serializador usar:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.config.action_dispatch.cookies_serializer = :json
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">cookies_serializer</span> <span class="o">=</span> <span class="ss">:json</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.action_dispatch.cookies_serializer = :json
+">Copy</button>
 </div>
 <p>El serializador predeterminado para nuevas aplicaciones es <code>:json</code>. Por compatibilidad con
 aplicaciones antiguas con cookies existentes, <code>:marshal</code> se usa cuando <code>serializer</code>
@@ -649,29 +904,53 @@ deserializar las cookies existentes (serializadas por <code>Marshal</code>) al l
 el formato <code>JSON</code>. Esto es útil para migrar aplicaciones existentes a la
 Serializador <code>:json</code>.</p><p>También es posible pasar un serializador personalizado que responda a <code>load</code> y
 <code>dump</code>:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.config.action_dispatch.cookies_serializer = MyCustomSerializer
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">cookies_serializer</span> <span class="o">=</span> <span class="no">MyCustomSerializer</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.action_dispatch.cookies_serializer = MyCustomSerializer
+">Copy</button>
 </div>
 <p>Cuando utilice el serializador <code>:json</code> o <code>:hybrid</code>, debe tener en cuenta que no todos
 Los objetos Ruby se pueden serializar como JSON. Por ejemplo, objetos <code>Date</code> y<code>Time</code>
 se serializarán como cadenas, y los <code>Hash</code>es tendrán sus claves en cadena.</p><div class="code_container">
-<pre><code class="language-ruby">class CookiesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CookiesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">set_cookie</span>
+    <span class="n">cookies</span><span class="p">.</span><span class="nf">encrypted</span><span class="p">[</span><span class="ss">:expiration_date</span><span class="p">]</span> <span class="o">=</span> <span class="no">Date</span><span class="p">.</span><span class="nf">tomorrow</span> <span class="c1"># =&gt; Thu, 20 Mar 2014</span>
+    <span class="n">redirect_to</span> <span class="ss">action: </span><span class="s1">'read_cookie'</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">read_cookie</span>
+    <span class="n">cookies</span><span class="p">.</span><span class="nf">encrypted</span><span class="p">[</span><span class="ss">:expiration_date</span><span class="p">]</span> <span class="c1"># =&gt; "2014-03-20"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CookiesController &lt; ApplicationController
   def set_cookie
     cookies.encrypted[:expiration_date] = Date.tomorrow # =&gt; Thu, 20 Mar 2014
     redirect_to action: 'read_cookie'
   end
 
   def read_cookie
-    cookies.encrypted[:expiration_date] # =&gt; "2014-03-20"
+    cookies.encrypted[:expiration_date] # =&gt; &quot;2014-03-20&quot;
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Es aconsejable que solo almacene datos simples (cadenas y números) en las cookies.
 Si tiene que almacenar objetos complejos, necesitará manejar la conversión
 manualmente al leer los valores en solicitudes posteriores.</p><p>Si usa la tienda de sesión de cookies, esto se aplicaría a la <code>session</code> y
 hash <code>flash</code> también.</p><h3 id="rendering-xml-and-json-data"><a class="anchorlink" href="#rendering-xml-and-json-data">7 Rendering XML and JSON data</a></h3><p>ActionController hace que sea extremadamente fácil renderizar datos <code>XML</code> o <code>JSON</code>. Si ha generado un controlador usando scaffolding, se vería así:</p><div class="code_container">
-<pre><code class="language-ruby">class UsersController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span>
+    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="c1"># index.html.erb</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">xml</span>  <span class="p">{</span> <span class="n">render</span> <span class="ss">xml: </span><span class="vi">@users</span> <span class="p">}</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@users</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UsersController &lt; ApplicationController
   def index
     @users = User.all
     respond_to do |format|
@@ -681,10 +960,23 @@ hash <code>flash</code> también.</p><h3 id="rendering-xml-and-json-data"><a cla
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede notar en el código anterior que estamos usando <code>render xml: @ users</code>, no <code>render xml: @users.to_xml</code>. Si el objeto no es una cadena, Rails invocará automáticamente <code>to_xml</code> por nosotros.</p><h3 id="filters"><a class="anchorlink" href="#filters">8 Filters</a></h3><p>Los filtros son métodos que se ejecutan "before", "after" o "around" de una acción del controlador.</p><p>Los filtros se heredan, por lo que si establece un filtro en <code>ApplicationController</code>, se ejecutará en todos los controladores de su aplicación.</p><p>Los filtros "antes" pueden detener el ciclo de solicitud. Un filtro "before" común es aquel que requiere que un usuario inicie sesión para que se ejecute una acción. Puede definir el método de filtro de esta manera:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_action</span> <span class="ss">:require_login</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">require_login</span>
+    <span class="k">unless</span> <span class="n">logged_in?</span>
+      <span class="n">flash</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You must be logged in to access this section"</span>
+      <span class="n">redirect_to</span> <span class="n">new_login_url</span> <span class="c1"># halts request cycle</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationController &lt; ActionController::Base
   before_action :require_login
 
   private
@@ -696,17 +988,37 @@ end
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>El método simplemente almacena un mensaje de error en la memoria flash y redirige al formulario de inicio de sesión si el usuario no ha iniciado sesión. Si un filtro "antes" se procesa o redirecciona, la acción no se ejecutará. Si hay filtros adicionales programados para ejecutarse después de ese filtro, también se cancelan.</p><div class="code_container">
-<pre><code class="language-ruby">class LoginsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LoginsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">skip_before_action</span> <span class="ss">:require_login</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:new</span><span class="p">,</span> <span class="ss">:create</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class LoginsController &lt; ApplicationController
   skip_before_action :require_login, only: [:new, :create]
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Ahora, las acciones <code>new</code> y <code>create</code> de <code>LoginsController</code> funcionarán como antes sin requerir que el usuario inicie sesión. La opción<code>: only</code> se usa para omitir este filtro solo para estas acciones, y también hay una opción <code>: except</code> que funciona al revés. Estas opciones también se pueden usar al agregar filtros, por lo que puede agregar un filtro que solo se ejecuta para las acciones seleccionadas en primer lugar.</p><div class="note"><p>Llamar al mismo filtro varias veces con diferentes opciones no funcionará,
 ya que la última definición de filtro sobrescribirá las anteriores.</p></div><h4 id="after-filters-and-around-filters"><a class="anchorlink" href="#after-filters-and-around-filters">8.1 After Filters and Around Filters</a></h4><p>Además de los filtros "before", también puede ejecutar filtros después de que se haya ejecutado una acción, o tanto antes como después.</p><p>Los filtros "after" son similares a los filtros "before", pero debido a que la acción ya se ha ejecutado, tienen acceso a los datos de respuesta que están a punto de enviarse al cliente. Obviamente, los filtros "después" no pueden detener la ejecución de la acción. Tenga en cuenta que los filtros "posteriores" se ejecutan solo después de una acción exitosa, pero no cuando se genera una excepción en el ciclo de solicitud.</p><p>Los filtros "around" son responsables de ejecutar sus acciones asociadas al ceder, de forma similar a como funcionan los middlewares de Rack.</p><p>Por ejemplo, en un sitio web donde los cambios tienen un flujo de trabajo de aprobación, un administrador podría obtener una vista previa de ellos fácilmente, simplemente aplíquelos dentro de una transacción:</p><div class="code_container">
-<pre><code class="language-ruby">class ChangesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ChangesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">around_action</span> <span class="ss">:wrap_in_transaction</span><span class="p">,</span> <span class="ss">only: :show</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">wrap_in_transaction</span>
+    <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">transaction</span> <span class="k">do</span>
+      <span class="k">begin</span>
+        <span class="k">yield</span>
+      <span class="k">ensure</span>
+        <span class="k">raise</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Rollback</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ChangesController &lt; ApplicationController
   around_action :wrap_in_transaction, only: :show
 
   private
@@ -721,10 +1033,19 @@ ya que la última definición de filtro sobrescribirá las anteriores.</p></div>
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Tenga en cuenta que un filtro "around" también envuelve el renderizado. En particular, si en el ejemplo anterior, la propia vista lee de la base de datos (por ejemplo, a través de un alcance), lo hará dentro de la transacción y, por lo tanto, presentará los datos para obtener una vista previa.</p><p>Puede optar por no ceder y generar la respuesta usted mismo, en cuyo caso la acción no se ejecutará.</p><h4 id="other-ways-to-use-filters"><a class="anchorlink" href="#other-ways-to-use-filters">8.2 Other Ways to Use Filters</a></h4><p>Si bien la forma más común de usar filtros es creando métodos privados y usando *_action para agregarlos, hay otras dos formas de hacer lo mismo.</p><p>La primera es usar un bloque directamente con los métodos *\ <em>action . El bloque recibe el controlador como argumento. El filtro `require</em>login` de arriba podría reescribirse para usar un bloque:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_action</span> <span class="k">do</span> <span class="o">|</span><span class="n">controller</span><span class="o">|</span>
+    <span class="k">unless</span> <span class="n">controller</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="ss">:logged_in?</span><span class="p">)</span>
+      <span class="n">flash</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You must be logged in to access this section"</span>
+      <span class="n">redirect_to</span> <span class="n">new_login_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationController &lt; ActionController::Base
   before_action do |controller|
     unless controller.send(:logged_in?)
       flash[:error] = "You must be logged in to access this section"
@@ -732,14 +1053,29 @@ end
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Tenga en cuenta que el filtro en este caso usa <code>send</code> porque el método <code>log_in?</code>Es privado y el filtro no se ejecuta en el alcance del controlador. Esta no es la forma recomendada de implementar este filtro en particular, pero en casos más simples podría ser útil.</p><p>Específicamente para <code>around_action</code>, el bloque también cede en la <code>action</code>:</p><div class="code_container">
-<pre><code class="language-ruby">around_action { |_controller, action| time(&amp;action) }
+<pre><code class="highlight ruby"><span class="n">around_action</span> <span class="p">{</span> <span class="o">|</span><span class="n">_controller</span><span class="p">,</span> <span class="n">action</span><span class="o">|</span> <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">action</span><span class="p">)</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="around_action { |_controller, action| time(&amp;action) }
+">Copy</button>
 </div>
 <p>La segunda forma es usar una clase (en realidad, cualquier objeto que responda a los métodos correctos servirá) para manejar el filtrado. Esto es útil en casos que son más complejos y no se pueden implementar de forma legible y reutilizable utilizando los otros dos métodos. Como ejemplo, puede volver a escribir el filtro de inicio de sesión para usar una clase:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_action</span> <span class="no">LoginFilter</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">LoginFilter</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">before</span><span class="p">(</span><span class="n">controller</span><span class="p">)</span>
+    <span class="k">unless</span> <span class="n">controller</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="ss">:logged_in?</span><span class="p">)</span>
+      <span class="n">controller</span><span class="p">.</span><span class="nf">flash</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You must be logged in to access this section"</span>
+      <span class="n">controller</span><span class="p">.</span><span class="nf">redirect_to</span> <span class="n">controller</span><span class="p">.</span><span class="nf">new_login_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationController &lt; ActionController::Base
   before_action LoginFilter
 end
 
@@ -751,23 +1087,35 @@ class LoginFilter
     end
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Nuevamente, este no es un ejemplo ideal para este filtro, porque no se ejecuta en el alcance del controlador, pero hace que el controlador se pase como argumento. La clase de filtro debe implementar un método con el mismo nombre que el filtro, por lo que para el filtro <code>before_action</code> la clase debe implementar un método <code>before</code>, y así sucesivamente. El método <code>around</code> debe <code>yield</code> para ejecutar la acción.</p><h3 id="request-forgery-protection"><a class="anchorlink" href="#request-forgery-protection">9 Request Forgery Protection</a></h3><p>La falsificación de solicitudes entre sitios es un tipo de ataque en el que un sitio engaña a un usuario para que realice solicitudes en otro sitio, posiblemente agregando, modificando o eliminando datos en ese sitio sin el conocimiento o permiso del usuario.</p><p>El primer paso para evitar esto es asegurarse de que solo se pueda acceder a todas las acciones "destructivas" (crear, actualizar y destruir) con solicitudes que no sean GET. Si sigue las convenciones RESTful, ya lo está haciendo. Sin embargo, un sitio malicioso aún puede enviar una solicitud que no sea GET a su sitio con bastante facilidad, y ahí es donde entra la protección contra la falsificación de solicitudes. Como su nombre lo indica, protege de las solicitudes falsificadas.</p><p>La forma en que se hace esto es agregar un token no adivinable que solo su servidor conoce en cada solicitud. De esta forma, si llega una solicitud sin el token adecuado, se le negará el acceso.</p><p>Si genera un formulario como este:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with model: @user, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@user</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:username</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:password</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with model: @user, local: true do |form| %&gt;
   &lt;%= form.text_field :username %&gt;
   &lt;%= form.text_field :password %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Verá cómo se agrega el token como un campo oculto:</p><div class="code_container">
-<pre><code class="language-xml">&lt;form accept-charset="UTF-8" action="/users/1" method="post"&gt;
+<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">accept-charset=</span><span class="s">"UTF-8"</span> <span class="na">action=</span><span class="s">"/users/1"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span>
+       <span class="na">value=</span><span class="s">"67250ab105eb5ad10851c00a5621854a23af5489"</span>
+       <span class="na">name=</span><span class="s">"authenticity_token"</span><span class="nt">/&gt;</span>
+<span class="c">&lt;!-- fields --&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;form accept-charset="UTF-8" action="/users/1" method="post"&gt;
 &lt;input type="hidden"
        value="67250ab105eb5ad10851c00a5621854a23af5489"
        name="authenticity_token"/&gt;
 &lt;!-- fields --&gt;
 &lt;/form&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Rails agrega este token a cada formulario que se genera usando los <a href="form_helpers.html">form helpers</a>, por lo que la mayoría de las veces no tiene que preocuparse por eso. Si está escribiendo un formulario manualmente o necesita agregar el token por otro motivo, está disponible a través del método <code>form_authenticity_token</code>:</p><p>El <code>form_authenticity_token</code> genera un token de autenticación válido. Eso es útil en lugares donde Rails no lo agrega automáticamente, como en las llamadas Ajax personalizadas.</p><p>La <a href="security.html">Security Guide</a> tiene más información sobre este y muchos otros problemas relacionados con la seguridad que debe tener en cuenta al desarrollar una aplicación web.</p><h3 id="the-request-and-response-objects"><a class="anchorlink" href="#the-request-and-response-objects">10 The Request and Response Objects</a></h3><p>En cada controlador hay dos métodos de acceso que apuntan a la solicitud y los objetos de respuesta asociados con el ciclo de solicitud que se encuentra actualmente en ejecución. El método <code>request</code> contiene una instancia de<code>ActionDispatch :: Request</code> y el método <code>response</code> devuelve un objeto de respuesta que representa lo que se enviará de vuelta al cliente.</p><h4 id="the-request-object"><a class="anchorlink" href="#the-request-object">10.1 The <code>request</code> Object</a></h4><p>El objeto de solicitud contiene mucha información útil sobre la solicitud que proviene del cliente. Para obtener una lista completa de los métodos disponibles, consulte la <a href="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Request.html">documentación de la API de Rails</a> y la <a href="https:%20//www.rubydoc%20.info%20/%20github%20/%20rack%20/%20rack%20/%20Rack%20/%20Request">Documentación de rack</a>. Entre las propiedades a las que puede acceder en este objeto se encuentran:</p>
 <table>
@@ -862,8 +1210,10 @@ end
 </tbody>
 </table>
 <h5 id="setting-custom-headers"><a class="anchorlink" href="#setting-custom-headers">10.2.1 Setting Custom Headers</a></h5><p>Si desea configurar encabezados personalizados para una respuesta, entonces <code>response.headers</code> es el lugar para hacerlo. El atributo de encabezados es un hash que asigna los nombres de los encabezados a sus valores, y Rails establecerá algunos de ellos automáticamente. Si desea agregar o cambiar un encabezado, simplemente asígnelo a <code>response.headers</code> de esta manera:</p><div class="code_container">
-<pre><code class="language-ruby">response.headers["Content-Type"] = "application/pdf"
+<pre><code class="highlight ruby"><span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s2">"Content-Type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"application/pdf"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='response.headers["Content-Type"] = "application/pdf"
+'>Copy</button>
 </div>
 <div class="note"><p>En el caso anterior, tendría más sentido usar el configurador <code>content_type</code> directamente.</p></div><h3 id="http-authentications"><a class="anchorlink" href="#http-authentications">11 HTTP Authentications</a></h3><p>Rails viene con tres mecanismos de autenticación HTTP integrados:</p>
 <ul>
@@ -872,13 +1222,30 @@ end
 <li>Autenticación de token</li>
 </ul>
 <h4 id="http-basic-authentication"><a class="anchorlink" href="#http-basic-authentication">11.1 HTTP Basic Authentication</a></h4><p>La autenticación básica HTTP es un esquema de autenticación que es compatible con la mayoría de los navegadores y otros clientes HTTP. Como ejemplo, considere una sección de administración que solo estará disponible ingresando un nombre de usuario y una contraseña en la ventana de diálogo básico HTTP del navegador. Usar la autenticación incorporada es bastante fácil y solo requiere que use un método, <code>http_basic_authenticate_with</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class AdminsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AdminsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">http_basic_authenticate_with</span> <span class="ss">name: </span><span class="s2">"humbaba"</span><span class="p">,</span> <span class="ss">password: </span><span class="s2">"5baa61e4"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class AdminsController &lt; ApplicationController
   http_basic_authenticate_with name: "humbaba", password: "5baa61e4"
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Con esto en su lugar, puede crear controladores de espacio de nombres que hereden de <code>AdminsController</code>. De esta forma, el filtro se ejecutará para todas las acciones en esos controladores, protegiéndolos con autenticación básica HTTP.</p><h4 id="http-digest-authentication"><a class="anchorlink" href="#http-digest-authentication">11.2 HTTP Digest Authentication</a></h4><p>La autenticación implícita HTTP es superior a la autenticación básica, ya que no requiere que el cliente envíe una contraseña sin cifrar a través de la red (aunque la autenticación básica HTTP es segura a través de HTTPS). Usar la autenticación implícita con Rails es bastante fácil y solo requiere usar un método, <code>authenticate_or_request_with_http_digest</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class AdminsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AdminsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="no">USERS</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"lifo"</span> <span class="o">=&gt;</span> <span class="s2">"world"</span> <span class="p">}</span>
+
+  <span class="n">before_action</span> <span class="ss">:authenticate</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">authenticate</span>
+      <span class="n">authenticate_or_request_with_http_digest</span> <span class="k">do</span> <span class="o">|</span><span class="n">username</span><span class="o">|</span>
+        <span class="no">USERS</span><span class="p">[</span><span class="n">username</span><span class="p">]</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class AdminsController &lt; ApplicationController
   USERS = { "lifo" =&gt; "world" }
 
   before_action :authenticate
@@ -890,10 +1257,23 @@ end
       end
     end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Como se ve en el ejemplo anterior, el bloque <code>authenticate_or_request_with_http_digest</code> toma solo un argumento: el nombre de usuario. Y el bloque devuelve la contraseña. Devolver <code>false</code> o <code>nil</code> de <code>authenticate_or_request_with_http_digest</code> provocará un error de autenticación.</p><h4 id="http-token-authentication"><a class="anchorlink" href="#http-token-authentication">11.3 HTTP Token Authentication</a></h4><p>La autenticación de token HTTP es un esquema para permitir el uso de tokens de portador en el encabezado HTTP  <code>Authorization</code>. Hay muchos formatos de token disponibles y describirlos está fuera del alcance de este documento.</p><p>Como ejemplo, suponga que desea utilizar un token de autenticación que se ha emitido con anterioridad para realizar la autenticación y el acceso. Implementar la autenticación de token con Rails es bastante fácil y solo requiere el uso de un método, <code>authenticate_or_request_with_http_token</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="no">TOKEN</span> <span class="o">=</span> <span class="s2">"secret"</span>
+
+  <span class="n">before_action</span> <span class="ss">:authenticate</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">authenticate</span>
+      <span class="n">authenticate_or_request_with_http_token</span> <span class="k">do</span> <span class="o">|</span><span class="n">token</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+        <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">SecurityUtils</span><span class="p">.</span><span class="nf">secure_compare</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="no">TOKEN</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class PostsController &lt; ApplicationController
   TOKEN = "secret"
 
   before_action :authenticate
@@ -905,10 +1285,31 @@ end
       end
     end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Como se ve en el ejemplo anterior, el bloque <code>authenticate_or_request_with_http_token</code> toma dos argumentos: el token y un<code>Hash</code> que contiene las opciones que se analizaron del encabezado HTTP <code>Authorization</code>. El bloque debe devolver <code>true</code> si la autenticación es exitosa. Si devuelve <code>false</code> o <code>nil</code>, se producirá un error de autenticación.</p><h3 id="streaming-and-file-downloads"><a class="anchorlink" href="#streaming-and-file-downloads">12 Streaming and File Downloads</a></h3><p>A veces, es posible que desee enviar un archivo al usuario en lugar de representar una página HTML. Todos los controladores en Rails tienen los métodos <code>send_data</code> y <code>send_file</code>, que transmitirán datos al cliente. <code>send_file</code> es un método conveniente que le permite proporcionar el nombre de un archivo en el disco y transmitirá el contenido de ese archivo por usted.</p><div class="code_container">
-<pre><code class="language-ruby">require "prawn"
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"prawn"</span>
+<span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># Generates a PDF document with information on the client and</span>
+  <span class="c1"># returns it. The user will get the PDF as a file download.</span>
+  <span class="k">def</span> <span class="nf">download_pdf</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">send_data</span> <span class="n">generate_pdf</span><span class="p">(</span><span class="n">client</span><span class="p">),</span>
+              <span class="ss">filename: </span><span class="s2">"</span><span class="si">#{</span><span class="n">client</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">.pdf"</span><span class="p">,</span>
+              <span class="ss">type: </span><span class="s2">"application/pdf"</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">generate_pdf</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+      <span class="no">Prawn</span><span class="o">::</span><span class="no">Document</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span>
+        <span class="n">text</span> <span class="n">client</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span> <span class="ss">align: :center</span>
+        <span class="n">text</span> <span class="s2">"Address: </span><span class="si">#{</span><span class="n">client</span><span class="p">.</span><span class="nf">address</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">text</span> <span class="s2">"Email: </span><span class="si">#{</span><span class="n">client</span><span class="p">.</span><span class="nf">email</span><span class="si">}</span><span class="s2">"</span>
+      <span class="k">end</span><span class="p">.</span><span class="nf">render</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='require "prawn"
 class ClientsController &lt; ApplicationController
   # Generates a PDF document with information on the client and
   # returns it. The user will get the PDF as a file download.
@@ -928,10 +1329,20 @@ class ClientsController &lt; ApplicationController
       end.render
     end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>La acción <code>download_pdf</code> en el ejemplo anterior llamará a un método privado que en realidad genera el documento PDF y lo devuelve como una cadena. Esta cadena luego se transmitirá al cliente como una descarga de archivo y se le sugerirá un nombre de archivo al usuario. A veces, al transmitir archivos al usuario, es posible que no desee que descarguen el archivo. Tome imágenes, por ejemplo, que se pueden incrustar en páginas HTML. Para decirle al navegador que un archivo no está destinado a ser descargado, puede establecer la opción <code>:disposition</code> en" en línea ". El valor opuesto y predeterminado para esta opción es "adjunto".</p><h4 id="sending-files"><a class="anchorlink" href="#sending-files">12.1 Sending Files</a></h4><p>Si desea enviar un archivo que ya existe en el disco, use el método <code>send_file</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class ClientsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># Stream a file that has already been generated and stored on disk.</span>
+  <span class="k">def</span> <span class="nf">download_pdf</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">send_file</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/files/clients/</span><span class="si">#{</span><span class="n">client</span><span class="p">.</span><span class="nf">id</span><span class="si">}</span><span class="s2">.pdf"</span><span class="p">,</span>
+              <span class="ss">filename: </span><span class="s2">"</span><span class="si">#{</span><span class="n">client</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">.pdf"</span><span class="p">,</span>
+              <span class="ss">type: </span><span class="s2">"application/pdf"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ClientsController &lt; ApplicationController
   # Stream a file that has already been generated and stored on disk.
   def download_pdf
     client = Client.find(params[:id])
@@ -940,10 +1351,22 @@ end
               type: "application/pdf")
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Esto leerá y transmitirá el archivo 4kB en ese momento, evitando cargar el archivo completo en la memoria a la vez. Puede desactivar la transmisión con la opción <code>:stream</code> o ajustar el tamaño del bloque con la opción <code>:buffer_size</code>.</p><p>Si no se especifica <code>:type</code>, se adivinará a partir de la extensión de archivo especificada en <code>:filename</code>. Si el tipo de contenido no está registrado para la extensión, se utilizará <code>application/octet-stream</code>.</p><div class="warning"><p>Tenga cuidado cuando utilice datos provenientes del cliente (parámetros, cookies, etc.) para ubicar el archivo en el disco, ya que este es un riesgo de seguridad que podría permitir que alguien obtenga acceso a archivos para los que no está destinado.</p></div><div class="info"><p>No se recomienda que transmita archivos estáticos a través de Rails si, en cambio, puede mantenerlos en una carpeta pública en su servidor web. Es mucho más eficiente permitir que el usuario descargue el archivo directamente usando Apache u otro servidor web, evitando que la solicitud pase innecesariamente por toda la pila de Rails.</p></div><h4 id="restful-downloads"><a class="anchorlink" href="#restful-downloads">12.2 RESTful Downloads</a></h4><p>Si bien <code>send_data</code> funciona bien, si está creando una aplicación RESTful, generalmente no es necesario tener acciones separadas para la descarga de archivos. En terminología REST, el archivo PDF del ejemplo anterior puede considerarse simplemente otra representación del recurso del cliente. Rails proporciona una forma sencilla y bastante elegante de realizar "RESTful downloads". A continuación, le indicamos cómo puede reescribir el ejemplo para que la descarga del PDF sea parte de la acción <code>show</code>, sin transmisión:</p><div class="code_container">
-<pre><code class="language-ruby">class ClientsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># The user can request to receive this resource as HTML or PDF.</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">pdf</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">pdf: </span><span class="n">generate_pdf</span><span class="p">(</span><span class="vi">@client</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ClientsController &lt; ApplicationController
   # The user can request to receive this resource as HTML or PDF.
   def show
     @client = Client.find(params[:id])
@@ -954,15 +1377,18 @@ end
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para que este ejemplo funcione, debe agregar el tipo PDF MIME a Rails. Esto se puede hacer agregando la siguiente línea al archivo <code>config/initializers/mime_types.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">Mime::Type.register "application/pdf", :pdf
+<pre><code class="highlight ruby"><span class="no">Mime</span><span class="o">::</span><span class="no">Type</span><span class="p">.</span><span class="nf">register</span> <span class="s2">"application/pdf"</span><span class="p">,</span> <span class="ss">:pdf</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='Mime::Type.register "application/pdf", :pdf
+'>Copy</button>
 </div>
 <div class="note"><p>Los archivos de configuración no se vuelven a cargar en cada solicitud, por lo que debe reiniciar el servidor para que los cambios surtan efecto.</p></div><p>Ahora el usuario puede solicitar obtener una versión PDF de un cliente simplemente agregando ".pdf" a la URL:</p><div class="code_container">
-<pre><code class="language-shell-session">GET /clients/1.pdf
-</code></pre>
+<pre><code class="highlight console"><span class="go">GET /clients/1.pdf
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <h4 id="live-streaming-of-arbitrary-data"><a class="anchorlink" href="#live-streaming-of-arbitrary-data">12.3 Live Streaming of Arbitrary Data</a></h4><p>Rails le permite transmitir más que solo archivos. De hecho, puedes transmitir cualquier cosa
 le gustaría en un objeto de respuesta. El módulo <code>ActionController::Live</code> permite
@@ -970,20 +1396,34 @@ que cree una conexión persistente con un navegador. Con este módulo,
 Ser capaz de enviar datos arbitrarios al navegador en momentos específicos.</p><h5 id="incorporating-live-streaming"><a class="anchorlink" href="#incorporating-live-streaming">12.3.1 Incorporating Live Streaming</a></h5><p>Incluir <code>ActionController::Live</code> dentro de su clase de controlador proporcionará
 todas las acciones dentro del controlador la capacidad de transmitir datos. Puedes mezclar
 el módulo así:</p><div class="code_container">
-<pre><code class="language-ruby">class MyController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="kp">include</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Live</span>
+
+  <span class="k">def</span> <span class="nf">stream</span>
+    <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'text/event-stream'</span>
+    <span class="mi">100</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span>
+      <span class="n">response</span><span class="p">.</span><span class="nf">stream</span><span class="p">.</span><span class="nf">write</span> <span class="s2">"hello world</span><span class="se">\n</span><span class="s2">"</span>
+      <span class="nb">sleep</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="k">ensure</span>
+    <span class="n">response</span><span class="p">.</span><span class="nf">stream</span><span class="p">.</span><span class="nf">close</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyController &lt; ActionController::Base
   include ActionController::Live
 
   def stream
     response.headers['Content-Type'] = 'text/event-stream'
     100.times {
-      response.stream.write "hello world\n"
+      response.stream.write &quot;hello world\n&quot;
       sleep 1
     }
   ensure
     response.stream.close
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El código anterior mantendrá una conexión persistente con el navegador y enviará 100
 mensajes de <code>"hello world\n"</code>, cada uno con un segundo de diferencia.</p><p>Hay un par de cosas a tener en cuenta en el ejemplo anterior. Tenemos que hacer
@@ -996,7 +1436,23 @@ letra de una canción en particular. Cada <code>Song</code> tiene un número par
 cada línea toma tiempo <code>num_beats</code> para terminar de cantar.</p><p>Si quisiéramos devolver la letra en estilo Karaoke (solo enviando la línea cuando
 el cantante ha terminado la línea anterior), entonces podríamos usar <code>ActionController::Live</code>
 como sigue:</p><div class="code_container">
-<pre><code class="language-ruby">class LyricsController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LyricsController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="kp">include</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Live</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">response</span><span class="p">.</span><span class="nf">headers</span><span class="p">[</span><span class="s1">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'text/event-stream'</span>
+    <span class="n">song</span> <span class="o">=</span> <span class="no">Song</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="n">song</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+      <span class="n">response</span><span class="p">.</span><span class="nf">stream</span><span class="p">.</span><span class="nf">write</span> <span class="n">line</span><span class="p">.</span><span class="nf">lyrics</span>
+      <span class="nb">sleep</span> <span class="n">line</span><span class="p">.</span><span class="nf">num_beats</span>
+    <span class="k">end</span>
+  <span class="k">ensure</span>
+    <span class="n">response</span><span class="p">.</span><span class="nf">stream</span><span class="p">.</span><span class="nf">close</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class LyricsController &lt; ActionController::Base
   include ActionController::Live
 
   def show
@@ -1011,7 +1467,7 @@ como sigue:</p><div class="code_container">
     response.stream.close
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El código anterior envía la siguiente línea solo después de que el cantante haya completado la anterior.
 línea.</p><h5 id="streaming-considerations"><a class="anchorlink" href="#streaming-considerations">12.3.3 Streaming Considerations</a></h5><p>La transmisión de datos arbitrarios es una herramienta extremadamente poderosa. Como se muestra en la anterior
@@ -1029,20 +1485,35 @@ no trabajará. Debe utilizar un servidor web que no almacena automáticamente en
 respuestas.</li>
 </ul>
 <h3 id="log-filtering"><a class="anchorlink" href="#log-filtering">13 Log Filtering</a></h3><p>Rails mantiene un archivo de registro para cada entorno en la carpeta <code>log</code>. Estos son extremadamente útiles al depurar lo que realmente está sucediendo en su aplicación, pero en una aplicación en vivo es posible que no desee que toda la información se almacene en el archivo de registro.</p><h4 id="parameters-filtering"><a class="anchorlink" href="#parameters-filtering">13.1 Parameters Filtering</a></h4><p>Puede filtrar los parámetros de solicitud confidenciales de sus archivos de registro agregándolos a <code>config.filter_parameters</code> en la configuración de la aplicación. Estos parámetros se marcarán como [FILTERED] en el registro.</p><div class="code_container">
-<pre><code class="language-ruby">config.filter_parameters &lt;&lt; :password
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">filter_parameters</span> <span class="o">&lt;&lt;</span> <span class="ss">:password</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.filter_parameters &lt;&lt; :password
+">Copy</button>
 </div>
 <div class="note"><p>Los parámetros proporcionados se filtrarán mediante una expresión regular de coincidencia parcial. Rails agrega por defecto <code>:password</code> en el inicializador apropiado (<code>initializers/filter_parameter_logging.rb</code>) y se preocupa por los parámetros típicos de la aplicación <code>password</code> y <code>password_confirmation</code>.</p></div><h4 id="redirects-filtering"><a class="anchorlink" href="#redirects-filtering">13.2 Redirects Filtering</a></h4><p>A veces es deseable filtrar de los archivos de registro algunas ubicaciones confidenciales a las que redirige su aplicación.
 Puedes hacerlo usando la opción de configuración <code>config.filter_redirect</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.filter_redirect &lt;&lt; 's3.amazonaws.com'
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">filter_redirect</span> <span class="o">&lt;&lt;</span> <span class="s1">'s3.amazonaws.com'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.filter_redirect &lt;&lt; 's3.amazonaws.com'
+">Copy</button>
 </div>
 <p>Puede configurarlo en una Cadena, una Regexp o una matriz de ambos.</p><div class="code_container">
-<pre><code class="language-ruby">config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">filter_redirect</span><span class="p">.</span><span class="nf">concat</span> <span class="p">[</span><span class="s1">'s3.amazonaws.com'</span><span class="p">,</span> <span class="sr">/private_path/</span><span class="p">]</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.filter_redirect.concat ['s3.amazonaws.com', /private_path/]
+">Copy</button>
 </div>
 <p>Las URL coincidentes se marcarán como '[FILTERED]'.</p><h3 id="rescue"><a class="anchorlink" href="#rescue">14 Rescue</a></h3><p>Lo más probable es que su aplicación contenga errores o genere una excepción que debe manejarse. Por ejemplo, si el usuario sigue un enlace a un recurso que ya no existe en la base de datos, Active Record lanzará la excepción <code>ActiveRecord::RecordNotFound</code>.</p><p>El manejo de excepciones predeterminado de Rails muestra un mensaje de "500 Server Error" para todas las excepciones. Si la solicitud se realizó localmente, se muestra un buen seguimiento y algo de información adicional para que pueda averiguar qué salió mal y solucionarlo. Si la solicitud fue remota, Rails simplemente mostrará un simple mensaje de "500 Server Error" al usuario, o un "404 Not Found" si hubo un error de enrutamiento o no se pudo encontrar un registro. A veces, es posible que desee personalizar cómo se detectan estos errores y cómo se muestran al usuario. Hay varios niveles de manejo de excepciones disponibles en una aplicación Rails:</p><h4 id="the-default-500-and-404-templates"><a class="anchorlink" href="#the-default-500-and-404-templates">14.1 The Default 500 and 404 Templates</a></h4><p>De forma predeterminada, una aplicación de producción generará un mensaje de error 404 o 500, en el entorno de desarrollo se generan todas las excepciones no controladas. Estos mensajes están contenidos en archivos HTML estáticos en la carpeta pública, en <code>404.html</code> y<code>500.html</code> respectivamente. Puede personalizar estos archivos para agregar información y estilo adicionales, pero recuerde que son HTML estático; es decir, no puede usar ERB, SCSS, CoffeeScript o diseños para ellos.</p><h4 id="rescue-from"><a class="anchorlink" href="#rescue-from">14.2 <code>rescue_from</code></a></h4><p>Si quieres hacer algo un poco más elaborado al detectar errores, puedes usar <code>rescue_from</code>, que maneja excepciones de cierto tipo (o múltiples tipos) en un controlador completo y sus subclases.</p><p>Cuando ocurre una excepción que es capturada por una directiva <code>rescue_from</code>, el objeto de excepción se pasa al manejador. El controlador puede ser un método o un objeto <code>Proc</code> pasado a la opción <code>:with</code>. También puede utilizar un bloque directamente en lugar de un objeto <code>Proc</code> explícito.</p><p>Así es como puede usar <code>rescue_from</code> para interceptar todos los errores de<code>ActiveRecord::RecordNotFound</code> y hacer algo con ellos.</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">rescue_from</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">RecordNotFound</span><span class="p">,</span> <span class="ss">with: :record_not_found</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">record_not_found</span>
+      <span class="n">render</span> <span class="ss">plain: </span><span class="s2">"404 Not Found"</span><span class="p">,</span> <span class="ss">status: </span><span class="mi">404</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ApplicationController &lt; ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
@@ -1050,15 +1521,41 @@ Puedes hacerlo usando la opción de configuración <code>config.filter_redirect<
       render plain: "404 Not Found", status: 404
     end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Por supuesto, este ejemplo es cualquier cosa menos elaborado y no mejora en absoluto el manejo de excepciones predeterminado, pero una vez que pueda detectar todas esas excepciones, podrá hacer lo que quiera con ellas. Por ejemplo, puede crear clases de excepción personalizadas que se lanzarán cuando un usuario no tenga acceso a una determinada sección de su aplicación:</p><div class="code_container">
-<pre><code class="language-ruby">class ApplicationController &lt; ActionController::Base
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">rescue_from</span> <span class="no">User</span><span class="o">::</span><span class="no">NotAuthorized</span><span class="p">,</span> <span class="ss">with: :user_not_authorized</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">user_not_authorized</span>
+      <span class="n">flash</span><span class="p">[</span><span class="ss">:error</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"You don't have access to this section."</span>
+      <span class="n">redirect_back</span><span class="p">(</span><span class="ss">fallback_location: </span><span class="n">root_path</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ClientsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># Check that the user has the right authorization to access clients.</span>
+  <span class="n">before_action</span> <span class="ss">:check_authorization</span>
+
+  <span class="c1"># Note how the actions don't have to worry about all the auth stuff.</span>
+  <span class="k">def</span> <span class="nf">edit</span>
+    <span class="vi">@client</span> <span class="o">=</span> <span class="no">Client</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="c1"># If the user is not authorized, just throw the exception.</span>
+    <span class="k">def</span> <span class="nf">check_authorization</span>
+      <span class="k">raise</span> <span class="no">User</span><span class="o">::</span><span class="no">NotAuthorized</span> <span class="k">unless</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">admin?</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationController &lt; ActionController::Base
   rescue_from User::NotAuthorized, with: :user_not_authorized
 
   private
     def user_not_authorized
-      flash[:error] = "You don't have access to this section."
+      flash[:error] = &quot;You don't have access to this section.&quot;
       redirect_back(fallback_location: root_path)
     end
 end
@@ -1078,7 +1575,7 @@ class ClientsController &lt; ApplicationController
       raise User::NotAuthorized unless current_user.admin?
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="warning"><p>Usar <code>rescue_from</code> con <code>Exception</code> o <code>StandardError</code> causaría efectos secundarios graves ya que evita que Rails maneje las excepciones correctamente. Como tal, no se recomienda hacerlo a menos que exista una razón de peso.</p></div><div class="note"><p>Cuando se ejecuta en el entorno de producción, todos
 Los errores de <code>ActiveRecord::RecordNotFound</code> generan la página de error 404. A menos que necesites

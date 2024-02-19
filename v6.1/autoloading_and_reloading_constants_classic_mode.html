@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Constantes de Autocarga y Recarga (modo Zeitwerk) — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
+  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
+  <meta property="og:title" content="Constantes de Autocarga y Recarga (modo Zeitwerk) — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo Zeitwerk)Esta guía documenta cómo funcionan la carga y la recarga automáticas constantes en el modo &quot;clásico&quot;.Después de leer esta guía, sabrá: Aspectos clave de las constantes de Ruby ¿Qué son los autoload_paths y cómo funciona la carga ansiosa en producción? Cómo funciona la carga automática constante ¿Qué es require_dependency Cómo funciona la recarga constante Soluciones a problemas comunes de carga automática" />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo Zeitwerk)Esta guía documenta cómo funcionan la carga y la recarga automáticas constantes en el modo &quot;clásico&quot;.Después de leer esta guía, sabrá: Aspectos clave de las constantes de Ruby ¿Qué son los autoload_paths y cómo funciona la carga ansiosa en producción? Cómo funciona la carga automática constante ¿Qué es require_dependency Cómo funciona la recarga constante Soluciones a problemas comunes de carga automática" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+</head>
+<body class="guide">
+  <div>
+<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
+  </div>
+  <div id="topNav">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div id="header">
+    <div class="wrapper clearfix">
+      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
+      <ul class="nav">
+        <li><a class="nav-item" href="index.html">Inicio</a></li>
+        <li class="guides-index guides-index-large">
+          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
+          <div id="guides" class="clearfix" style="display: none;">
+            <hr />
+            <dl class="guides-section-container">
+                <div class="guides-section">
+                  <dt>Empieza Aqui</dt>
+                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Modelos</dt>
+                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
+                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
+                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
+                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Vistas</dt>
+                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Controladores</dt>
+                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
+                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Otros Componentes</dt>
+                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
+                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
+                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Temas Avanzados</dt>
+                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
+                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
+                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
+                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
+                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
+                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
+                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
+                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
+                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
+                </div>
+                <div class="guides-section">
+                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
+                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
+                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
+                </div>
+            </dl>
+          </div>
+        </li>
+        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+        <li class="guides-index guides-index-small">
+          <select class="guides-index-item nav-item">
+            <option value="index.html">Guides Index</option>
+              <optgroup label="Empieza Aqui">
+                  <option value="getting_started.html">Introducción a Rails</option>
+              </optgroup>
+              <optgroup label="Modelos">
+                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
+                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                  <option value="active_record_validations.html">Validaciones de Active Record</option>
+                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
+                  <option value="association_basics.html">Asociaciones de Active Record</option>
+                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
+              </optgroup>
+              <optgroup label="Vistas">
+                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
+              </optgroup>
+              <optgroup label="Controladores">
+                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
+                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
+              </optgroup>
+              <optgroup label="Otros Componentes">
+                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
+                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
+                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
+              </optgroup>
+              <optgroup label="Temas Avanzados">
+                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
+                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
+                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
+                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
+                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
+                  <option value="command_line.html">La Línea de Comandos de Rails</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
+                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
+                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
+                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
+              </optgroup>
+              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
+                  <option value="rails_on_rack.html">Rails on Rack</option>
+                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
+              </optgroup>
+          </select>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <hr class="hide" />
+
+  <div id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>Constantes de Autocarga y Recarga (modo Zeitwerk)</h2><p>Esta guía documenta cómo funcionan la carga y la recarga automáticas constantes en el modo &quot;clásico&quot;.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Aspectos clave de las constantes de Ruby</li>
+<li>¿Qué son los <code>autoload_paths</code> y cómo funciona la carga ansiosa en producción?</li>
+<li>Cómo funciona la carga automática constante</li>
+<li>¿Qué es <code>require_dependency</code></li>
+<li>Cómo funciona la recarga constante</li>
+<li>Soluciones a problemas comunes de carga automática</li>
+</ul>
+
+
+                <div id="subCol">
+            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+            <ol class="chapters">
+<li><a href="#introduction">Introduction</a></li>
+<li>
+<a href="#constants-refresher">Constants Refresher</a>
+
+<ul>
+<li><a href="#nesting">Nesting</a></li>
+<li><a href="#class-and-module-definitions-are-constant-assignments">Class and Module Definitions are Constant Assignments</a></li>
+<li><a href="#constants-are-stored-in-modules">Constants are Stored in Modules</a></li>
+<li><a href="#resolution-algorithms">Resolution Algorithms</a></li>
+</ul>
+</li>
+<li>
+<a href="#vocabulary">Vocabulary</a>
+
+<ul>
+<li><a href="#parent-namespaces">Parent Namespaces</a></li>
+<li><a href="#loading-mechanism">Loading Mechanism</a></li>
+</ul>
+</li>
+<li><a href="#autoloading-availability">Autoloading Availability</a></li>
+<li><a href="#autoload-paths-and-eager-load-paths">autoload_paths and eager_load_paths</a></li>
+<li>
+<a href="#autoloading-algorithms">Autoloading Algorithms</a>
+
+<ul>
+<li><a href="#autoloading-algorithms-relative-references">Relative References</a></li>
+<li><a href="#autoloading-algorithms-qualified-references">Qualified References</a></li>
+<li><a href="#automatic-modules">Automatic Modules</a></li>
+<li><a href="#generic-procedure">Generic Procedure</a></li>
+</ul>
+</li>
+<li><a href="#require-dependency">require_dependency</a></li>
+<li><a href="#constant-reloading">Constant Reloading</a></li>
+<li>
+<a href="#common-gotchas">Common Gotchas</a>
+
+<ul>
+<li><a href="#nesting-and-qualified-constants">Nesting and Qualified Constants</a></li>
+<li><a href="#defining-vs-reopening-namespaces">Defining vs Reopening Namespaces</a></li>
+<li><a href="#autoloading-and-sti">Autoloading and STI</a></li>
+<li><a href="#autoloading-and-require">Autoloading and <code>require</code></a></li>
+<li><a href="#autoloading-and-initializers">Autoloading and Initializers</a></li>
+<li><a href="#require-dependency-and-initializers"><code>require_dependency</code> and Initializers</a></li>
+<li><a href="#when-constants-aren-t-missed">When Constants aren't Missed</a></li>
+<li><a href="#autoloading-within-singleton-classes">Autoloading within Singleton Classes</a></li>
+<li><a href="#autoloading-in-basicobject">Autoloading in <code>BasicObject</code></a></li>
+<li><a href="#autoloading-in-the-test-environment">Autoloading in the Test Environment</a></li>
+</ul>
+</li>
+<li>
+<a href="#troubleshooting">Troubleshooting</a>
+
+<ul>
+<li><a href="#tracing-autoloads">Tracing Autoloads</a></li>
+<li><a href="#where-is-a-given-autoload-triggered-questionmark">Where is a Given Autoload Triggered?</a></li>
+<li><a href="#which-constants-have-been-autoloaded-questionmark">Which Constants Have Been Autoloaded?</a></li>
+</ul>
+</li>
+</ol>
+
+          </div>
+
+    </div>
+  </div>
+
+  <div id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h3 id="introduction"><a class="anchorlink" href="#introduction">1 Introduction</a></h3><div class="info"><p>Esta guía documenta la carga automática en el modo <code>clásico</code>, que es el tradicional. Si desea leer sobre el modo <code>zeitwerk</code> en su lugar, el nuevo en Rails 6, verifique <a href="autoloading_and_reloading_constants.html">Constantes de carga y carga automática (modo Zeitwerk)</a>.</p></div><p>Ruby on Rails permite que las aplicaciones se escriban como si su código estuviera precargado.</p><p>En un programa normal de Ruby, las clases necesitan cargar sus dependencias:</p><div class="code_container">
+<pre><code class="language-ruby">require "application_controller"
+require "post"
+
+class PostsController &lt; ApplicationController
+  def index
+    @posts = Post.all
+  end
+end
+</code></pre>
+</div>
+<p>Nuestro instinto rubyista ve rápidamente algo de redundancia allí: si las clases fueran
+definido en archivos que coincidan con su nombre, ¿no podría automatizarse su carga?
+¿de algun modo? Podríamos ahorrar escaneando el archivo en busca de dependencias, lo cual es frágil.</p><p>Además, <code>Kernel#require</code> carga archivos una vez, pero el desarrollo es mucho más fluido
+si el código se actualiza cuando cambia sin reiniciar el servidor. Sería
+Sería bueno poder usar <code>Kernel#load</code> en desarrollo, y <code>Kernel#require</code> en
+producción.</p><p>De hecho, esas funciones las proporciona Ruby on Rails, donde simplemente escribimos</p><div class="code_container">
+<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+  def index
+    @posts = Post.all
+  end
+end
+</code></pre>
+</div>
+<p>Esta guía documenta cómo funciona.</p><h3 id="constants-refresher"><a class="anchorlink" href="#constants-refresher">2 Constants Refresher</a></h3><p>Si bien las constantes son triviales en la mayoría de los lenguajes de programación, son una rica
+tema en Ruby.</p><p>Está más allá del alcance de esta guía documentar las constantes de Ruby, pero estamos
+no obstante, voy a destacar algunos temas clave. Verdaderamente captando lo siguiente
+secciones es fundamental para comprender la carga y la recarga automáticas constantes.</p><h4 id="nesting"><a class="anchorlink" href="#nesting">2.1 Nesting</a></h4><p>Las definiciones de clases y módulos se pueden anidar para crear espacios de nombres:</p><div class="code_container">
+<pre><code class="language-ruby">module XML
+  class SAXParser
+    # (1)
+  end
+end
+</code></pre>
+</div>
+<p>El <em>anidamiento</em> en cualquier lugar dado es la colección de clases anidadas adjuntas y
+los objetos del módulo hacia afuera. El anidamiento en cualquier lugar dado se puede inspeccionar con
+<code>Module.nesting</code>. Por ejemplo, en el ejemplo anterior, el anidamiento en
+(1) es</p><div class="code_container">
+<pre><code class="language-ruby">[XML::SAXParser, XML]
+</code></pre>
+</div>
+<p>Es importante comprender que el anidamiento se compone de clase y módulo
+<em>objetos</em>, no tiene nada que ver con las constantes utilizadas para acceder a ellos, y es
+también sin relación con sus nombres.</p><p>Por ejemplo, si bien esta definición es similar a la anterior:</p><div class="code_container">
+<pre><code class="language-ruby">class XML::SAXParser
+  # (2)
+end
+</code></pre>
+</div>
+<p>el anidamiento en (2) es diferente:</p><div class="code_container">
+<pre><code class="language-ruby">[XML::SAXParser]
+</code></pre>
+</div>
+<p><code>XML</code> no le pertenece.</p><p>Podemos ver en este ejemplo que el nombre de una clase o módulo que pertenece a un
+cierto anidamiento no se correlaciona necesariamente con los espacios de nombres en el lugar.</p><p>Más aún, son totalmente independientes, tomemos por ejemplo</p><div class="code_container">
+<pre><code class="language-ruby">module X
+  module Y
+  end
+end
+
+module A
+  module B
+  end
+end
+
+module X::Y
+  module A::B
+    # (3)
+  end
+end
+</code></pre>
+</div>
+<p>El anidamiento en (3) consta de dos objetos de módulo:</p><div class="code_container">
+<pre><code class="language-ruby">[A::B, X::Y]
+</code></pre>
+</div>
+<p>Entonces, no solo no termina en <code>A</code>, que ni siquiera pertenece al anidamiento,
+pero también contiene <code>X::Y</code>, que es independiente de <code>A::B</code>.</p><p>El anidamiento es una pila interna mantenida por el intérprete, y se obtiene
+modificado de acuerdo con estas reglas:</p>
+<ul>
+<li><p>El objeto de clase que sigue a una palabra clave <code>class</code> se inserta cuando su cuerpo es
+ejecutado, y apareció tras él.</p></li>
+<li><p>El objeto de módulo que sigue a una palabra clave <code>module</code> se envía cuando su cuerpo
+ejecutado, y apareció tras él.</p></li>
+<li><p>Una clase singleton abierta con <code>class &lt;&lt; object</code> es empujada y aparece más tarde.</p></li>
+<li><p>Cuando se llama a <code>instance_eval</code> usando un argumento de cadena,
+la clase singleton del receptor se empuja al anidamiento del eval'ed
+código. Cuando se llama a <code>class_eval</code> o <code>module_eval</code> usando un argumento de cadena,
+el receptor es empujado al anidamiento del código evaluado.</p></li>
+<li><p>El anidamiento en el nivel superior de código interpretado por <code>Kernel#load</code> está vacío
+a menos que la llamada <code>load</code> reciba un valor verdadero como segundo argumento, en cuyo caso
+Ruby envía un módulo anónimo recién creado.</p></li>
+</ul>
+<p>Es interesante observar que los bloques no modifican la pila. En particular
+los bloques que se pueden pasar a <code>Class.new</code> y <code>Module.new</code> no obtienen el
+clase o módulo que se define empujado a su anidamiento. Ese es uno de los
+diferencias entre definir clases y módulos de una forma u otra.</p><h4 id="class-and-module-definitions-are-constant-assignments"><a class="anchorlink" href="#class-and-module-definitions-are-constant-assignments">2.2 Class and Module Definitions are Constant Assignments</a></h4><p>Supongamos que el siguiente fragmento crea una clase (en lugar de volver a abrirla):</p><div class="code_container">
+<pre><code class="language-ruby">class C
+end
+</code></pre>
+</div>
+<p>Ruby crea una constante <code>C</code> en <code>Object</code> y almacena en esa constante una clase
+objeto. El nombre de la instancia de la clase es "C", una cadena que recibe el nombre de
+constante.</p><p>Es decir,</p><div class="code_container">
+<pre><code class="language-ruby">class Project &lt; ApplicationRecord
+end
+</code></pre>
+</div>
+<p>realiza una asignación constante equivalente a</p><div class="code_container">
+<pre><code class="language-ruby">Project = Class.new(ApplicationRecord)
+</code></pre>
+</div>
+<p>including setting the name of the class as a side-effect:</p><div class="code_container">
+<pre><code class="language-ruby">Project.name # =&gt; "Project"
+</code></pre>
+</div>
+<p>La asignación constante tiene una regla especial para que eso suceda: si el objeto
+que se asigna es una clase o módulo anónimo, Ruby establece el nombre del objeto en
+el nombre de la constante.</p><div class="info"><p>A partir de entonces, lo que sucede con la constante y la instancia no
+importar. Por ejemplo, la constante podría eliminarse, el objeto de clase podría ser
+asignado a una constante diferente, ya no se almacenará en una constante, etc.
+el nombre está establecido, no cambia.</p></div><p>De manera similar, la creación de módulos usando la palabra clave <code>module</code> como en</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+end
+</code></pre>
+</div>
+<p>realiza una asignación constante equivalente a</p><div class="code_container">
+<pre><code class="language-ruby">Admin = Module.new
+</code></pre>
+</div>
+<p>including setting the name as a side-effect:</p><div class="code_container">
+<pre><code class="language-ruby">Admin.name # =&gt; "Admin"
+</code></pre>
+</div>
+<div class="warning"><p>El contexto de ejecución de un bloque pasado a <code>Class.new</code> o <code>Module.new</code>
+no es enteramente equivalente a la del cuerpo de las definiciones utilizando el
+Palabras clave <code>class</code> y <code>module</code>. Pero ambos modismos resultan en la misma constante
+asignación.</p></div><p>Por lo tanto, una expresión informal como "la clase <code>String</code> " significa técnicamente la
+objeto de clase almacenado en la constante llamada "Cadena". Esa constante, a su vez,
+pertenece al objeto de clase almacenado en la constante denominada "Objeto".</p><p><code>String</code> es una constante ordinaria, y todo lo relacionado con ellos, como
+se le aplican algoritmos de resolución.</p><p>Asimismo, en el controlador</p><div class="code_container">
+<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+  def index
+    @posts = Post.all
+  end
+end
+</code></pre>
+</div>
+<p><code>Post</code> no es la sintaxis de una clase. Más bien, <code>Post</code> es una constante de Ruby regular. Si
+todo es bueno, la constante se evalúa a un objeto que responde a "todo".</p><p>Por eso hablamos de carga automática * constante *, Rails tiene la capacidad de
+cargar constantes sobre la marcha.</p><h4 id="constants-are-stored-in-modules"><a class="anchorlink" href="#constants-are-stored-in-modules">2.3 Constants are Stored in Modules</a></h4><p>Las constantes pertenecen a módulos en un sentido muy literal. Las clases y los módulos tienen
+una tabla constante; Piense en ello como una tabla hash.</p><p>Analicemos un ejemplo para entender realmente lo que eso significa. Aunque es común
+los abusos del lenguaje como "la clase <code>String</code> "son convenientes, la exposición es
+va a ser preciso aquí con fines didácticos.</p><p>Consideremos la siguiente definición de módulo:</p><div class="code_container">
+<pre><code class="language-ruby">module Colors
+  RED = '0xff0000'
+end
+</code></pre>
+</div>
+<p>Primero, cuando se procesa la palabra clave <code>module</code>, el intérprete crea una nueva
+entrada en la tabla de constantes del objeto de clase almacenado en la constante <code>Object</code>.
+Dicha entrada asocia el nombre "Colores" a un objeto de módulo recién creado.
+Además, el intérprete establece el nombre del nuevo objeto de módulo como el
+cadena "Colores".</p><p>Posteriormente, cuando se interpreta el cuerpo de la definición del módulo, se crea una nueva entrada
+creado en la tabla constante del objeto módulo almacenado en los <code>Colors</code>
+constante. Esa entrada asigna el nombre "RED" a la cadena "0xff0000".</p><p>En particular, <code>Colors::RED</code> no tiene ninguna relación con ninguna otra constante de <code>RED</code>
+que puede vivir en cualquier otro objeto de clase o módulo. Si hubiera alguno, ellos
+tendría entradas separadas en sus respectivas tablas de constantes.</p><p>Preste especial atención en los párrafos anteriores a la distinción entre
+Objetos de clase y módulo, nombres de constantes y objetos de valor asociados a ellos.
+en tablas constantes.</p><h4 id="resolution-algorithms"><a class="anchorlink" href="#resolution-algorithms">2.4 Resolution Algorithms</a></h4><h5 id="resolution-algorithm-for-relative-constants"><a class="anchorlink" href="#resolution-algorithm-for-relative-constants">2.4.1 Resolution Algorithm for Relative Constants</a></h5><p>En cualquier lugar del código, definamos <em>cref</em> como el primer elemento de
+el anidamiento si no está vacío, o el <code>Object</code> en caso contrario.</p><p>Sin entrar demasiado en los detalles, el algoritmo de resolución para
+las referencias constantes son así:</p>
+<ol>
+<li><p>Si el anidamiento no está vacío, la constante se busca en sus elementos y en
+orden. Los antepasados ​​de esos elementos se ignoran.</p></li>
+<li><p>Si no se encuentra, entonces el algoritmo recorre la cadena de ancestros de la cref.</p></li>
+<li><p>Si no se encuentra y el cref es un módulo, la constante se busca en "Objeto".</p></li>
+<li><p>Si no se encuentra, se invoca <code>const_missing</code> en la cref. El valor por defecto
+la implementación de <code>const_missing</code> genera <code>NameError</code>, pero puede ser anulado.</p></li>
+</ol>
+<p>La carga automática de rieles ** no emula este algoritmo **, pero su punto de partida es
+el nombre de la constante que se va a cargar automáticamente y la cref. Ver más en <a href="#autoloading-algorithms-relative-references">Relativo
+Referencias</a>.</p><h5 id="resolution-algorithm-for-qualified-constants"><a class="anchorlink" href="#resolution-algorithm-for-qualified-constants">2.4.2 Resolution Algorithm for Qualified Constants</a></h5><p>Las constantes calificadas tienen este aspecto:</p><div class="code_container">
+<pre><code class="language-ruby">Billing::Invoice
+</code></pre>
+</div>
+<p><code>Billing::Invoice</code> se compone de dos constantes: <code>Billing</code> es relativo y es
+resuelto utilizando el algoritmo del apartado anterior.</p><div class="info"><p>Los dos puntos iniciales harían que el primer segmento sea absoluto en lugar de
+relativo: <code>::Billing::Invoice</code>. Eso obligaría a buscar "Facturación"
+solo como una constante de nivel superior.</p></div><p><code>Invoice</code> por otro lado está calificado por <code>Billing</code> y vamos a ver
+su resolución a continuación. Definamos * parent * como esa clase o módulo calificado
+objeto, es decir, "Facturación" en el ejemplo anterior. El algoritmo para calificado
+constantes va así:</p>
+<ol>
+<li><p>La constante se busca en el padre y sus antepasados. En Ruby&gt; = 2.5,
+<code>Object</code> se omite si está presente entre los antepasados. <code>Kernel</code> y <code>BasicObject</code>
+aunque todavía están marcados.</p></li>
+<li><p>Si la búsqueda falla, se invoca <code>const_missing</code> en el padre. El valor por defecto
+la implementación de <code>const_missing</code> genera <code>NameError</code>, pero puede ser anulado.</p></li>
+</ol>
+<div class="info"><p>En Ruby &lt;2.5 <code>String::Hash</code> se evalúa como<code>Hash</code> y el intérprete
+emite una advertencia: "Hash constante de nivel superior referenciado por String :: Hash". Comenzando
+con 2.5, <code>String::Hash</code> genera <code>NameError</code> porque se omite <code>Object</code>.</p></div><p>Como ves, este algoritmo es más simple que el de las constantes relativas. En
+En particular, el anidamiento no juega ningún papel aquí, y los módulos no tienen una carcasa especial,
+si ni ellos ni sus antepasados ​​tienen las constantes, <code>Object</code> es ** no **
+comprobado.</p><p>La carga automática de rieles ** no emula este algoritmo **, pero su punto de partida es
+el nombre de la constante que se va a cargar automáticamente y el padre. Ver más en
+<a href="#autoloading-algorithms-qualified-references">Referencias calificadas</a>.</p><h3 id="vocabulary"><a class="anchorlink" href="#vocabulary">3 Vocabulary</a></h3><h4 id="parent-namespaces"><a class="anchorlink" href="#parent-namespaces">3.1 Parent Namespaces</a></h4><p>Dada una cadena con una ruta constante, definimos su * espacio de nombres principal * como el
+cadena que resulta de eliminar su segmento más a la derecha.</p><p>Por ejemplo, el espacio de nombres principal de la cadena "A::B::C" es la cadena "A::B",
+el espacio de nombres principal de "A::B" es "A", y el espacio de nombres principal de "A" es "".</p><p>La interpretación de un espacio de nombres principal al pensar en clases y módulos
+aunque es complicado. Consideremos un módulo M llamado "A::B":</p>
+<ul>
+<li><p>El espacio de nombres principal, "A", puede no reflejar el anidamiento en un lugar determinado.</p></li>
+<li><p>Es posible que la constante <code>A</code> ya no exista, algún código podría haberla eliminado de
+<code>Objeto</code>.</p></li>
+<li><p>Si existe "A", es posible que la clase o módulo que originalmente estaba en "A" no esté allí
+nunca más. Por ejemplo, si después de una remoción constante hubo otra constante
+asignación, generalmente habría un objeto diferente allí.</p></li>
+<li><p>En tal caso, incluso podría suceder que el "A" reasignado tuviera una nueva clase o
+módulo llamado también "A"!</p></li>
+<li><p>En los escenarios anteriores, M ya no sería accesible a través de <code>A::B</code> pero
+el objeto del módulo en sí podría estar vivo en algún lugar y su nombre sería
+seguirá siendo "A::B".</p></li>
+</ul>
+<p>La idea de un espacio de nombres principal es el núcleo de los algoritmos de carga automática
+y ayuda a explicar y comprender su motivación de manera intuitiva, pero como ve
+esa metáfora se filtra fácilmente. Dado un caso límite sobre el que razonar, tenga siempre en cuenta
+Tenga en cuenta que por "espacio de nombres principal" la guía se refiere exactamente a esa cadena específica
+derivación.</p><h4 id="loading-mechanism"><a class="anchorlink" href="#loading-mechanism">3.2 Loading Mechanism</a></h4><p>Rails carga automáticamente archivos con <code>Kernel#load</code> cuando <code>config.cache_classes</code> es falso,
+el valor predeterminado en el modo de desarrollo, y con <code>Kernel#require</code> de lo contrario, el
+predeterminado en modo de producción.</p><p><code>Kernel#load</code> permite a Rails ejecutar archivos más de una vez si <a href="#constant-reloading">constante
+recarga</a> está habilitada.</p><p>Esta guía utiliza la palabra "cargar" libremente para indicar que se interpreta un archivo determinado, pero
+el mecanismo real puede ser <code>Kernel#load</code> o <code>Kernel#require</code> dependiendo de eso
+bandera.</p><h3 id="autoloading-availability"><a class="anchorlink" href="#autoloading-availability">4 Autoloading Availability</a></h3><p>Rails siempre se puede cargar automáticamente siempre que su entorno esté en su lugar. por
+ejemplo, el comando <code>runner</code> se carga automáticamente:</p><p>`` bash
+$ bin / rails runner 'p User.column_names'
+["id", "email", "created_at", "updated_at"]
+''</p><p>La consola se carga automáticamente, la suite de pruebas se carga automáticamente y, por supuesto, la aplicación
+cargas automáticas.</p><p>De forma predeterminada, Rails ansioso carga los archivos de la aplicación cuando arranca en producción
+modo, por lo que la mayor parte de la carga automática que ocurre en el desarrollo no ocurre. Pero
+la carga automática aún puede activarse durante la carga ansiosa.</p><p>Por ejemplo, dado</p><div class="code_container">
+<pre><code class="language-ruby">class BeachHouse &lt; House
+end
+</code></pre>
+</div>
+<p>si todavía se desconoce <code>House</code> cuando <code>app/models/beach_house.rb</code> está ansioso
+cargado, Rails lo carga automáticamente.</p><h3 id="autoload-paths-and-eager-load-paths"><a class="anchorlink" href="#autoload-paths-and-eager-load-paths">5 autoload_paths and eager_load_paths</a></h3><p>Como probablemente sepa, cuando <code>require</code> obtiene un nombre de archivo relativo:</p><div class="code_container">
+<pre><code class="language-ruby">require "erb"
+</code></pre>
+</div>
+<p>Ruby busca el archivo en los directorios listados en <code>$LOAD_PATH</code>. Es decir, ruby
+itera sobre todos sus directorios y para cada uno de ellos comprueba si
+tener un archivo llamado "erb.rb", o "erb.so", o "erb.o", o "erb.dll". Si encuentra
+cualquiera de ellos, el intérprete lo carga y finaliza la búsqueda. De lo contrario, intenta
+nuevamente en el siguiente directorio de la lista. Si la lista se agota, <code>LoadError</code>
+es elevado.</p><p>Más adelante cubriremos cómo funciona la carga automática constante con más detalle, pero
+la idea es que cuando una constante como <code>Post</code> se activa y falta, si hay una
+El archivo <code>post.rb</code> por ejemplo en <code>app/models</code> Rails lo encontrará, evalúe
+y tener <code>Post</code> definido como un efecto secundario.</p><p>Muy bien, Rails tiene una colección de directorios similar a <code>$LOAD_PATH</code> en la que
+para buscar <code>post.rb</code>. Esa colección se llama <code>autoload_paths</code> y por
+por defecto contiene:</p>
+<ul>
+<li><p>Todos los subdirectorios de <code>app</code> en la aplicación y motores presentes en el arranque
+hora. Por ejemplo, <code>app / controllers</code>. No es necesario que sean los predeterminados
+unos, cualquier directorio personalizado como <code>app/workers</code> pertenece automáticamente a
+<code>autoload_paths</code>.</p></li>
+<li><p>Cualquier directorio de segundo nivel existente llamado <code>app/*/concern</code> en el
+aplicación y motores.</p></li>
+<li><p>El directorio <code>test/mailers/previews</code>.</p></li>
+</ul>
+<p><code>eager_load_paths</code> es inicialmente las rutas de la <code>app</code> anteriores</p><p>La forma en que se cargan automáticamente los archivos depende de los ajustes de configuración de <code>eager_load</code> y <code>cache_classes</code> que normalmente varían en los modos de desarrollo, producción y prueba:</p>
+<ul>
+<li>En <strong>desarrollo</strong>, desea un inicio más rápido con carga incremental del código de la aplicación. Por lo tanto, <code>eager_load</code> debe establecerse en <code>false</code>, y Rails cargará automáticamente los archivos según sea necesario (consulte <a href="#autoloading-algorithms">Algoritmos de carga automática</a> a continuación) y luego los volverá a cargar cuando cambien (consulte <a href="#constant-reloading">Constant Reloading</a> a continuación).</li>
+<li>En <strong>producción</strong>, sin embargo, desea consistencia y seguridad de subprocesos y puede vivir con un tiempo de arranque más largo. Entonces, <code>eager_load</code> se establece en <code>true</code>, y luego, durante el arranque (antes de que la aplicación esté lista para recibir solicitudes), Rails carga todos los archivos en <code>eager_load_paths</code> y luego desactiva la carga automática (NB: la carga automática puede ser necesaria durante la carga ansiosa ). No cargar automáticamente después del arranque es algo bueno, ya que la carga automática puede hacer que la aplicación tenga problemas de seguridad de subprocesos.</li>
+<li>En <strong>prueba</strong>, para la velocidad de ejecución (de pruebas individuales), <code>eager_load</code> es <code>false</code>, por lo que Rails sigue el comportamiento de desarrollo.</li>
+</ul>
+<p>Lo que se describe arriba son los valores predeterminados con una aplicación Rails recién generada. Hay varias formas en que esto se puede configurar de manera diferente (consulte <a href="configuring.html%20#%20rails-general-configuration">Configuración de aplicaciones de Rails</a>.
+). Pero usando <code>autoload_paths</code> por sí solo en el pasado (antes de Rails 5), los desarrolladores podían configurar <code>autoload_paths</code> para agregar ubicaciones adicionales (por ejemplo, <code>lib</code>, que solía ser una lista de rutas de autocarga hace años, pero ya no lo es). Sin embargo, esto ahora se desaconseja para la mayoría de los propósitos, ya que es probable que dé lugar a errores solo de producción. Es posible agregar nuevas ubicaciones tanto a <code>config.eager_load_paths</code> como a <code>config.autoload_paths</code> pero utilícelo bajo su propio riesgo.</p><p>Ver también <a href="#autoloading-in-the-test-environment">Carga Automática en el Entorno de Prueba</a>.</p><p>Se puede inspeccionar el valor de <code>autoload_paths</code>. En una aplicación recién generada
+es (editado):</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails runner 'puts ActiveSupport::Dependencies.autoload_paths'
+.../app/assets
+.../app/channels
+.../app/controllers
+.../app/controllers/concerns
+.../app/helpers
+.../app/jobs
+.../app/mailers
+.../app/models
+.../app/models/concerns
+.../activestorage/app/assets
+.../activestorage/app/controllers
+.../activestorage/app/javascript
+.../activestorage/app/jobs
+.../activestorage/app/models
+.../actioncable/app/assets
+.../actionview/app/assets
+.../test/mailers/previews
+</code></pre>
+</div>
+<div class="info"><p><code>autoload_paths</code> se calcula y almacena en caché durante el proceso de inicialización.
+La aplicación debe reiniciarse para reflejar cualquier cambio en el directorio.
+estructura.</p></div><h3 id="autoloading-algorithms"><a class="anchorlink" href="#autoloading-algorithms">6 Autoloading Algorithms</a></h3><h4 id="autoloading-algorithms-relative-references"><a class="anchorlink" href="#autoloading-algorithms-relative-references">6.1 Relative References</a></h4><p>Una referencia constante relativa puede aparecer en varios lugares, por ejemplo, en</p><div class="code_container">
+<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+  def index
+    @posts = Post.all
+  end
+end
+</code></pre>
+</div>
+<p>las tres referencias constantes son relativas.</p><h5 id="constants-after-the-class-and-module-keywords"><a class="anchorlink" href="#constants-after-the-class-and-module-keywords">6.1.1 Constants after the <code>class</code> and <code>module</code> Keywords</a></h5><p>Ruby realiza una búsqueda de la constante que sigue a una <code>class</code> o un <code>module</code>
+palabra clave porque necesita saber si la clase o módulo se va a crear
+o reabierto.</p><p>Si la constante no está definida en ese punto, no se considera una
+Falta constante, la carga automática ** no ** se activa.</p><p>Entonces, en el ejemplo anterior, si <code>PostsController</code> no está definido cuando el archivo
+se interpreta que la carga automática de Rails no se activará, Ruby simplemente
+definir el controlador.</p><h5 id="top-level-constants"><a class="anchorlink" href="#top-level-constants">6.1.2 Top-Level Constants</a></h5><p>Por el contrario, si se desconoce <code>ApplicationController</code>, la constante es
+se considera perdido y Rails intentará una carga automática.</p><p>Para cargar <code>ApplicationController</code>, Rails itera sobre <code>autoload_paths</code>.
+Primero verifica si existe <code>app/assets/application_controller.rb</code>. Si no es así,
+que es normalmente el caso, continúa y encuentra
+<code>app/controllers/application_controller.rb</code>.</p><p>Si el archivo define la constante <code>ApplicationController</code>, todo está bien, de lo contrario
+Se genera <code>LoadError</code>:</p><p>''
+no se puede cargar automáticamente ApplicationController constante, esperado
+<ruta completa a application_controller.rb> para definirlo (LoadError)
+''</ruta></p><div class="info"><p>Rails no requiere que el valor de las constantes autocargadas sea una clase o
+objeto de módulo. Por ejemplo, si el archivo <code>app/models/max_clients.rb</code> define
+<code>MAX_CLIENTS = 100</code> la carga automática de <code>MAX_CLIENTS</code> funciona bien.</p></div><h5 id="namespaces"><a class="anchorlink" href="#namespaces">6.1.3 Namespaces</a></h5><p>La carga automática de <code>ApplicationController</code> busca directamente debajo de los directorios de
+<code>autoload_paths</code> porque el nido en ese lugar está vacío. La situación de
+<code>Post</code> es diferente, el anidamiento en esa línea es <code>[PostsController]</code>y support
+para espacios de nombres entra en juego.</p><p>La idea básica es que dada</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+  class BaseController &lt; ApplicationController
+    @@all_roles = Role.all
+  end
+end
+</code></pre>
+</div>
+<p>para autocargar <code>Role</code> vamos a comprobar si está definido en el actual o
+espacios de nombres de los padres, uno a la vez. Entonces, conceptualmente queremos intentar cargar automáticamente
+cualquiera de</p><div class="code_container">
+<pre><code class="language-plain">Admin::BaseController::Role
+Admin::Role
+Role
+</code></pre>
+</div>
+<p>en ese orden. Esa es la idea. Para hacerlo, Rails busca en <code>autoload_paths</code>
+respectivamente para nombres de archivo como estos:</p><div class="code_container">
+<pre><code class="language-plain">admin/base_controller/role.rb
+admin/role.rb
+role.rb
+</code></pre>
+</div>
+<p>módulo algunas búsquedas de directorio adicionales que vamos a cubrir pronto.</p><div class="info"><p><code>'Constant::Name'.undercore</code> da la ruta relativa sin extensión de
+el nombre del archivo donde se espera que se defina  <code>Constant::Name</code>.</p></div><p>Veamos cómo Rails carga automáticamente la constante <code>Post</code> en el <code>PostsController</code>
+arriba asumiendo que la aplicación tiene un modelo <code>Post</code> definido en
+<code>app/models/post.rb</code>.</p><p>Primero busca <code>posts_controller/post.rb</code> en <code>autoload_paths</code>:</p><div class="code_container">
+<pre><code class="language-plain">app/assets/posts_controller/post.rb
+app/controllers/posts_controller/post.rb
+app/helpers/posts_controller/post.rb
+...
+test/mailers/previews/posts_controller/post.rb
+</code></pre>
+</div>
+<p>Dado que la búsqueda se agota sin éxito, una búsqueda similar de un directorio
+se realiza, vamos a ver por qué en la <a href="#automatic-modules">next section</a>:</p><div class="code_container">
+<pre><code class="language-plain">app/assets/posts_controller/post
+app/controllers/posts_controller/post
+app/helpers/posts_controller/post
+...
+test/mailers/previews/posts_controller/post
+</code></pre>
+</div>
+<p>Si todos esos intentos fallan, Rails vuelve a iniciar la búsqueda en el archivo principal.
+espacio de nombres. En este caso, solo queda el nivel superior:</p><div class="code_container">
+<pre><code class="language-plain">app/assets/post.rb
+app/controllers/post.rb
+app/helpers/post.rb
+app/mailers/post.rb
+app/models/post.rb
+</code></pre>
+</div>
+<p>Se encuentra un archivo coincidente en <code>app/models/post.rb</code>. La búsqueda se detiene allí y el
+se carga el archivo. Si el archivo realmente define "Publicar", todo está bien, de lo contrario
+Se genera <code>LoadError</code>.</p><h4 id="autoloading-algorithms-qualified-references"><a class="anchorlink" href="#autoloading-algorithms-qualified-references">6.2 Qualified References</a></h4><p>Cuando falta una constante calificada, Rails no la busca en el padre
+espacios de nombres. Pero hay una advertencia: cuando falta una constante, Rails es
+incapaz de saber si el disparador era una referencia relativa o calificada.</p><p>Por ejemplo, considere</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+  User
+end
+</code></pre>
+</div>
+<p>y</p><div class="code_container">
+<pre><code class="language-ruby">Admin::User
+</code></pre>
+</div>
+<p>Si falta <code>User</code>, en cualquier caso, todo lo que Rails sabe es que una constante llamada
+Faltaba "Usuario" en un módulo llamado "Admin".</p><p>Si hay un <code>User</code> de nivel superior, Ruby lo resolvería en el ejemplo anterior, pero
+no lo haría en el último. En general, Rails no emula la constante de Ruby
+algoritmos de resolución, pero en este caso intenta utilizar la siguiente heurística:</p>
+<blockquote>
+<p>Si ninguno de los espacios de nombres principales de la clase o módulo tiene el
+constante, Rails asume que la referencia es relativa. De lo contrario calificado.</p>
+</blockquote>
+<p>Por ejemplo, si este código activa la carga automática</p><div class="code_container">
+<pre><code class="language-ruby">Admin::User
+</code></pre>
+</div>
+<p>y la constante <code>User</code> ya está presente en <code>Object</code>, no es posible que
+la situación es</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+  User
+end
+</code></pre>
+</div>
+<p>porque de lo contrario Ruby habría resuelto <code>User</code> y ninguna carga automática habría
+se ha activado en primer lugar. Por lo tanto, Rails asume una referencia calificada y
+considera que el archivo <code>admin/user.rb</code> y el directorio <code>admin/user</code> son los únicos
+opciones válidas.</p><p>En la práctica, esto funciona bastante bien siempre que el anidamiento coincida con todos los padres
+espacios de nombres respectivamente y las constantes que hacen que la regla se aplique se conocen en
+ese momento.</p><p>Sin embargo, la carga automática se realiza a pedido. Si por casualidad el <code>User</code> de nivel superior
+aún no cargado, Rails asume una referencia relativa por contrato.</p><p>Los conflictos de nombres de este tipo son raros en la práctica, pero si ocurre alguno,
+<code>require_dependency</code> proporciona una solución asegurando que la constante necesaria
+desencadenar la heurística se define en el lugar conflictivo.</p><h4 id="automatic-modules"><a class="anchorlink" href="#automatic-modules">6.3 Automatic Modules</a></h4><p>Cuando un módulo actúa como un espacio de nombres, Rails no requiere que la aplicación
+definir un archivo para él, un directorio que coincida con el espacio de nombres es suficiente.</p><p>Suponga que una aplicación tiene un back office cuyos controladores se almacenan en
+<code>app/controllers/admin</code>. Si el módulo <code>Admin</code> aún no está cargado cuando
+<code>Admin::UsersController</code> se activa, Rails necesita primero cargar automáticamente la constante
+<code>Admin</code>.</p><p>Si <code>autoload_paths</code> tiene un archivo llamado <code>admin.rb</code> Rails lo cargará
+uno, pero si no existe tal archivo y se encuentra un directorio llamado <code>admin</code>, Rails
+crea un módulo vacío y lo asigna a la constante <code>Admin</code> sobre la marcha.</p><h4 id="generic-procedure"><a class="anchorlink" href="#generic-procedure">6.4 Generic Procedure</a></h4><p>Se informa que faltan referencias relativas en la cuadrilla donde fueron golpeadas,
+y se informa que faltan referencias calificadas en su padre (ver
+<a href="#resolution-algorithm-for-relative-constants">Algoritmo de resolución para relativo
+Constants</a> al comienzo de
+esta guía para la definición de * cref <em>, y <a href="#resolution-algorithm-for-qualified-constants">algoritmo de resolución para calificados
+Constantes</a> para la definición de
+*padre</em>).</p><p>El procedimiento para cargar automáticamente la constante <code>C</code> en una situación arbitraria es el siguiente:</p><div class="code_container">
+<pre><code class="language-plain">if the class or module in which C is missing is Object
+  let ns = ''
+else
+  let M = the class or module in which C is missing
+
+  if M is anonymous
+    let ns = ''
+  else
+    let ns = M.name
+  end
+end
+
+loop do
+  # Look for a regular file.
+  for dir in autoload_paths
+    if the file "#{dir}/#{ns.underscore}/c.rb" exists
+      load/require "#{dir}/#{ns.underscore}/c.rb"
+
+      if C is now defined
+        return
+      else
+        raise LoadError
+      end
+    end
+  end
+
+  # Look for an automatic module.
+  for dir in autoload_paths
+    if the directory "#{dir}/#{ns.underscore}/c" exists
+      if ns is an empty string
+        let C = Module.new in Object and return
+      else
+        let C = Module.new in ns.constantize and return
+      end
+    end
+  end
+
+  if ns is empty
+    # We reached the top-level without finding the constant.
+    raise NameError
+  else
+    if C exists in any of the parent namespaces
+      # Qualified constants heuristic.
+      raise NameError
+    else
+      # Try again in the parent namespace.
+      let ns = the parent namespace of ns and retry
+    end
+  end
+end
+</code></pre>
+</div>
+<h3 id="require-dependency"><a class="anchorlink" href="#require-dependency">7 require_dependency</a></h3><p>La carga automática constante se activa a pedido y, por lo tanto, el código que utiliza un
+cierta constante puede tenerlo ya definido o puede activar una carga automática. Ese
+depende de la ruta de ejecución y puede variar entre ejecuciones.</p><p>Sin embargo, hay ocasiones en las que desea asegurarse de que cierta constante
+conocido cuando la ejecución alcanza algún código. <code>require_dependency</code> proporciona una forma
+para cargar un archivo usando el <a href="#loading-mechanism">mecanismo de carga</a>, y
+realizar un seguimiento de las constantes definidas en ese archivo como si estuvieran cargadas automáticamente para
+Hágalos recargar según sea necesario.</p><p><code>require_dependency</code> rara vez se necesita, pero vea un par de casos de uso en
+<a href="#autoloading-and-sti">Autoloading y STI</a> y <a href="#when-constants-aren-t-missed">Cuando las constantes no son
+Activado</a>.</p><div class="warning"><p>A diferencia de la carga automática, <code>require_dependency</code> no espera que el archivo
+definir cualquier constante particular. Explotar este comportamiento sería una mala práctica
+sin embargo, las rutas de archivo y constantes deben coincidir.</p></div><h3 id="constant-reloading"><a class="anchorlink" href="#constant-reloading">8 Constant Reloading</a></h3><p>Cuando <code>config.cache_classes</code> es falso, Rails puede recargar autocargado
+constantes.</p><p>Por ejemplo, si está en una sesión de consola y edita algún archivo detrás del
+escenas, el código se puede recargar con el comando <code>reload!</code>:</p><div class="code_container">
+<pre><code class="language-plain">&gt; reload!
+</code></pre>
+</div>
+<p>Cuando se ejecuta la aplicación, el código se vuelve a cargar cuando algo relevante para esto
+cambios de lógica. Para hacer eso, Rails monitorea una serie de cosas:</p>
+<ul>
+<li><p><code>config/routes.rb</code>.</p></li>
+<li><p>Locales.</p></li>
+<li><p>Archivos Ruby​debajo <code>autoload_paths</code>.</p></li>
+<li><p><code>db/schema.rb</code> y <code>db/structure.sql</code>.</p></li>
+</ul>
+<p>Si algo cambia allí, hay un middleware que lo detecta y vuelve a cargar
+el código.</p><p>La carga automática realiza un seguimiento de las constantes de carga automática. La recarga es implementada por
+eliminándolos todos de sus respectivas clases y módulos usando
+<code>Módulo#remove_const</code>. De esa forma, cuando el código continúa, esas constantes son
+volverá a ser desconocido y los archivos se volverán a cargar a pedido.</p><div class="info"><p>Esta es una operación de todo o nada, Rails no intenta recargar solo
+lo que cambió desde las dependencias entre clases lo hace realmente complicado.
+En cambio, todo se borra.</p></div><h3 id="common-gotchas"><a class="anchorlink" href="#common-gotchas">9 Common Gotchas</a></h3><h4 id="nesting-and-qualified-constants"><a class="anchorlink" href="#nesting-and-qualified-constants">9.1 Nesting and Qualified Constants</a></h4><p>Consideremos</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+  class UsersController &lt; ApplicationController
+    def index
+      @users = User.all
+    end
+  end
+end
+</code></pre>
+</div>
+<p>y</p><div class="code_container">
+<pre><code class="language-ruby">class Admin::UsersController &lt; ApplicationController
+  def index
+    @users = User.all
+  end
+end
+</code></pre>
+</div>
+<p>Para resolver <code>User</code> Ruby verifica <code>Admin</code> en el primer caso, pero no lo hace en
+el último porque no pertenece al anidamiento (ver <a href="#nesting">Anidamiento</a>
+y <a href="#resolution-algorithms">Algoritmos de resolución</a>).</p><p>Desafortunadamente, la carga automática de Rails no conoce el anidamiento en el lugar donde
+Faltaba una constante y, por lo tanto, no puede actuar como lo haría Ruby. En particular,
+<code>Admin::User</code> se cargará automáticamente en cualquier caso.</p><p>Aunque las constantes calificadas con palabras clave <code>class</code> y <code>module</code> pueden técnicamente
+trabajar con carga automática en algunos casos, es preferible utilizar constantes relativas
+en lugar:</p><div class="code_container">
+<pre><code class="language-ruby">module Admin
+  class UsersController &lt; ApplicationController
+    def index
+      @users = User.all
+    end
+  end
+end
+</code></pre>
+</div>
+<h4 id="defining-vs-reopening-namespaces"><a class="anchorlink" href="#defining-vs-reopening-namespaces">9.2 Defining vs Reopening Namespaces</a></h4><p>Let's consider:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/blog.rb
+module Blog
+  def self.table_name_prefix
+    "blog_"
+  end
+end
+
+# app/models/blog/post.rb
+module Blog
+  class Post &lt; ApplicationRecord
+  end
+end
+</code></pre>
+</div>
+<p>El nombre de la tabla para <code>Blog::Post</code> debería ser <code>blog_posts</code> debido a la existencia de
+el método <code>Blog.table_name_prefix</code>. Sin embargo, si <code>app/models/blog/post.rb</code> es
+ejecutado antes de que <code>app/models/blog.rb</code> sea, Active Record no es consciente del
+existencia de tal método, y asume que la tabla es "posts".</p><p>Para resolver una situación como esta, es útil pensar claramente en qué archivo
+<em>define</em> el módulo <code>Blog</code> (<code>app/models/blog.rb</code>), y cuál <em>reabre</em>
+(<code>app/models/blog/post.rb</code>). Luego, te aseguras de que la definición se ejecute
+primero usando <code>require_dependency</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/blog/post.rb
+
+require_dependency "blog"
+
+module Blog
+  class Post &lt; ApplicationRecord
+  end
+end
+</code></pre>
+</div>
+<h4 id="autoloading-and-sti"><a class="anchorlink" href="#autoloading-and-sti">9.3 Autoloading and STI</a></h4><p>La herencia de tabla única (STI) es una función de Active Record que permite
+almacenar una jerarquía de modelos en una sola tabla. La API de tales modelos es
+consciente de la jerarquía y encapsula algunas necesidades comunes. Por ejemplo, dado
+estas clases:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/polygon.rb
+class Polygon &lt; ApplicationRecord
+end
+
+# app/models/triangle.rb
+class Triangle &lt; Polygon
+end
+
+# app/models/rectangle.rb
+class Rectangle &lt; Polygon
+end
+</code></pre>
+</div>
+<p><code>Triangle.create</code> crea una fila que representa un triángulo, y
+<code>Rectangle.create</code> crea una fila que representa un rectángulo. Si <code>id</code> es el
+ID de un registro existente, <code>Polygon.find(id)</code> devuelve un objeto de la correcta
+tipo.</p><p>Los métodos que operan en colecciones también conocen la jerarquía. por
+ejemplo, <code>Polygon.all</code> devuelve todos los registros de la tabla, porque todos
+los rectángulos y los triángulos son polígonos. Active Record se encarga de regresar
+instancias de su clase correspondiente en el conjunto de resultados.</p><p>Los tipos se cargan automáticamente según sea necesario. Por ejemplo, si "Polygon.first" es un rectángulo
+y <code>Rectangle</code> aún no se ha cargado, Active Record lo carga automáticamente y el
+el registro está instanciado correctamente.</p><p>Todo bien, pero si en lugar de realizar consultas basadas en la clase raíz necesitamos
+para trabajar en alguna subclase, las cosas se ponen interesantes.</p><p>Mientras trabaja con <code>Polygon</code>, no es necesario que conozca todos sus descendientes,
+porque cualquier cosa en la tabla es por definición un polígono, pero cuando se trabaja con
+Las subclases Active Record deben poder enumerar los tipos que busca.
+para. Veamos un ejemplo.</p><p><code>Rectangle.all</code> solo carga rectángulos agregando una restricción de tipo a la consulta:</p><div class="code_container">
+<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle")
+</code></pre>
+</div>
+<p>Introduzcamos ahora una subclase de <code>Rectangle</code>:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/square.rb
+class Square &lt; Rectangle
+end
+</code></pre>
+</div>
+<p><code>Rectangle.all</code> ahora debería devolver rectángulos <strong>y</strong> cuadrados:</p><div class="code_container">
+<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle", "Square")
+</code></pre>
+</div>
+<p>Pero hay una advertencia aquí: ¿Cómo sabe Active Record que la clase <code>Square</code>
+existe en absoluto?</p><p>Incluso si el archivo <code>app/models/square.rb</code> existe y define la clase <code>Square</code>,
+si aún no se ha utilizado ningún código de esa clase, <code>Rectangle.all</code> emite la consulta</p><div class="code_container">
+<pre><code class="language-sql">SELECT "polygons".* FROM "polygons"
+WHERE "polygons"."type" IN ("Rectangle")
+</code></pre>
+</div>
+<p>Eso no es un error, la consulta incluye todos los descendientes * conocidos * de <code>Rectangle</code>.</p><p>Una forma de asegurarse de que esto funcione correctamente independientemente del orden de ejecución es
+cargue manualmente las subclases directas en la parte inferior del archivo que define cada
+clase intermedia:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/rectangle.rb
+class Rectangle &lt; Polygon
+end
+require_dependency 'square'
+</code></pre>
+</div>
+<p>Esto debe suceder para cada clase intermedia (no raíz y no hoja). los
+la clase raíz no abarca la consulta por tipo y, por lo tanto, no necesariamente
+Hay que conocer a todos sus descendientes.</p><h4 id="autoloading-and-require"><a class="anchorlink" href="#autoloading-and-require">9.4 Autoloading and <code>require</code></a></h4><p>Los archivos que definen las constantes que se van a cargar automáticamente nunca deben ser <code>require</code>d:</p><div class="code_container">
+<pre><code class="language-ruby">require "user" # DO NOT DO THIS
+
+class UsersController &lt; ApplicationController
+  ...
+end
+</code></pre>
+</div>
+<p>Hay dos posibles errores aquí en el modo de desarrollo:</p>
+<ol>
+<li><p>Si <code>User</code> se carga automáticamente antes de llegar al <code>require</code>, <code>app/models/user.rb</code>
+se ejecuta de nuevo porque <code>load</code> no actualiza<code>$ LOADED_FEATURES</code>.</p></li>
+<li><p>Si el <code>require</code> se ejecuta primero, Rails no marca al <code>User</code> como autocargado
+constante y los cambios en <code>app/models/user.rb</code> no se vuelven a cargar.</p></li>
+</ol>
+<p>Simplemente siga el flujo y use la carga automática constante siempre, nunca mezcle
+carga automática y <code>require</code>. Como último recurso, si algún archivo necesita absolutamente
+cargar un determinado archivo use <code>require_dependency</code> para jugar bien con constante
+carga automática. Sin embargo, esta opción rara vez se necesita en la práctica.</p><p>Por supuesto, el uso de <code>require</code> en archivos autocargados para cargar un tercero ordinario
+bibliotecas está bien, y Rails es capaz de distinguir sus constantes, son
+no marcado como autocargado.</p><h4 id="autoloading-and-initializers"><a class="anchorlink" href="#autoloading-and-initializers">9.5 Autoloading and Initializers</a></h4><p>Considere esta asignación en <code>config/initializers/set_auth_service.rb</code>:</p><div class="code_container">
+<pre><code class="language-ruby">AUTH_SERVICE = if Rails.env.production?
+  RealAuthService
+else
+  MockedAuthService
+end
+</code></pre>
+</div>
+<p>El propósito de esta configuración sería que la aplicación use la clase que
+corresponde al entorno a través de <code>AUTH_SERVICE</code>. En modo de desarrollo
+<code>MockedAuthService</code> se carga automáticamente cuando se ejecuta el inicializador. Supongamos
+hacemos algunas solicitudes, cambiamos su implementación y volvemos a activar la aplicación.
+Para nuestra sorpresa, los cambios no se reflejan. ¿Por qué?</p><p>Como <a href="#constant-reloading">vimos anteriormente</a>, Rails elimina las constantes cargadas automáticamente,
+pero <code>AUTH_SERVICE</code> almacena el objeto de clase original. Rancio, no accesible
+utilizando la constante original, pero perfectamente funcional.</p><p>El siguiente código resume la situación:</p><div class="code_container">
+<pre><code class="language-ruby">class C
+  def quack
+    'quack!'
+  end
+end
+
+X = C
+Object.instance_eval { remove_const(:C) }
+X.new.quack # =&gt; quack!
+X.name      # =&gt; C
+C           # =&gt; uninitialized constant C (NameError)
+</code></pre>
+</div>
+<p>Por eso, no es una buena idea cargar automáticamente constantes en la aplicación
+inicialización.</p><p>En el caso anterior podríamos implementar un punto de acceso dinámico:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/auth_service.rb
+class AuthService
+  if Rails.env.production?
+    def self.instance
+      RealAuthService
+    end
+  else
+    def self.instance
+      MockedAuthService
+    end
+  end
+end
+</code></pre>
+</div>
+<p>and have the application use <code>AuthService.instance</code> instead. <code>AuthService</code>
+would be loaded on demand and be autoload-friendly.</p><h4 id="require-dependency-and-initializers"><a class="anchorlink" href="#require-dependency-and-initializers">9.6 <code>require_dependency</code> and Initializers</a></h4><p>Como vimos antes, <code>require_dependency</code> carga archivos en un formato compatible con la carga automática.
+camino. Sin embargo, normalmente esta llamada no tiene sentido en un inicializador.</p><p>Se podría pensar en hacer algo de <a href="#require-dependency"><code>require_dependency</code></a>
+llamadas en un inicializador para asegurarse de que ciertas constantes se cargan por adelantado, para
+ejemplo como un intento de abordar el <a href="#autoloading-and-sti">problema con las ITS</a>.</p><p>El problema es que en el modo de desarrollo <a href="#constant-reloading">las constantes cargadas automáticamente se borran</a>
+si hay algún cambio relevante en el sistema de archivos. Si eso sucede entonces
+¡Estamos en la misma situación que el inicializador quería evitar!</p><p>Las llamadas a <code>require_dependency</code> deben estar escritas estratégicamente en autocargado
+lugares.</p><h4 id="when-constants-aren-t-missed"><a class="anchorlink" href="#when-constants-aren-t-missed">9.7 When Constants aren't Missed</a></h4><h5 id="when-constants-aren-t-missed-relative-references"><a class="anchorlink" href="#when-constants-aren-t-missed-relative-references">9.7.1 Relative References</a></h5><p>Consideremos un simulador de vuelo. La aplicación tiene un modelo de vuelo predeterminado</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/flight_model.rb
+class FlightModel
+end
+</code></pre>
+</div>
+<p>que puede ser anulado por cada avión, por ejemplo</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/bell_x1/flight_model.rb
+module BellX1
+  class FlightModel &lt; FlightModel
+  end
+end
+
+# app/models/bell_x1/aircraft.rb
+module BellX1
+  class Aircraft
+    def initialize
+      @flight_model = FlightModel.new
+    end
+  end
+end
+</code></pre>
+</div>
+<p>El inicializador quiere crear un <code>BellX1::FlightModel</code> y el anidamiento tiene
+"BellX1", se ve bien. Pero si se carga el modelo de vuelo predeterminado y el
+uno para el Bell-X1 no lo es, el intérprete puede resolver el nivel superior
+Por tanto, <code>FlightModel</code> y la carga automática no se activan para<code>BellX1::FlightModel</code>.</p><p>Ese código depende de la ruta de ejecución.</p><p>Este tipo de ambigüedades a menudo se pueden resolver utilizando constantes calificadas:</p><div class="code_container">
+<pre><code class="language-ruby">module BellX1
+  class Plane
+    def flight_model
+      @flight_model ||= BellX1::FlightModel.new
+    end
+  end
+end
+</code></pre>
+</div>
+<p>Además, <code>require_dependency</code> es una solución:</p><div class="code_container">
+<pre><code class="language-ruby">require_dependency 'bell_x1/flight_model'
+
+module BellX1
+  class Plane
+    def flight_model
+      @flight_model ||= FlightModel.new
+    end
+  end
+end
+</code></pre>
+</div>
+<h5 id="when-constants-aren-t-missed-qualified-references"><a class="anchorlink" href="#when-constants-aren-t-missed-qualified-references">9.7.2 Qualified References</a></h5><div class="warning"><p>Este problema solo es posible en Ruby &lt;2.5.</p></div><p>Dado</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/hotel.rb
+class Hotel
+end
+
+# app/models/image.rb
+class Image
+end
+
+# app/models/hotel/image.rb
+class Hotel
+  class Image &lt; Image
+  end
+end
+</code></pre>
+</div>
+<p>la expresión <code>Hotel::Image</code> es ambigua porque depende de la ejecución
+camino.</p><p>Como <a href="#resolution-algorithm-for-qualified-constants">vimos antes</a>, Ruby parece
+hasta la constante en <code>Hotel</code> y sus antepasados. Si <code>app/models/image.rb</code> tiene
+se ha cargado pero <code>app/models/hotel/image.rb</code> no lo ha hecho, Ruby no encuentra <code>Image</code>
+en <code>Hotel</code>, pero lo hace en <code>Object</code>:</p><div class="code_container">
+<pre><code class="language-shell-session">$ bin/rails runner 'Image; p Hotel::Image' 2&gt;/dev/null
+Image # NOT Hotel::Image!
+</code></pre>
+</div>
+<p>El código que evalúa <code>Hotel::Image</code> debe asegurarse
+<code>app/models/hotel/image.rb</code> se ha cargado, posiblemente con
+<code>require_dependency</code>.</p><p>En estos casos, el intérprete emite una advertencia:</p><div class="code_container">
+<pre><code class="language-plain">warning: toplevel constant Image referenced by Hotel::Image
+</code></pre>
+</div>
+<p>Esta sorprendente resolución constante se puede observar con cualquier clase clasificatoria:</p><div class="code_container">
+<pre><code class="language-plain">2.1.5 :001 &gt; String::Array
+(irb):1: warning: toplevel constant Array referenced by String::Array
+ =&gt; Array
+</code></pre>
+</div>
+<div class="warning"><p>Para encontrar este problema, el espacio de nombres calificado debe ser una clase,
+<code>Object</code> no es un antepasado de módulos.</p></div><h4 id="autoloading-within-singleton-classes"><a class="anchorlink" href="#autoloading-within-singleton-classes">9.8 Autoloading within Singleton Classes</a></h4><p>Supongamos que tenemos estas definiciones de clase:</p><div class="code_container">
+<pre><code class="language-ruby"># app/models/hotel/services.rb
+module Hotel
+  class Services
+  end
+end
+
+# app/models/hotel/geo_location.rb
+module Hotel
+  class GeoLocation
+    class &lt;&lt; self
+      Services
+    end
+  end
+end
+</code></pre>
+</div>
+<p>Si <code>Hotel::Services</code> se conoce por el tiempo <code>app/models/hotel/geo_location.rb</code>
+se está cargando, "Servicios" es resuelto por Ruby porque "Hotel" pertenece al
+anidando cuando se abre la clase singleton de <code>Hotel::GeoLocation</code>.</p><p>Pero si no se conoce <code>Hotel::Services</code>, Rails no puede cargarlo automáticamente,
+la aplicación genera "NameError".</p><p>La razón es que se activa la carga automática para la clase singleton, que es
+anónimo, y como <a href="#generic-procedure">vimos antes</a>, Rails solo verifica
+espacio de nombres de nivel superior en ese caso de borde.</p><p>Una solución fácil a esta advertencia es calificar la constante:</p><div class="code_container">
+<pre><code class="language-ruby">module Hotel
+  class GeoLocation
+    class &lt;&lt; self
+      Hotel::Services
+    end
+  end
+end
+</code></pre>
+</div>
+<h4 id="autoloading-in-basicobject"><a class="anchorlink" href="#autoloading-in-basicobject">9.9 Autoloading in <code>BasicObject</code></a></h4><p>Los descendientes directos de <code>BasicObject</code> no tienen <code>Object</code> entre sus antepasados
+y no puede resolver constantes de nivel superior:</p><div class="code_container">
+<pre><code class="language-ruby">class C &lt; BasicObject
+  String # NameError: uninitialized constant C::String
+end
+</code></pre>
+</div>
+<p>Cuando se trata de la carga automática, la trama tiene un giro. Consideremos:</p><div class="code_container">
+<pre><code class="language-ruby">class C &lt; BasicObject
+  def user
+    User # WRONG
+  end
+end
+</code></pre>
+</div>
+<p>Dado que Rails comprueba el espacio de nombres de nivel superior, <code>User</code> se carga automáticamente
+primera vez que se invoca el método <code>user</code>. Solo obtiene la excepción si el
+La constante <code>User</code> se conoce en ese punto, en particular en una * segunda * llamada a
+<code>user</code>:</p><div class="code_container">
+<pre><code class="language-ruby">c = C.new
+c.user # surprisingly fine, User
+c.user # NameError: uninitialized constant C::User
+</code></pre>
+</div>
+<p>porque detecta que un espacio de nombres principal ya tiene la constante (consulte <a href="#autoloading-algorithms-qualified-references">Qualified
+Referencias</a>).</p><p>Al igual que con Ruby puro, dentro del cuerpo de un descendiente directo del uso de <code>BasicObject</code>
+siempre caminos constantes absolutos:</p><div class="code_container">
+<pre><code class="language-ruby">class C &lt; BasicObject
+  ::String # RIGHT
+
+  def user
+    ::User # RIGHT
+  end
+end
+</code></pre>
+</div>
+<h4 id="autoloading-in-the-test-environment"><a class="anchorlink" href="#autoloading-in-the-test-environment">9.10 Autoloading in the Test Environment</a></h4><p>Al configurar el entorno de "prueba" para la carga automática, puede considerar varios factores.</p><p>Por ejemplo, podría valer la pena ejecutar sus pruebas con una configuración idéntica a la de producción (<code>config.eager_load = true</code>, <code>config.cache_classes = true</code>) para detectar cualquier problema antes de que llegue a producción (esto es una compensación por la falta de paridad dev-prod). Sin embargo, esto ralentizará el tiempo de arranque para las pruebas individuales en una máquina de desarrollo (y no es inmediatamente compatible con Spring, ver más abajo). Así que una posibilidad es hacer esto en un
+<a href="https://en.wikipedia.org/wiki/Continuous_integration">CI</a> solo máquina (que debería funcionar sin resorte).</p><p>En una máquina de desarrollo, puede ejecutar sus pruebas con lo que sea más rápido (idealmente <code>config.eager_load = false</code>).</p><p>Con el precargador de <a href="https://github.com/rails/spring">Spring</a> (incluido con las nuevas aplicaciones de Rails), lo ideal es mantener <code>config.eager_load = false</code> según el desarrollo. A veces puede terminar con una configuración híbrida (<code>config.eager_load = true</code>,<code>config.cache_classes = true</code> Y <code>config.enable_dependency_loading = true</code>), consulte <a href="https://github.com/rails/spring/issues/519#issuecomment-348324369">edición de primavera</a>. Sin embargo, podría ser más sencillo mantener la misma configuración que el desarrollo y resolver lo que sea que esté causando que falle la carga automática (tal vez por los resultados de las pruebas de CI).</p><p>De vez en cuando puede necesitar explícitamente eager_load usando <code>Rails
+.application.eager_load!</code>en la configuración de sus pruebas; esto podría ocurrir si sus <a href="https://stackoverflow.com/questions/25796409/in-rails-how-can-i-eager-load-all-code-before-a-specific-rspec-test">pruebas involucran subprocesos múltiples</a>.</p><h3 id="troubleshooting"><a class="anchorlink" href="#troubleshooting">10 Troubleshooting</a></h3><h4 id="tracing-autoloads"><a class="anchorlink" href="#tracing-autoloads">10.1 Tracing Autoloads</a></h4><p>Active Support is able to report constants as they are autoloaded. To enable these traces in a Rails application, put the following two lines in some initializer:</p><div class="code_container">
+<pre><code class="language-ruby">ActiveSupport::Dependencies.logger = Rails.logger
+ActiveSupport::Dependencies.verbose = true
+</code></pre>
+</div>
+<h4 id="where-is-a-given-autoload-triggered-questionmark"><a class="anchorlink" href="#where-is-a-given-autoload-triggered-questionmark">10.2 Where is a Given Autoload Triggered?</a></h4><p>Si se está cargando automáticamente <code>Foo</code> constante, y le gustaría saber de dónde viene esa carga automática, simplemente arroje</p><div class="code_container">
+<pre><code class="language-ruby">puts caller
+</code></pre>
+</div>
+<p>en la parte superior de <code>foo.rb</code> e inspeccione el seguimiento de la pila impresa.</p><h4 id="which-constants-have-been-autoloaded-questionmark"><a class="anchorlink" href="#which-constants-have-been-autoloaded-questionmark">10.3 Which Constants Have Been Autoloaded?</a></h4><p>En cualquier momento dado,</p><div class="code_container">
+<pre><code class="language-ruby">ActiveSupport::Dependencies.autoloaded_constants
+</code></pre>
+</div>
+<p>tiene la colección de constantes que se han cargado automáticamente hasta ahora.</p>
+
+        <h3>Comentarios Sobre el Contenido</h3>
+        <p>
+          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+        </p>
+        <p>
+          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
+
+          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
+          Please contribute if you see any typos or factual errors.
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="hide" />
+  <div id="footer">
+    <div class="wrapper">
+      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
+<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+
+    </div>
+  </div>
+</body>
+</html>

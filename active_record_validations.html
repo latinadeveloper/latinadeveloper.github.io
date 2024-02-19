@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -253,13 +253,20 @@ en la base de datos utilizando la característica de validación de Active Recor
     <div class="wrapper">
       <div id="mainCol">
         <h3 id="validations-overview"><a class="anchorlink" href="#validations-overview">1 Validations Overview</a></h3><p>Resumen de Validaciones</p><p>Aquí hay un ejemplo simple de una validación:</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John Doe"</span><span class="p">).</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="kp">nil</span><span class="p">).</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validates :name, presence: true
 end
 
 Person.create(name: "John Doe").valid? # =&gt; true
 Person.create(name: nil).valid? # =&gt; false
-</code></pre>
+'>Copy</button>
 </div>
 <p>Como puedes ver, nuestra validación nos permite saber que nuestra <code>Person</code> no es válida
 sin un atributo <code>name</code>. La segunda <code>Person</code> no será persistente sobre la
@@ -296,12 +303,25 @@ Cuando crea un objeto nuevo, por ejemplo usando el método <code>new</code>, ese
 Una vez que se llame <code>save</code> sobre ese objeto, se guardará en la tabla de base de datos adecuada.
 Active Record utiliza el método de instancia new_record? para determinar si un objeto está ya en la base de datos o no.
 Considera la siguiente clase Active Record:</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
+end
+">Copy</button>
 </div>
 <p>Podemos ver cómo funciona mirando algunos resultados de  <code>bin/rails console</code>:</p><div class="code_container">
-<pre><code class="language-ruby">$ bin/rails console
+<pre><code class="highlight ruby"><span class="err">$</span> <span class="n">bin</span><span class="o">/</span><span class="n">rails</span> <span class="n">console</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John Doe"</span><span class="p">)</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;Person id: nil, name: "John Doe", created_at: nil, updated_at: nil&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">new_record?</span>
+<span class="o">=&gt;</span> <span class="kp">true</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">save</span>
+<span class="o">=&gt;</span> <span class="kp">true</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">new_record?</span>
+<span class="o">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='$ bin/rails console
 &gt;&gt; p = Person.new(name: "John Doe")
 =&gt; #&lt;Person id: nil, name: "John Doe", created_at: nil, updated_at: nil&gt;
 &gt;&gt; p.new_record?
@@ -310,7 +330,7 @@ end
 =&gt; true
 &gt;&gt; p.new_record?
 =&gt; false
-</code></pre>
+'>Copy</button>
 </div>
 <p>Crear y guardar un nuevo registro enviará una operación SQL <code>INSERT</code> a la
 base de datos. La actualización de un registro que existente enviará una operación SQL <code>UPDATE</code>.
@@ -358,13 +378,20 @@ false</code> como un argumento. Esta técnica debe usarse con precaución.</p>
 Si estas validaciones producen algún error, Rails no guarda el objeto.</p><p>También puede ejecutar estas validaciones por su propia cuenta. <code>valid?</code> activa sus validaciones
 y devuelve verdadero si no se encontraron errores en el objeto, y falso de lo contrario.
 Como viste arriba:</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John Doe"</span><span class="p">).</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="kp">nil</span><span class="p">).</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validates :name, presence: true
 end
 
 Person.create(name: "John Doe").valid? # =&gt; true
 Person.create(name: nil).valid? # =&gt; false
-</code></pre>
+'>Copy</button>
 </div>
 <p>Después de que Active Record haya realizado las validaciones, se puede acceder cualquier error
 encontrado a través del método de instancia <code>errors</code>, que devuelve una colección de errores.
@@ -372,7 +399,35 @@ Por definición, un objeto es válido si esta colección está vacía después d
 validaciones</p><p>Nota que un objeto instanciado con <code>new</code> no informará errores
 incluso si es técnicamente inválido, porque las validaciones se ejecutan automáticamente
 solo cuando se guarda el objeto, tal como con los métodos <code>create</code> o<code>save</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">p</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="c1"># =&gt; #&lt;Person id: nil, name: nil&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">size</span>
+<span class="c1"># =&gt; 0</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="c1"># =&gt; false</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">objects</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">full_message</span>
+<span class="c1"># =&gt; "Name can't be blank"</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">p</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create</span>
+<span class="c1"># =&gt; #&lt;Person id: nil, name: nil&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">objects</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">full_message</span>
+<span class="c1"># =&gt; "Name can't be blank"</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">save</span>
+<span class="c1"># =&gt; false</span>
+
+<span class="o">&gt;&gt;</span> <span class="nb">p</span><span class="p">.</span><span class="nf">save!</span>
+<span class="c1"># =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't be blank</span>
+
+<span class="o">&gt;&gt;</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create!</span>
+<span class="c1"># =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't be blank</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true
 end
 
@@ -384,12 +439,12 @@ end
 &gt;&gt; p.valid?
 # =&gt; false
 &gt;&gt; p.errors.objects.first.full_message
-# =&gt; "Name can't be blank"
+# =&gt; &quot;Name can't be blank&quot;
 
 &gt;&gt; p = Person.create
 # =&gt; #&lt;Person id: nil, name: nil&gt;
 &gt;&gt; p.errors.objects.first.full_message
-# =&gt; "Name can't be blank"
+# =&gt; &quot;Name can't be blank&quot;
 
 &gt;&gt; p.save
 # =&gt; false
@@ -399,7 +454,7 @@ end
 
 &gt;&gt; Person.create!
 # =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
-</code></pre>
+">Copy</button>
 </div>
 <p><code>inválido?</code> es el inverso de <code>válido?</code>. Activa sus validaciones,
 devuelve verdadero si se encontraron errores en el objeto, y falso de
@@ -410,13 +465,20 @@ inspecciona la recopilación de errores y no activa validaciones en sí mismo. E
 diferente del método <code>ActiveRecord::Base#invalid?</code>  que fue explicado anteriormente porque
 no verifica la validez del objeto. Solo comprueba para ver
 si hay errores que fueron encontrados en un atributo individual del objeto.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="o">&gt;&gt;</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">errors</span><span class="p">[</span><span class="ss">:name</span><span class="p">].</span><span class="nf">any?</span> <span class="c1"># =&gt; false</span>
+<span class="o">&gt;&gt;</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create</span><span class="p">.</span><span class="nf">errors</span><span class="p">[</span><span class="ss">:name</span><span class="p">].</span><span class="nf">any?</span> <span class="c1"># =&gt; true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true
 end
 
 &gt;&gt; Person.new.errors[:name].any? # =&gt; false
 &gt;&gt; Person.create.errors[:name].any? # =&gt; true
-</code></pre>
+">Copy</button>
 </div>
 <p>Cubriremos errores de validación en mayor profundidad en la sección <a href="#working-with-validation-errors">Working with Validation
 Errors</a></p><h3 id="validation-helpers"><a class="anchorlink" href="#validation-helpers">2 Validation Helpers</a></h3><p>Helpers de Validación</p><p>Active Record ofrece muchos ayudantes de validación predefinidos que se pueden usar
@@ -433,27 +495,40 @@ Ayudantes disponibles. Vamos a ver a cada uno de los helpers disponibles.</p><h4
 usuario cuando se envie el formulario. Esto normalmente se usa cuando el usuario 
 necesita aceptar términos de servicio de la aplicación, confirme que se lee algún texto
 o un concepto similar.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:terms_of_service</span><span class="p">,</span> <span class="ss">acceptance: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :terms_of_service, acceptance: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta verificación se realiza solo si <code>terms_of_service</code> no es <code>nil</code>.
 El mensaje de error predeterminado para este helper es <em>"must be accepted"</em>.
 También se puede pasar un mensaje personalizado a través de la opción `<code>message</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:terms_of_service</span><span class="p">,</span> <span class="ss">acceptance: </span><span class="p">{</span> <span class="ss">message: </span><span class="s1">'must be abided'</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :terms_of_service, acceptance: { message: 'must be abided' }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También se puede recibir una opción <code>:accept</code>, que determina los valores permitidos
 que serán considerado como aceptado. Su valor predeterminado es <code>['1', true]</code> y puede ser
 cambiado fácilmente.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:terms_of_service</span><span class="p">,</span> <span class="ss">acceptance: </span><span class="p">{</span> <span class="ss">accept: </span><span class="s1">'yes'</span> <span class="p">}</span>
+  <span class="n">validates</span> <span class="ss">:eula</span><span class="p">,</span> <span class="ss">acceptance: </span><span class="p">{</span> <span class="ss">accept: </span><span class="p">[</span><span class="s1">'TRUE'</span><span class="p">,</span> <span class="s1">'accepted'</span><span class="p">]</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :terms_of_service, acceptance: { accept: 'yes' }
   validates :eula, acceptance: { accept: ['TRUE', 'accepted'] }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta validación es específicamente para aplicaciones del web y este
 <code>acceptance</code> no necesita registrarse en ningún lugar de su base de datos.
@@ -462,11 +537,16 @@ Si el campo si existe en su base de datos, la opción <code>accept</code> debe e
 o incluir <code>true</code> o de lo contrario la validación no se ejecutará.</p><h4 id="validates-associated"><a class="anchorlink" href="#validates-associated">2.2 <code>validates_associated</code></a></h4><p>Debe usar este asistente cuando su modelo tenga asociaciones con otros modelos
 y también se necesitan ser validados. Cuando intentas guardar tu objeto, <code>valid</code>
 se llamará a cada uno de los objetos asociados.</p><div class="code_container">
-<pre><code class="language-ruby">class Library &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Library</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:books</span>
+  <span class="n">validates_associated</span> <span class="ss">:books</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Library &lt; ApplicationRecord
   has_many :books
   validates_associated :books
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta validación funcionará con todos los tipos de asociación.</p><p>PRECAUCIÓN: No use <code>validates_associated</code> en ambos extremos de sus asociaciones.
 Se llamarían entre sí en un bucle infinito.</p><p>El mensaje de error predeterminado para <code>validates_associated</code> es <em>"is invalid"</em>. Nota
@@ -476,40 +556,61 @@ exactamente el mismo contenido. Por ejemplo, es posible que desee confirmar una
 dirección de correo electrónico o una contraseña. Esta validación crea un atributo
 virtual cuyo nombre es el nombre del campo que debe confirmarse adjuntando
 con "_confirmación" .</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">confirmation: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :email, confirmation: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>En su plantilla de vista, podría usar algo como</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= text_field :person, :email %&gt;
-&lt;%= text_field :person, :email_confirmation %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">text_field</span> <span class="ss">:person</span><span class="p">,</span> <span class="ss">:email</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">text_field</span> <span class="ss">:person</span><span class="p">,</span> <span class="ss">:email_confirmation</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= text_field :person, :email %&gt;
+&lt;%= text_field :person, :email_confirmation %&gt;
+">Copy</button>
 </div>
 <p>Esta verificación se realiza solo si <code>email_confirmation</code> no es <code>nil</code>. Para requerir
 confirmación, asegúrese de agregar una verificación de presencia para el atributo de confirmación
 (veremos <code>presence</code> más adelante en esta guía):</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">confirmation: </span><span class="kp">true</span>
+  <span class="n">validates</span> <span class="ss">:email_confirmation</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :email, confirmation: true
   validates :email_confirmation, presence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También hay una opción <code>:case_sensitive</code> que puede usar para definir si
 la restricción de confirmación se distingue entre mayúsculas y minúsculas o no. Esta opción
 por defecto es cierto.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">confirmation: </span><span class="p">{</span> <span class="ss">case_sensitive: </span><span class="kp">false</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :email, confirmation: { case_sensitive: false }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El mensaje de error predeterminado para este asistente es <em>"doesn't match confirmation"</em>.</p><h4 id="exclusion"><a class="anchorlink" href="#exclusion">2.4 <code>exclusion</code></a></h4><p>Este helper valida que los valores de los atributos no estén incluidos en un
 conjunto determinado. De hecho, este conjunto puede ser cualquier objeto enumerable.</p><div class="code_container">
-<pre><code class="language-ruby">class Account &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:subdomain</span><span class="p">,</span> <span class="ss">exclusion: </span><span class="p">{</span> <span class="ss">in: </span><span class="sx">%w(www us ca jp)</span><span class="p">,</span>
+    <span class="ss">message: </span><span class="s2">"%{value} is reserved."</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Account &lt; ApplicationRecord
   validates :subdomain, exclusion: { in: %w(www us ca jp),
     message: "%{value} is reserved." }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Este helper <code>exclusion</code> tiene una opción <code>:in</code> que recibe que recibe el conjunto de valores que
 no serán aceptado para los atributos validados.  La opción :<code>in</code> tiene un alias llamado <code>:within</code>
@@ -517,19 +618,29 @@ que puedes utilizar para el mismo propósito, si lo quieres. Este ejemplo utiliz
 <code>:message</code> para demostrar como puedes incluir los valores de los atributos. Para ver las opciones 
 completas del argumento del mensaje, consulte el <a href="#message">message documentation</a>.</p><p>El mensaje de error predeterminado es <em>"is reserved"</em>.</p><h4 id="format"><a class="anchorlink" href="#format">2.5 <code>format</code></a></h4><p>Este ayudante valida los valores de los atributos probando si coinciden con un
 dada la expresión regular, que se especifica usando la opción <code>: with</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:legacy_code</span><span class="p">,</span> <span class="ss">format: </span><span class="p">{</span> <span class="ss">with: </span><span class="sr">/\A[a-zA-Z]+\z/</span><span class="p">,</span>
+    <span class="ss">message: </span><span class="s2">"only allows letters"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Product &lt; ApplicationRecord
   validates :legacy_code, format: { with: /\A[a-zA-Z]+\z/,
     message: "only allows letters" }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Alternativamente, puedes requerir que el atributo específico no responda a la expresión regular utilizando la opción <code>:without</code>.</p><p>El mensaje de error por defecto es <em>"is invalid"</em>.</p><h4 id="inclusion"><a class="anchorlink" href="#inclusion">2.6 <code>inclusion</code></a></h4><p>Este ayudante valida que los valores de los atributos están incluidos en un conjunto dado.
 De hecho, este conjunto puede ser cualquier objeto enumerable.</p><div class="code_container">
-<pre><code class="language-ruby">class Coffee &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Coffee</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:size</span><span class="p">,</span> <span class="ss">inclusion: </span><span class="p">{</span> <span class="ss">in: </span><span class="sx">%w(small medium large)</span><span class="p">,</span>
+    <span class="ss">message: </span><span class="s2">"%{value} is not a valid size"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Coffee &lt; ApplicationRecord
   validates :size, inclusion: { in: %w(small medium large),
     message: "%{value} is not a valid size" }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Este helper <code>inclusion</code> tiene una opción <code>:in</code> que recibe que recibe el conjunto de valores que
 serán aceptado. La opción :<code>in</code> tiene un alias llamado <code>:within</code> que puedes utilizar para 
@@ -537,13 +648,20 @@ el mismo propósito, si lo quieres. El ejemplo anterior usa la opción <code>:me
 cómo puede incluir el valor del atributo. Para ver las opciones completas del argumento 
 del mensaje, consulte el <a href="#message">message documentation</a>.</p><p>El mensaje de error predeterminado es <em>"is not included in the list"</em>.</p><h4 id="length"><a class="anchorlink" href="#length">2.7 <code>length</code></a></h4><p>Este ayudante valida la longitud de los valores de los atributos. Proporciona una
 variedad de opciones, por lo que puede especificar restricciones de longitud de diferentes maneras:</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">2</span> <span class="p">}</span>
+  <span class="n">validates</span> <span class="ss">:bio</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">maximum: </span><span class="mi">500</span> <span class="p">}</span>
+  <span class="n">validates</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">in: </span><span class="mi">6</span><span class="o">..</span><span class="mi">20</span> <span class="p">}</span>
+  <span class="n">validates</span> <span class="ss">:registration_number</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">is: </span><span class="mi">6</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, length: { minimum: 2 }
   validates :bio, length: { maximum: 500 }
   validates :password, length: { in: 6..20 }
   validates :registration_number, length: { is: 6 }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Las opciones de restricción de longitud son:</p>
 <ul>
@@ -562,26 +680,38 @@ Puedes personalizar estos mensajes utilizando las opciones <code>:wrong_length</
 <code>:too_short</code> y <code>%{count}</code> como referencia para mostrar el número que corresponda para 
 la restricción que se está utilizando. Todavía puedes usar la opción <code>:message</code> para especificar 
 un mensaje de error.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:bio</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">maximum: </span><span class="mi">1000</span><span class="p">,</span>
+    <span class="ss">too_long: </span><span class="s2">"%{count} characters is the maximum allowed"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validates :bio, length: { maximum: 1000,
     too_long: "%{count} characters is the maximum allowed" }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Nota que los mensajes de error predeterminados son plurales. Por predeterminado, coincidirá con 
 un signo opcional seguido de una integral o número de punto flotante.</p><p> Para especificar que solo se permiten números integrales, establezca <code>:only_integer</code> 
  en verdadero. Entonces usará la     </p><div class="code_container">
-<pre><code class="language-ruby">/\A[+-]?\d+\z/
+<pre><code class="highlight ruby"><span class="sr">/\A[+-]?\d+\z/</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="/\A[+-]?\d+\z/
+">Copy</button>
 </div>
 <p>expresión regular para validar el valor del atributo. De lo contrario, intentará
 convertir el valor a un número usando <code>Float</code>. Los <code>Float</code> se convierten en<code>BigDecimal</code>
 utilizando el valor de precisión de la columna o 15.</p><div class="code_container">
-<pre><code class="language-ruby">class Player &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Player</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:points</span><span class="p">,</span> <span class="ss">numericality: </span><span class="kp">true</span>
+  <span class="n">validates</span> <span class="ss">:games_played</span><span class="p">,</span> <span class="ss">numericality: </span><span class="p">{</span> <span class="ss">only_integer: </span><span class="kp">true</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Player &lt; ApplicationRecord
   validates :points, numericality: true
   validates :games_played, numericality: { only_integer: true }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El mensaje de error predeterminado es  <em>"must be an integer"</em>.</p><p>Además :only_integer, este helper también acepta las siguientes opciones para 
 añadir restricciones a los valores acceptables:</p>
@@ -617,65 +747,98 @@ mensaje de error por defecto es <em>"must be even"</em>.</li>
 <div class="note"><p>Por defecto, <code>numericality</code> no permite valores <code>nil</code>. Puedes utilizar la opción<code>allow_nil: true</code> para permitirlo.</p></div><p>El mensaje de error para esta opción es <em>"is not a number"</em>.</p><h4 id="presence"><a class="anchorlink" href="#presence">2.8 <code>presence</code></a></h4><p>Este ayudante valida que los atributos especificados no estén vacíos. Utiliza el método <code>blank?</code> para comprobar
 si el valor es <code>nil</code> o una cadena esta en blancoese, es decir, una cadena que está vacía o que consta de 
 espacios en blanco.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:login</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, :login, :email, presence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si quieres estar seguro de que hay una asociación presente, tendras que probar
 si el objeto asociado en sí está presente, y no la clave foránea utilizada para asignar la asociación.
 De esta manera, no solo se verifica que la clave foránea no este vacía sino que también 
 el objeto referenciado exista.</p><div class="code_container">
-<pre><code class="language-ruby">class LineItem &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LineItem</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:order</span>
+  <span class="n">validates</span> <span class="ss">:order</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class LineItem &lt; ApplicationRecord
   belongs_to :order
   validates :order, presence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para validar qu los registros asociados cuya presencia se requiere, debe
 especifique la opción <code>:inverse_of</code> para la asociación:</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:line_items</span><span class="p">,</span> <span class="ss">inverse_of: :order</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   has_many :line_items, inverse_of: :order
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para validar los registros asociados cuya presencia se requiere, debe
 especifica la opción <code>:inverse_of</code> para la asociación:</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:line_items</span><span class="p">,</span> <span class="ss">inverse_of: :order</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   has_many :line_items, inverse_of: :order
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si validas la presencia de un objeto asociado a través de una relación <code>has_one</code>
 o <code>has_many</code>, comprobará que el objeto no este en <code>blank?</code> ni <code>marked_for_destruction?</code>.</p><p>Como <code>false.blank?</code> es verdadero, si quieres validar la presencia de un booleano
 debes usar una de las siguientes validaciones:</p><div class="code_container">
-<pre><code class="language-ruby">validates :boolean_field_name, inclusion: { in: [true, false] }
-validates :boolean_field_name, exclusion: { in: [nil] }
+<pre><code class="highlight ruby"><span class="n">validates</span> <span class="ss">:boolean_field_name</span><span class="p">,</span> <span class="ss">inclusion: </span><span class="p">{</span> <span class="ss">in: </span><span class="p">[</span><span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">]</span> <span class="p">}</span>
+<span class="n">validates</span> <span class="ss">:boolean_field_name</span><span class="p">,</span> <span class="ss">exclusion: </span><span class="p">{</span> <span class="ss">in: </span><span class="p">[</span><span class="kp">nil</span><span class="p">]</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="validates :boolean_field_name, inclusion: { in: [true, false] }
+validates :boolean_field_name, exclusion: { in: [nil] }
+">Copy</button>
 </div>
 <p>Al utilizar una de estas validaciones, se asegurará de que el valor NO sea <code>nil</code>
 daría como resultado un valor <code>NULL</code> en la mayoría de los casos.</p><h4 id="absence"><a class="anchorlink" href="#absence">2.9 <code>absence</code></a></h4><p>Este ayudante valida que los atributos especificados están ausentes. Utiliza el
 método <code>present?</code> para verificar si el valor no es <code>nil</code> o una cadena en blanco, que
 es decir, una cadena que está vacía o que consta de espacios en blanco.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:login</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">absence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, :login, :email, absence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si desea estar seguro de que una asociación está ausente, deberá probar si el objeto
 asociado está ausente y no la clave foránea utilizada para mapear la asociación.</p><div class="code_container">
-<pre><code class="language-ruby">class LineItem &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">LineItem</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:order</span>
+  <span class="n">validates</span> <span class="ss">:order</span><span class="p">,</span> <span class="ss">absence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class LineItem &lt; ApplicationRecord
   belongs_to :order
   validates :order, absence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Para validar los registros asociados cuyo absence es necesario, debe especificar 
 la opción <code>:inverse_of</code> para la asociación:</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:line_items</span><span class="p">,</span> <span class="ss">inverse_of: :order</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Order &lt; ApplicationRecord
   has_many :line_items, inverse_of: :order
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si valida la ausencia de un objeto asociado a través de una relación <code>has_one</code> o 
 <code>has_many</code>, comprobará que el objeto no está <code>present?</code> ni <code>marked_for_destruction?</code>.</p><p>Como <code>false.present?</code> es falso, si quieres validar la presencia de un booleano
@@ -684,30 +847,55 @@ que el objeto se guarda. No crea una restricción de unicidad en la base de dato
 por lo tanto, puede suceder que dos conexiones de base de datos diferentes crean dos registros
 con el mismo valor para una columna que pretende ser única. Para evitar eso,
 debe crear un índice único en esa columna en su base de datos.</p><div class="code_container">
-<pre><code class="language-ruby">class Account &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Account &lt; ApplicationRecord
   validates :email, uniqueness: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La validación se realiza realizando una consulta SQL en la tabla del modelo,
 buscando un registro existente con el mismo valor en ese atributo.</p><p>Hay una opción de <code>:scope</code> que puede utilizar para especificar otros atributos que se utilizan
 para limitar la comprobación de unicidad:</p><div class="code_container">
-<pre><code class="language-ruby">class Holiday &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Holiday</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="p">{</span> <span class="ss">scope: :year</span><span class="p">,</span>
+    <span class="ss">message: </span><span class="s2">"should happen once per year"</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Holiday &lt; ApplicationRecord
   validates :name, uniqueness: { scope: :year,
     message: "should happen once per year" }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Si desea crear una restricción de la base de datos para evitar posibles violaciones de una validación de unicidad utilizando la opción <code>:scope</code>, debe crear un índice único en ambas columnas de su base de datos. Consulte <a href="https://dev.mysql.com/doc/refman/en/multiple-column-indexes.html">the MySQL manual</a> para obtener más detalles sobre los índices de columnas múltiples  o <a href="https://www.postgresql.org/docs/current/static/ddl-constraints.html">the PostgreSQL manual</a> para ver ejemplos de restricciones únicas que se refieren a un grupo de columnas.</p><p>También hay una opción <code>:case_sensitive</code> que puede utilizar para definir si la restricción de unicidad
 será sensible a mayúsculas o minúsculas. Esta opción predeterminada es true.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="p">{</span> <span class="ss">case_sensitive: </span><span class="kp">false</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>ADVERTENCIA. Tenga en cuenta que algunas bases de datos están configuradas para realizar búsquedas sin distinción 
 con mayúsculas y minúsculas.</p><p>El mensaje de error predeterminado es  <em>"has already been taken"</em>.</p><h4 id="validates-with"><a class="anchorlink" href="#validates-with">2.11 <code>validates_with</code></a></h4><p>Este ayudante pasa el registro a una clase separada para validación.</p><div class="code_container">
-<pre><code class="language-ruby">class GoodnessValidator &lt; ActiveModel::Validator
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GoodnessValidator</span> <span class="o">&lt;</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validator</span>
+  <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">record</span><span class="p">.</span><span class="nf">first_name</span> <span class="o">==</span> <span class="s2">"Evil"</span>
+      <span class="n">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:base</span><span class="p">,</span> <span class="s2">"This person is evil"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates_with</span> <span class="no">GoodnessValidator</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class GoodnessValidator &lt; ActiveModel::Validator
   def validate(record)
     if record.first_name == "Evil"
       record.errors.add :base, "This person is evil"
@@ -718,7 +906,7 @@ end
 class Person &lt; ApplicationRecord
   validates_with GoodnessValidator
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Nota: Los errores agregados a <code>record.errors [:base]</code> se relacionan con el estado del registro
 en conjunto, y no a un atributo específico.</p><p>El ayudante <code>validates_with</code> toma una clase, o una lista de clases para utilizar para esa validación.
@@ -726,7 +914,19 @@ No hay un mensaje de error predeterminado para <code>validates_with</code>. Debe
 a la colección de errores del registro en la clase validator.</p><p>Para implementar el método validate, debe tener definido un parámetro <code>record,</code> que es el 
 registro a validar.</p><p>Como todas las demás validaciones, <code>validates_with</code> toma las opciones <code>:if</code> ,<code>:unless</code> y <code>:on</code>. 
 Si pasa otras opciones, se enviarán las opciones a la clase validator como <code>options</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class GoodnessValidator &lt; ActiveModel::Validator
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GoodnessValidator</span> <span class="o">&lt;</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validator</span>
+  <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="ss">:fields</span><span class="p">].</span><span class="nf">any?</span><span class="p">{</span><span class="o">|</span><span class="n">field</span><span class="o">|</span> <span class="n">record</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Evil"</span> <span class="p">}</span>
+      <span class="n">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:base</span><span class="p">,</span> <span class="s2">"This person is evil"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates_with</span> <span class="no">GoodnessValidator</span><span class="p">,</span> <span class="ss">fields: </span><span class="p">[</span><span class="ss">:first_name</span><span class="p">,</span> <span class="ss">:last_name</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class GoodnessValidator &lt; ActiveModel::Validator
   def validate(record)
     if options[:fields].any?{|field| record.send(field) == "Evil" }
       record.errors.add :base, "This person is evil"
@@ -737,12 +937,32 @@ end
 class Person &lt; ApplicationRecord
   validates_with GoodnessValidator, fields: [:first_name, :last_name]
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Nota que el validador se inicializará <em>sólo una vez</em> para todo el ciclo de vida de la aplicación, 
 y no en cada ejecución de validación, así que tenga cuidado al usar variables de instancia dentro de ella.</p><p>Si su validador es lo suficientemente complejo como para que desee variables de instancia, puede utilizar 
 fácilmente un objeto Ruby antiguo en su lugar:</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validate</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+    <span class="no">GoodnessValidator</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">person</span><span class="p">).</span><span class="nf">validate</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">GoodnessValidator</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+    <span class="vi">@person</span> <span class="o">=</span> <span class="n">person</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">validate</span>
+    <span class="k">if</span> <span class="n">some_complex_condition_involving_ivars_and_private_methods?</span>
+      <span class="vi">@person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:base</span><span class="p">,</span> <span class="s2">"This person is evil"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validate do |person|
     GoodnessValidator.new(person).validate
   end
@@ -761,41 +981,59 @@ class GoodnessValidator
 
   # ...
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Este helper valida los atributos contra un bloque. No tiene una función de validación
 predefinida. Debes crear uno usando un bloque, y cada atributo es
 pasado a <code>validates_each</code> y será probado contra él. En el siguiente ejemplo,
 no queremos que los nombres y apellidos comiencen con minúsculas.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates_each</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:surname</span> <span class="k">do</span> <span class="o">|</span><span class="n">record</span><span class="p">,</span> <span class="kp">attr</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
+    <span class="n">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="kp">attr</span><span class="p">,</span> <span class="s1">'must start with upper case'</span><span class="p">)</span> <span class="k">if</span> <span class="n">value</span> <span class="o">=~</span> <span class="sr">/\A[[:lower:]]/</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates_each :name, :surname do |record, attr, value|
     record.errors.add(attr, 'must start with upper case') if value =~ /\A[[:lower:]]/
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El bloque recibe el registro, el nombre del atributo y el valor del atributo.
 Puedes hacer lo que quieras para verificar los datos válidos dentro del bloque. Si tu
 validación falla, debrias agregar un error al modelo, por lo tanto
 haciéndolo inválido.</p><h3 id="common-validation-options"><a class="anchorlink" href="#common-validation-options">3 Common Validation Options</a></h3><p>Opciones de validación comunes</p><p>Estas son opciones de validación comunes:</p><h4 id="allow-nil"><a class="anchorlink" href="#allow-nil">3.1 <code>:allow_nil</code></a></h4><p>La <code>:allow_nil</code>  opción omite la validación cuando el valor que se valida es
 <code>nil</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Coffee &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Coffee</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:size</span><span class="p">,</span> <span class="ss">inclusion: </span><span class="p">{</span> <span class="ss">in: </span><span class="sx">%w(small medium large)</span><span class="p">,</span>
+    <span class="ss">message: </span><span class="s2">"%{value} is not a valid size"</span> <span class="p">},</span> <span class="ss">allow_nil: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Coffee &lt; ApplicationRecord
   validates :size, inclusion: { in: %w(small medium large),
     message: "%{value} is not a valid size" }, allow_nil: true
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Para ver las opciones completas del argumento del mensaje, consulte el
 <a href="#message">message documentation</a>.</p><h4 id="allow-blank"><a class="anchorlink" href="#allow-blank">3.2 <code>:allow_blank</code></a></h4><p>La <code>:allow_blank</code> opción es similar a la opción <code>:allow_nil</code>. Esta opción
 dejará pasar la validación si el valor del atributo es <code>blank?</code>, como <code>nil</code> o por ejemplo
 una cadena vacía. </p><div class="code_container">
-<pre><code class="language-ruby">class Topic &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Topic</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">is: </span><span class="mi">5</span> <span class="p">},</span> <span class="ss">allow_blank: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="no">Topic</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">title: </span><span class="s2">""</span><span class="p">).</span><span class="nf">valid?</span>  <span class="c1"># =&gt; true</span>
+<span class="no">Topic</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">title: </span><span class="kp">nil</span><span class="p">).</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Topic &lt; ApplicationRecord
   validates :title, length: { is: 5 }, allow_blank: true
 end
 
 Topic.create(title: "").valid?  # =&gt; true
 Topic.create(title: nil).valid? # =&gt; true
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="message"><a class="anchorlink" href="#message">3.3 <code>:message</code></a></h4><p>Como ya has visto, la opción <code>:message</code> te permite especificar el mensaje que
 se agregará a la colección de <code>errors</code> cuando falla la validación. Cuando esta
@@ -805,7 +1043,27 @@ para cada ayudante de validación. La opción <code>:message</code> acepta un <c
 la validación falla. Este reemplazo se realiza utilizando la gem I18n, y los 
 marcadores de posición deben coincidir exactamente, no se permiten espacios.</p><p>Un valor <code>Proc</code>: <code>mensaje</code> tiene dos argumentos: el objeto que se esta validando y
 un hash con los pares clave-valor <code>:modelo</code>,<code>:atributo</code> y <code>:valor</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="c1"># Hard-coded message</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="p">{</span> <span class="ss">message: </span><span class="s2">"must be given please"</span> <span class="p">}</span>
+
+  <span class="c1"># Message with dynamic attribute value. %{value} will be replaced with</span>
+  <span class="c1"># the actual value of the attribute. %{attribute} and %{model} also</span>
+  <span class="c1"># available.</span>
+  <span class="n">validates</span> <span class="ss">:age</span><span class="p">,</span> <span class="ss">numericality: </span><span class="p">{</span> <span class="ss">message: </span><span class="s2">"%{value} seems wrong"</span> <span class="p">}</span>
+
+  <span class="c1"># Proc</span>
+  <span class="n">validates</span> <span class="ss">:username</span><span class="p">,</span>
+    <span class="ss">uniqueness: </span><span class="p">{</span>
+      <span class="c1"># object = person object being validated</span>
+      <span class="c1"># data = { model: "Person", attribute: "Username", value: &lt;username&gt; }</span>
+      <span class="ss">message: </span><span class="o">-&gt;</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="k">do</span>
+        <span class="s2">"Hey </span><span class="si">#{</span><span class="n">object</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">!, </span><span class="si">#{</span><span class="n">data</span><span class="p">[</span><span class="ss">:value</span><span class="p">]</span><span class="si">}</span><span class="s2"> is taken already! Try again </span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">zone</span><span class="p">.</span><span class="nf">tomorrow</span><span class="si">}</span><span class="s2">"</span>
+      <span class="k">end</span>
+    <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   # Hard-coded message
   validates :name, presence: { message: "must be given please" }
 
@@ -824,7 +1082,7 @@ un hash con los pares clave-valor <code>:modelo</code>,<code>:atributo</code> y 
       end
     }
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="on"><a class="anchorlink" href="#on">3.4 <code>:on</code></a></h4><p>La opción <code>:on</code> le permite especificar cuándo se debe realizarse la validación. El 
 comportamiento predeterminado para todos los ayudantes de validación integrados se 
@@ -832,7 +1090,18 @@ debe ejecutar al guardar (save) (tanto cuando está creando un nuevo registro co
 cuando lo está actualizando). Si tu deseas cambiarlo, puedes usar <code>on: :create</code> para ejecutar
 la validación solo cuando un nuevo registro es creado o <code>on: :update</code> para ejecutar 
 la validación solo cuando un registro se está actualizado.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="c1"># it will be possible to update email with a duplicated value</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :create</span>
+
+  <span class="c1"># it will be possible to create the record with a non-numerical age</span>
+  <span class="n">validates</span> <span class="ss">:age</span><span class="p">,</span> <span class="ss">numericality: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :update</span>
+
+  <span class="c1"># the default (validates on both create and update)</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   # it will be possible to update email with a duplicated value
   validates :email, uniqueness: true, on: :create
 
@@ -842,12 +1111,23 @@ la validación solo cuando un registro se está actualizado.</p><div class="code
   # the default (validates on both create and update)
   validates :name, presence: true
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También se puede usar <code>on:</code> para definir contextos personalizados. Los contextos 
 personalizados deben ser se activados explícitamente pasando el nombre del contexto 
 a <code>valid?</code>, <code>invalid?</code>, or <code>save</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :account_setup</span>
+  <span class="n">validates</span> <span class="ss">:age</span><span class="p">,</span> <span class="ss">numericality: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :account_setup</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">age: </span><span class="s1">'thirty-three'</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span><span class="p">(</span><span class="ss">:account_setup</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">messages</span>
+ <span class="c1"># =&gt; {:email=&gt;["has already been taken"], :age=&gt;["is not a number"]}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :email, uniqueness: true, on: :account_setup
   validates :age, numericality: true, on: :account_setup
 end
@@ -856,14 +1136,25 @@ person = Person.new(age: 'thirty-three')
 person.valid? # =&gt; true
 person.valid?(:account_setup) # =&gt; false
 person.errors.messages
- # =&gt; {:email=&gt;["has already been taken"], :age=&gt;["is not a number"]}
-</code></pre>
+ # =&gt; {:email=&gt;[&quot;has already been taken&quot;], :age=&gt;[&quot;is not a number&quot;]}
+">Copy</button>
 </div>
 <p><code>person.valid?(:account_setup)</code> ejecuta ambas validaciones sin guardar
 el modelo. <code>person.save(context: :account_setup)</code> valida <code>person</code> en el contexto
 <code>account_setup</code> antes de guardar.</p><p>Cuando se desencadena por un contexto explícito, las validaciones se ejecutan para ese contexto,
 así como cualquier validación  <em>without</em> contexto.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :account_setup</span>
+  <span class="n">validates</span> <span class="ss">:age</span><span class="p">,</span> <span class="ss">numericality: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">on: :account_setup</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span><span class="p">(</span><span class="ss">:account_setup</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">messages</span>
+ <span class="c1"># =&gt; {:email=&gt;["has already been taken"], :age=&gt;["is not a number"], :name=&gt;["can't be blank"]}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :email, uniqueness: true, on: :account_setup
   validates :age, numericality: true, on: :account_setup
   validates :name, presence: true
@@ -872,25 +1163,37 @@ end
 person = Person.new
 person.valid?(:account_setup) # =&gt; false
 person.errors.messages
- # =&gt; {:email=&gt;["has already been taken"], :age=&gt;["is not a number"], :name=&gt;["can't be blank"]}
-</code></pre>
+ # =&gt; {:email=&gt;[&quot;has already been taken&quot;], :age=&gt;[&quot;is not a number&quot;], :name=&gt;[&quot;can't be blank&quot;]}
+">Copy</button>
 </div>
 <h3 id="strict-validations"><a class="anchorlink" href="#strict-validations">4 Strict Validations</a></h3><p>Validaciones estrictas</p><p>También se puede especificar validaciones para que sean estrictas y elevar
 <code>ActiveModel::StrictValidationFailed</code> cuando el objeto no es válido.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="p">{</span> <span class="ss">strict: </span><span class="kp">true</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">valid?</span>  <span class="c1"># =&gt; ActiveModel::StrictValidationFailed: Name can't be blank</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: { strict: true }
 end
 
 Person.new.valid?  # =&gt; ActiveModel::StrictValidationFailed: Name can't be blank
-</code></pre>
+">Copy</button>
 </div>
 <p>También existe la posibilidad de pasar una excepción personalizada a la opción <code>:strict</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:token</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">strict: </span><span class="no">TokenGenerationException</span>
+<span class="k">end</span>
+
+<span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">.</span><span class="nf">valid?</span>  <span class="c1"># =&gt; TokenGenerationException: Token can't be blank</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :token, presence: true, uniqueness: true, strict: TokenGenerationException
 end
 
 Person.new.valid?  # =&gt; TokenGenerationException: Token can't be blank
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="conditional-validation"><a class="anchorlink" href="#conditional-validation">5 Conditional Validation</a></h3><p>Validación Condicional</p><p>A veces tendrá sentido validar un objeto solo cuando un predicado dado
 es satisfecho. Puedes hacerlo utilizando las opciones <code>:if</code> y <code>:unless</code>, que
@@ -900,50 +1203,78 @@ deseas especificar cuándo la validación <strong>should not</strong> no deberia
 entoncess puede usar la opción <code>:unless</code>.</p><h4 id="using-a-symbol-with-if-and-unless"><a class="anchorlink" href="#using-a-symbol-with-if-and-unless">5.1 Using a Symbol with <code>:if</code> and <code>:unless</code></a></h4><p>Puedes asociar las opciones <code>:if</code> y <code>:unless</code> con un símbolo correspondiente
 al nombre del método que se llamará justo antes de que ocurra la validación.
 Esta es la opción más utilizada.</p><div class="code_container">
-<pre><code class="language-ruby">class Order &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Order</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:card_number</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">if: :paid_with_card?</span>
+
+  <span class="k">def</span> <span class="nf">paid_with_card?</span>
+    <span class="n">payment_type</span> <span class="o">==</span> <span class="s2">"card"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Order &lt; ApplicationRecord
   validates :card_number, presence: true, if: :paid_with_card?
 
   def paid_with_card?
     payment_type == "card"
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="using-a-proc-with-if-and-unless"><a class="anchorlink" href="#using-a-proc-with-if-and-unless">5.2 Using a Proc with <code>:if</code> and <code>:unless</code></a></h4><p>Es posible asociar <code>:if</code> y<code>:unless</code> con un objeto <code>Proc</code> que sera llamado. 
 El uso de un objeto <code>Proc</code> le da la capacidad de escribir una condición en 
 línea en lugar de un método separado. Esta opción es la más adecuada para
 una línea.</p><div class="code_container">
-<pre><code class="language-ruby">class Account &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Account</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">confirmation: </span><span class="kp">true</span><span class="p">,</span>
+    <span class="ss">unless: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">a</span><span class="p">.</span><span class="nf">password</span><span class="p">.</span><span class="nf">blank?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Account &lt; ApplicationRecord
   validates :password, confirmation: true,
     unless: Proc.new { |a| a.password.blank? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Como las <code>Lambdas</code> son un tipo de<code>Proc</code>, también se pueden usar para escribir en línea
 condiciones de una manera más corta.</p><div class="code_container">
-<pre><code class="language-ruby">validates :password, confirmation: true, unless: -&gt; { password.blank? }
+<pre><code class="highlight ruby"><span class="n">validates</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">confirmation: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">unless: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="n">password</span><span class="p">.</span><span class="nf">blank?</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="validates :password, confirmation: true, unless: -&gt; { password.blank? }
+">Copy</button>
 </div>
 <h4 id="grouping-conditional-validations"><a class="anchorlink" href="#grouping-conditional-validations">5.3 Grouping Conditional validations</a></h4><p>Agrupación de validaciones condicionales</p><p>A veces es útil que varias validaciones usen una condición. Se puede lograr 
 fácilmente usando <code>with_options</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">with_options</span> <span class="ss">if: :is_admin?</span> <span class="k">do</span> <span class="o">|</span><span class="n">admin</span><span class="o">|</span>
+    <span class="n">admin</span><span class="p">.</span><span class="nf">validates</span> <span class="ss">:password</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">10</span> <span class="p">}</span>
+    <span class="n">admin</span><span class="p">.</span><span class="nf">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   with_options if: :is_admin? do |admin|
     admin.validates :password, length: { minimum: 10 }
     admin.validates :email, presence: true
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Todas las validaciones dentro del bloque <code>with_options</code> tendrán automáticamente
 pasó la condición <code>if::is_admin?</code></p><h4 id="combining-validation-conditions"><a class="anchorlink" href="#combining-validation-conditions">5.4 Combining Validation Conditions</a></h4><p>Combinando condiciones de validación</p><p>Por otro lado, cuando  condiciones múltiples definen si una validación debe o no
 debe suceder, se puede usar un <code>Array</code>. Además, puedes aplicar los dos <code>:if</code> como
 <code>:unless</code> a la misma validación</p><div class="code_container">
-<pre><code class="language-ruby">class Computer &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Computer</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:mouse</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span>
+                    <span class="ss">if: </span><span class="p">[</span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">market</span><span class="p">.</span><span class="nf">retail?</span> <span class="p">},</span> <span class="ss">:desktop?</span><span class="p">],</span>
+                    <span class="ss">unless: </span><span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">c</span><span class="o">|</span> <span class="n">c</span><span class="p">.</span><span class="nf">trackpad</span><span class="p">.</span><span class="nf">present?</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Computer &lt; ApplicationRecord
   validates :mouse, presence: true,
                     if: [Proc.new { |c| c.market.retail? }, :desktop?],
                     unless: Proc.new { |c| c.trackpad.present? }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La validación solo se ejecuta cuando todas las condiciones <code>:if</code> y ninguna de las
 <code>:unless</code> las condiciones se evalúan para <code>true</code>.</p><h3 id="performing-custom-validations"><a class="anchorlink" href="#performing-custom-validations">6 Performing Custom Validations</a></h3><p>Realizar validaciones personalizadas</p><p>Cuando los ayudantes de validación integrados no son suficientes para sus necesidades, puedes\
@@ -951,10 +1282,23 @@ escribir sus propios validadores o métodos de validación como prefiera.</p><h4
 clases deben implementar el método <code>validate</code> que toma un registro como argumento
 y realiza la validación en él. El validador personalizado se llama utilizando el
 método <code>validates_with</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class MyValidator &lt; ActiveModel::Validator
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyValidator</span> <span class="o">&lt;</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validator</span>
+  <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="k">unless</span> <span class="n">record</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">start_with?</span> <span class="s1">'X'</span>
+      <span class="n">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:name</span><span class="p">,</span> <span class="s2">"Need a name starting with X please!"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validations</span>
+  <span class="n">validates_with</span> <span class="no">MyValidator</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyValidator &lt; ActiveModel::Validator
   def validate(record)
     unless record.name.start_with? 'X'
-      record.errors.add :name, "Need a name starting with X please!"
+      record.errors.add :name, &quot;Need a name starting with X please!&quot;
     end
   end
 end
@@ -963,14 +1307,26 @@ class Person
   include ActiveModel::Validations
   validates_with MyValidator
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La forma más fácil de agregar validadores personalizados para validar atributos individuales
 es con el conveniente <code>ActiveModel::EachValidator</code>. En este caso, la clase del validador 
 personalizado debe implementar un método <code>validate_each</code> que requiere tres
 argumentos: registro, atributo y valor. Estos corresponden a la instancia, del
 atributo a validar, y el valor del atributo en el pasado.</p><div class="code_container">
-<pre><code class="language-ruby">class EmailValidator &lt; ActiveModel::EachValidator
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">EmailValidator</span> <span class="o">&lt;</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">EachValidator</span>
+  <span class="k">def</span> <span class="nf">validate_each</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">unless</span> <span class="n">value</span> <span class="o">=~</span> <span class="sr">/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i</span>
+      <span class="n">record</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span> <span class="n">attribute</span><span class="p">,</span> <span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:message</span><span class="p">]</span> <span class="o">||</span> <span class="s2">"is not an email"</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">email: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class EmailValidator &lt; ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
       record.errors.add attribute, (options[:message] || "is not an email")
@@ -981,7 +1337,7 @@ end
 class Person &lt; ApplicationRecord
   validates :email, presence: true, email: true
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Como se muestra en el ejemplo, también puede combinar validaciones estándar con su
 propios validadores personalizados.</p><h4 id="custom-methods"><a class="anchorlink" href="#custom-methods">6.2 Custom Methods</a></h4><p>Métodos personalizados</p><p>También se puede crear métodos que verifiquen el estado de sus modelos y agreguen
@@ -992,74 +1348,139 @@ método de clase, pasando los símbolos para los nombres de los métodos de vali
 respectivas se ejecutarán en el mismo orden en que se registraron.</p><p>El método <code>valid?</code> verificará que la colección de errores esté vacía,
 por lo que sus métodos de validación personalizados deberían agregarle errores cuando
 desear que la validación falle:</p><div class="code_container">
-<pre><code class="language-ruby">class Invoice &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Invoice</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validate</span> <span class="ss">:expiration_date_cannot_be_in_the_past</span><span class="p">,</span>
+    <span class="ss">:discount_cannot_be_greater_than_total_value</span>
+
+  <span class="k">def</span> <span class="nf">expiration_date_cannot_be_in_the_past</span>
+    <span class="k">if</span> <span class="n">expiration_date</span><span class="p">.</span><span class="nf">present?</span> <span class="o">&amp;&amp;</span> <span class="n">expiration_date</span> <span class="o">&lt;</span> <span class="no">Date</span><span class="p">.</span><span class="nf">today</span>
+      <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:expiration_date</span><span class="p">,</span> <span class="s2">"can't be in the past"</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">discount_cannot_be_greater_than_total_value</span>
+    <span class="k">if</span> <span class="n">discount</span> <span class="o">&gt;</span> <span class="n">total_value</span>
+      <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:discount</span><span class="p">,</span> <span class="s2">"can't be greater than total value"</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Invoice &lt; ApplicationRecord
   validate :expiration_date_cannot_be_in_the_past,
     :discount_cannot_be_greater_than_total_value
 
   def expiration_date_cannot_be_in_the_past
     if expiration_date.present? &amp;&amp; expiration_date &lt; Date.today
-      errors.add(:expiration_date, "can't be in the past")
+      errors.add(:expiration_date, &quot;can't be in the past&quot;)
     end
   end
 
   def discount_cannot_be_greater_than_total_value
     if discount &gt; total_value
-      errors.add(:discount, "can't be greater than total value")
+      errors.add(:discount, &quot;can't be greater than total value&quot;)
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Por defecto, tales validaciones se ejecutarán cada vez que llame <code>valid?</code>
 o se guarde el objeto. Pero también es posible controlar cuándo ejecutar estas
 validaciones personalizadas dando una opción <code>:on</code> al método <code>validate</code>,
 con: <code>:create</code> o <code>:update</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Invoice &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Invoice</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validate</span> <span class="ss">:active_customer</span><span class="p">,</span> <span class="ss">on: :create</span>
+
+  <span class="k">def</span> <span class="nf">active_customer</span>
+    <span class="n">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:customer_id</span><span class="p">,</span> <span class="s2">"is not active"</span><span class="p">)</span> <span class="k">unless</span> <span class="n">customer</span><span class="p">.</span><span class="nf">active?</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Invoice &lt; ApplicationRecord
   validate :active_customer, on: :create
 
   def active_customer
     errors.add(:customer_id, "is not active") unless customer.active?
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="working-with-validation-errors"><a class="anchorlink" href="#working-with-validation-errors">7 Working with Validation Errors</a></h3><p>Trabajando con errores de validación</p><p>Los métodos <code>valid?</code> o <code>invalid?</code> Solo proporcionan un resumen del estado de validez. Sin embargo, puede profundizar en cada error individual utilizando varios métodos de la colección <code>errors</code>.</p><p>La siguiente es una lista de los métodos más utilizados. Consulte la documentación de <code>ActiveModel::Errors</code> para obtener una lista de todos los métodos disponibles.</p><h4 id="working-with-validation-errors-errors"><a class="anchorlink" href="#working-with-validation-errors-errors">7.1 <code>errors</code></a></h4><p>La puerta de enlace a través de la cual se puede profundizar en varios detalles de cada error.</p><p>Esto devuelve una instancia de la clase <code>ActiveModel::Errors</code> que contiene todos los errores,
 cada error está representado por un objeto <code>ActiveModel::Error</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">3</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span>
+ <span class="c1"># =&gt; ["Name can't be blank", "Name is too short (minimum is 3 characters)"]</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John Doe"</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span> <span class="c1"># =&gt; []</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
 person = Person.new
 person.valid? # =&gt; false
 person.errors.full_messages
- # =&gt; ["Name can't be blank", "Name is too short (minimum is 3 characters)"]
+ # =&gt; [&quot;Name can't be blank&quot;, &quot;Name is too short (minimum is 3 characters)&quot;]
 
-person = Person.new(name: "John Doe")
+person = Person.new(name: &quot;John Doe&quot;)
 person.valid? # =&gt; true
 person.errors.full_messages # =&gt; []
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="errors"><a class="anchorlink" href="#errors">7.2 <code>errors[]</code></a></h4><p><code>errors[]</code> se usa cuando desea verificar los mensajes de error para un atributo específico. Devuelve una matriz de cadenas con todos los mensajes de error para el atributo dado, cada cadena con un mensaje de error. Si no hay errores relacionados con el atributo, devuelve una matriz vacía.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">3</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John Doe"</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">[</span><span class="ss">:name</span><span class="p">]</span> <span class="c1"># =&gt; []</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"JD"</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">[</span><span class="ss">:name</span><span class="p">]</span> <span class="c1"># =&gt; ["is too short (minimum is 3 characters)"]</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">[</span><span class="ss">:name</span><span class="p">]</span>
+ <span class="c1"># =&gt; ["can't be blank", "is too short (minimum is 3 characters)"]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
-person = Person.new(name: "John Doe")
+person = Person.new(name: &quot;John Doe&quot;)
 person.valid? # =&gt; true
 person.errors[:name] # =&gt; []
 
-person = Person.new(name: "JD")
+person = Person.new(name: &quot;JD&quot;)
 person.valid? # =&gt; false
-person.errors[:name] # =&gt; ["is too short (minimum is 3 characters)"]
+person.errors[:name] # =&gt; [&quot;is too short (minimum is 3 characters)&quot;]
 
 person = Person.new
 person.valid? # =&gt; false
 person.errors[:name]
- # =&gt; ["can't be blank", "is too short (minimum is 3 characters)"]
-</code></pre>
+ # =&gt; [&quot;can't be blank&quot;, &quot;is too short (minimum is 3 characters)&quot;]
+">Copy</button>
 </div>
 <h4 id="errors-where-and-error-object"><a class="anchorlink" href="#errors-where-and-error-object">7.3 <code>errors.where</code> and error object</a></h4><p>A veces podemos necesitar más información sobre cada error junto a su mensaje. Cada error se encapsula como un objeto <code>ActiveModel::Error</code>, y el método <code>where</code> es la forma más común de acceso.</p><p><code>where</code> devuelve una matriz de objetos de error, filtrados por varios grados de condiciones.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">3</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+
+<span class="o">&gt;&gt;</span> <span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span> <span class="c1"># errors linked to :name attribute</span>
+<span class="o">&gt;&gt;</span> <span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:too_short</span><span class="p">)</span> <span class="c1"># further filtered to only :too_short type error</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -1068,14 +1489,19 @@ person.valid? # =&gt; false
 
 &gt;&gt; person.errors.where(:name) # errors linked to :name attribute
 &gt;&gt; person.errors.where(:name, :too_short) # further filtered to only :too_short type error
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede leer información diversa de estos objetos de error:</p><div class="code_container">
-<pre><code class="language-ruby">&gt;&gt; error = person.errors.where(:name).last
+<pre><code class="highlight ruby"><span class="o">&gt;&gt;</span> <span class="n">error</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:name</span><span class="p">).</span><span class="nf">last</span>
+<span class="o">&gt;&gt;</span> <span class="n">error</span><span class="p">.</span><span class="nf">attribute</span> <span class="c1"># =&gt; :name</span>
+<span class="o">&gt;&gt;</span> <span class="n">error</span><span class="p">.</span><span class="nf">type</span> <span class="c1"># =&gt; :too_short</span>
+<span class="o">&gt;&gt;</span> <span class="n">error</span><span class="p">.</span><span class="nf">options</span><span class="p">[</span><span class="ss">:count</span><span class="p">]</span> <span class="c1"># =&gt; 3</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&gt;&gt; error = person.errors.where(:name).last
 &gt;&gt; error.attribute # =&gt; :name
 &gt;&gt; error.type # =&gt; :too_short
 &gt;&gt; error.options[:count] # =&gt; 3
-</code></pre>
+">Copy</button>
 </div>
 <p>También se puede generar el mensaje de error:</p>
 <blockquote>
@@ -1085,7 +1511,17 @@ error.full_message # =&gt; "Name is too short (minimum is 3 characters)"</p>
 </blockquote>
 </blockquote>
 <p>El método <code>full_message</code> genera un mensaje más fácil de usar, con el nombre del atributo en mayúscula antepuesto.</p><h4 id="errors-add"><a class="anchorlink" href="#errors-add">7.4 <code>errors.add</code></a></h4><p>El método <code>add</code> crea el objeto de error tomando el <code>attribute</code>, el error <code>type</code> y opciones adicionales en un hash. Esto es útil para escribir su propio validador.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validate</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+    <span class="n">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:too_plain</span><span class="p">,</span> <span class="ss">message: </span><span class="s2">"is not cool enough"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:name</span><span class="p">).</span><span class="nf">first</span><span class="p">.</span><span class="nf">type</span> <span class="c1"># =&gt; :too_plain</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:name</span><span class="p">).</span><span class="nf">first</span><span class="p">.</span><span class="nf">full_message</span> <span class="c1"># =&gt; "Name is not cool enough"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validate do |person|
     errors.add :name, :too_plain, message: "is not cool enough"
   end
@@ -1094,10 +1530,19 @@ end
 person = Person.create
 person.errors.where(:name).first.type # =&gt; :too_plain
 person.errors.where(:name).first.full_message # =&gt; "Name is not cool enough"
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="errors-base"><a class="anchorlink" href="#errors-base">7.5 `errors[:base]</a></h4><p>Puedes agregar errores relacionados con el estado del objeto como un todo, en lugar de estar relacionados con un atributo específico. Puede agregar errores a <code>:base</code> cuando desee decir que el objeto no es válido, sin importar los valores de sus atributos.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validate</span> <span class="k">do</span> <span class="o">|</span><span class="n">person</span><span class="o">|</span>
+    <span class="n">errors</span><span class="p">.</span><span class="nf">add</span> <span class="ss">:base</span><span class="p">,</span> <span class="ss">:invalid</span><span class="p">,</span> <span class="ss">message: </span><span class="s2">"This person is invalid because ..."</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:base</span><span class="p">).</span><span class="nf">first</span><span class="p">.</span><span class="nf">full_message</span> <span class="c1"># =&gt; "This person is invalid because ..."</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validate do |person|
     errors.add :base, :invalid, message: "This person is invalid because ..."
   end
@@ -1105,10 +1550,25 @@ end
 
 person = Person.create
 person.errors.where(:base).first.full_message # =&gt; "This person is invalid because ..."
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="errors-clear"><a class="anchorlink" href="#errors-clear">7.6 <code>errors.clear</code></a></h4><p>El método <code>clear</code> se usa cuando intencionalmente desea borrar la colección <code>errors</code>. Por supuesto, llamar a <code>errors.clear</code> sobre un objeto no válido no lo hará realmente válido: la colección <code>errors</code> ahora estará vacía, pero la próxima vez que llame a <code>valid?</code> o cualquier método que intente guardar este objeto a la base de datos, las validaciones se ejecutarán nuevamente. Si alguna de las validaciones falla, la colección de <code>errores</code> se completará nuevamente.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">3</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">empty?</span> <span class="c1"># =&gt; false</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">clear</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">empty?</span> <span class="c1"># =&gt; true</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">save</span> <span class="c1"># =&gt; false</span>
+
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">empty?</span> <span class="c1"># =&gt; false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person &lt; ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -1122,10 +1582,22 @@ person.errors.empty? # =&gt; true
 person.save # =&gt; false
 
 person.errors.empty? # =&gt; false
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="errors-size"><a class="anchorlink" href="#errors-size">7.7 <code>errors.size</code></a></h4><p>El método <code>size</code> devuelve el número total de errores para el objeto.</p><div class="code_container">
-<pre><code class="language-ruby">class Person &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">3</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">size</span> <span class="c1"># =&gt; 2</span>
+
+<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Andrea"</span><span class="p">,</span> <span class="ss">email: </span><span class="s2">"andrea@example.com"</span><span class="p">)</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
+<span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">size</span> <span class="c1"># =&gt; 0</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Person &lt; ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
 end
 
@@ -1136,7 +1608,7 @@ person.errors.size # =&gt; 2
 person = Person.new(name: "Andrea", email: "andrea@example.com")
 person.valid? # =&gt; true
 person.errors.size # =&gt; 0
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="displaying-validation-errors-in-views"><a class="anchorlink" href="#displaying-validation-errors-in-views">8 Displaying Validation Errors in Views</a></h3><p>Mostrar errores de validación en vistas</p><p>Una vez que haya creado un modelo y agregado las validaciones, si ese modelo se crea a través de
 un formulario en la web, es probable que desee mostrar un mensaje de error cuando uno de los
@@ -1147,7 +1619,19 @@ validaciones en general, puede construir el suyo propio. Además, cuando
 generando un dcaffold, Rails pondrá algo de ERB en el <code>_form.html.erb</code> que
 genera que muestra la lista completa de errores en ese modelo.</p><p>Suponiendo que tenemos un modelo que se ha guardado en un variable de instancia llamado
 <code>@artículo</code>, se ve así:</p><div class="code_container">
-<pre><code class="language-ruby">&lt;% if @article.errors.any? %&gt;
+<pre><code class="highlight ruby"><span class="o">&lt;</span><span class="sx">% if </span><span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">any?</span> <span class="sx">%&gt;
+  &lt;div id="error_explanation"&gt;</span>
+    <span class="o">&lt;</span><span class="n">h2</span><span class="o">&gt;&lt;</span><span class="sx">%= pluralize(@article.errors.count, "error") %&gt; prohibited this article from being saved:&lt;/h2&gt;
+
+    &lt;ul&gt;
+    &lt;% @article.errors.each do |error| %&gt;
+      &lt;li&gt;&lt;%=</span> <span class="n">error</span><span class="p">.</span><span class="nf">full_message</span> <span class="sx">%&gt;&lt;/li&gt;</span>
+    <span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/ul&gt;
+  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;% if @article.errors.any? %&gt;
   &lt;div id="error_explanation"&gt;
     &lt;h2&gt;&lt;%= pluralize(@article.errors.count, "error") %&gt; prohibited this article from being saved:&lt;/h2&gt;
 
@@ -1158,24 +1642,34 @@ genera que muestra la lista completa de errores en ese modelo.</p><p>Suponiendo 
     &lt;/ul&gt;
   &lt;/div&gt;
 &lt;% end %&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Además, si usa los ayudantes de formulario de Rails para generar sus formularios, cuando
 se produce un error de validación en un campo, generará un <code>&lt;div&gt;</code> adicional alrededor de
 la entrada.</p><div class="code_container">
-<pre><code class="language-xml">&lt;div class="field_with_errors"&gt;
+<pre><code class="highlight html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"field_with_errors"</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"article_title"</span> <span class="na">name=</span><span class="s">"article[title]"</span> <span class="na">size=</span><span class="s">"30"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">value=</span><span class="s">""</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;div class="field_with_errors"&gt;
  &lt;input id="article_title" name="article[title]" size="30" type="text" value=""&gt;
 &lt;/div&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Luego puedes diseñar este div como quieras. El scaffold predeterminado que
 Rails genera, por ejemplo, agrega esta regla CSS:</p><div class="code_container">
-<pre><code class="language-plain">.field_with_errors {
+<pre><code class="highlight css"><span class="nc">.field_with_errors</span> <span class="p">{</span>
+  <span class="nl">padding</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
+  <span class="nl">background-color</span><span class="p">:</span> <span class="no">red</span><span class="p">;</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">table</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text=".field_with_errors {
   padding: 2px;
   background-color: red;
   display: table;
 }
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto significa que cualquier campo con un error termina con un borde rojo de 2 píxeles.</p>
 

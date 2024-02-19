@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -223,15 +223,15 @@
 <li><code>rails new app_name</code></li>
 </ul>
 <p>Puede obtener una lista de los comandos de rails disponibles, que a menudo dependerán de su directorio actual, escribiendo <code>rails --help</code>. Cada comando tiene una descripción y debería ayudarlo a encontrar lo que necesita.</p><div class="code_container">
-<pre><code class="language-shell-session">$ rails --help
-Usage: rails COMMAND [ARGS]
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails</span> <span class="nt">--help</span>
+<span class="go">Usage: rails COMMAND [ARGS]
 
 The most common rails commands are:
  generate    Generate new code (short-cut alias: "g")
  console     Start the Rails console (short-cut alias: "c")
  server      Start the Rails server (short-cut alias: "s")
- ...
-
+</span><span class="c"> ...
+</span><span class="go">
 Todos los comandos se pueden ejecutar con -h (o --help) para obtener más información.
 
 Además de esos comandos, existen:
@@ -240,8 +240,8 @@ Además de esos comandos, existen:
  assets:clobber                      Remove compiled assets
  assets:environment                  Load asset compile environment
  assets:precompile                   Compile all the assets ...
- ...
- db:fixtures:load                    Loads fixtures into the ...
+</span><span class="c"> ...
+</span><span class="go"> db:fixtures:load                    Loads fixtures into the ...
  db:migrate                          Migrate the database ...
  db:migrate:status                   Display status of migrations
  db:rollback                         Rolls the schema back to ...
@@ -253,25 +253,29 @@ Además de esos comandos, existen:
  db:structure:dump                   Dumps the database structure ...
  db:structure:load                   Recreates the databases ...
  db:version                          Retrieves the current schema ...
- ...
- restart                             Restart app by touching ...
+</span><span class="c"> ...
+</span><span class="go"> restart                             Restart app by touching ...
  tmp:create                          Creates tmp directories ...
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="rails --help
+">Copy</button>
 </div>
 <p>Creemos una aplicación Rails simple para recorrer cada uno de estos comandos en contexto.</p><h4 id="rails-new"><a class="anchorlink" href="#rails-new">1.1 <code>rails new</code></a></h4><p>Lo primero que queremos hacer es crear una nueva aplicación Rails ejecutando el comando <code>rails new</code> después de instalar Rails.</p><div class="info"><p>Puede instalar la gema rails escribiendo <code>gem install rails</code>, si aún no la tiene.</p></div><div class="code_container">
-<pre><code class="language-shell-session">$ rails new commandsapp
-     create
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new commandsapp
+<span class="go">     create
      create  README.md
      create  Rakefile
      create  config.ru
      create  .gitignore
      create  Gemfile
      create  app
-     ...
-     create  tmp/cache
-     ...
-        run  bundle install
-</code></pre>
+</span><span class="c">     ...
+</span><span class="go">     create  tmp/cache
+</span><span class="c">     ...
+</span><span class="go">        run  bundle install
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new commandsapp
+">Copy</button>
 </div>
 <p>¡Rails te preparará con lo que parece una gran cantidad de cosas para un comando tan pequeño! Ahora tiene toda la estructura de directorios de Rails con todo el código que necesita para ejecutar nuestra sencilla aplicación de inmediato.</p><p>Si desea evitar que se generen algunos archivos o componentes, puede agregar los siguientes argumentos a su comando <code>rails new</code>:</p>
 <table>
@@ -353,30 +357,35 @@ Además de esos comandos, existen:
 </tbody>
 </table>
 <h4 id="bin-rails-server"><a class="anchorlink" href="#bin-rails-server">1.2 <code>bin/rails server</code></a></h4><p>El comando <code>bin/rails server</code> lanza un servidor web llamado Puma que viene incluido con Rails. Lo utilizará siempre que desee acceder a su aplicación a través de un navegador web.</p><p>Sin más trabajo, <code>bin/rails server</code> ejecutará nuestra nueva y brillante aplicación Rails:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cd commandsapp
-$ bin/rails server
-=&gt; Booting Puma
-=&gt; Rails 6.0.0 application starting in development
-=&gt; Run `bin/rails server --help` for more startup options
-Puma starting in single mode...
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>commandsapp
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>server
+<span class="gp">=&gt;</span><span class="w"> </span>Booting Puma
+<span class="gp">=&gt;</span><span class="w"> </span>Rails 6.0.0 application starting <span class="k">in </span>development
+<span class="gp">=&gt;</span><span class="w"> </span>Run <span class="sb">`</span><span class="nb">bin/rails </span>server <span class="nt">--help</span><span class="sb">`</span> <span class="k">for </span>more startup options
+<span class="go">Puma starting in single mode...
 * Version 3.12.1 (ruby 2.5.7-p206), codename: Llamas in Pajamas
 * Min threads: 5, max threads: 5
 * Environment: development
 * Listening on tcp://localhost:3000
 Use Ctrl-C to stop
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cd commandsapp
+bin/rails server
+">Copy</button>
 </div>
 <p>Con solo tres comandos, preparamos un servidor Rails escuchando en el puerto 3000. Vaya a su navegador y abra <a href="http://localhost:3000">http://localhost: 3000</a>, verá una aplicación básica de Rails ejecutándose.</p><div class="info"><p>También puede usar el alias "s" para iniciar el servidor: <code>bin/rails s</code>.</p></div><p>El servidor se puede ejecutar en un puerto diferente usando la opción <code>-p</code>. El entorno de desarrollo predeterminado se puede cambiar usando <code>-e</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails server -e production -p 4000
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>server <span class="nt">-e</span> production <span class="nt">-p</span> 4000
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails server -e production -p 4000
+">Copy</button>
 </div>
 <p>La opción <code>-b</code> vincula Rails a la IP especificada, por defecto es localhost. Puede ejecutar un servidor como un demonio pasando una opción <code>-d</code>.</p><h4 id="bin-rails-generat"><a class="anchorlink" href="#bin-rails-generat">1.3 `bin/rails generat</a></h4><p>El comando <code>bin/rails generate</code> usa plantillas para crear un montón de cosas. Ejecutar <code>bin/rails generate</code> por sí mismo da una lista de generadores disponibles:</p><div class="info"><p>También puede usar el alias "g" para invocar el comando del generador: <code>bin/rails g</code>.</p></div><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate
-Usage: rails generate GENERATOR [args] [options]
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate
+<span class="go">Usage: rails generate GENERATOR [args] [options]
 
+</span><span class="c">...
 ...
-...
-
+</span><span class="go">
 Please choose a generator below.
 
 Rails:
@@ -384,24 +393,26 @@ Rails:
   channel
   controller
   generator
+</span><span class="c">  ...
   ...
-  ...
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate
+">Copy</button>
 </div>
 <div class="note"><p>Puede instalar más generadores a través de gemas de generador, partes de complementos que sin duda instalará, ¡e incluso puede crear los suyos propios!</p></div><p>El uso de generadores le ahorrará una gran cantidad de tiempo al escribir <strong>código repetitivo</strong>, código que es necesario para que la aplicación funcione.</p><p>Hagamos nuestro propio controlador con el generador de controladores. Pero, ¿qué comando debemos usar? Preguntémosle al generador:</p><div class="info"><p>Todas las utilidades de la consola Rails tienen texto de ayuda. Como con la mayoría de las utilidades *nix, puede intentar agregar <code>--help</code> o <code>-h</code> al final, por ejemplo, <code>bin/rails server --help</code>.</p></div><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate controller
-Usage: bin/rails generate controller NAME [action action] [options]
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller
+<span class="go">Usage: bin/rails generate controller NAME [action action] [options]
 
+</span><span class="c">...
 ...
-...
-
+</span><span class="go">
 Description:
-    ...
-
+</span><span class="c">    ...
+</span><span class="go">
     To create a controller within a module, specify the controller name as a path like 'parent_module/controller_name'.
 
-    ...
-
+</span><span class="c">    ...
+</span><span class="go">
 Example:
     `bin/rails generate controller CreditCards open debit credit close`
 
@@ -410,11 +421,13 @@ Example:
         Test:       test/controllers/credit_cards_controller_test.rb
         Views:      app/views/credit_cards/debit.html.erb [...]
         Helper:     app/helpers/credit_cards_helper.rb
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller
+">Copy</button>
 </div>
 <p>El generador del controlador está esperando parámetros en la forma de <code>generate controller ControllerName action1 action2</code>. Hagamos un controlador <code>Greetings</code> con una acción de <strong>hola</strong>, que nos dirá algo agradable.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate controller Greetings hello
-     create  app/controllers/greetings_controller.rb
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller Greetings hello
+<span class="go">     create  app/controllers/greetings_controller.rb
       route  get 'greetings/hello'
      invoke  erb
      create    app/views/greetings
@@ -427,49 +440,64 @@ Example:
      invoke  assets
      invoke    scss
      create      app/assets/stylesheets/greetings.scss
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller Greetings hello
+">Copy</button>
 </div>
 <p>¿Qué generó todo esto? Se aseguró de que hubiera un montón de directorios en nuestra aplicación y creó un archivo de controlador, un archivo de vista, un archivo de prueba funcional, un ayudante para la vista, un archivo JavaScript y un archivo de hoja de estilo.</p><p>Compruebe el controlador y modifíquelo un poco (en <code>app/controllers/greetings_controller.rb</code>):</p><div class="code_container">
-<pre><code class="language-ruby">class GreetingsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">GreetingsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">hello</span>
+    <span class="vi">@message</span> <span class="o">=</span> <span class="s2">"Hello, how are you today?"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class GreetingsController &lt; ApplicationController
   def hello
     @message = "Hello, how are you today?"
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Luego la vista, para mostrar nuestro mensaje (en <code>app/views/greetings/hello.html.erb</code>):</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;A Greeting for You!&lt;/h1&gt;
-&lt;p&gt;&lt;%= @message %&gt;&lt;/p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>A Greeting for You!<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;p&gt;</span><span class="cp">&lt;%=</span> <span class="vi">@message</span> <span class="cp">%&gt;</span><span class="nt">&lt;/p&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;A Greeting for You!&lt;/h1&gt;
+&lt;p&gt;&lt;%= @message %&gt;&lt;/p&gt;
+">Copy</button>
 </div>
 <p>Fire up your server using <code>bin/rails server</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails server
-=&gt; Booting Puma...
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>server
+<span class="gp">=&gt;</span><span class="w"> </span>Booting Puma...
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails server
+">Copy</button>
 </div>
 <p>La URL será <a href="http://localhost:3000/greetings/hello">http://localhost:3000/greetings/hello</a>.</p><div class="info"><p>Con una aplicación Rails normal y sencilla, sus URL generalmente seguirán el patrón de http://(host)/(controller)/(action), y una URL como http://(host)/(controller)  presionará la acción <strong>index</strong> de ese controlador.</p></div><p>Rails también viene con un generador para modelos de datos.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate model
-Usage:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model
+<span class="go">Usage:
   bin/rails generate model NAME [field[:type][:index] field[:type][:index]] [options]
 
-...
-
+</span><span class="c">...
+</span><span class="go">
 ActiveRecord options:
-      [--migration], [--no-migration]        # Indicates when to generate migration
-                                             # Default: true
-
-...
-
+</span><span class="gp">      [--migration], [--no-migration]        #</span><span class="w"> </span>Indicates when to generate migration
+<span class="gp">                                             #</span><span class="w"> </span>Default: <span class="nb">true</span>
+<span class="go">
+</span><span class="c">...
+</span><span class="go">
 Description:
     Stubs out a new model. Pass the model name, either CamelCased or
     under_scored, and an optional list of attribute pairs as arguments.
 
-...
-</code></pre>
+</span><span class="c">...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model
+">Copy</button>
 </div>
 <div class="note"><p>Para obtener una lista de los tipos de campo disponibles para el parámetro <code>type</code>, consulte la  <a href="https://edgeapi.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/SchemaStatements.html#method-i-add_column">API documentation</a>  para el método add_column para el módulo <code>SchemaStatements</code>. El parámetro <code>index</code> genera un índice correspondiente para la columna.</p></div><p>Pero en lugar de generar un modelo directamente (lo que haremos más adelante), configuremos un andamio. Un <strong>andamio</strong> en Rails es un conjunto completo de modelo, migración de base de datos para ese modelo, controlador para manipularlo, vistas para ver y manipular los datos y un conjunto de pruebas para cada uno de los anteriores.</p><p>Configuraremos un recurso simple llamado "HighScore" que hará un seguimiento de nuestra puntuación más alta en los videojuegos que jugamos.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate scaffold HighScore game:string score:integer
-    invoke  active_record
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold HighScore game:string score:integer
+<span class="go">    invoke  active_record
     create    db/migrate/20190416145729_create_high_scores.rb
     create    app/models/high_score.rb
     invoke    test_unit
@@ -501,15 +529,19 @@ Description:
     create      app/assets/stylesheets/high_scores.scss
     invoke  scss
     create    app/assets/stylesheets/scaffolds.scss
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold HighScore game:string score:integer
+">Copy</button>
 </div>
 <p>El generador verifica que existan directorios para modelos, controladores, ayudantes, diseños, pruebas funcionales y unitarias, hojas de estilo, crea las vistas, controlador, modelo y migración de base de datos para HighScore (creando la tabla y campos <code>high_scores</code>), se encarga de la ruta para el <strong>recurso</strong> y nuevas pruebas para todo.</p><p>La migración requiere que ** migremos **, es decir, ejecutemos algún código Ruby (viviendo en ese <code>20130717151933_create_high_scores.rb</code>) para modificar el esquema de nuestra base de datos. ¿Qué base de datos? La base de datos SQLite3 que Rails creará para usted cuando ejecutemos el comando <code>bin/rails db: migrate</code>. Hablaremos más sobre ese comando a continuación.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate
-==  CreateHighScores: migrating ===============================================
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
+<span class="go">==  CreateHighScores: migrating ===============================================
 -- create_table(:high_scores)
-   -&gt; 0.0017s
-==  CreateHighScores: migrated (0.0019s) ======================================
-</code></pre>
+</span><span class="gp">   -&gt;</span><span class="w"> </span>0.0017s
+<span class="go">==  CreateHighScores: migrated (0.0019s) ======================================
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate
+">Copy</button>
 </div>
 <div class="info"><p>Hablemos de pruebas unitarias. Las pruebas unitarias son código que prueba y realiza afirmaciones.
 sobre el código. En las pruebas unitarias, tomamos una pequeña parte del código, digamos un método de un modelo,
@@ -518,72 +550,90 @@ paz con el hecho de que su calidad de vida aumentará drásticamente cuando
 prueba tu código, mejor. Seriamente. Por favor visita
 <a href="https://guides.rubyonrails.org/testing.html">the testing guide</a> for an in-depth
 mira las pruebas unitarias.</p></div><p>Veamos la interfaz que Rails creó para nosotros.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails server
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>server
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails server
+">Copy</button>
 </div>
 <p>Vaya a su navegador y abra <a href="http://localhost:3000/high_scores">http://localhost:3000/high_scores</a>, ahora podemos crear nuevos puntajes altos (¡55,160 en Space Invaders!)</p><h4 id="bin-rails-console"><a class="anchorlink" href="#bin-rails-console">1.4 <code>bin/rails console</code></a></h4><p>El comando <code>console</code> te permite interactuar con tu aplicación Rails desde la línea de comandos. En la parte inferior, <code>bin/rails console</code> usa IRB, por lo que si alguna vez la usaste, estarás como en casa. Esto es útil para probar ideas rápidas con código y cambiar datos del lado del servidor sin tocar el sitio web.</p><div class="info"><p>También puede utilizar el alias "c" para invocar la consola: <code>bin/rails c</code>.</p></div><p>Puede especificar el entorno en el que debe operar el comando <code>console</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails console -e staging
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>console <span class="nt">-e</span> staging
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails console -e staging
+">Copy</button>
 </div>
 <p>Si desea probar algún código sin cambiar ningún dato, puede hacerlo invocando <code>bin/rails console --sandbox</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails console --sandbox
-Loading development environment in sandbox (Rails 5.1.0)
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>console <span class="nt">--sandbox</span>
+<span class="go">Loading development environment in sandbox (Rails 5.1.0)
 Any modifications you make will be rolled back on exit
-irb(main):001:0&gt;
-</code></pre>
+</span><span class="gp">irb(main):001:0&gt;</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails console --sandbox
+">Copy</button>
 </div>
 <h5 id="the-app-and-helper-objects"><a class="anchorlink" href="#the-app-and-helper-objects">1.4.1 The app and helper objects</a></h5><p>Dentro de la <code>bin/rails console</code> tienes acceso a las instancias de <code>app</code> y <code>helper</code>.</p><p>Con el método <code>app</code> puede acceder a los ayudantes de ruta con nombre, así como realizar solicitudes.</p><div class="code_container">
-<pre><code class="language-shell-session">&gt;&gt; app.root_path
-=&gt; "/"
-
-&gt;&gt; app.get _
-Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
-...
-</code></pre>
+<pre><code class="highlight console"><span class="gp">&gt;</span><span class="o">&gt;</span> app.root_path
+<span class="gp">=&gt;</span><span class="w"> </span><span class="s2">"/"</span>
+<span class="go">
+</span><span class="gp">&gt;</span><span class="o">&gt;</span> app.get _
+<span class="go">Started GET "/" for 127.0.0.1 at 2014-06-19 10:41:57 -0300
+</span><span class="c">...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <p>Con el método <code>helper</code> es posible acceder a Rails y a los ayudantes de su aplicación.</p><div class="code_container">
-<pre><code class="language-shell-session">&gt;&gt; helper.time_ago_in_words 30.days.ago
-=&gt; "about 1 month"
-
-&gt;&gt; helper.my_custom_helper
-=&gt; "my custom helper"
+<pre><code class="highlight console"><span class="gp">&gt;</span><span class="o">&gt;</span> helper.time_ago_in_words 30.days.ago
+<span class="gp">=&gt;</span><span class="w"> </span><span class="s2">"about 1 month"</span>
+<span class="go">
+</span><span class="gp">&gt;</span><span class="o">&gt;</span> helper.my_custom_helper
+<span class="gp">=&gt;</span><span class="w"> </span><span class="s2">"my custom helper"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <h4 id="bin-rails-dbconsole"><a class="anchorlink" href="#bin-rails-dbconsole">1.5 <code>bin/rails dbconsole</code></a></h4><p><code>bin/rails dbconsole</code> determina qué base de datos estás usando y te lleva a cualquier interfaz de línea de comandos que usarías con ella (¡y también determina los parámetros de la línea de comandos para darle!). Es compatible con MySQL (incluido MariaDB), PostgreSQL y SQLite3.</p><div class="info"><p>También puede usar el alias "db" para invocar la consola db: <code>bin/rails db</code>.</p></div><h4 id="bin-rails-runner"><a class="anchorlink" href="#bin-rails-runner">1.6 <code>bin/rails runner</code></a></h4><p><code>runner</code> ejecuta código Ruby en el contexto de Rails de forma no interactiva. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails runner "Model.long_running_method"
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s2">"Model.long_running_method"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='bin/rails runner "Model.long_running_method"
+'>Copy</button>
 </div>
 <div class="info"><p>También puede usar el alias "r" para invocar al corredor: <code>bin/rails r</code>.</p></div><p>Puede especificar el entorno en el que debe operar el comando <code>runner</code> usando el modificador<code>-e</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails runner -e staging "Model.long_running_method"
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="nt">-e</span> staging <span class="s2">"Model.long_running_method"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='bin/rails runner -e staging "Model.long_running_method"
+'>Copy</button>
 </div>
 <p>Incluso puede ejecutar código ruby ​​escrito en un archivo con runner.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails runner lib/code_to_be_run.rb
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner lib/code_to_be_run.rb
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails runner lib/code_to_be_run.rb
+">Copy</button>
 </div>
 <h4 id="bin-rails-destroy"><a class="anchorlink" href="#bin-rails-destroy">1.7 <code>bin/rails destroy</code></a></h4><p>Piense en <code>destroy</code> como lo opuesto a <code>generate</code>. Descubrirá lo que generó y lo deshará.</p><div class="info"><p>También puede usar el alias "d" para invocar el comando de destrucción: <code>bin / rails d</code>.</p></div><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate model Oops
-      invoke  active_record
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model Oops
+<span class="go">      invoke  active_record
       create    db/migrate/20120528062523_create_oops.rb
       create    app/models/oops.rb
       invoke    test_unit
       create      test/models/oops_test.rb
       create      test/fixtures/oops.yml
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model Oops
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails destroy model Oops
-      invoke  active_record
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>destroy model Oops
+<span class="go">      invoke  active_record
       remove    db/migrate/20120528062523_create_oops.rb
       remove    app/models/oops.rb
       invoke    test_unit
       remove      test/models/oops_test.rb
       remove      test/fixtures/oops.yml
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails destroy model Oops
+">Copy</button>
 </div>
 <h4 id="bin-rails-about"><a class="anchorlink" href="#bin-rails-about">1.8 <code>bin/rails about</code></a></h4><p><code>bin/rails about</code> brinda información sobre los números de versión de Ruby, RubyGems, Rails, los subcomponentes de Rails, la carpeta de su aplicación, el nombre del entorno de Rails actual, el adaptador de base de datos de su aplicación y la versión del esquema. Es útil cuando necesita pedir ayuda, verificar si un parche de seguridad podría afectarlo o cuando necesita algunas estadísticas para una instalación existente de Rails.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails about
-About your application's environment
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>about
+<span class="go">About your application's environment
 Rails version             6.0.0
 Ruby version              2.5.0 (x86_64-linux)
 RubyGems version          2.7.3
@@ -594,49 +644,61 @@ Application root          /home/foobar/commandsapp
 Environment               development
 Database adapter          sqlite3
 Database schema version   20180205173523
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails about
+">Copy</button>
 </div>
 <h4 id="bin-rails-assets"><a class="anchorlink" href="#bin-rails-assets">1.9 <code>bin/rails assets:</code></a></h4><p>Puede precompilar los activos en <code>app/assets</code> usando <code>bin/rails assets: precompile</code>, y eliminar los activos compilados más antiguos usando <code>bin/rails assets:clean</code>. El comando <code>assets:clean</code> permite implementar despliegues que aún pueden estar vinculados a un activo antiguo mientras se construyen los nuevos activos.</p><p>Si desea borrar completamente <code>public/assets</code>, puede usar <code>bin/rails assets: clobber</code>.</p><h4 id="bin-rails-db"><a class="anchorlink" href="#bin-rails-db">1.10 <code>bin/rails db:</code></a></h4><p>Los comandos más comunes del espacio de nombres <code>db:</code> rails son <code>migrate</code> y <code>create</code>, y valdrá la pena probar todos los comandos de los rails de migración (<code>up</code>, <code>down</code>, <code>redo</code>, <code>reset</code>). <code>bin/rails db:version</code> es útil para solucionar problemas, ya que le indica la versión actual de la base de datos.</p><p>Puede encontrar más información sobre las migraciones en la guía  <a href="active_record_migrations.html">Migrations</a>. </p><h4 id="bin-rails-notes"><a class="anchorlink" href="#bin-rails-notes">1.11 <code>bin/rails notes</code></a></h4><p><code>bin/rails notes</code> busca en su código comentarios que comiencen con una palabra clave específica. Puede consultar <code>bin/rails notes --help</code> para obtener información sobre el uso.</p><p>De forma predeterminada, buscará en los directorios <code>app</code>, <code>config</code>, <code>db</code>, <code>lib</code>, and <code>test</code>para anotaciones FIXME, OPTIMIZE y TODO en archivos con extensión <code>.builder</code>, <code>.rb</code>, <code>.rake</code>, <code>.yml</code>, <code>.yaml</code>, <code>.ruby</code>, <code>.css</code>, <code>.js</code>, y <code>.erb</code>.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails notes
-app/controllers/admin/users_controller.rb:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>notes
+<span class="go">app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] any other way to do this?
   * [132] [FIXME] high priority for next deploy
 
 lib/school.rb:
   * [ 13] [OPTIMIZE] refactor this code to make it faster
   * [ 17] [FIXME]
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails notes
+">Copy</button>
 </div>
 <h5 id="annotations"><a class="anchorlink" href="#annotations">1.11.1 Annotations</a></h5><p>Puede pasar anotaciones específicas utilizando el argumento <code>--annotations</code>. De forma predeterminada, buscará FIXME, OPTIMIZE y TODO.
 Tenga en cuenta que las anotaciones distinguen entre mayúsculas y minúsculas.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails notes --annotations FIXME RELEASE
-app/controllers/admin/users_controller.rb:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>notes <span class="nt">--annotations</span> FIXME RELEASE
+<span class="go">app/controllers/admin/users_controller.rb:
   * [101] [RELEASE] We need to look at this before next release
   * [132] [FIXME] high priority for next deploy
 
 lib/school.rb:
   * [ 17] [FIXME]
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails notes --annotations FIXME RELEASE
+">Copy</button>
 </div>
 <h5 id="tags"><a class="anchorlink" href="#tags">1.11.2 Tags</a></h5><p>Puede agregar más etiquetas predeterminadas para buscar usando <code>config.annotations.register_tags</code>. Recibe una lista de etiquetas.</p><div class="code_container">
-<pre><code class="language-ruby">config.annotations.register_tags("DEPRECATEME", "TESTME")
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">annotations</span><span class="p">.</span><span class="nf">register_tags</span><span class="p">(</span><span class="s2">"DEPRECATEME"</span><span class="p">,</span> <span class="s2">"TESTME"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.annotations.register_tags("DEPRECATEME", "TESTME")
+'>Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails notes
-app/controllers/admin/users_controller.rb:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>notes
+<span class="go">app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] do A/B testing on this
   * [ 42] [TESTME] this needs more functional tests
   * [132] [DEPRECATEME] ensure this method is deprecated in next release
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails notes
+">Copy</button>
 </div>
 <h5 id="directories"><a class="anchorlink" href="#directories">1.11.3 Directories</a></h5><p>Puede agregar más directorios predeterminados para buscar usando <code>config.annotations.register_directories</code>. Recibe una lista de nombres de directorio.</p><div class="code_container">
-<pre><code class="language-ruby">config.annotations.register_directories("spec", "vendor")
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">annotations</span><span class="p">.</span><span class="nf">register_directories</span><span class="p">(</span><span class="s2">"spec"</span><span class="p">,</span> <span class="s2">"vendor"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.annotations.register_directories("spec", "vendor")
+'>Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails notes
-app/controllers/admin/users_controller.rb:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>notes
+<span class="go">app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] any other way to do this?
   * [132] [FIXME] high priority for next deploy
 
@@ -649,15 +711,19 @@ spec/models/user_spec.rb:
 
 vendor/tools.rb:
   * [ 56] [TODO] Get rid of this dependency
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails notes
+">Copy</button>
 </div>
 <h5 id="extensions"><a class="anchorlink" href="#extensions">1.11.4 Extensions</a></h5><p>Puede agregar más extensiones de archivo predeterminadas para buscar utilizando <code>config.annotations.register_extensions</code>. Recibe una lista de extensiones con su expresión regular correspondiente para que coincida.</p><div class="code_container">
-<pre><code class="language-ruby">config.annotations.register_extensions("scss", "sass") { |annotation| /\/\/\s*(#{annotation}):?\s*(.*)$/ }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">annotations</span><span class="p">.</span><span class="nf">register_extensions</span><span class="p">(</span><span class="s2">"scss"</span><span class="p">,</span> <span class="s2">"sass"</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">annotation</span><span class="o">|</span> <span class="sr">/\/\/\s*(</span><span class="si">#{</span><span class="n">annotation</span><span class="si">}</span><span class="sr">):?\s*(.*)$/</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.annotations.register_extensions("scss", "sass") { |annotation| /\/\/\s*(#{annotation}):?\s*(.*)$/ }
+'>Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails notes
-app/controllers/admin/users_controller.rb:
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>notes
+<span class="go">app/controllers/admin/users_controller.rb:
   * [ 20] [TODO] any other way to do this?
   * [132] [FIXME] high priority for next deploy
 
@@ -676,7 +742,9 @@ spec/models/user_spec.rb:
 
 vendor/tools.rb:
   * [ 56] [TODO] Get rid of this dependency
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails notes
+">Copy</button>
 </div>
 <h4 id="bin-rails-routes"><a class="anchorlink" href="#bin-rails-routes">1.12 <code>bin/rails routes</code></a></h4><p><code>bin/rails route</code> enumerará todas sus rutas definidas, lo cual es útil para rastrear problemas de enrutamiento en su aplicación, o para darle una buena descripción general de las URL en una aplicación con la que está tratando de familiarizarse.</p><h4 id="bin-rails-test"><a class="anchorlink" href="#bin-rails-test">1.13 <code>bin/rails test</code></a></h4><p>INFORMACIÓN: Se ofrece una buena descripción de las pruebas unitarias en Rails en  <a href="testing.html">A Guide to Testing Rails Applications</a></p><p>Rails viene con un marco de prueba llamado minitest. Rails debe su estabilidad al uso de pruebas. Los comandos disponibles en el espacio de nombres <code>test:</code> ayudan a ejecutar las diferentes pruebas que esperemos que escriba.</p><h4 id="bin-rails-tmp"><a class="anchorlink" href="#bin-rails-tmp">1.14 <code>bin/rails tmp:</code></a></h4><p>El directorio <code>Rails.root/tmp</code> es, como el directorio *nix / tmp, el lugar de almacenamiento de archivos temporales como archivos de identificación de procesos y acciones en caché.</p><p>Los comandos de espacio de nombres <code>tmp:</code> te ayudarán a limpiar y crear el directorio <code>Rails.root/tmp</code>:</p>
 <ul>
@@ -707,46 +775,67 @@ vendor/tools.rb:
 <h4 id="custom-rake-tasks"><a class="anchorlink" href="#custom-rake-tasks">1.16 Custom Rake Tasks</a></h4><p>Las tareas de rake personalizadas tienen una extensión <code>.rake</code> y se colocan en
 <code>Rails.root/lib/tasks</code>. Puede crear estas tareas de rastrillo personalizadas con el
 Comando <code>bin/rails generate task</code>.</p><div class="code_container">
-<pre><code class="language-ruby">desc "I am short, but comprehensive description for my cool task"
+<pre><code class="highlight ruby"><span class="n">desc</span> <span class="s2">"I am short, but comprehensive description for my cool task"</span>
+<span class="n">task</span> <span class="ss">task_name: </span><span class="p">[</span><span class="ss">:prerequisite_task</span><span class="p">,</span> <span class="ss">:another_task_we_depend_on</span><span class="p">]</span> <span class="k">do</span>
+  <span class="c1"># All your magic here</span>
+  <span class="c1"># Any valid Ruby code is allowed</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='desc "I am short, but comprehensive description for my cool task"
 task task_name: [:prerequisite_task, :another_task_we_depend_on] do
   # All your magic here
   # Any valid Ruby code is allowed
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Para pasar argumentos a su tarea de rake personalizada:</p><div class="code_container">
-<pre><code class="language-ruby">task :task_name, [:arg_1] =&gt; [:prerequisite_1, :prerequisite_2] do |task, args|
+<pre><code class="highlight ruby"><span class="n">task</span> <span class="ss">:task_name</span><span class="p">,</span> <span class="p">[</span><span class="ss">:arg_1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="ss">:prerequisite_1</span><span class="p">,</span> <span class="ss">:prerequisite_2</span><span class="p">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">task</span><span class="p">,</span> <span class="n">args</span><span class="o">|</span>
+  <span class="n">argument_1</span> <span class="o">=</span> <span class="n">args</span><span class="p">.</span><span class="nf">arg_1</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="task :task_name, [:arg_1] =&gt; [:prerequisite_1, :prerequisite_2] do |task, args|
   argument_1 = args.arg_1
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede agrupar tareas colocándolas en espacios de nombres:</p><div class="code_container">
-<pre><code class="language-ruby">namespace :db do
+<pre><code class="highlight ruby"><span class="n">namespace</span> <span class="ss">:db</span> <span class="k">do</span>
+  <span class="n">desc</span> <span class="s2">"This task does nothing"</span>
+  <span class="n">task</span> <span class="ss">:nothing</span> <span class="k">do</span>
+    <span class="c1"># Seriously, nothing</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='namespace :db do
   desc "This task does nothing"
   task :nothing do
     # Seriously, nothing
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>La invocación de las tareas se verá así:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails task_name
-$ bin/rails "task_name[value 1]" # entire argument string should be quoted
-$ bin/rails db:nothing
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>task_name
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails</span> <span class="s2">"task_name[value 1]"</span> <span class="c"># entire argument string should be quoted</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:nothing
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='bin/rails task_name
+bin/rails "task_name[value 1]" # entire argument string should be quoted
+bin/rails db:nothing
+'>Copy</button>
 </div>
 <div class="note"><p>Si necesita interactuar con los modelos de su aplicación, realizar consultas a la base de datos, etc., su tarea debería depender de la tarea <code>environment</code>, que cargará el código de su aplicación.</p></div><h3 id="the-rails-advanced-command-line"><a class="anchorlink" href="#the-rails-advanced-command-line">2 The Rails Advanced Command Line</a></h3><p>El uso más avanzado de la línea de comandos se centra en encontrar opciones útiles (incluso sorprendentes a veces) en las utilidades y adaptarlas a sus necesidades y flujo de trabajo específico. A continuación se enumeran algunos trucos bajo la manga de Rails.</p><h4 id="rails-with-databases-and-scm"><a class="anchorlink" href="#rails-with-databases-and-scm">2.1 Rails with Databases and SCM</a></h4><p>Al crear una nueva aplicación Rails, tiene la opción de especificar qué tipo de base de datos y qué tipo de sistema de gestión de código fuente va a utilizar su aplicación. Esto le ahorrará unos minutos y, ciertamente, muchas pulsaciones de teclas.</p><p>Veamos qué harán por nosotros una opción <code>--git</code> y una opción<code>--database = postgresql</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ mkdir gitapp
-$ cd gitapp
-$ git init
-Initialized empty Git repository in .git/
-$ rails new . --git --database=postgresql
-      exists
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">mkdir </span>gitapp
+<span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>gitapp
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>init
+<span class="go">Initialized empty Git repository in .git/
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new <span class="nb">.</span> <span class="nt">--git</span> <span class="nt">--database</span><span class="o">=</span>postgresql
+<span class="go">      exists
       create  app/controllers
       create  app/helpers
+</span><span class="c">...
 ...
-...
-      create  tmp/cache
+</span><span class="go">      create  tmp/cache
       create  tmp/pids
       create  Rakefile
 add 'Rakefile'
@@ -755,42 +844,49 @@ add 'README.md'
       create  app/controllers/application_controller.rb
 add 'app/controllers/application_controller.rb'
       create  app/helpers/application_helper.rb
-...
-      create  log/test.log
+</span><span class="c">...
+</span><span class="go">      create  log/test.log
 add 'log/test.log'
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="mkdir gitapp
+cd gitapp
+git init
+rails new . --git --database=postgresql
+">Copy</button>
 </div>
 <p>Tuvimos que crear el directorio <strong>gitapp</strong> e inicializar un repositorio git vacío antes de que Rails agregara los archivos que creó a nuestro repositorio. Veamos qué puso en la configuración de nuestra base de datos:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cat config/database.yml
-# PostgreSQL. Versions 9.3 and up are supported.
-#
-# Install the pg driver:
-#   gem install pg
-# On macOS with Homebrew:
-#   gem install pg -- --with-pg-config=/usr/local/bin/pg_config
-# On macOS with MacPorts:
-#   gem install pg -- --with-pg-config=/opt/local/lib/postgresql84/bin/pg_config
-# On Windows:
-#   gem install pg
-#       Choose the win32 build.
-#       Install PostgreSQL and put its /bin directory on your path.
-#
-# Configure Using Gemfile
-# gem 'pg'
-#
-default: &amp;default
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/database.yml
+<span class="gp">#</span><span class="w"> </span>PostgreSQL. Versions 9.3 and up are supported.
+<span class="gp">#</span><span class="w">
+</span><span class="gp">#</span><span class="w"> </span>Install the pg driver:
+<span class="gp">#</span><span class="w">   </span><span class="nb">gem install </span>pg
+<span class="gp">#</span><span class="w"> </span>On macOS with Homebrew:
+<span class="gp">#</span><span class="w">   </span><span class="nb">gem install </span>pg <span class="nt">--</span> <span class="nt">--with-pg-config</span><span class="o">=</span>/usr/local/bin/pg_config
+<span class="gp">#</span><span class="w"> </span>On macOS with MacPorts:
+<span class="gp">#</span><span class="w">   </span><span class="nb">gem install </span>pg <span class="nt">--</span> <span class="nt">--with-pg-config</span><span class="o">=</span>/opt/local/lib/postgresql84/bin/pg_config
+<span class="gp">#</span><span class="w"> </span>On Windows:
+<span class="gp">#</span><span class="w">   </span><span class="nb">gem install </span>pg
+<span class="gp">#</span><span class="w">       </span>Choose the win32 build.
+<span class="gp">#</span><span class="w">       </span>Install PostgreSQL and put its /bin directory on your path.
+<span class="gp">#</span><span class="w">
+</span><span class="gp">#</span><span class="w"> </span>Configure Using Gemfile
+<span class="gp">#</span><span class="w"> </span><span class="nb">gem</span> <span class="s1">'pg'</span>
+<span class="gp">#</span><span class="w">
+</span><span class="go">default: &amp;default
   adapter: postgresql
   encoding: unicode
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: &lt;%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %&gt;
-
+</span><span class="gp">  #</span><span class="w"> </span>For details on connection pooling, see Rails configuration guide
+<span class="gp">  #</span><span class="w"> </span>https://guides.rubyonrails.org/configuring.html#database-pooling
+<span class="gp">  pool: &lt;%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %&gt;</span><span class="w">
+</span><span class="go">
 development:
   &lt;&lt;: *default
   database: gitapp_development
+</span><span class="c">...
 ...
-...
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="cat config/database.yml
+">Copy</button>
 </div>
 <p>También generó algunas líneas en nuestra configuración <code>database.yml</code> correspondientes a nuestra elección de PostgreSQL para la base de datos.</p><div class="note"><p>El único problema con el uso de las opciones de SCM es que primero debe crear el directorio de su aplicación, luego inicializar su SCM, luego puede ejecutar el comando <code>rails new</code> para generar la base de su aplicación.</p></div>
 

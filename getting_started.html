@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -307,32 +307,42 @@ prerrequisitos adecuados instalados. Éstos incluyen:</p>
 "Ejecutar" en el menú Inicio y escriba 'cmd.exe'. Cualquier comando precedido por un
 el signo de dólar <code>$</code> debe ejecutarse en la línea de comandos. Verifica que tienes un
 versión actual de Ruby instalada:</p><div class="code_container">
-<pre><code class="language-shell-session">$ ruby -v
-ruby 2.5.0
-</code></pre>
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">ruby</span> <span class="nt">-v</span>
+<span class="go">ruby 2.5.0
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="ruby -v
+">Copy</button>
 </div>
 <p>Rails requiere Ruby versión 2.5.0 o posterior. Si el número de versión devuelto es
 menos que ese número (como 2.3.7 o 1.8.7), necesitará instalar una copia nueva de Ruby.</p><p>Para instalar Rails en Windows, primero deberá instalar <a href="https://rubyinstaller.org/">Ruby Installer</a>.</p><p>For more installation methods for most Operating Systems take a look a
 <a href="https://www.ruby-lang.org/en/documentation/installation/">ruby-lang.org</a>.</p><h5 id="installing-sqlite3"><a class="anchorlink" href="#installing-sqlite3">3.1.2 Installing SQLite3</a></h5><p>También necesitará una instalación de la base de datos SQLite3.
 Muchos sistemas operativos populares similares a UNIX se envían con una versión aceptable de SQLite3.
 Otros pueden encontrar instrucciones de instalación en el <a href="https://www.sqlite.org">SQLite3 website</a>.</p><p>Verifique que esté correctamente instalado y en su carga <code>PATH</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ sqlite3 --version
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">sqlite3</span> <span class="nt">--version</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="sqlite3 --version
+">Copy</button>
 </div>
 <p>El programa debe informar su versión.</p><h5 id="installing-node-js-and-y"><a class="anchorlink" href="#installing-node-js-and-y">3.1.3 Installing Node.js and Y</a></h5><p>Finalmente, necesitará Node.js y Yarn instalados para administrar el JavaScript de su aplicación.</p><p>Encuentre las instrucciones de instalación en el <a href="https://nodejs.org/en/download/">Node.js website</a> y
 verifique que esté instalado correctamente con el siguiente comando:</p><div class="code_container">
-<pre><code class="language-shell-session">$ node --version
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">node</span> <span class="nt">--version</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="node --version
+">Copy</button>
 </div>
 <p>Se debe imprimir la versión de su tiempo de ejecución de Node.js. Asegúrate de que sea mayor
 que 8.16.0.</p><p>Para instalar Yarn, siga la instalación
 instrucciones en <a href="https://classic.yarnpkg.com/en/docs/install">Yarn website</a>.</p><p>La ejecución de este comando debería imprimir la versión de Yarn:</p><div class="code_container">
-<pre><code class="language-shell-session">$ yarn -v
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">yarn</span> <span class="nt">-v</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="yarn -v
+">Copy</button>
 </div>
 <p>Si dice algo como "1.22.0", Yarn se ha instalado correctamente.</p><h5 id="creating-a-new-rails-project-installing-rails-installing-rails"><a class="anchorlink" href="#creating-a-new-rails-project-installing-rails-installing-rails">3.1.4 Installing Rails</a></h5><p>Para instalar Rails, use el comando <code>gem install</code> proporcionado por RubyGems:</p><div class="code_container">
-<pre><code class="language-shell-session">$ gem install rails
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">gem install rails</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="gem install rails
+">Copy</button>
 </div>
 <p>Para verificar que tiene todo instalado correctamente, debería poder
 ejecutar lo siguiente:</p><p>Si dice algo como "Rails 6.0.0", está listo para continuar.</p><h4 id="creating-the-blog-application"><a class="anchorlink" href="#creating-the-blog-application">3.2 Creating the Blog Application</a></h4><p>Rails viene con una serie de scripts llamados generadores que están diseñados para hacer
@@ -341,8 +351,10 @@ trabajando en una tarea en particular. Uno de ellos es el nuevo generador de apl
 que le proporcionará la base de una nueva aplicación Rails para que
 no tiene que escribirlo usted mismo.</p><p>Para usar este generador, abra una terminal, navegue a un directorio donde tenga
 derechos para crear archivos y escriba:</p><div class="code_container">
-<pre><code class="language-shell-session">$ rails new blog
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new blog
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new blog
+">Copy</button>
 </div>
 <p>Esto creará una aplicación Rails llamada Blog en un directorio <code>blog</code> y
 instale las dependencias de gemas que ya se mencionan en <code>Gemfile</code> usando
@@ -350,8 +362,10 @@ instale las dependencias de gemas que ya se mencionan en <code>Gemfile</code> us
 limitaciones en las notificaciones del sistema de archivos que significan que debe deshabilitar el <code>spring</code>
 y <code>listen</code> gems que puede hacer ejecutando <code>rails new blog --skip-spring --skip-listen</code>.</p></div><div class="info"><p>Puede ver todas las opciones de línea de comandos que la aplicación Rails
 el constructor acepta ejecutando <code>rails new -h</code>.</p></div><p>Después de crear la aplicación de blog, cambie a su carpeta:</p><div class="code_container">
-<pre><code class="language-shell-session">$ cd blog
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>blog
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="cd blog
+">Copy</button>
 </div>
 <p>El directorio <code>blog</code> tiene varios archivos y carpetas autogenerados que hacen
 hasta la estructura de una aplicación Rails. La mayor parte del trabajo de este tutorial
@@ -443,8 +457,10 @@ de los archivos y carpetas que Rails creó de forma predeterminada:</p>
 ponga en funcionamiento su servidor de aplicaciones Rails.</p><h4 id="starting-up-the-web-server"><a class="anchorlink" href="#starting-up-the-web-server">4.1 Starting up the Web Server</a></h4><p>De hecho, ya tienes una aplicación Rails funcional. Para verlo, necesitas
 Inicie un servidor web en su máquina de desarrollo. Puede hacer esto ejecutando el
 siguiendo en el directorio <code>blog</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails server
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>server
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails server
+">Copy</button>
 </div>
 <div class="info"><p>Si está utilizando Windows, debe pasar los scripts en el <code>bin</code>
 carpeta directamente al intérprete de Ruby, p. ej. <code>ruby bin\rails server</code>.</p></div><div class="info"><p>la compresión de activos de JavaScript requiere
@@ -474,12 +490,18 @@ Ruby) que es procesada por el ciclo de solicitud en Rails antes de ser enviada a
 usuario.</p><p>Cuando hacemos una solicitud a nuestra aplicación Rails, lo hacemos mediante una solicitud
 a una ruta particular. Para empezar, creemos una ruta en
 <code>config/routes.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s2">"/articles"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"articles#index"</span>
+
+  <span class="c1"># For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='Rails.application.routes.draw do
   get "/articles", to: "articles#index"
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Este es el <em>archivo de enrutamiento</em> de su aplicación que contiene entradas en un <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL
 (específico del dominio language)</a> que dice
@@ -491,11 +513,13 @@ Esta petición.</p><p>Los controladores son clases que agrupan métodos comunes 
 "acciones", ya que <em>actúan sobre</em> las solicitudes a medida que llegan.</p><p>Para crear un nuevo controlador, deberá ejecutar el generador "controlador" y
 dígale que quiere un controlador llamado "artículos" con una acción llamada "índice",
 así como esto:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate controller articles index
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller articles index
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller articles index
+">Copy</button>
 </div>
 <p>Rails creará varios archivos y una ruta para ti.</p><div class="code_container">
-<pre><code class="language-shell-session">create  app/controllers/articles_controller.rb
+<pre><code class="highlight console"><span class="go">create  app/controllers/articles_controller.rb
   route  get 'articles/index'
 invoke  erb
 create    app/views/articles
@@ -508,14 +532,20 @@ invoke    test_unit
 invoke  assets
 invoke    scss
 create      app/assets/stylesheets/articles.scss
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <p>El más importante de ellos es el controlador, ubicado en<code>app/controllers/articles_controller.rb</code>.</p><p>Veamos ese controlador ahora:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def index
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Este controlador define una sola acción o "método" en términos comunes de Ruby,
 llamado <code>index</code>. Esta acción es donde definiríamos cualquier lógica que
@@ -526,20 +556,28 @@ La aplicación Rails vive en <code>app / views</code>, por lo que es la vista pr
 va a ser <code>app/views/articles/index.html.erb</code>.</p><p>Abra el archivo <code>app/views/articles/index.html.erb</code>  en su editor de texto. Eliminar todos
 del código existente en el archivo y reemplácelo con la siguiente línea única
 de código:</p><div class="code_container">
-<pre><code class="language-xml">&lt;h1&gt;Hello, Rails!&lt;/h1&gt;
+<pre><code class="highlight html"><span class="nt">&lt;h1&gt;</span>Hello, Rails!<span class="nt">&lt;/h1&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Hello, Rails!&lt;/h1&gt;
+">Copy</button>
 </div>
 <p>Si volvemos a nuestro navegador y hacemos una solicitud a
 <a href="http://localhost:3000/articles">http://localhost:3000/articles</a>, veremos que nuestro texto aparece en la página.</p><h4 id="setting-the-application-home-page"><a class="anchorlink" href="#setting-the-application-home-page">4.3 Setting the Application Home Page</a></h4><p>Ahora que hemos creado el controlador y la vista, necesitamos decirle a Rails cuando
 quiero "¡Hola, Rails!" para mostrar. En nuestro caso, queremos que aparezca cuando
 navegue hasta la URL raíz de nuestro sitio, <a href="http://localhost:3000">http://localhost:3000</a>. En el momento,
 "¡Yay! ¡Estás sobre rieles!" está ocupando ese lugar.</p><p>A continuación, debe indicarle a Rails dónde se encuentra su página de inicio real.</p><p>Abra el archivo <code>config/routes.rb</code> en su editor.</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'welcome/index'</span>
+
+  <span class="c1"># For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
   get 'welcome/index'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Este es el <em>archivo de enrutamiento</em> de su aplicación que contiene entradas en un
 <a href="https://en.wikipedia.org/wiki/Domain-specific_language">DSL (idioma específico del dominio)</a>
@@ -547,12 +585,18 @@ que le dice a Rails cómo conectar las solicitudes entrantes a
 controladores y acciones.
 Edite este archivo agregando la línea de código <code>root 'welcome#index'</code>.
 Debería tener un aspecto similar al siguiente:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'welcome/index'</span>
+
+  <span class="n">root</span> <span class="s1">'welcome#index'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
   get 'welcome/index'
 
   root 'welcome#index'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p><code>root 'welcome#index'</code> le dice a Rails que mapee las solicitudes a la raíz del
 aplicación a la acción de índice del controlador de bienvenida y <code>get 'welcome/index'</code>
@@ -570,32 +614,42 @@ Puede crear, leer, actualizar y destruir elementos para un recurso y estos
 Las operaciones se denominan operaciones <em>CRUD</em>.</p><p>Rails proporciona un método de "recursos" que se puede utilizar para declarar un REST estándar
 recurso. Necesita agregar el _ recurso de artículo_ al
 <code>config/routes.rb</code> por lo que el archivo se verá de la siguiente manera:</p><div class="code_container">
-<pre><code class="language-ruby">Rails.application.routes.draw do
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">get</span> <span class="s1">'welcome/index'</span>
+
+  <span class="n">resources</span> <span class="ss">:articles</span>
+
+  <span class="n">root</span> <span class="s1">'welcome#index'</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
   get 'welcome/index'
 
   resources :articles
 
   root 'welcome#index'
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si ejecuta <code>bin/rails route</code>, verá que tiene rutas definidas para todos los
 acciones RESTful estándar. El significado de la columna de prefijo (y otras columnas)
 se verá más tarde, pero por ahora observe que Rails ha inferido la
 forma singular "artículo" y hace un uso significativo de la distinción.</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails routes
-       Prefix Verb   URI Pattern                  Controller#Action
-welcome_index GET    /welcome/index(.:format)     welcome#index
-     articles GET    /articles(.:format)          articles#index
-              POST   /articles(.:format)          articles#create
-  new_article GET    /articles/new(.:format)      articles#new
- edit_article GET    /articles/:id/edit(.:format) articles#edit
-      article GET    /articles/:id(.:format)      articles#show
-              PATCH  /articles/:id(.:format)      articles#update
-              PUT    /articles/:id(.:format)      articles#update
-              DELETE /articles/:id(.:format)      articles#destroy
-         root GET    /                            welcome#index
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>routes
+<span class="gp">       Prefix Verb   URI Pattern                  Controller#</span>Action
+<span class="gp">welcome_index GET    /welcome/index(.:format)     welcome#</span>index
+<span class="gp">     articles GET    /articles(.:format)          articles#</span>index
+<span class="gp">              POST   /articles(.:format)          articles#</span>create
+<span class="gp">  new_article GET    /articles/new(.:format)      articles#</span>new
+<span class="gp"> edit_article GET    /articles/:id/edit(.:format) articles#</span>edit
+<span class="gp">      article GET    /articles/:id(.:format)      articles#</span>show
+<span class="gp">              PATCH  /articles/:id(.:format)      articles#</span>update
+<span class="gp">              PUT    /articles/:id(.:format)      articles#</span>update
+<span class="gp">              DELETE /articles/:id(.:format)      articles#</span>destroy
+<span class="gp">         root GET    /                            welcome#</span>index
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails routes
+">Copy</button>
 </div>
 <p>En la siguiente sección, agregará la capacidad de crear nuevos artículos en su
 aplicación y poder verlos. Esta es la "C" y la "R" de CRUD:
@@ -608,14 +662,19 @@ error:</p><p><img src="images/getting_started/routing_error_no_controller.png" a
 para atender la solicitud. La solución a este problema particular es crear
 un controlador llamado "ArticlesController". Puede hacer esto ejecutando esto
 mando:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate controller Articles
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller Articles
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller Articles
+">Copy</button>
 </div>
 <p>Si abre la <code>app/controllers/articles_controller.rb</code> recién generada
 verá un controlador bastante vacío:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
+end
+">Copy</button>
 </div>
 <p>Un controlador es una clase que se define para heredar
 <code>ApplicationController</code>.
@@ -630,11 +689,16 @@ sus acciones deseadas durante el proceso de generación.</p><p>Para definir manu
 definir un nuevo método dentro del controlador. Abierto
 <code>app/controllers/articles_controller.rb</code> y dentro de<code>ArticlesController</code>
 class, defina el método <code>new</code> para que su controlador ahora se vea así:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def new
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Con el método <code>new</code> definido en <code>ArticlesController</code>, si actualizas
 <a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a> verá otro error:</p><p><img src="images/getting_started/template_is_missing_articles_new.png" alt="Falta plantilla para artículos / nuevo"></p><p>Estás recibiendo este error ahora porque Rails espera acciones simples como esta
@@ -663,8 +727,10 @@ Formulario HTML, utilizará el lenguaje <code>ERB</code> que está diseñado par
 en HTML.</p><p>Por lo tanto, el archivo debe llamarse <code>articles/new.html.erb</code> y debe ser
 ubicado dentro del directorio <code>app/views</code> de la aplicación.</p><p>Continúe ahora y cree un nuevo archivo en <code>app/views/articles/new.html.erb</code> y
 escribe este contenido en él:</p><div class="code_container">
-<pre><code class="language-xml">&lt;h1&gt;New Article&lt;/h1&gt;
+<pre><code class="highlight html"><span class="nt">&lt;h1&gt;</span>New Article<span class="nt">&lt;/h1&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;New Article&lt;/h1&gt;
+">Copy</button>
 </div>
 <p>Cuando actualice <a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>  verá que el
 la página tiene un título. La ruta, el controlador, la acción y la vista ahora están funcionando
@@ -672,7 +738,23 @@ armoniosamente! Es hora de crear el formulario para un nuevo artículo.</p><h4 i
 constructor*. El constructor de formularios principal para Rails lo proporciona un ayudante
 método llamado <code>form_with</code>. Para usar este método, agregue este código en
 <code>app/views/articles/new.html.erb</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with scope: :article, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">scope: :article</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:title</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:title</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:text</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:text</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with scope: :article, local: true do |form| %&gt;
   &lt;p&gt;
     &lt;%= form.label :title %&gt;&lt;br&gt;
     &lt;%= form.text_field :title %&gt;
@@ -687,7 +769,7 @@ método llamado <code>form_with</code>. Para usar este método, agregue este có
     &lt;%= form.submit %&gt;
   &lt;/p&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuando llamas a <code>form_with</code>, le pasas un alcance de identificación para esto
 formar. En este caso, es el símbolo <code>:article</code>. Esto le dice al <code>form_with</code>
@@ -703,25 +785,29 @@ Esto se puede hacer de manera bastante simple con la opción <code>:url</code> d
 Normalmente en Rails, la acción que se utiliza para el envío de nuevos formularios
 esto se llama "crear", por lo que el formulario debe apuntar a esa acción.</p><p>Edite la línea <code>form_with</code> dentro de <code>app/views/articles/new.html.erb</code>para que parezca
 esta:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">scope: :article</span><span class="p">,</span> <span class="ss">url: </span><span class="n">articles_path</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
+">Copy</button>
 </div>
 <p>En este ejemplo, el ayudante <code>articles_path</code> se pasa a la opción <code>:url</code>.
 Para ver qué hará Rails con esto, miramos hacia atrás en la salida de
 <code>bin/rails route</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails routes
-      Prefix Verb   URI Pattern                  Controller#Action
-welcome_index GET    /welcome/index(.:format)     welcome#index
-     articles GET    /articles(.:format)          articles#index
-              POST   /articles(.:format)          articles#create
-  new_article GET    /articles/new(.:format)      articles#new
- edit_article GET    /articles/:id/edit(.:format) articles#edit
-      article GET    /articles/:id(.:format)      articles#show
-              PATCH  /articles/:id(.:format)      articles#update
-              PUT    /articles/:id(.:format)      articles#update
-              DELETE /articles/:id(.:format)      articles#destroy
-         root GET    /                            welcome#index
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>routes
+<span class="gp">      Prefix Verb   URI Pattern                  Controller#</span>Action
+<span class="gp">welcome_index GET    /welcome/index(.:format)     welcome#</span>index
+<span class="gp">     articles GET    /articles(.:format)          articles#</span>index
+<span class="gp">              POST   /articles(.:format)          articles#</span>create
+<span class="gp">  new_article GET    /articles/new(.:format)      articles#</span>new
+<span class="gp"> edit_article GET    /articles/:id/edit(.:format) articles#</span>edit
+<span class="gp">      article GET    /articles/:id(.:format)      articles#</span>show
+<span class="gp">              PATCH  /articles/:id(.:format)      articles#</span>update
+<span class="gp">              PUT    /articles/:id(.:format)      articles#</span>update
+<span class="gp">              DELETE /articles/:id(.:format)      articles#</span>destroy
+<span class="gp">         root GET    /                            welcome#</span>index
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails routes
+">Copy</button>
 </div>
 <p>El ayudante <code>articles_path</code> le dice a Rails que apunte el formulario al patrón URI
 asociado con el prefijo "artículos"; y el formulario enviará (por defecto) un
@@ -735,14 +821,22 @@ redireccionamientos. Para facilitar el acceso a esta guía, lo hemos desactivado
 <code>local: true</code> por ahora.</p><h4 id="creating-articles"><a class="anchorlink" href="#creating-articles">5.3 Creating Articles</a></h4><p>Para que la "Acción desconocida" desaparezca, puede definir una acción "crear" dentro de
 la clase <code>ArticlesController</code> en <code>app/controllers/articles_controller.rb</code>,
 debajo de la acción <code>new</code>, como se muestra:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def new
   end
 
   def create
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Si vuelve a enviar el formulario ahora, es posible que no vea ningún cambio en la página. ¡No se preocupe!
 Esto se debe a que Rails de forma predeterminada devuelve la respuesta <code>204 No Content</code> para una acción si
@@ -752,10 +846,14 @@ La acción <code>create</code> debería guardar nuestro nuevo artículo en la ba
 <em>parámetros</em>. A continuación, se puede hacer referencia a estos parámetros dentro del controlador.
 acciones, normalmente para realizar una tarea en particular. Para ver lo que estos parámetros
 parece, cambie la acción <code>create</code> a esto:</p><div class="code_container">
-<pre><code class="language-ruby">def create
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="n">render</span> <span class="ss">plain: </span><span class="n">params</span><span class="p">[</span><span class="ss">:article</span><span class="p">].</span><span class="nf">inspect</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
   render plain: params[:article].inspect
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El método <code>render</code> aquí está tomando un hash con una clave de <code>:plain</code> y
 valor de <code>params[:article].inspect</code>. El método <code>params</code> es el objeto que
@@ -763,8 +861,10 @@ representa los parámetros (o campos) provenientes del formulario. Los <code>par
 El método devuelve un objeto <code>ActionController::Parameters</code>, que
 le permite acceder a las claves del hash utilizando cadenas o símbolos. En
 En esta situación, los únicos parámetros que importan son los del formulario.</p><div class="info"><p>asegúrese de tener una comprensión firme del método <code>params</code>, ya que lo usará con bastante regularidad. Consideremos una URL de ejemplo: <strong><a href="http://www.example.com/?username=dhh&amp;email=dhh@email.com">http://www.example.com/?username=dhh&amp;email=dhh@email.com</a></strong>. En esta URL, <code>params[:nombre de usuario]</code> sería igual a "dhh" y <code>params [:email]</code> sería igual a "<a href="mailto:dhh@email.com">dhh@email.com</a>".</p></div><p>Si vuelve a enviar el formulario una vez más, verá algo parecido a lo siguiente:</p><div class="code_container">
-<pre><code class="language-ruby">&lt;ActionController::Parameters {"title"=&gt;"First Article!", "text"=&gt;"This is my first article."} permitted: false&gt;
+<pre><code class="highlight ruby"><span class="o">&lt;</span><span class="no">ActionController</span><span class="o">::</span><span class="no">Parameters</span> <span class="p">{</span><span class="s2">"title"</span><span class="o">=&gt;</span><span class="s2">"First Article!"</span><span class="p">,</span> <span class="s2">"text"</span><span class="o">=&gt;</span><span class="s2">"This is my first article."</span><span class="p">}</span> <span class="ss">permitted: </span><span class="kp">false</span><span class="o">&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;ActionController::Parameters {"title"=&gt;"First Article!", "text"=&gt;"This is my first article."} permitted: false&gt;
+'>Copy</button>
 </div>
 <p>Esta acción ahora muestra los parámetros para el artículo que está entrando
 del formulario. Sin embargo, esto no es realmente tan útil. Sí, puedes ver el
@@ -772,8 +872,10 @@ parámetros, pero no se está haciendo nada en particular con ellos.</p><h4 id="
 use un nombre en plural. Rails proporciona un generador para crear modelos, que la mayoría
 Los desarrolladores de rieles tienden a usar cuando crean nuevos modelos. Para crear el nuevo modelo,
 ejecute este comando en su terminal:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate model Article title:string text:text
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model Article title:string text:text
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model Article title:string text:text
+">Copy</button>
 </div>
 <p>Con ese comando le dijimos a Rails que queríamos un modelo de artículo, juntos
 con un atributo <em>title</em> de tipo cadena y un atributo <em>text</em>
@@ -790,7 +892,18 @@ comandos de rake para ejecutar migraciones, y es posible deshacer una migración
 se ha aplicado a su base de datos. Los nombres de archivo de migración incluyen una marca de tiempo para
 asegúrese de que se procesen en el orden en que se crearon.</p><p>Si busca en el archivo <code>db/migrate/YYYYMMDDHHMMSS_create_articles.rb</code>
 (recuerde, el suyo tendrá un nombre ligeramente diferente), esto es lo que encontrará:</p><div class="code_container">
-<pre><code class="language-ruby">class CreateArticles &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateArticles</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:articles</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:title</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:text</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateArticles &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :articles do |t|
       t.string :title
@@ -800,7 +913,7 @@ asegúrese de que se procesen en el orden en que se crearon.</p><p>Si busca en e
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La migración anterior crea un método llamado "cambio" que se llamará cuando
 ejecutas esta migración. La acción definida en este método también es reversible,
@@ -808,16 +921,19 @@ lo que significa que Rails sabe cómo revertir el cambio realizado por esta migr
 en caso de que desee revertirlo más tarde. Cuando ejecute esta migración, creará
 una tabla de artículos con una columna de cadena y una columna de texto. También crea
 dos campos de marca de tiempo para permitir que Rails rastree la creación de artículos y los tiempos de actualización.</p><div class="info"><p>Para obtener más información sobre las migraciones, consulte <a href="active_record_migrations.html">Migraciones de registros activos</a>.</p></div><p>En este punto, puede usar un comando rails para ejecutar la migración:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate
+">Copy</button>
 </div>
 <p>Rails ejecutará este comando de migración y le dirá que creó los artículos
 mesa.</p><div class="code_container">
-<pre><code class="language-shell-session">==  CreateArticles: migrating ==================================================
+<pre><code class="highlight console"><span class="go">==  CreateArticles: migrating ==================================================
 -- create_table(:articles)
-   -&gt; 0.0019s
-==  CreateArticles: migrated (0.0020s) =========================================
-</code></pre>
+</span><span class="gp">   -&gt;</span><span class="w"> </span>0.0019s
+<span class="go">==  CreateArticles: migrated (0.0020s) =========================================
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <div class="note"><p>Como está trabajando en el entorno de desarrollo de forma predeterminada, esto
 El comando se aplicará a la base de datos definida en la sección <code>development</code> de su
@@ -827,13 +943,20 @@ invocando el comando: <code>bin/rails db: migrate RAILS_ENV = production</code>.
 para utilizar el nuevo modelo <code>Article</code> para guardar los datos en la base de datos.
 Abra <code>app/controllers/articles_controller.rb</code>  y cambie la acción <code>create</code> a
 se parece a esto:</p><div class="code_container">
-<pre><code class="language-ruby">def create
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article</span><span class="p">])</span>
+
+  <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+  <span class="n">redirect_to</span> <span class="vi">@article</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
   @article = Article.new(params[:article])
 
   @article.save
   redirect_to @article
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto es lo que sucede: cada modelo de Rails se puede inicializar con su
 respectivos atributos, que se asignan automáticamente a los respectivos
@@ -856,14 +979,28 @@ asignación. En este caso, queremos permitir y exigir el <code>título</code> y
 Parámetros de <code>text</code> para un uso válido de<code>create</code>. La sintaxis de esto presenta
 <code>require</code> y<code>permit</code>. El cambio involucrará una línea en el "crear"
 acción:</p><div class="code_container">
-<pre><code class="language-ruby">  @article = Article.new(params.require(:article).permit(:title, :text))
+<pre><code class="highlight ruby">  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">))</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="  @article = Article.new(params.require(:article).permit(:title, :text))
+">Copy</button>
 </div>
 <p>Esto a menudo se tiene en cuenta en su propio método para que pueda ser reutilizado por múltiples
 acciones en el mismo controlador, por ejemplo, "crear" y "actualizar". Arriba y
 más allá de los problemas de asignación masiva, el método a menudo se hace "privado" para asegurar
 no se puede llamar fuera de su contexto previsto. Aquí está el resultado:</p><div class="code_container">
-<pre><code class="language-ruby">def create
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+
+  <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+  <span class="n">redirect_to</span> <span class="vi">@article</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">article_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
   @article = Article.new(article_params)
 
   @article.save
@@ -874,15 +1011,17 @@ private
   def article_params
     params.require(:article).permit(:title, :text)
   end
-</code></pre>
+">Copy</button>
 </div>
 <div class="info"><p>Para obtener más información, consulte la referencia anterior y
 <a href="https://weblog.rubyonrails.org/2012/3/21/strong-parameters/">este artículo de blog sobre parámetros sólidos</a>.</p></div><h4 id="showing-articles"><a class="anchorlink" href="#showing-articles">5.7 Showing Articles</a></h4><p>Si vuelve a enviar el formulario ahora, Rails se quejará de no encontrar el
 "mostrar" la acción. Sin embargo, eso no es muy útil, así que agreguemos la acción <code>show</code>
 antes de continuar.</p><p>Como hemos visto en la salida de <code>bin/rails route</code>, la ruta para la acción <code>show</code> es
 como sigue:</p><div class="code_container">
-<pre><code class="language-plain">article GET    /articles/:id(.:format)      articles#show
+<pre><code class="highlight plaintext">article GET    /articles/:id(.:format)      articles#show
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="article GET    /articles/:id(.:format)      articles#show
+">Copy</button>
 </div>
 <p>La sintaxis especial <code>:id</code> le dice a rails que esta ruta espera un <code>:id</code>
 parámetro, que en nuestro caso será el id del artículo.</p><p>Como hicimos antes, necesitamos agregar la acción <code>show</code> en
@@ -891,7 +1030,17 @@ controlador en el siguiente orden: <code>index</code>,<code>show</code>, <code>n
 y "destruir". Puede utilizar cualquier orden que elija, pero tenga en cuenta que estos
 son métodos públicos; como se mencionó anteriormente en esta guía, deben colocarse
 antes de declarar visibilidad "privada" en el controlador.</p><p>Dado eso, agreguemos la acción <code>show</code>, como sigue:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="c1"># snippet for brevity</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def show
     @article = Article.find(params[:id])
   end
@@ -900,7 +1049,7 @@ antes de declarar visibilidad "privada" en el controlador.</p><p>Dado eso, agreg
   end
 
   # snippet for brevity
-</code></pre>
+">Copy</button>
 </div>
 <p>Un par de cosas a anotar. Usamos <code>Article.find</code> para encontrar el artículo que estamos
 interesado, pasando <code>params[:id]</code> para obtener el parámetro <code>:id</code> del
@@ -909,7 +1058,17 @@ referencia al objeto del artículo. Hacemos esto porque Rails pasará todas las 
 variables a la vista.
 Now, create a new file <code>app/views/articles/show.html.erb</code> with the following
 content:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -918,19 +1077,35 @@ content:</p><div class="code_container">
   &lt;strong&gt;Text:&lt;/strong&gt;
   &lt;%= @article.text %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Con este cambio, finalmente debería poder crear nuevos artículos.
 Visite  <a href="http://localhost:3000/articles/new">http://localhost:3000/articles/new</a>  y pruébelo.</p><p><img src="images/getting_started/show_action_for_articles.png" alt="Show action for articles"></p><h4 id="listing-all-articles"><a class="anchorlink" href="#listing-all-articles">5.8 Listing all Articles</a></h4><p>Todavía necesitamos una forma de enumerar todos nuestros artículos, así que hagámoslo.
 La ruta para esto según la salida de <code>bin/ails route</code> es:</p><div class="code_container">
-<pre><code class="language-plain">articles GET    /articles(.:format)          articles#index
+<pre><code class="highlight plaintext">articles GET    /articles(.:format)          articles#index
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="articles GET    /articles(.:format)          articles#index
+">Copy</button>
 </div>
 <p>Agregue la acción <code>index</code> correspondiente para esa ruta dentro del
 <code>ArticlesController</code> en el archivo <code>app/controllers/articles_controller.rb</code> .
 Cuando escribimos una acción <code>index</code>, la práctica habitual es colocarla como
 primer método en el controlador. Vamos a hacerlo:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="c1"># snippet for brevity</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def index
     @articles = Article.all
   end
@@ -943,11 +1118,29 @@ primer método en el controlador. Vamos a hacerlo:</p><div class="code_container
   end
 
   # snippet for brevity
-</code></pre>
+">Copy</button>
 </div>
 <p>Y luego, finalmente, agregue la vista para esta acción, ubicada en
 <code>app/views/articles/index.html.erb</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;Listing Articles&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Listing Articles<span class="nt">&lt;/h1&gt;</span>
+
+<span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Title<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Text<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th&gt;&lt;/th&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Show'</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Listing Articles&lt;/h1&gt;
 
 &lt;table&gt;
   &lt;tr&gt;
@@ -964,36 +1157,59 @@ primer método en el controlador. Vamos a hacerlo:</p><div class="code_container
     &lt;/tr&gt;
   &lt;% end %&gt;
 &lt;/table&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Ahora, si va a <a href="http://localhost:3000/articles">http://localhost:3000/articles</a> verá una lista de todos los
 artículos que ha creado.</p><h4 id="adding-links"><a class="anchorlink" href="#adding-links">5.9 Adding Links</a></h4><p>Ahora puede crear, mostrar y enumerar artículos. Ahora agreguemos algunos enlaces para
 navegar por las páginas.</p><p>Abra <code>app/views/welcome/index.html.erb</code> y modifíquelo de la siguiente manera:</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;Hello, Rails!&lt;/h1&gt;
-&lt;%= link_to 'My Blog', controller: 'articles' %&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Hello, Rails!<span class="nt">&lt;/h1&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'My Blog'</span><span class="p">,</span> <span class="ss">controller: </span><span class="s1">'articles'</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Hello, Rails!&lt;/h1&gt;
+&lt;%= link_to 'My Blog', controller: 'articles' %&gt;
+">Copy</button>
 </div>
 <p>El método <code>link_to</code> es uno de los ayudantes de vista integrados de Rails. Crea un
 hipervínculo basado en texto para mostrar y adónde ir, en este caso, a la ruta
 para artículos.</p><p>Agreguemos enlaces a las otras vistas también, comenzando por agregar esto
 Enlace "Nuevo artículo" a <code>app/views/articles/index.html.erb</code>, colocándolo encima de
 la etiqueta <code>&lt;table&gt;</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'New article', new_article_path %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'New article'</span><span class="p">,</span> <span class="n">new_article_path</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'New article', new_article_path %&gt;
+">Copy</button>
 </div>
 <p>Este enlace le permitirá abrir el formulario que le permite crear un nuevo artículo.</p><p>Ahora, agregue otro enlace en <code>app/views/articles/new.html.erb</code>, debajo del
 formulario, para volver a la acción <code>index</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">scope: :article</span><span class="p">,</span> <span class="ss">url: </span><span class="n">articles_path</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  ...
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
   ...
 &lt;% end %&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Finalmente, agregue un enlace a la plantilla <code>app/views/articles/show.html.erb</code> para
 volver también a la acción <code>index</code>, de modo que las personas que están viendo una sola
 El artículo puede volver atrás y ver la lista completa nuevamente:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -1004,16 +1220,19 @@ El artículo puede volver atrás y ver la lista completa nuevamente:</p><div cla
 &lt;/p&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <div class="info"><p>Si desea vincular a una acción en el mismo controlador, no es necesario
 especificar la opción <code>:controller</code>, ya que Rails usará el controlador actual
 defecto.</p></div><div class="info"><p>En el modo de desarrollo (que es en el que está trabajando de forma predeterminada), Rails
 recarga su aplicación con cada solicitud del navegador, por lo que no es necesario detenerse
 y reinicie el servidor web cuando se realice un cambio.</p></div><h4 id="adding-some-validation"><a class="anchorlink" href="#adding-some-validation">5.10 Adding Some Validation</a></h4><p>El archivo de modelo, <code>app/models/article.rb</code> es tan simple como puede ser:</p><div class="code_container">
-<pre><code class="language-ruby">class Article &lt; ApplicationRecord
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article &lt; ApplicationRecord
+end
+">Copy</button>
 </div>
 <p>No hay mucho en este archivo, pero tenga en cuenta que la clase <code>Article</code> hereda de
 <code>ApplicationRecord</code>. <code>ApplicationRecord</code> hereda de <code>ActiveRecord::Base</code>
@@ -1022,11 +1241,16 @@ incluidas las operaciones básicas de CRUD (Crear, Leer, Actualizar, Destruir) d
 validación, así como soporte de búsqueda sofisticado y la capacidad de relacionarse
 múltiples modelos entre sí.</p><p>Rails incluye métodos para ayudarlo a validar los datos que envía a los modelos.
 Abra el archivo <code>app/models/article.rb</code> y edítelo:</p><div class="code_container">
-<pre><code class="language-ruby">class Article &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span>
+                    <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">5</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article &lt; ApplicationRecord
   validates :title, presence: true,
                     length: { minimum: 5 }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Estos cambios asegurarán que todos los artículos tengan un título de al menos cinco
 caracteres de largo. Los rieles pueden validar una variedad de condiciones en un modelo,
@@ -1039,7 +1263,26 @@ verifique el resultado de llamar a <code>@ article.save</code> dentro de la acci
 Si <code>@article.save</code> falla en esta situación, debemos mostrar el formulario al
 usuario. Para hacer esto, cambie las acciones <code>new</code> y <code>create</code> dentro
 <code>app/controllers/articles_controller.rb</code> a ​​estos:</p><div class="code_container">
-<pre><code class="language-ruby">def new
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">new</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">redirect_to</span> <span class="vi">@article</span>
+  <span class="k">else</span>
+    <span class="n">render</span> <span class="s1">'new'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">article_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def new
   @article = Article.new
 end
 
@@ -1057,7 +1300,7 @@ private
   def article_params
     params.require(:article).permit(:title, :text)
   end
-</code></pre>
+">Copy</button>
 </div>
 <p>La acción <code>new</code> ahora crea una nueva variable de instancia llamada <code>@article</code>, y
 verá por qué es en unos momentos.</p><p>Observe que dentro de la acción <code>create</code> usamos <code>render</code> en lugar de <code>redirect_to</code>
@@ -1070,12 +1313,46 @@ intente guardar un artículo sin título, Rails le enviará de vuelta al
 formulario, pero eso no es muy útil. Debes decirle al usuario que
 algo salió mal. Para hacer eso, modificará
 <code>app/views/articles/new.html.erb</code> para comprobar si hay mensajes de error:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">scope: :article</span><span class="p">,</span> <span class="ss">url: </span><span class="n">articles_path</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">any?</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error_explanation"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        <span class="cp">&lt;%=</span> <span class="n">pluralize</span><span class="p">(</span><span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">)</span> <span class="cp">%&gt;</span> prohibited
+        this article from being saved:
+      <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="cp">&lt;%</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span>
+          <span class="nt">&lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">msg</span> <span class="cp">%&gt;</span><span class="nt">&lt;/li&gt;</span>
+        <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:title</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:title</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:text</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:text</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with scope: :article, url: articles_path, local: true do |form| %&gt;
 
   &lt;% if @article.errors.any? %&gt;
-    &lt;div id="error_explanation"&gt;
+    &lt;div id=&quot;error_explanation&quot;&gt;
       &lt;h2&gt;
-        &lt;%= pluralize(@article.errors.count, "error") %&gt; prohibited
+        &lt;%= pluralize(@article.errors.count, &quot;error&quot;) %&gt; prohibited
         this article from being saved:
       &lt;/h2&gt;
       &lt;ul&gt;
@@ -1103,7 +1380,7 @@ algo salió mal. Para hacer eso, modificará
 &lt;% end %&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Están sucediendo algunas cosas. Verificamos si hay algún error con
 <code>@article.errors.any?</code>, y en ese caso mostramos una lista de todos
@@ -1119,7 +1396,25 @@ intentas hacer eso en el formulario de artículo nuevo
 artículos.</p><p>El primer paso que daremos es agregar una acción de edición a la
 <code>ArticlesController</code>, generalmente entre <code>new</code> y <code>create</code>
 acciones, como se muestra:</p><div class="code_container">
-<pre><code class="language-ruby">def new
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">new</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">edit</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">redirect_to</span> <span class="vi">@article</span>
+  <span class="k">else</span>
+    <span class="n">render</span> <span class="s1">'new'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def new
   @article = Article.new
 end
 
@@ -1136,20 +1431,56 @@ def create
     render 'new'
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Estamos usando <code>edit</code> para renderizar una vista. Para el actual
 Al guardar los cambios en el artículo, agregaremos una acción de actualización más adelante.</p></div><p>La vista contendrá un formulario similar al que usamos al crear
 nuevos articulos. Cree un archivo llamado <code>app/views/articles/edit.html.erb</code> y haga
 tiene el siguiente aspecto:</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;Edit Article&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Edit Article<span class="nt">&lt;/h1&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@article</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">any?</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error_explanation"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        <span class="cp">&lt;%=</span> <span class="n">pluralize</span><span class="p">(</span><span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">)</span> <span class="cp">%&gt;</span> prohibited
+        this article from being saved:
+      <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="cp">&lt;%</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span>
+          <span class="nt">&lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">msg</span> <span class="cp">%&gt;</span><span class="nt">&lt;/li&gt;</span>
+        <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:title</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:title</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:text</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:text</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Edit Article&lt;/h1&gt;
 
 &lt;%= form_with model: @article, local: true do |form| %&gt;
 
   &lt;% if @article.errors.any? %&gt;
-    &lt;div id="error_explanation"&gt;
+    &lt;div id=&quot;error_explanation&quot;&gt;
       &lt;h2&gt;
-        &lt;%= pluralize(@article.errors.count, "error") %&gt; prohibited
+        &lt;%= pluralize(@article.errors.count, &quot;error&quot;) %&gt; prohibited
         this article from being saved:
       &lt;/h2&gt;
       &lt;ul&gt;
@@ -1177,7 +1508,7 @@ tiene el siguiente aspecto:</p><div class="code_container">
 &lt;% end %&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Esta vez apuntamos el formulario a la acción <code>actualizar</code>, que aún no está definida
 pero será muy pronto.</p><p>Pasar el objeto del artículo al método <code>form_with</code> establecerá automáticamente la URL para
@@ -1190,7 +1521,36 @@ se realizó en la nueva vista, solo crea campos de formulario vacíos.
 Se pueden encontrar más detalles en <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with">formulario_con documentación</a>.</p><p>A continuación, necesitamos crear la acción de actualización en
 <code>app/controllers/articles_controller.rb</code>.
 Agréguelo entre la acción <code>create</code> y el método <code>private</code>:</p><div class="code_container">
-<pre><code class="language-ruby">def edit
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">edit</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">redirect_to</span> <span class="vi">@article</span>
+  <span class="k">else</span>
+    <span class="n">render</span> <span class="s1">'new'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">update</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+  <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+    <span class="n">redirect_to</span> <span class="vi">@article</span>
+  <span class="k">else</span>
+    <span class="n">render</span> <span class="s1">'edit'</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">article_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def edit
   @article = Article.find(params[:id])
 end
 
@@ -1218,7 +1578,7 @@ private
   def article_params
     params.require(:article).permit(:title, :text)
   end
-</code></pre>
+">Copy</button>
 </div>
 <p>El nuevo método, <code>update</code>, se usa cuando desea actualizar un registro
 que ya existe, y acepta un hash que contiene los atributos
@@ -1229,11 +1589,28 @@ si se llamara <code>@article.update(title: 'Un nuevo título')</code>, Rails sol
 el atributo <code>title</code>, dejando todos los demás atributos intactos.</p><p>Finalmente, queremos mostrar un enlace a la acción <code>edit</code> en la lista de todos los
 artículos, así que agreguemos eso ahora a <code>app/views/articles/index.html.erb</code> para hacer
 aparece junto al enlace "Mostrar":</p><div class="code_container">
-<pre><code class="language-erb">&lt;table&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Title<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Text<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">colspan=</span><span class="s">"2"</span><span class="nt">&gt;&lt;/th&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Show'</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;table&gt;
   &lt;tr&gt;
     &lt;th&gt;Title&lt;/th&gt;
     &lt;th&gt;Text&lt;/th&gt;
-    &lt;th colspan="2"&gt;&lt;/th&gt;
+    &lt;th colspan=&quot;2&quot;&gt;&lt;/th&gt;
   &lt;/tr&gt;
 
   &lt;% @articles.each do |article| %&gt;
@@ -1245,16 +1622,21 @@ aparece junto al enlace "Mostrar":</p><div class="code_container">
     &lt;/tr&gt;
   &lt;% end %&gt;
 &lt;/table&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Y también agregaremos uno a la plantilla <code>app/views/articles/show.html.erb</code> como
 bueno, para que también haya un enlace "Editar" en la página de un artículo. Agregue esto en el
 parte inferior de la plantilla:</p><div class="code_container">
-<pre><code class="language-erb">...
+<pre><code class="highlight erb">...
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span> |
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="...
 
 &lt;%= link_to 'Edit', edit_article_path(@article) %&gt; |
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Y así es como se ve nuestra aplicación hasta ahora:</p><p><img src="images/getting_started/index_action_with_edit_link.png" alt="Acción de índice con enlace de edición"></p><h4 id="using-partials-to-clean-up-duplication-in-views"><a class="anchorlink" href="#using-partials-to-clean-up-duplication-in-views">5.12 Using partials to clean up duplication in views</a></h4><p>Nuestra página de edición se parece mucho a la página nueva; de hecho, ellos
 ambos comparten el mismo código para mostrar el formulario. Eliminemos esto
@@ -1262,7 +1644,39 @@ duplicación mediante el uso de una vista parcial. Por convención, los archivos
 prefijado con un guión bajo.</p><div class="info"><p>Puede leer más sobre los parciales en el guía
 <a href="layouts_and_rendering.html">Layouts and Rendering in Rails</a>.</p></div><p>Cree un nuevo archivo <code>app /views/articles/_form.html.erb</code> con lo siguiente
 contenido:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with model: @article, local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="vi">@article</span><span class="p">,</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">any?</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error_explanation"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        <span class="cp">&lt;%=</span> <span class="n">pluralize</span><span class="p">(</span><span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">count</span><span class="p">,</span> <span class="s2">"error"</span><span class="p">)</span> <span class="cp">%&gt;</span> prohibited
+        this article from being saved:
+      <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="cp">&lt;%</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span> <span class="cp">%&gt;</span>
+          <span class="nt">&lt;li&gt;</span><span class="cp">&lt;%=</span> <span class="n">msg</span> <span class="cp">%&gt;</span><span class="nt">&lt;/li&gt;</span>
+        <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:title</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:title</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:text</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:text</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='&lt;%= form_with model: @article, local: true do |form| %&gt;
 
   &lt;% if @article.errors.any? %&gt;
     &lt;div id="error_explanation"&gt;
@@ -1293,7 +1707,7 @@ contenido:</p><div class="code_container">
   &lt;/p&gt;
 
 &lt;% end %&gt;
-</code></pre>
+'>Copy</button>
 </div>
 <p>Todo excepto la declaración <code>form_with</code> permaneció igual.
 La razón por la que podemos usar esta declaración <code>form_with</code> más corta
@@ -1302,49 +1716,122 @@ correspondiente a un conjunto completo de rutas RESTful, y Rails es capaz de inf
 qué URI y método utilizar.
 Para obtener más información sobre este uso de <code>form_with</code>, consulte <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-form_with-label-Resource-oriented+style">Estilo orientado a recursos</a>.</p><p>Ahora, actualice la vista <code>app/views/articles/new.html.erb</code> para usar esta nueva
 parcial, reescribiéndolo por completo:</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;New Article&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>New Article<span class="nt">&lt;/h1&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'form'</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;New Article&lt;/h1&gt;
 
 &lt;%= render 'form' %&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Luego haga lo mismo para la vista <code>app/views/articles/edit.html.erb</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;Edit Article&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Edit Article<span class="nt">&lt;/h1&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'form'</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Edit Article&lt;/h1&gt;
 
 &lt;%= render 'form' %&gt;
 
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="deleting-articles"><a class="anchorlink" href="#deleting-articles">5.13 Deleting Articles</a></h4><p>Ahora estamos listos para cubrir la parte "D" de CRUD, eliminando artículos del
 base de datos. Siguiendo la convención REST, la ruta para
 eliminar artículos según la salida de <code>bin/rails route</code> es:</p><div class="code_container">
-<pre><code class="language-ruby">DELETE /articles/:id(.:format)      articles#destroy
+<pre><code class="highlight ruby"><span class="no">DELETE</span> <span class="sr">/articles/</span><span class="ss">:id</span><span class="p">(</span><span class="o">.</span><span class="ss">:format</span><span class="p">)</span>      <span class="n">articles</span><span class="c1">#destroy</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="DELETE /articles/:id(.:format)      articles#destroy
+">Copy</button>
 </div>
 <p>El método de enrutamiento <code>delete</code> debe usarse para rutas que destruyen
 recursos. Si esto se dejara como una ruta típica de <code>get</code>, podría ser posible para
 personas para crear URL maliciosas como esta:</p><div class="code_container">
-<pre><code class="language-xml">&lt;a href='http://example.com/articles/1/destroy'&gt;look at this cat!&lt;/a&gt;
+<pre><code class="highlight html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'http://example.com/articles/1/destroy'</span><span class="nt">&gt;</span>look at this cat!<span class="nt">&lt;/a&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;a href='http://example.com/articles/1/destroy'&gt;look at this cat!&lt;/a&gt;
+">Copy</button>
 </div>
 <p>Usamos el método <code>delete</code> para destruir recursos, y esta ruta está mapeada
 a la acción <code>destroy</code> dentro de  <code>app/controllers/articles_controller.rb</code>, que
 aún no existe. El método <code>destroy</code> es generalmente la última acción CRUD en
 el controlador, y al igual que el resto de acciones públicas CRUD, debe colocarse
 antes de cualquier método <code>private</code> o <code>protected</code>. Vamos a agregarlo:</p><div class="code_container">
-<pre><code class="language-ruby">def destroy
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">destroy</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="vi">@article</span><span class="p">.</span><span class="nf">destroy</span>
+
+  <span class="n">redirect_to</span> <span class="n">articles_path</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def destroy
   @article = Article.find(params[:id])
   @article.destroy
 
   redirect_to articles_path
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>El <code>ArticlesController</code> completo en el
 El archivo app/controllers/articles_controller.rb` ahora debería verse así:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edit</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">redirect_to</span> <span class="vi">@article</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="s1">'new'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="vi">@article</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="s1">'edit'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="vi">@article</span><span class="p">.</span><span class="nf">destroy</span>
+
+    <span class="n">redirect_to</span> <span class="n">articles_path</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">article_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   def index
     @articles = Article.all
   end
@@ -1393,19 +1880,41 @@ El archivo app/controllers/articles_controller.rb` ahora debería verse así:</p
       params.require(:article).permit(:title, :text)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Puede llamar a <code>destroy</code> en los objetos de registro activo cuando desee eliminar
 ellos de la base de datos. Tenga en cuenta que no necesitamos agregar una vista para esto
 ya que estamos redirigiendo a la acción <code>index</code>.</p><p>Finalmente, agregue un enlace 'Destruir' a su plantilla de acción de <code>index</code>
 (<code>app/views/articles/index.html.erb</code>) para unir todo.</p><div class="code_container">
-<pre><code class="language-erb">&lt;h1&gt;Listing Articles&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Listing Articles<span class="nt">&lt;/h1&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'New article'</span><span class="p">,</span> <span class="n">new_article_path</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Title<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th&gt;</span>Text<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">colspan=</span><span class="s">"3"</span><span class="nt">&gt;&lt;/th&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+
+  <span class="cp">&lt;%</span> <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span> <span class="cp">%&gt;</span>
+    <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Show'</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Destroy'</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="n">article</span><span class="p">),</span>
+              <span class="ss">method: :delete</span><span class="p">,</span>
+              <span class="ss">data: </span><span class="p">{</span> <span class="ss">confirm: </span><span class="s1">'Are you sure?'</span> <span class="p">}</span> <span class="cp">%&gt;</span><span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;/tr&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/table&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;h1&gt;Listing Articles&lt;/h1&gt;
 &lt;%= link_to 'New article', new_article_path %&gt;
 &lt;table&gt;
   &lt;tr&gt;
     &lt;th&gt;Title&lt;/th&gt;
     &lt;th&gt;Text&lt;/th&gt;
-    &lt;th colspan="3"&gt;&lt;/th&gt;
+    &lt;th colspan=&quot;3&quot;&gt;&lt;/th&gt;
   &lt;/tr&gt;
 
   &lt;% @articles.each do |article| %&gt;
@@ -1420,7 +1929,7 @@ ya que estamos redirigiendo a la acción <code>index</code>.</p><p>Finalmente, a
     &lt;/tr&gt;
   &lt;% end %&gt;
 &lt;/table&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Aquí estamos usando <code>link_to</code> de una manera diferente. Pasamos la ruta nombrada como el
 segundo argumento, y luego las opciones como otro argumento. El <code>method:: delete</code>
@@ -1438,8 +1947,10 @@ declarando rutas manualmente. Para obtener más información sobre el enrutamien
 comentarios sobre artículos.</p><h4 id="generating-a-model"><a class="anchorlink" href="#generating-a-model">6.1 Generating a Model</a></h4><p>Vamos a ver el mismo generador que usamos antes al crear
 el modelo "<code>Artice</code>". Esta vez crearemos un modelo de "Comentario" para contener un
 referencia a un artículo. Ejecute este comando en su terminal:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate model Comment commenter:string body:text article:references
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model Comment commenter:string body:text article:references
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model Comment commenter:string body:text article:references
+">Copy</button>
 </div>
 <p>Este comando generará cuatro archivos:</p>
 <table>
@@ -1469,10 +1980,14 @@ referencia a un artículo. Ejecute este comando en su terminal:</p><div class="c
 </tbody>
 </table>
 <p>Primero, eche un vistazo a <code>app/models/comment.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class Comment &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+ <span class="n">belongs_to</span> <span class="ss">:article</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Comment &lt; ApplicationRecord
  belongs_to :article
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto es muy similar al modelo <code>Article</code> que vio anteriormente. La diferencia
 es la línea <code>belongs_to: article</code>, que configura una <em>asociación</em> de registro activo.
@@ -1481,7 +1996,19 @@ Crea una nueva columna en la tabla de su base de datos con el nombre del modelo 
 que puede contener valores enteros. Para obtener una mejor comprensión, analice
 Archivo <code>db/schema.rb</code> después de ejecutar la migración.</p><p>Además del modelo, Rails también ha realizado una migración para crear el
 tabla de base de datos correspondiente:</p><div class="code_container">
-<pre><code class="language-ruby">class CreateComments &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreateComments</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:comments</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:commenter</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:body</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:article</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="kp">true</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreateComments &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :comments do |t|
       t.string :commenter
@@ -1492,21 +2019,24 @@ tabla de base de datos correspondiente:</p><div class="code_container">
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La línea <code>t.references</code> crea una columna entera llamada <code>article_id</code>, un índice
 para ello, y una restricción de clave externa que apunta a la columna <code>id</code> de los <code>articles</code>
 mesa. Continúe y ejecute la migración:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails db:migrate
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate
+">Copy</button>
 </div>
 <p>Rails es lo suficientemente inteligente como para ejecutar solo las migraciones que aún no se han realizado
 ejecutar contra la base de datos actual, por lo que en este caso solo verá:</p><div class="code_container">
-<pre><code class="language-shell-session">==  CreateComments: migrating =================================================
+<pre><code class="highlight console"><span class="go">==  CreateComments: migrating =================================================
 -- create_table(:comments)
-   -&gt; 0.0115s
-==  CreateComments: migrated (0.0119s) ========================================
-</code></pre>
+</span><span class="gp">   -&gt;</span><span class="w"> </span>0.0115s
+<span class="go">==  CreateComments: migrated (0.0119s) ========================================
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <h4 id="associating-models"><a class="anchorlink" href="#associating-models">6.2 Associating Models</a></h4><p>Las asociaciones de Active Record le permiten declarar fácilmente la relación entre dos
 modelos. En el caso de comentarios y artículos, puede escribir el
@@ -1518,19 +2048,29 @@ relaciones de esta manera:</p>
 <p>De hecho, esto se acerca mucho a la sintaxis que usa Rails para declarar esto
 asociación. Ya has visto la línea de código dentro del modelo <code>Comment</code>
 (app/models/comment.rb) que hace que cada comentario pertenezca a un artículo:</p><div class="code_container">
-<pre><code class="language-ruby">class Comment &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:article</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Comment &lt; ApplicationRecord
   belongs_to :article
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Deberá editar <code>app/models/article.rb</code> para agregar el otro lado del
 asociación:</p><div class="code_container">
-<pre><code class="language-ruby">class Article &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:comments</span>
+  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span>
+                    <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">5</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article &lt; ApplicationRecord
   has_many :comments
   validates :title, presence: true,
                     length: { minimum: 5 }
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Estas dos declaraciones permiten un buen comportamiento automático. Por ejemplo, si
 tiene una variable de instancia <code>@article</code> que contiene un artículo, puede recuperar
@@ -1539,18 +2079,24 @@ todos los comentarios que pertenecen a ese artículo como una matriz usando
 Asociaciones</a> guía.</p></div><h4 id="adding-a-route-for-comments"><a class="anchorlink" href="#adding-a-route-for-comments">6.3 Adding a Route for Comments</a></h4><p>Al igual que con el controlador de bienvenida, necesitaremos agregar una ruta para que Rails
 sabe adónde nos gustaría navegar para ver los <code>comments</code> Abre el
 <code>config/routes.rb</code> nuevamente y edítelo de la siguiente manera:</p><div class="code_container">
-<pre><code class="language-ruby">resources :articles do
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles do
   resources :comments
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto crea <code>comments</code> como un _ recurso anidado_ dentro de <code>articles</code>. Esto es
 otra parte de la captura de la relación jerárquica que existe entre
 artículos y comentarios.</p><div class="info"><p>para obtener más información sobre el enrutamiento, consulte el <a href="routing.html">Enrutamiento de rieles</a>
 guía.</p></div><h4 id="generating-a-controller"><a class="anchorlink" href="#generating-a-controller">6.4 Generating a Controller</a></h4><p>Con el modelo en la mano, puede centrar su atención en crear una combinación
 controlador. Nuevamente, usaremos el mismo generador que usamos antes:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate controller Comments
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller Comments
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller Comments
+">Copy</button>
 </div>
 <p>This creates four files and one empty directory:</p>
 <table>
@@ -1589,7 +2135,35 @@ a la página de presentación del artículo para ver su comentario ahora en la l
 <code>CommentsController</code> está ahí para proporcionar un método para crear comentarios y eliminar
 comentarios de spam cuando llegan.</p><p>Primero, conectaremos la plantilla de presentación de artículos
 (<code>app/views/articles/show.html.erb</code>) para permitirnos hacer un nuevo comentario:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Add a comment:<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="p">[</span> <span class="vi">@article</span><span class="p">,</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">build</span> <span class="p">],</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:body</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:body</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span> |
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -1616,12 +2190,25 @@ comentarios de spam cuando llegan.</p><p>Primero, conectaremos la plantilla de p
 
 &lt;%= link_to 'Edit', edit_article_path(@article) %&gt; |
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto agrega un formulario en la página de presentación del <code>Article</code> que crea un nuevo comentario por
 llamando a la acción <code>CommentsController</code> <code>create</code>. La llamada <code>form_with</code> aquí usa
 una matriz, que construirá una ruta anidada, como <code>/articles/1/comments</code>.</p><p>Conectemos el <code>create</code> en <code>app/controllers/comments_controller.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class CommentsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CommentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article_id</span><span class="p">])</span>
+    <span class="vi">@comment</span> <span class="o">=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">comment_params</span><span class="p">)</span>
+    <span class="n">redirect_to</span> <span class="n">article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">comment_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:comment</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:commenter</span><span class="p">,</span> <span class="ss">:body</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CommentsController &lt; ApplicationController
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
@@ -1633,7 +2220,7 @@ una matriz, que construirá una ruta anidada, como <code>/articles/1/comments</c
       params.require(:comment).permit(:commenter, :body)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Verá un poco más de complejidad aquí que en el controlador para
 artículos. Ese es un efecto secundario del anidamiento que ha configurado. Cada solicitud
@@ -1647,7 +2234,48 @@ utilizando el ayudante <code>article_path(@article)</code>. Como ya hemos visto,
 la acción <code>show</code> del<code>ArticlesController</code> que a su vez hace que el
 Plantilla <code>show.html.erb</code>. Aquí es donde queremos que se muestre el comentario, así que
 agréguelo a la <code>app/views/articles/show.html.erb</code>.</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Comments<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">comment</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;strong&gt;</span>Commenter:<span class="nt">&lt;/strong&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">commenter</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="nt">&lt;strong&gt;</span>Comment:<span class="nt">&lt;/strong&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">body</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Add a comment:<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="p">[</span> <span class="vi">@article</span><span class="p">,</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">build</span> <span class="p">],</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:body</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:body</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span> |
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -1687,7 +2315,7 @@ agréguelo a la <code>app/views/articles/show.html.erb</code>.</p><div class="co
 
 &lt;%= link_to 'Edit', edit_article_path(@article) %&gt; |
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Ahora puede agregar artículos y comentarios a su blog y hacer que aparezcan en el
 lugares correctos.</p><p><img src="images/getting_started/article_with_comments.png" alt="Article with Comments"></p><h3 id="refactoring"><a class="anchorlink" href="#refactoring">7 Refactoring</a></h3><p>Ahora que tenemos artículos y comentarios funcionando, eche un vistazo a la
@@ -1695,7 +2323,17 @@ plantilla <code>app/views/articles/show.html.erb</code>. Se está volviendo larg
 Puede usar parciales para limpiarlo.</p><h4 id="rendering-partial-collections"><a class="anchorlink" href="#rendering-partial-collections">7.1 Rendering Partial Collections</a></h4><p>Primero, haremos un comentario parcial para extraer mostrando todos los comentarios para
 el artículo. Cree el archivo <code>app/views/comments/_comment.html.erb</code> y coloque el
 siguiéndolo:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Commenter:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">commenter</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Comment:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">body</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Commenter:&lt;/strong&gt;
   &lt;%= comment.commenter %&gt;
 &lt;/p&gt;
@@ -1704,11 +2342,42 @@ siguiéndolo:</p><div class="code_container">
   &lt;strong&gt;Comment:&lt;/strong&gt;
   &lt;%= comment.body %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Luego puede cambiar <code>app/views/articles/show.html.erb</code> para que se parezca al
 siguiendo:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Comments<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span> <span class="cp">%&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Add a comment:<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="p">[</span> <span class="vi">@article</span><span class="p">,</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">build</span> <span class="p">],</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:body</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:body</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span> |
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -1738,7 +2407,7 @@ siguiendo:</p><div class="code_container">
 
 &lt;%= link_to 'Edit', edit_article_path(@article) %&gt; |
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto ahora representará el parcial en <code>app/views/comments/_comment.html.erb</code> una vez
 para cada comentario de la colección <code>@article.comments</code>. Como el "render"
@@ -1746,7 +2415,21 @@ El método itera sobre la colección <code>@article.comments</code>, asigna cada
 comentar a una variable local denominada igual que la parcial, en este caso
 <code>comment</code>, que luego está disponible en el parcial para que lo mostremos.</p><h4 id="rendering-a-partial-form"><a class="anchorlink" href="#rendering-a-partial-form">7.2 Rendering a Partial Form</a></h4><p>Pasemos también esa nueva sección de comentarios a su propio parcial. Otra vez tu
 cree un archivo que contenga <code>app/views/comments/_form.html.erb</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= form_with model: [ @article, @article.comments.build ], local: true do |form| %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="p">[</span> <span class="vi">@article</span><span class="p">,</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">build</span> <span class="p">],</span> <span class="ss">local: </span><span class="kp">true</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:commenter</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:body</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:body</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= form_with model: [ @article, @article.comments.build ], local: true do |form| %&gt;
   &lt;p&gt;
     &lt;%= form.label :commenter %&gt;&lt;br&gt;
     &lt;%= form.text_field :commenter %&gt;
@@ -1759,10 +2442,29 @@ cree un archivo que contenga <code>app/views/comments/_form.html.erb</code>:</p>
     &lt;%= form.submit %&gt;
   &lt;/p&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Luego, hace que la <code>app/views/articles/show.html.erb</code> se vea así:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Title:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Text:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Comments<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span> <span class="cp">%&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>Add a comment:<span class="nt">&lt;/h2&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s1">'comments/form'</span> <span class="cp">%&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Edit'</span><span class="p">,</span> <span class="n">edit_article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span> |
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Back'</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Title:&lt;/strong&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
@@ -1780,7 +2482,7 @@ cree un archivo que contenga <code>app/views/comments/_form.html.erb</code>:</p>
 
 &lt;%= link_to 'Edit', edit_article_path(@article) %&gt; |
 &lt;%= link_to 'Back', articles_path %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>El segundo render solo define la plantilla parcial que queremos renderizar,
 <code>comments/form</code>. Rails es lo suficientemente inteligente como para detectar la barra hacia adelante en ese
@@ -1790,7 +2492,23 @@ lo definimos como una variable de instancia.</p><h3 id="deleting-comments"><a cl
 esto, necesitamos implementar un enlace de algún tipo en la vista y una <code>destroy</code>
 acción en el <code>CommentsController</code>.</p><p>Primero, agreguemos el enlace de eliminación en el
 parcial <code>app/views/comments/_comment.html.erb</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Commenter:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">commenter</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Comment:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">body</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'Destroy Comment'</span><span class="p">,</span> <span class="p">[</span><span class="n">comment</span><span class="p">.</span><span class="nf">article</span><span class="p">,</span> <span class="n">comment</span><span class="p">],</span>
+               <span class="ss">method: :delete</span><span class="p">,</span>
+               <span class="ss">data: </span><span class="p">{</span> <span class="ss">confirm: </span><span class="s1">'Are you sure?'</span> <span class="p">}</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;
   &lt;strong&gt;Commenter:&lt;/strong&gt;
   &lt;%= comment.commenter %&gt;
 &lt;/p&gt;
@@ -1805,13 +2523,33 @@ parcial <code>app/views/comments/_comment.html.erb</code>:</p><div class="code_c
                method: :delete,
                data: { confirm: 'Are you sure?' } %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Al hacer clic en este nuevo enlace "Destruir comentario" se activará un mensaje <code>DELETE
 /articles/:article_id/comments/:id</code> a nuestro <code>CommentsController</code>, que luego puede
 use esto para encontrar el comentario que queremos eliminar, así que agreguemos una acción de <code>destroy</code>
 a nuestro controlador (<code>app/controllers/comments_controller.rb</code>):</p><div class="code_container">
-<pre><code class="language-ruby">class CommentsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CommentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article_id</span><span class="p">])</span>
+    <span class="vi">@comment</span> <span class="o">=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">comment_params</span><span class="p">)</span>
+    <span class="n">redirect_to</span> <span class="n">article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article_id</span><span class="p">])</span>
+    <span class="vi">@comment</span> <span class="o">=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="vi">@comment</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="n">redirect_to</span> <span class="n">article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">comment_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:comment</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:commenter</span><span class="p">,</span> <span class="ss">:body</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CommentsController &lt; ApplicationController
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.create(comment_params)
@@ -1830,7 +2568,7 @@ a nuestro controlador (<code>app/controllers/comments_controller.rb</code>):</p>
       params.require(:comment).permit(:commenter, :body)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>La acción <code>destroy</code> encontrará el artículo que estamos viendo, ubique el comentario
 dentro de la colección <code>@article.comments</code> y luego elimínelo de la
@@ -1838,12 +2576,18 @@ base de datos y envíenos de vuelta a la acción de mostrar del artículo.</p><h
 eliminado, de lo contrario simplemente ocuparían espacio en la base de datos. Los rieles permiten
 debe utilizar la opción <code>dependent</code> de una asociación para lograr esto. Modificar el
 Modelo de artículo, <code>app/models/article.rb</code>, como sigue:</p><div class="code_container">
-<pre><code class="language-ruby">class Article &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:comments</span><span class="p">,</span> <span class="ss">dependent: :destroy</span>
+  <span class="n">validates</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span>
+                    <span class="ss">length: </span><span class="p">{</span> <span class="ss">minimum: </span><span class="mi">5</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article &lt; ApplicationRecord
   has_many :comments, dependent: :destroy
   validates :title, presence: true,
                     length: { minimum: 5 }
 end
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="security"><a class="anchorlink" href="#security">9 Security</a></h3><h4 id="basic-authentication"><a class="anchorlink" href="#basic-authentication">9.1 Basic Authentication</a></h4><p>Si publicara su blog en línea, cualquiera podría agregar, editar y
 eliminar artículos o eliminar comentarios.</p><p>Rails proporciona un sistema de autenticación HTTP que funcionará bien en
@@ -1854,7 +2598,17 @@ acción si ese método lo permite.</p><p>Para utilizar el sistema de autenticaci
 <code>ArticlesController</code> en <code>app/controllers/articles_controller.rb</code>. En nuestro caso,
 queremos que el usuario esté autenticado en cada acción excepto en <code>index</code> y <code>show</code>,
 entonces escribimos eso:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="n">http_basic_authenticate_with</span> <span class="ss">name: </span><span class="s2">"dhh"</span><span class="p">,</span> <span class="ss">password: </span><span class="s2">"secret"</span><span class="p">,</span> <span class="ss">except: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="c1"># snippet for brevity</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class ArticlesController &lt; ApplicationController
 
   http_basic_authenticate_with name: "dhh", password: "secret", except: [:index, :show]
 
@@ -1863,11 +2617,22 @@ entonces escribimos eso:</p><div class="code_container">
   end
 
   # snippet for brevity
-</code></pre>
+'>Copy</button>
 </div>
 <p>También queremos permitir que solo los usuarios autenticados eliminen comentarios, por lo que en el
 <code>CommentsController</code> (<code>app/controllers/comments_controller.rb</code>) escribimos:</p><div class="code_container">
-<pre><code class="language-ruby">class CommentsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CommentsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="n">http_basic_authenticate_with</span> <span class="ss">name: </span><span class="s2">"dhh"</span><span class="p">,</span> <span class="ss">password: </span><span class="s2">"secret"</span><span class="p">,</span> <span class="ss">only: :destroy</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article_id</span><span class="p">])</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+
+  <span class="c1"># snippet for brevity</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class CommentsController &lt; ApplicationController
 
   http_basic_authenticate_with name: "dhh", password: "secret", only: :destroy
 
@@ -1877,7 +2642,7 @@ entonces escribimos eso:</p><div class="code_container">
   end
 
   # snippet for brevity
-</code></pre>
+'>Copy</button>
 </div>
 <p>Ahora, si intenta crear un nuevo artículo, será recibido con un HTTP básico
 Desafío de autenticación:</p><p><img src="images/getting_started/challenge.png" alt="Desafío básico de autenticación HTTP"></p><p>Hay otros métodos de autenticación disponibles para aplicaciones Rails. Dos populares

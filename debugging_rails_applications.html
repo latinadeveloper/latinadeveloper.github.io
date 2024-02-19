@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -222,68 +222,118 @@
 <li><code>inspect</code></li>
 </ul>
 <h4 id="debug"><a class="anchorlink" href="#debug">1.1 <code>debug</code></a></h4><p>El ayudante <code>debug</code> devolverá una etiqueta \ </p><pre> que muestra el objeto usando el formato YAML. Esto generará datos legibles por humanos a partir de cualquier objeto. Por ejemplo, si tiene este código en una vista:<div class="code_container">
-<pre><code class="language-erb">&lt;%= debug @article %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">debug</span> <span class="vi">@article</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Title:<span class="nt">&lt;/b&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= debug @article %&gt;
 &lt;p&gt;
   &lt;b&gt;Title:&lt;/b&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Verás algo como esto:</p><div class="code_container">
-<pre><code class="language-yaml">--- !ruby/object Article
+<pre><code class="highlight yaml"><span class="nn">---</span> <span class="kt">!ruby/object</span> <span class="s">Article</span>
+<span class="na">attributes</span><span class="pi">:</span>
+  <span class="na">updated_at</span><span class="pi">:</span> <span class="s">2008-09-05 22:55:47</span>
+  <span class="na">body</span><span class="pi">:</span> <span class="s">It's a very helpful guide for debugging your Rails app.</span>
+  <span class="na">title</span><span class="pi">:</span> <span class="s">Rails debugging guide</span>
+  <span class="na">published</span><span class="pi">:</span> <span class="s">t</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+  <span class="na">created_at</span><span class="pi">:</span> <span class="s">2008-09-05 22:55:47</span>
+<span class="na">attributes_cache</span><span class="pi">:</span> <span class="pi">{}</span>
+
+
+<span class="na">Title</span><span class="pi">:</span> <span class="s">Rails debugging guide</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="--- !ruby/object Article
 attributes:
   updated_at: 2008-09-05 22:55:47
   body: It's a very helpful guide for debugging your Rails app.
   title: Rails debugging guide
   published: t
-  id: "1"
+  id: &quot;1&quot;
   created_at: 2008-09-05 22:55:47
 attributes_cache: {}
 
 
 Title: Rails debugging guide
-</code></pre>
+">Copy</button>
 </div>
 <h4><a class="anchorlink" href="#">`to_yaml</a></h4><p>Alternativamente, llamar a <code>to_yaml</code> en cualquier objeto lo convierte en YAML. Puede pasar este objeto convertido al método auxiliar <code>simple_format</code> para formatear la salida. Así es como <code>debug</code> hace su magia.</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= simple_format @article.to_yaml %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">simple_format</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">to_yaml</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Title:<span class="nt">&lt;/b&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= simple_format @article.to_yaml %&gt;
 &lt;p&gt;
   &lt;b&gt;Title:&lt;/b&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>El código anterior generará algo como esto:</p><div class="code_container">
-<pre><code class="language-yaml">--- !ruby/object Article
+<pre><code class="highlight yaml"><span class="nn">---</span> <span class="kt">!ruby/object</span> <span class="s">Article</span>
+<span class="na">attributes</span><span class="pi">:</span>
+<span class="na">updated_at</span><span class="pi">:</span> <span class="s">2008-09-05 22:55:47</span>
+<span class="na">body</span><span class="pi">:</span> <span class="s">It's a very helpful guide for debugging your Rails app.</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s">Rails debugging guide</span>
+<span class="na">published</span><span class="pi">:</span> <span class="s">t</span>
+<span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+<span class="na">created_at</span><span class="pi">:</span> <span class="s">2008-09-05 22:55:47</span>
+<span class="na">attributes_cache</span><span class="pi">:</span> <span class="pi">{}</span>
+
+<span class="na">Title</span><span class="pi">:</span> <span class="s">Rails debugging guide</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="--- !ruby/object Article
 attributes:
 updated_at: 2008-09-05 22:55:47
 body: It's a very helpful guide for debugging your Rails app.
 title: Rails debugging guide
 published: t
-id: "1"
+id: &quot;1&quot;
 created_at: 2008-09-05 22:55:47
 attributes_cache: {}
 
 Title: Rails debugging guide
-</code></pre>
+">Copy</button>
 </div>
 <h4><a class="anchorlink" href="#"><code>inspect</code></a></h4><p>Otro método útil para mostrar valores de objetos es <code>inspect</code>, especialmente cuando se trabaja con matrices o hashes. Esto imprimirá el valor del objeto como una cadena. Por ejemplo:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= [1, 2, 3, 4, 5].inspect %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">inspect</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Title:<span class="nt">&lt;/b&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= [1, 2, 3, 4, 5].inspect %&gt;
 &lt;p&gt;
   &lt;b&gt;Title:&lt;/b&gt;
   &lt;%= @article.title %&gt;
 &lt;/p&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Rendirá:</p><div class="code_container">
-<pre><code class="language-plain">[1, 2, 3, 4, 5]
+<pre><code class="highlight plaintext">[1, 2, 3, 4, 5]
 
 Title: Rails debugging guide
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[1, 2, 3, 4, 5]
+
+Title: Rails debugging guide
+">Copy</button>
 </div>
 <h3><a class="anchorlink" href="#">The Logger</a></h3><p>También puede ser útil guardar información en archivos de registro en tiempo de ejecución. Rails mantiene un archivo de registro independiente para cada entorno de ejecución.</p><h4><a class="anchorlink" href="#">What is the Logger?</a></h4><p>Rails hace uso de la clase <code>ActiveSupport::Logger</code> para escribir información de registro. También se pueden sustituir otros registradores, como <code>Log4r</code>.</p><p>Puede especificar un registrador alternativo en <code>config/application.rb</code> o cualquier otro archivo de entorno, por ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">config.logger = Logger.new(STDOUT)
-config.logger = Log4r::Logger.new("Application Log")
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Log4r</span><span class="o">::</span><span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Application Log"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.logger = Logger.new(STDOUT)
+config.logger = Log4r::Logger.new("Application Log")
+'>Copy</button>
 </div>
 <p>O en la sección <code>Initializer</code>, agregue <em>cualquier</em> de lo siguiente
 <code>ruby
@@ -292,27 +342,58 @@ Rails.logger = Log4r::Logger.new("Application Log")
 </code></p><div class="info"><p>De forma predeterminada, cada registro se crea en <code>Rails.root/log/</code>  y el archivo de registro lleva el nombre del entorno en el que se ejecuta la aplicación.</p></div><h4><a class="anchorlink" href="#">Log Levels</a></h4><p>Los niveles de registro disponibles son: <code>:debug</code>, <code>:info</code>, <code>:warn</code>, <code>:error</code>, <code>:fatal</code>,
 y <code>:unknown</code>, correspondiente a los números de nivel de registro de 0 a 5,
 respectivamente. Para cambiar el nivel de registro predeterminado, use</p><div class="code_container">
-<pre><code class="language-ruby">config.log_level = :warn # In any environment initializer, or
-Rails.logger.level = 0 # at any time
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">log_level</span> <span class="o">=</span> <span class="ss">:warn</span> <span class="c1"># In any environment initializer, or</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">level</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># at any time</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.log_level = :warn # In any environment initializer, or
+Rails.logger.level = 0 # at any time
+">Copy</button>
 </div>
 <p>Esto es útil cuando desea iniciar sesión en desarrollo o puesta en escena sin inundar su registro de producción con información innecesaria.</p><div class="info"><p>El nivel de registro de Rails predeterminado es <code>debug</code> en todos los entornos.</p></div><h4><a class="anchorlink" href="#">Sending Messages</a></h4><p>Para escribir en el registro actual, use el método <code>logger.(debug|info|warn|error|fatal|unknown)</code> desde un controlador, modelo o mailer:</p><div class="code_container">
-<pre><code class="language-ruby">logger.debug "Person attributes hash: #{@person.attributes.inspect}"
+<pre><code class="highlight ruby"><span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="s2">"Person attributes hash: </span><span class="si">#{</span><span class="vi">@person</span><span class="p">.</span><span class="nf">attributes</span><span class="p">.</span><span class="nf">inspect</span><span class="si">}</span><span class="s2">"</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"Processing the request..."</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">fatal</span> <span class="s2">"Terminating application, raised unrecoverable error!!!"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='logger.debug "Person attributes hash: #{@person.attributes.inspect}"
 logger.info "Processing the request..."
 logger.fatal "Terminating application, raised unrecoverable error!!!"
-</code></pre>
+'>Copy</button>
 </div>
 <p>A continuación, se muestra un ejemplo de un método instrumentado con registro adicional:</p><div class="code_container">
-<pre><code class="language-ruby">class ArticlesController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># ...</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">article_params</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="s2">"New article: </span><span class="si">#{</span><span class="vi">@article</span><span class="p">.</span><span class="nf">attributes</span><span class="p">.</span><span class="nf">inspect</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="s2">"Article should be valid: </span><span class="si">#{</span><span class="vi">@article</span><span class="p">.</span><span class="nf">valid?</span><span class="si">}</span><span class="s2">"</span>
+
+    <span class="k">if</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="s2">"The article was saved and now the user is going to be redirected..."</span>
+      <span class="n">redirect_to</span> <span class="vi">@article</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Article was successfully created.'</span>
+    <span class="k">else</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># ...</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">article_params</span>
+      <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:body</span><span class="p">,</span> <span class="ss">:published</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ArticlesController &lt; ApplicationController
   # ...
 
   def create
     @article = Article.new(article_params)
-    logger.debug "New article: #{@article.attributes.inspect}"
-    logger.debug "Article should be valid: #{@article.valid?}"
+    logger.debug &quot;New article: #{@article.attributes.inspect}&quot;
+    logger.debug &quot;Article should be valid: #{@article.valid?}&quot;
 
     if @article.save
-      logger.debug "The article was saved and now the user is going to be redirected..."
+      logger.debug &quot;The article was saved and now the user is going to be redirected...&quot;
       redirect_to @article, notice: 'Article was successfully created.'
     else
       render :new
@@ -326,10 +407,10 @@ logger.fatal "Terminating application, raised unrecoverable error!!!"
       params.require(:article).permit(:title, :body, :published)
     end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>A continuación, se muestra un ejemplo del registro generado cuando se ejecuta esta acción del controlador:</p><div class="code_container">
-<pre><code class="language-plain">Started POST "/articles" for 127.0.0.1 at 2018-10-18 20:09:23 -0400
+<pre><code class="highlight plaintext">Started POST "/articles" for 127.0.0.1 at 2018-10-18 20:09:23 -0400
 Processing by ArticlesController#create as HTML
   Parameters: {"utf8"=&gt;"✓", "authenticity_token"=&gt;"XLveDrKzF1SwaiNRPTaMtkrsTzedtebPPkmxEFIU0ordLjICSnXsSNfrdMa4ccyBjuGwnnEiQhEoMN6H1Gtz3A==", "article"=&gt;{"title"=&gt;"Debugging Rails", "body"=&gt;"I'm learning how to print in logs.", "published"=&gt;"0"}, "commit"=&gt;"Create Article"}
 New article: {"id"=&gt;nil, "title"=&gt;"Debugging Rails", "body"=&gt;"I'm learning how to print in logs.", "published"=&gt;false, "created_at"=&gt;nil, "updated_at"=&gt;nil}
@@ -344,18 +425,40 @@ The article was saved and now the user is going to be redirected...
 Redirected to http://localhost:3000/articles/1
 Completed 302 Found in 4ms (ActiveRecord: 0.8ms)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Started POST &quot;/articles&quot; for 127.0.0.1 at 2018-10-18 20:09:23 -0400
+Processing by ArticlesController#create as HTML
+  Parameters: {&quot;utf8&quot;=&gt;&quot;✓&quot;, &quot;authenticity_token&quot;=&gt;&quot;XLveDrKzF1SwaiNRPTaMtkrsTzedtebPPkmxEFIU0ordLjICSnXsSNfrdMa4ccyBjuGwnnEiQhEoMN6H1Gtz3A==&quot;, &quot;article&quot;=&gt;{&quot;title&quot;=&gt;&quot;Debugging Rails&quot;, &quot;body&quot;=&gt;&quot;I'm learning how to print in logs.&quot;, &quot;published&quot;=&gt;&quot;0&quot;}, &quot;commit&quot;=&gt;&quot;Create Article&quot;}
+New article: {&quot;id&quot;=&gt;nil, &quot;title&quot;=&gt;&quot;Debugging Rails&quot;, &quot;body&quot;=&gt;&quot;I'm learning how to print in logs.&quot;, &quot;published&quot;=&gt;false, &quot;created_at&quot;=&gt;nil, &quot;updated_at&quot;=&gt;nil}
+Article should be valid: true
+   (0.0ms)  begin transaction
+  ↳ app/controllers/articles_controller.rb:31
+  Article Create (0.5ms)  INSERT INTO &quot;articles&quot; (&quot;title&quot;, &quot;body&quot;, &quot;published&quot;, &quot;created_at&quot;, &quot;updated_at&quot;) VALUES (?, ?, ?, ?, ?)  [[&quot;title&quot;, &quot;Debugging Rails&quot;], [&quot;body&quot;, &quot;I'm learning how to print in logs.&quot;], [&quot;published&quot;, 0], [&quot;created_at&quot;, &quot;2018-10-19 00:09:23.216549&quot;], [&quot;updated_at&quot;, &quot;2018-10-19 00:09:23.216549&quot;]]
+  ↳ app/controllers/articles_controller.rb:31
+   (2.3ms)  commit transaction
+  ↳ app/controllers/articles_controller.rb:31
+The article was saved and now the user is going to be redirected...
+Redirected to http://localhost:3000/articles/1
+Completed 302 Found in 4ms (ActiveRecord: 0.8ms)
+">Copy</button>
 </div>
 <p>Agregar registros adicionales como este facilita la búsqueda de comportamientos inesperados o inusuales en sus registros. Si agrega registros adicionales, asegúrese de hacer un uso sensato de los niveles de registro para evitar llenar sus registros de producción con trivialidades inútiles.</p><h4><a class="anchorlink" href="#">Verbose Query Logs</a></h4><p>Al observar el resultado de la consulta de la base de datos en los registros, es posible que no quede claro de inmediato por qué se activan varias consultas de la base de datos cuando se llama a un solo método:</p><div class="code_container">
-<pre><code class="language-plain">irb(main):001:0&gt; Article.pamplemousse
+<pre><code class="highlight plaintext">irb(main):001:0&gt; Article.pamplemousse
   Article Load (0.4ms)  SELECT "articles".* FROM "articles"
   Comment Load (0.2ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 1]]
   Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 2]]
   Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 3]]
 =&gt; #&lt;Comment id: 2, author: "1", body: "Well, actually...", article_id: 1, created_at: "2018-10-19 00:56:10", updated_at: "2018-10-19 00:56:10"&gt;
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='irb(main):001:0&gt; Article.pamplemousse
+  Article Load (0.4ms)  SELECT "articles".* FROM "articles"
+  Comment Load (0.2ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 1]]
+  Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 2]]
+  Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 3]]
+=&gt; #&lt;Comment id: 2, author: "1", body: "Well, actually...", article_id: 1, created_at: "2018-10-19 00:56:10", updated_at: "2018-10-19 00:56:10"&gt;
+'>Copy</button>
 </div>
 <p>Después de ejecutar <code>ActiveRecord::Base.verbose_query_logs = true</code> en la sesión de <code>bin/rails console</code> para habilitar los registros de consulta detallados y ejecutar el método nuevamente, resulta obvio qué línea única de código genera todas estas llamadas discretas a la base de datos:</p><div class="code_container">
-<pre><code class="language-plain">irb(main):003:0&gt; Article.pamplemousse
+<pre><code class="highlight plaintext">irb(main):003:0&gt; Article.pamplemousse
   Article Load (0.2ms)  SELECT "articles".* FROM "articles"
   ↳ app/models/article.rb:5
   Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 1]]
@@ -366,22 +469,40 @@ Completed 302 Found in 4ms (ActiveRecord: 0.8ms)
   ↳ app/models/article.rb:6
 =&gt; #&lt;Comment id: 2, author: "1", body: "Well, actually...", article_id: 1, created_at: "2018-10-19 00:56:10", updated_at: "2018-10-19 00:56:10"&gt;
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='irb(main):003:0&gt; Article.pamplemousse
+  Article Load (0.2ms)  SELECT "articles".* FROM "articles"
+  ↳ app/models/article.rb:5
+  Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 1]]
+  ↳ app/models/article.rb:6
+  Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 2]]
+  ↳ app/models/article.rb:6
+  Comment Load (0.1ms)  SELECT "comments".* FROM "comments" WHERE "comments"."article_id" = ?  [["article_id", 3]]
+  ↳ app/models/article.rb:6
+=&gt; #&lt;Comment id: 2, author: "1", body: "Well, actually...", article_id: 1, created_at: "2018-10-19 00:56:10", updated_at: "2018-10-19 00:56:10"&gt;
+'>Copy</button>
 </div>
 <p>Debajo de cada declaración de base de datos, puede ver flechas que apuntan al nombre de archivo de origen específico (y número de línea) del método que resultó en una llamada a la base de datos. Esto puede ayudarlo a identificar y abordar los problemas de rendimiento causados ​​por consultas N + 1: consultas de base de datos única que generan múltiples consultas adicionales.</p><p>Los registros de consultas detallados están habilitados de forma predeterminada en los registros del entorno de desarrollo después de Rails 5.2.</p><div class="warning"><p>Recomendamos no utilizar esta configuración en entornos de producción. Se basa en el método <code>Kernel#caller</code> de Ruby, que tiende a asignar mucha memoria para generar trazas de pila de llamadas a métodos.</p></div><h4><a class="anchorlink" href="#">Tagged Logging</a></h4><p>Cuando se ejecutan aplicaciones multiusuario y multicuenta, suele ser útil
 para poder filtrar los registros usando algunas reglas personalizadas. <code>TaggedLogging</code>
 en Active Support lo ayuda a hacer exactamente eso al sellar las líneas de registro con subdominios, identificaciones de solicitud y cualquier otra cosa para ayudar a depurar dichas aplicaciones.</p><div class="code_container">
-<pre><code class="language-ruby">logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+<pre><code class="highlight ruby"><span class="n">logger</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TaggedLogging</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">))</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">tagged</span><span class="p">(</span><span class="s2">"BCX"</span><span class="p">)</span> <span class="p">{</span> <span class="n">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"Stuff"</span> <span class="p">}</span>                            <span class="c1"># Logs "[BCX] Stuff"</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">tagged</span><span class="p">(</span><span class="s2">"BCX"</span><span class="p">,</span> <span class="s2">"Jason"</span><span class="p">)</span> <span class="p">{</span> <span class="n">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"Stuff"</span> <span class="p">}</span>                   <span class="c1"># Logs "[BCX] [Jason] Stuff"</span>
+<span class="n">logger</span><span class="p">.</span><span class="nf">tagged</span><span class="p">(</span><span class="s2">"BCX"</span><span class="p">)</span> <span class="p">{</span> <span class="n">logger</span><span class="p">.</span><span class="nf">tagged</span><span class="p">(</span><span class="s2">"Jason"</span><span class="p">)</span> <span class="p">{</span> <span class="n">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"Stuff"</span> <span class="p">}</span> <span class="p">}</span> <span class="c1"># Logs "[BCX] [Jason] Stuff"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
 logger.tagged("BCX") { logger.info "Stuff" }                            # Logs "[BCX] Stuff"
 logger.tagged("BCX", "Jason") { logger.info "Stuff" }                   # Logs "[BCX] [Jason] Stuff"
 logger.tagged("BCX") { logger.tagged("Jason") { logger.info "Stuff" } } # Logs "[BCX] [Jason] Stuff"
-</code></pre>
+'>Copy</button>
 </div>
 <h4><a class="anchorlink" href="#">Impact of Logs on Performance</a></h4><p>El registro siempre tendrá un pequeño impacto en el rendimiento de su aplicación Rails,
 particularmente al iniciar sesión en el disco. Además, hay algunas sutilezas:</p><p>El uso del nivel <code>:debug</code> tendrá una penalización de rendimiento mayor que <code>:fatal</code>,
 ya que se está evaluando y escribiendo un número mucho mayor de cadenas en el
 salida de registro (por ejemplo, disco).</p><p>Otro error potencial son demasiadas llamadas a "Logger" en su código:</p><div class="code_container">
-<pre><code class="language-ruby">logger.debug "Person attributes hash: #{@person.attributes.inspect}"
+<pre><code class="highlight ruby"><span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="s2">"Person attributes hash: </span><span class="si">#{</span><span class="vi">@person</span><span class="p">.</span><span class="nf">attributes</span><span class="p">.</span><span class="nf">inspect</span><span class="si">}</span><span class="s2">"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='logger.debug "Person attributes hash: #{@person.attributes.inspect}"
+'>Copy</button>
 </div>
 <p>En el ejemplo anterior, habrá un impacto en el rendimiento incluso si el
 el nivel de salida no incluye depuración. La razón es que Ruby tiene que evaluar
@@ -389,8 +510,10 @@ estas cadenas, que incluye la creación de instancias del objeto <code>String</c
 e interpolar las variables.</p><p>Por lo tanto, se recomienda pasar bloques a los métodos del registrador, ya que estos son
 solo se evalúa si el nivel de salida es el mismo (o está incluido) en el nivel permitido
 (es decir, carga diferida). El mismo código reescrito sería:</p><div class="code_container">
-<pre><code class="language-ruby">logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
+<pre><code class="highlight ruby"><span class="n">logger</span><span class="p">.</span><span class="nf">debug</span> <span class="p">{</span><span class="s2">"Person attributes hash: </span><span class="si">#{</span><span class="vi">@person</span><span class="p">.</span><span class="nf">attributes</span><span class="p">.</span><span class="nf">inspect</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='logger.debug {"Person attributes hash: #{@person.attributes.inspect}"}
+'>Copy</button>
 </div>
 <p>El contenido del bloque y, por lo tanto, la interpolación de cadenas, son solo
 evaluado si la depuración está habilitada. Estos ahorros de rendimiento son solo
@@ -404,25 +527,34 @@ pero no sé por dónde empezar. Simplemente depure cualquier solicitud a su apli
 Utilice esta guía para aprender cómo pasar del código que ha escrito al
 código subyacente de Rails.</p><h4><a class="anchorlink" href="#">Setup</a></h4><p>Puede usar la gema <code>byebug</code> para establecer puntos de interrupción y recorrer el código en vivo en
 Rieles. Para instalarlo, simplemente ejecute:</p><div class="code_container">
-<pre><code class="language-shell-session">$ gem install byebug
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">gem install </span>byebug
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="gem install byebug
+">Copy</button>
 </div>
 <p>Dentro de cualquier aplicación Rails, puede invocar el depurador llamando al
 Método <code>byebug</code>.</p><p>He aquí un ejemplo:</p><div class="code_container">
-<pre><code class="language-ruby">class PeopleController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PeopleController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="n">byebug</span>
+    <span class="vi">@person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PeopleController &lt; ApplicationController
   def new
     byebug
     @person = Person.new
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4><a class="anchorlink" href="#">The Shell</a></h4><p>Tan pronto como su aplicación llame al método <code>byebug</code>, el depurador será
 comenzó en un shell de depuración dentro de la ventana de terminal donde lanzó su
 servidor de aplicaciones, y se le colocará en el indicador del depurador <code>(byebug)</code>.
 Antes del mensaje, el código alrededor de la línea que está a punto de ejecutarse será
 mostrada y la línea actual será marcada por '=&gt;', así:</p><div class="code_container">
-<pre><code class="language-plain">[1, 10] in /PathTo/project/app/controllers/articles_controller.rb
+<pre><code class="highlight plaintext">[1, 10] in /PathTo/project/app/controllers/articles_controller.rb
     3:
     4:   # GET /articles
     5:   # GET /articles.json
@@ -436,14 +568,28 @@ mostrada y la línea actual será marcada por '=&gt;', así:</p><div class="code
 
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[1, 10] in /PathTo/project/app/controllers/articles_controller.rb
+    3:
+    4:   # GET /articles
+    5:   # GET /articles.json
+    6:   def index
+    7:     byebug
+=&gt;  8:     @articles = Article.find_recent
+    9:
+   10:     respond_to do |format|
+   11:       format.html # index.html.erb
+   12:       format.json { render json: @articles }
+
+(byebug)
+">Copy</button>
 </div>
 <p>Si llegó allí mediante una solicitud del navegador, la pestaña del navegador que contiene la solicitud
 se colgará hasta que el depurador haya finalizado y el seguimiento haya finalizado
 procesando toda la solicitud.</p><p>Por ejemplo:</p><div class="code_container">
-<pre><code class="language-shell-session">=&gt; Booting Puma
-=&gt; Rails 6.0.0 application starting in development
-=&gt; Run `bin/rails server --help` for more startup options
-Puma starting in single mode...
+<pre><code class="highlight console"><span class="gp">=&gt;</span><span class="w"> </span>Booting Puma
+<span class="gp">=&gt;</span><span class="w"> </span>Rails 6.0.0 application starting <span class="k">in </span>development
+<span class="gp">=&gt;</span><span class="w"> </span>Run <span class="sb">`</span><span class="nb">bin/rails </span>server <span class="nt">--help</span><span class="sb">`</span> <span class="k">for </span>more startup options
+<span class="go">Puma starting in single mode...
 * Version 3.12.1 (ruby 2.5.7-p206), codename: Llamas in Pajamas
 * Min threads: 5, max threads: 5
 * Environment: development
@@ -451,25 +597,26 @@ Puma starting in single mode...
 Use Ctrl-C to stop
 Started GET "/" for 127.0.0.1 at 2014-04-11 13:11:48 +0200
   ActiveRecord::SchemaMigration Load (0.2ms)  SELECT "schema_migrations".* FROM "schema_migrations"
-Processing by ArticlesController#index as HTML
-
+</span><span class="gp">Processing by ArticlesController#</span>index as HTML
+<span class="go">
 [3, 12] in /PathTo/project/app/controllers/articles_controller.rb
     3:
-    4:   # GET /articles
-    5:   # GET /articles.json
-    6:   def index
+</span><span class="gp">    4:   #</span><span class="w"> </span>GET /articles
+<span class="gp">    5:   #</span><span class="w"> </span>GET /articles.json
+<span class="go">    6:   def index
     7:     byebug
-=&gt;  8:     @articles = Article.find_recent
-    9:
+</span><span class="gp">=&gt;</span><span class="w">  </span>8:     @articles <span class="o">=</span> Article.find_recent
+<span class="go">    9:
    10:     respond_to do |format|
-   11:       format.html # index.html.erb
-   12:       format.json { render json: @articles }
+</span><span class="gp">   11:       format.html #</span><span class="w"> </span>index.html.erb
+<span class="go">   12:       format.json { render json: @articles }
 (byebug)
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <p>Ahora es el momento de explorar su aplicación. Un buen lugar para comenzar es
 pidiendo ayuda al depurador. Tipo: <code>help</code></p><div class="code_container">
-<pre><code class="language-plain">(byebug) help
+<pre><code class="highlight plaintext">(byebug) help
 
   break      -- Sets breakpoints in the source code
   catch      -- Handles exception catchpoints
@@ -511,9 +658,51 @@ pidiendo ayuda al depurador. Tipo: <code>help</code></p><div class="code_contain
 
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) help
+
+  break      -- Sets breakpoints in the source code
+  catch      -- Handles exception catchpoints
+  condition  -- Sets conditions on breakpoints
+  continue   -- Runs until program ends, hits a breakpoint or reaches a line
+  debug      -- Spawns a subdebugger
+  delete     -- Deletes breakpoints
+  disable    -- Disables breakpoints or displays
+  display    -- Evaluates expressions every time the debugger stops
+  down       -- Moves to a lower frame in the stack trace
+  edit       -- Edits source files
+  enable     -- Enables breakpoints or displays
+  finish     -- Runs the program until frame returns
+  frame      -- Moves to a frame in the call stack
+  help       -- Helps you using byebug
+  history    -- Shows byebug's history of commands
+  info       -- Shows several informations about the program being debugged
+  interrupt  -- Interrupts the program
+  irb        -- Starts an IRB session
+  kill       -- Sends a signal to the current process
+  list       -- Lists lines of source code
+  method     -- Shows methods of an object, class or module
+  next       -- Runs one or more lines of code
+  pry        -- Starts a Pry session
+  quit       -- Exits byebug
+  restart    -- Restarts the debugged program
+  save       -- Saves current byebug session to a file
+  set        -- Modifies byebug settings
+  show       -- Shows byebug settings
+  source     -- Restores a previously saved byebug session
+  step       -- Steps into blocks or methods one or more times
+  thread     -- Commands to manipulate threads
+  tracevar   -- Enables tracing of a global variable
+  undisplay  -- Stops displaying all or some expressions when program stops
+  untracevar -- Stops tracing a global variable
+  up         -- Moves to a higher frame in the stack trace
+  var        -- Shows variables and its values
+  where      -- Displays the backtrace
+
+(byebug)
+">Copy</button>
 </div>
 <p>Para ver las diez líneas anteriores, debe escribir <code>list-</code> (o <code>l-</code>).</p><div class="code_container">
-<pre><code class="language-plain">(byebug) l-
+<pre><code class="highlight plaintext">(byebug) l-
 
 [1, 10] in /PathTo/project/app/controllers/articles_controller.rb
    1  class ArticlesController &lt; ApplicationController
@@ -527,11 +716,25 @@ pidiendo ayuda al depurador. Tipo: <code>help</code></p><div class="code_contain
    9
    10     respond_to do |format|
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) l-
+
+[1, 10] in /PathTo/project/app/controllers/articles_controller.rb
+   1  class ArticlesController &lt; ApplicationController
+   2    before_action :set_article, only: [:show, :edit, :update, :destroy]
+   3
+   4    # GET /articles
+   5    # GET /articles.json
+   6    def index
+   7      byebug
+   8      @articles = Article.find_recent
+   9
+   10     respond_to do |format|
+">Copy</button>
 </div>
 <p>De esta manera, puede moverse dentro del archivo y ver el código sobre la línea donde
 agregó la llamada <code>byebug</code>. Finalmente, para ver de nuevo dónde se encuentra en el código, puede
 escriba <code>list =</code></p><div class="code_container">
-<pre><code class="language-plain">(byebug) list=
+<pre><code class="highlight plaintext">(byebug) list=
 
 [3, 12] in /PathTo/project/app/controllers/articles_controller.rb
     3:
@@ -546,6 +749,21 @@ escriba <code>list =</code></p><div class="code_container">
    12:       format.json { render json: @articles }
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) list=
+
+[3, 12] in /PathTo/project/app/controllers/articles_controller.rb
+    3:
+    4:   # GET /articles
+    5:   # GET /articles.json
+    6:   def index
+    7:     byebug
+=&gt;  8:     @articles = Article.find_recent
+    9:
+   10:     respond_to do |format|
+   11:       format.html # index.html.erb
+   12:       format.json { render json: @articles }
+(byebug)
+">Copy</button>
 </div>
 <h4><a class="anchorlink" href="#">The Context</a></h4><p>Cuando comience a depurar su aplicación, se le colocará en diferentes
 contextos a medida que recorre las diferentes partes de la pila.</p><p>El depurador crea un contexto cuando se alcanza un punto de parada o un evento. los
@@ -555,7 +773,7 @@ programa depurado y conocer el lugar donde se detiene el programa depurado.</p><
 el backtrace de la aplicación. Esto puede ser muy útil para saber cómo consiguió
 Dónde estás. Si alguna vez se preguntó cómo llegó a alguna parte de su código,
 luego, "backtrace" proporcionará la respuesta.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) where
+<pre><code class="highlight plaintext">(byebug) where
 --&gt; #0  ArticlesController.index
       at /PathToProject/app/controllers/articles_controller.rb:8
     #1  ActionController::BasicImplicitRender.send_action(method#String, *args#Array)
@@ -566,12 +784,23 @@ luego, "backtrace" proporcionará la respuesta.</p><div class="code_container">
       at /PathToGems/actionpack-5.1.0/lib/action_controller/metal/rendering.rb:30
 ...
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) where
+--&gt; #0  ArticlesController.index
+      at /PathToProject/app/controllers/articles_controller.rb:8
+    #1  ActionController::BasicImplicitRender.send_action(method#String, *args#Array)
+      at /PathToGems/actionpack-5.1.0/lib/action_controller/metal/basic_implicit_render.rb:4
+    #2  AbstractController::Base.process_action(action#NilClass, *args#Array)
+      at /PathToGems/actionpack-5.1.0/lib/abstract_controller/base.rb:181
+    #3  ActionController::Rendering.process_action(action, *args)
+      at /PathToGems/actionpack-5.1.0/lib/action_controller/metal/rendering.rb:30
+...
+">Copy</button>
 </div>
 <p>El cuadro actual está marcado con <code>-&gt;</code>. Puedes moverte a donde quieras en este
 trace (cambiando así el contexto) usando el comando <code>frame n</code>, donde <em>n</em> es
 el número de fotograma especificado. Si lo hace, <code>byebug</code> mostrará su nuevo
 contexto.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) frame 2
+<pre><code class="highlight plaintext">(byebug) frame 2
 
 [176, 185] in /PathToGems/actionpack-5.1.0/lib/abstract_controller/base.rb
    176:       # is the intended way to override action dispatching.
@@ -586,6 +815,21 @@ contexto.</p><div class="code_container">
    185:       # this method if you wish to change how action methods are called,
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) frame 2
+
+[176, 185] in /PathToGems/actionpack-5.1.0/lib/abstract_controller/base.rb
+   176:       # is the intended way to override action dispatching.
+   177:       #
+   178:       # Notice that the first argument is the method to be dispatched
+   179:       # which is *not* necessarily the same as the action name.
+   180:       def process_action(method_name, *args)
+=&gt; 181:         send_action(method_name, *args)
+   182:       end
+   183:
+   184:       # Actually call the method associated with the action. Override
+   185:       # this method if you wish to change how action methods are called,
+(byebug)
+">Copy</button>
 </div>
 <p>Las variables disponibles son las mismas que si estuviera ejecutando la línea de código por
 línea. Después de todo, eso es depurar.</p><p>También puede usar los comandos <code>up [n]</code> y <code>down [n]</code> para cambiar el contexto
@@ -611,7 +855,7 @@ el hilo está marcado con un signo más (+).</li>
 para verificar que no haya condiciones de carrera en su código.</p><h4 id="view-helpers-for-debugging-inspecting-variables"><a class="anchorlink" href="#view-helpers-for-debugging-inspecting-variables">1.2 Inspecting Variables</a></h4><p>Cualquier expresión se puede evaluar en el contexto actual. Para evaluar un
 expresión, simplemente escríbala!</p><p>Este ejemplo muestra cómo puede imprimir las variables de instancia definidas dentro del
 contexto actual:</p><div class="code_container">
-<pre><code class="language-plain">[3, 12] in /PathTo/project/app/controllers/articles_controller.rb
+<pre><code class="highlight plaintext">[3, 12] in /PathTo/project/app/controllers/articles_controller.rb
     3:
     4:   # GET /articles
     5:   # GET /articles.json
@@ -628,12 +872,29 @@ contexto actual:</p><div class="code_container">
  :@_action_name, :@_response_body, :@marked_for_same_origin_verification,
  :@_config]
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[3, 12] in /PathTo/project/app/controllers/articles_controller.rb
+    3:
+    4:   # GET /articles
+    5:   # GET /articles.json
+    6:   def index
+    7:     byebug
+=&gt;  8:     @articles = Article.find_recent
+    9:
+   10:     respond_to do |format|
+   11:       format.html # index.html.erb
+   12:       format.json { render json: @articles }
+
+(byebug) instance_variables
+[:@_action_has_layout, :@_routes, :@_request, :@_response, :@_lookup_context,
+ :@_action_name, :@_response_body, :@marked_for_same_origin_verification,
+ :@_config]
+">Copy</button>
 </div>
 <p>Como puede haber descubierto, todas las variables a las que puede acceder desde un
 se muestran el controlador. Esta lista se actualiza dinámicamente a medida que ejecuta el código.
 Por ejemplo, ejecute la siguiente línea usando <code>next</code> (aprenderá más sobre esto
 comando más adelante en esta guía).</p><div class="code_container">
-<pre><code class="language-plain">(byebug) next
+<pre><code class="highlight plaintext">(byebug) next
 
 [5, 14] in /PathTo/project/app/controllers/articles_controller.rb
    5     # GET /articles.json
@@ -649,19 +910,40 @@ comando más adelante en esta guía).</p><div class="code_container">
    15
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) next
+
+[5, 14] in /PathTo/project/app/controllers/articles_controller.rb
+   5     # GET /articles.json
+   6     def index
+   7       byebug
+   8       @articles = Article.find_recent
+   9
+=&gt; 10      respond_to do |format|
+   11        format.html # index.html.erb
+   12        format.json { render json: @articles }
+   13      end
+   14    end
+   15
+(byebug)
+">Copy</button>
 </div>
 <p>Y luego pregunte de nuevo por las variables de instancia:</p><div class="code_container">
-<pre><code class="language-plain">(byebug) instance_variables
+<pre><code class="highlight plaintext">(byebug) instance_variables
 [:@_action_has_layout, :@_routes, :@_request, :@_response, :@_lookup_context,
  :@_action_name, :@_response_body, :@marked_for_same_origin_verification,
  :@_config, :@articles]
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) instance_variables
+[:@_action_has_layout, :@_routes, :@_request, :@_response, :@_lookup_context,
+ :@_action_name, :@_response_body, :@marked_for_same_origin_verification,
+ :@_config, :@articles]
+">Copy</button>
 </div>
 <p>Ahora se incluye <code>@artículos</code> en las variables de instancia, porque la línea que define
 fue ejecutado.</p><div class="info"><p>También puede ingresar al modo ** irb ** con el comando <code>irb</code> (¡por supuesto!).
 Esto iniciará una sesión irb dentro del contexto en el que la invocó.</p></div><p>El método <code>var</code> es la forma más conveniente de mostrar variables y sus valores.
 Hagamos que <code>byebug</code> nos ayude con eso.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) help var
+<pre><code class="highlight plaintext">(byebug) help var
 
   [v]ar &lt;subcommand&gt;
 
@@ -676,12 +958,30 @@ Hagamos que <code>byebug</code> nos ayude con eso.</p><div class="code_container
   var local    -- Shows local variables in current scope.
 
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) help var
+
+  [v]ar &lt;subcommand&gt;
+
+  Shows variables and its values
+
+
+  var all      -- Shows local, global and instance variables of self.
+  var args     -- Information about arguments of the current scope
+  var const    -- Shows constants of an object.
+  var global   -- Shows global variables.
+  var instance -- Shows instance variables of self or a specific object.
+  var local    -- Shows local variables in current scope.
+
+">Copy</button>
 </div>
 <p>Esta es una excelente manera de inspeccionar los valores de las variables de contexto actuales. por
 ejemplo, para comprobar que no tenemos variables locales definidas actualmente:</p><div class="code_container">
-<pre><code class="language-plain">(byebug) var local
+<pre><code class="highlight plaintext">(byebug) var local
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) var local
+(byebug)
+">Copy</button>
 </div>
 <p>También puede inspeccionar un método de objeto de esta manera:
 <code>
@@ -698,9 +998,12 @@ ejemplo, para comprobar que no tenemos variables locales definidas actualmente:<
 @transaction_state = nil
 </code></p><p>También puede usar <code>display</code> para comenzar a ver variables. Esta es una buena forma de
 rastreando los valores de una variable mientras la ejecución continúa.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) display @articles
+<pre><code class="highlight plaintext">(byebug) display @articles
 1: @articles = nil
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) display @articles
+1: @articles = nil
+">Copy</button>
 </div>
 <p>Las variables dentro de la lista mostrada se imprimirán con sus valores después
 te mueves en la pila. Para dejar de mostrar una variable use <code>undisplay n</code> donde
@@ -710,7 +1013,7 @@ ejecución.</p><p>Use <code>step</code> (abreviado <code>s</code>) para continua
 punto de parada lógico y control de retorno al depurador. <code>next</code> es similar a
 <code>step</code>, pero mientras <code>step</code> se detiene en la siguiente línea de código ejecutado, haciendo solo un
 paso único, <code>siguiente</code> se mueve a la siguiente línea sin descender dentro de los métodos.</p><p>Por ejemplo, considere la siguiente situación:</p><div class="code_container">
-<pre><code class="language-plain">Started GET "/" for 127.0.0.1 at 2014-04-11 13:39:23 +0200
+<pre><code class="highlight plaintext">Started GET "/" for 127.0.0.1 at 2014-04-11 13:39:23 +0200
 Processing by ArticlesController#index as HTML
 
 [1, 6] in /PathToProject/app/models/article.rb
@@ -723,12 +1026,25 @@ Processing by ArticlesController#index as HTML
 
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="Started GET &quot;/&quot; for 127.0.0.1 at 2014-04-11 13:39:23 +0200
+Processing by ArticlesController#index as HTML
+
+[1, 6] in /PathToProject/app/models/article.rb
+   1: class Article &lt; ApplicationRecord
+   2:   def self.find_recent(limit = 10)
+   3:     byebug
+=&gt; 4:     where('created_at &gt; ?', 1.week.ago).limit(limit)
+   5:   end
+   6: end
+
+(byebug)
+">Copy</button>
 </div>
 <p>Si usamos <code>next</code>, no profundizaremos en las llamadas a métodos. En cambio, byebug
 vaya a la siguiente línea dentro del mismo contexto. En este caso, es la última línea
 del método actual, por lo que <code>byebug</code> volverá a la siguiente línea de la persona que llama
 método.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) next
+<pre><code class="highlight plaintext">(byebug) next
 [4, 13] in /PathToProject/app/controllers/articles_controller.rb
     4:   # GET /articles
     5:   # GET /articles.json
@@ -743,10 +1059,25 @@ método.</p><div class="code_container">
 
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) next
+[4, 13] in /PathToProject/app/controllers/articles_controller.rb
+    4:   # GET /articles
+    5:   # GET /articles.json
+    6:   def index
+    7:     @articles = Article.find_recent
+    8:
+=&gt;  9:     respond_to do |format|
+   10:       format.html # index.html.erb
+   11:       format.json { render json: @articles }
+   12:     end
+   13:   end
+
+(byebug)
+">Copy</button>
 </div>
 <p>Si usamos <code>step</code> en la misma situación, <code>byebug</code> irá literalmente al siguiente
 Instrucción Ruby que se ejecutará, en este caso, el método de la semana de Active Support.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) step
+<pre><code class="highlight plaintext">(byebug) step
 
 [49, 58] in /PathToGems/activesupport-5.1.0/lib/active_support/core_ext/numeric/time.rb
    49:
@@ -761,6 +1092,21 @@ Instrucción Ruby que se ejecutará, en este caso, el método de la semana de Ac
    58:   # Returns a Duration instance matching the number of fortnights provided.
 (byebug)
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) step
+
+[49, 58] in /PathToGems/activesupport-5.1.0/lib/active_support/core_ext/numeric/time.rb
+   49:
+   50:   # Returns a Duration instance matching the number of weeks provided.
+   51:   #
+   52:   #   2.weeks # =&gt; 14 days
+   53:   def weeks
+=&gt; 54:     ActiveSupport::Duration.weeks(self)
+   55:   end
+   56:   alias :week :weeks
+   57:
+   58:   # Returns a Duration instance matching the number of fortnights provided.
+(byebug)
+">Copy</button>
 </div>
 <p>Esta es una de las mejores formas de encontrar errores en su código.</p><div class="info"><p>También puedes usar <code>step n</code> o <code>next n</code> para avanzar <code>n</code> pasos a la vez.</p></div><h4 id="breakpoints"><a class="anchorlink" href="#breakpoints">1.4 Breakpoints</a></h4><p>Un punto de interrupción hace que su aplicación se detenga cada vez que un determinado punto del programa
 es alcanzado. El shell del depurador se invoca en esa línea.</p><p>Puede agregar puntos de interrupción dinámicamente con el comando <code>romper</code> (o simplemente <code>b</code>).
@@ -778,7 +1124,7 @@ enciende el depurador.</li>
 <em>expression</em> funciona de la misma manera que con el archivo: n.</li>
 </ul>
 <p>Por ejemplo, en la situación anterior</p><div class="code_container">
-<pre><code class="language-plain">[4, 13] in /PathToProject/app/controllers/articles_controller.rb
+<pre><code class="highlight plaintext">[4, 13] in /PathToProject/app/controllers/articles_controller.rb
     4:   # GET /articles
     5:   # GET /articles.json
     6:   def index
@@ -794,13 +1140,33 @@ enciende el depurador.</li>
 Successfully created breakpoint with id 1
 
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="[4, 13] in /PathToProject/app/controllers/articles_controller.rb
+    4:   # GET /articles
+    5:   # GET /articles.json
+    6:   def index
+    7:     @articles = Article.find_recent
+    8:
+=&gt;  9:     respond_to do |format|
+   10:       format.html # index.html.erb
+   11:       format.json { render json: @articles }
+   12:     end
+   13:   end
+
+(byebug) break 11
+Successfully created breakpoint with id 1
+
+">Copy</button>
 </div>
 <p>Utilice <code>info breakpoints</code> para enumerar los puntos de interrupción. Si proporciona un número, indica
 ese punto de ruptura. De lo contrario, enumera todos los puntos de interrupción.</p><div class="code_container">
-<pre><code class="language-plain">(byebug) info breakpoints
+<pre><code class="highlight plaintext">(byebug) info breakpoints
 Num Enb What
 1   y   at /PathToProject/app/controllers/articles_controller.rb:11
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) info breakpoints
+Num Enb What
+1   y   at /PathToProject/app/controllers/articles_controller.rb:11
+">Copy</button>
 </div>
 <p>Para eliminar puntos de interrupción: use el comando <code>delete n</code> para eliminar el punto de interrupción
 número <em>n</em>. Si no se especifica ningún número, elimina todos los puntos de interrupción que están
@@ -845,7 +1211,7 @@ Variable de entorno EDITOR. También se puede dar una línea específica <em>n</
 <h4 id="quitting"><a class="anchorlink" href="#quitting">1.8 Quitting</a></h4><p>Para salir del depurador, use el comando <code>quit</code> (abreviado como <code>q</code>). O escriba <code>q!</code>
 para omitir el mensaje "¿Realmente dejar de fumar?" (y / n) `y salir incondicionalmente.</p><p>Un simple abandono intenta terminar todos los hilos en vigor. Por lo tanto, su servidor
 se detendrá y tendrá que volver a iniciarlo.</p><h4 id="view-helpers-for-debugging-settings"><a class="anchorlink" href="#view-helpers-for-debugging-settings">1.9 Settings</a></h4><p><code>byebug</code> tiene algunas opciones disponibles para modificar su comportamiento:</p><div class="code_container">
-<pre><code class="language-plain">(byebug) help set
+<pre><code class="highlight plaintext">(byebug) help set
 
   set &lt;setting&gt; &lt;value&gt;
 
@@ -875,30 +1241,72 @@ se detendrá y tendrá que volver a iniciarlo.</p><h4 id="view-helpers-for-debug
   histsize       -- Maximum number of commands that can be stored in byebug history
   savefile       -- File where settings are saved to. Default: ~/.byebug_save
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="(byebug) help set
+
+  set &lt;setting&gt; &lt;value&gt;
+
+  Modifies byebug settings
+
+  Boolean values take &quot;on&quot;, &quot;off&quot;, &quot;true&quot;, &quot;false&quot;, &quot;1&quot; or &quot;0&quot;. If you
+  don't specify a value, the boolean setting will be enabled. Conversely,
+  you can use &quot;set no&lt;setting&gt;&quot; to disable them.
+
+  You can see these environment settings with the &quot;show&quot; command.
+
+  List of supported settings:
+
+  autosave       -- Automatically save command history record on exit
+  autolist       -- Invoke list command on every stop
+  width          -- Number of characters per line in byebug's output
+  autoirb        -- Invoke IRB on every stop
+  basename       -- &lt;file&gt;:&lt;line&gt; information after every stop uses short paths
+  linetrace      -- Enable line execution tracing
+  autopry        -- Invoke Pry on every stop
+  stack_on_error -- Display stack trace when `eval` raises an exception
+  fullpath       -- Display full file names in backtraces
+  histfile       -- File where cmd history is saved to. Default: ./.byebug_history
+  listsize       -- Set number of source lines to list by default
+  post_mortem    -- Enable/disable post-mortem mode
+  callstyle      -- Set how you want method call parameters to be displayed
+  histsize       -- Maximum number of commands that can be stored in byebug history
+  savefile       -- File where settings are saved to. Default: ~/.byebug_save
+">Copy</button>
 </div>
 <div class="info"><p>Puede guardar estas configuraciones en un archivo <code>.byebugrc</code> en su directorio personal.
 El depurador lee estas configuraciones globales cuando se inicia. Por ejemplo:</p></div><div class="code_container">
-<pre><code class="language-shell-session">set callstyle short
+<pre><code class="highlight console"><span class="go">set callstyle short
 set listsize 25
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
 </div>
 <h3 id="debugging-with-the-web-console-gem"><a class="anchorlink" href="#debugging-with-the-web-console-gem">2 Debugging with the <code>web-console</code> gem</a></h3><p>Web Console es un poco como "byebug", pero se ejecuta en el navegador. En cualquier pagina tu
 están desarrollando, puede solicitar una consola en el contexto de una vista o un
 controlador. La consola se representará junto a su contenido HTML.</p><h4 id="console"><a class="anchorlink" href="#console">2.1 Console</a></h4><p>Dentro de cualquier acción o vista del controlador, puede invocar la consola mediante
 llamando al método <code>consola</code>.</p><p>Por ejemplo, en un controlador:</p><div class="code_container">
-<pre><code class="language-ruby">class PostsController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="n">console</span>
+    <span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PostsController &lt; ApplicationController
   def new
     console
     @post = Post.new
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>O en una vista:</p><div class="code_container">
-<pre><code class="language-erb">&lt;% console %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">console</span> <span class="cp">%&gt;</span>
+
+<span class="nt">&lt;h2&gt;</span>New Post<span class="nt">&lt;/h2&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% console %&gt;
 
 &lt;h2&gt;New Post&lt;/h2&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto generará una consola dentro de su vista. No necesitas preocuparte por el
 ubicación de la llamada <code>console</code>; no se renderizará en el lugar de su

@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -332,55 +332,82 @@ locking</a> para
   para cada artículo.</li>
 </ul>
 <p>NOTA: Si bien estos nombres de columna son opcionales, de hecho están reservados por Active Record. Manténgase alejado de las palabras clave reservadas a menos que desee la funcionalidad adicional. Por ejemplo, <code>type</code> es una palabra clave reservada que se usa para designar una tabla usando la herencia de tabla única (Singel Table Inheritance). Si no está utilizando STI, intente con una palabra clave análoga como "contexto", que aún puede describir con precisión los datos que está modelando.</p><h3 id="creating-active-record-models"><a class="anchorlink" href="#creating-active-record-models">3 Creating Active Record Models</a></h3><p>Crear modelos de Active Record</p><p>Para crear modelos de Active Record, subclasifique la clase <code>ApplicationRecord</code> y estará listo:</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class Product &lt; ApplicationRecord
+end
+">Copy</button>
 </div>
 <p>Esto creará un modelo de <code>Producto</code>, mapeado a una tabla de<code>productos</code> en
 base de datos. Al hacer esto, también tendrá la capacidad de mapear las columnas de cada
 fila en esa tabla con los atributos de las instancias de su modelo. Suponer
 que la tabla <code>productos</code> fue creada usando una declaración SQL (o una de sus extensiones) como:</p><div class="code_container">
-<pre><code class="language-sql">CREATE TABLE products (
+<pre><code class="highlight sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">products</span> <span class="p">(</span>
+   <span class="n">id</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">auto_increment</span><span class="p">,</span>
+   <span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+   <span class="k">PRIMARY</span> <span class="k">KEY</span>  <span class="p">(</span><span class="n">id</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="CREATE TABLE products (
    id int(11) NOT NULL auto_increment,
    name varchar(255),
    PRIMARY KEY  (id)
 );
-</code></pre>
+">Copy</button>
 </div>
 <p>El esquema anterior declara una tabla con dos columnas: <code>id</code> y<code>name</code>. Cada fila de
 Esta tabla representa un determinado producto con estos dos parámetros. Por lo tanto, usted
 sería capaz de escribir código como el siguiente:</p><div class="code_container">
-<pre><code class="language-ruby">p = Product.new
+<pre><code class="highlight ruby"><span class="nb">p</span> <span class="o">=</span> <span class="no">Product</span><span class="p">.</span><span class="nf">new</span>
+<span class="nb">p</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Some Book"</span>
+<span class="nb">puts</span> <span class="nb">p</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># "Some Book"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='p = Product.new
 p.name = "Some Book"
 puts p.name # "Some Book"
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="overriding-the-naming-conventions"><a class="anchorlink" href="#overriding-the-naming-conventions">4 Overriding the Naming Conventions</a></h3><p>Anulación de las convenciones de nomenclatura</p><p>¿Qué sucede si necesita seguir una convención de nomenclatura diferente o si necesita usar su
 Aplicación Rails con una base de datos heredada? No hay problema, puedes anular fácilmente
 Las convenciones predeterminadas.</p><p><code>ApplicationRecord</code> hereda de<code>ActiveRecord :: Base</code>, que define un
 Número de métodos útiles. Puede usar el <code>ActiveRecord :: Base.table_name =</code>
 Método para especificar el nombre de la tabla que se debe utilizar:</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">table_name</span> <span class="o">=</span> <span class="s2">"my_products"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Product &lt; ApplicationRecord
   self.table_name = "my_products"
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>Si lo hace, tendrá que definir manualmente el nombre de la clase que aloja
 los accesorios (my_products.yml) usando el método <code>set_fixture_class</code> en su prueba
 definición:</p><div class="code_container">
-<pre><code class="language-ruby">class ProductTest &lt; ActiveSupport::TestCase
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ProductTest</span> <span class="o">&lt;</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TestCase</span>
+  <span class="n">set_fixture_class</span> <span class="ss">my_products: </span><span class="no">Product</span>
+  <span class="n">fixtures</span> <span class="ss">:my_products</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ProductTest &lt; ActiveSupport::TestCase
   set_fixture_class my_products: Product
   fixtures :my_products
   ...
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>También es posible anular la columna que se debe usar como tabla
 clave primaria usando el método <code>ActiveRecord :: Base.primary_key =</code>: método</p><div class="code_container">
-<pre><code class="language-ruby">class Product &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Product</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">primary_key</span> <span class="o">=</span> <span class="s2">"product_id"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class Product &lt; ApplicationRecord
   self.primary_key = "product_id"
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>NOTA: Active Record no admite el uso de columnas de clave no primaria llamadas <code>id</code>.</p><h3 id="crud-reading-and-writing-data"><a class="anchorlink" href="#crud-reading-and-writing-data">5 CRUD: Reading and Writing Data</a></h3><p>CRUD: lectura y escritura de datos</p><p>CRUD es un acrónimo de los cuatro verbos que usamos para operar con datos: <strong>C</strong>reate,
 <strong>R</strong>ead, <strong>U</strong>pdate and <strong>D</strong>elete. Active Record crea automáticamente métodos
@@ -388,77 +415,118 @@ para permitir que una aplicación lea y manipule datos almacenados dentro de sus
 atributos establecidos manualmente después de la creación. El método <code>new</code> devolverá un nuevo
 object mientras que <code>create</code> devolverá el objeto y lo guardará en la base de datos.</p><p>Por ejemplo, dado un modelo <code>Usuario</code> con atributos de<code>nombre</code> y <code>ocupación</code>,
 la llamada al método <code>create</code> creará y guardará un nuevo registro en la base de datos:</p><div class="code_container">
-<pre><code class="language-ruby">user = User.create(name: "David", occupation: "Code Artist")
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"David"</span><span class="p">,</span> <span class="ss">occupation: </span><span class="s2">"Code Artist"</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='user = User.create(name: "David", occupation: "Code Artist")
+'>Copy</button>
 </div>
 <p>Usando el método <code>new</code>, un objeto puede ser instanciado sin ser guardado:</p><div class="code_container">
-<pre><code class="language-ruby">user = User.new
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"David"</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">occupation</span> <span class="o">=</span> <span class="s2">"Code Artist"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='user = User.new
 user.name = "David"
 user.occupation = "Code Artist"
-</code></pre>
+'>Copy</button>
 </div>
 <p>Una llamada a <code>user.save</code> confirmará el registro en la base de datos.</p><p>Finalmente, si un bloque es proveído, tanto <code>create</code> como<code>new</code> producirá el nuevo
 inicializado dentro de un bloque:</p><div class="code_container">
-<pre><code class="language-ruby">user = User.new do |u|
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span>
+  <span class="n">u</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"David"</span>
+  <span class="n">u</span><span class="p">.</span><span class="nf">occupation</span> <span class="o">=</span> <span class="s2">"Code Artist"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='user = User.new do |u|
   u.name = "David"
   u.occupation = "Code Artist"
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="read"><a class="anchorlink" href="#read">5.2 Read</a></h4><p>Active Record provee una rica API para acceder a datos dentro de una base de datos. De abajo
 son algunos ejemplos de diferentes métodos de acceso a datos por Active Record.</p><div class="code_container">
-<pre><code class="language-ruby">#  devuelve una colección de usuarios
+<pre><code class="highlight ruby"><span class="c1">#  devuelve una colección de usuarios</span>
+<span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">all</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="#  devuelve una colección de usuarios
 users = User.all
-</code></pre>
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby"># devuelve el primer usuario
+<pre><code class="highlight ruby"><span class="c1"># devuelve el primer usuario</span>
+<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">first</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# devuelve el primer usuario
 user = User.first
-</code></pre>
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby"># devuelve el primer usuario llamado David
+<pre><code class="highlight ruby"><span class="c1"># devuelve el primer usuario llamado David</span>
+<span class="n">david</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# devuelve el primer usuario llamado David
 david = User.find_by(name: 'David')
-</code></pre>
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby"># encontrar todos los usuarios llamados David que tienen de ocupación Code Artists y ordenado por created_at en sentido cronológicamente inverso
-users = User.where(name: 'David', occupation: 'Code Artist').order(created_at: :desc)
+<pre><code class="highlight ruby"><span class="c1"># encontrar todos los usuarios llamados David que tienen de ocupación Code Artists y ordenado por created_at en sentido cronológicamente inverso</span>
+<span class="n">users</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">,</span> <span class="ss">occupation: </span><span class="s1">'Code Artist'</span><span class="p">).</span><span class="nf">order</span><span class="p">(</span><span class="ss">created_at: :desc</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="# encontrar todos los usuarios llamados David que tienen de ocupación Code Artists y ordenado por created_at en sentido cronológicamente inverso
+users = User.where(name: 'David', occupation: 'Code Artist').order(created_at: :desc)
+">Copy</button>
 </div>
 <p>Puedes aprender más acerca de consultar un modelo Active Record en la guía <a href="active_record_querying.html">Active Record
 Query Interface</a>.</p><h4 id="update"><a class="anchorlink" href="#update">5.3 Update</a></h4><p>Una vez que un objeto Active Record ha sido recuperado, sus atributos pueden ser modificados 
 y volver a ser guardados en la base de datos.</p><div class="code_container">
-<pre><code class="language-ruby">user = User.find_by(name: 'David')
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s1">'Dave'</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">save</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="user = User.find_by(name: 'David')
 user.name = 'Dave'
 user.save
-</code></pre>
+">Copy</button>
 </div>
 <p>Una forma abreviada de esto es usar un nombre de atributo de mapeo hash para el deseado
 valor, así:</p><div class="code_container">
-<pre><code class="language-ruby">user = User.find_by(name: 'David')
-user.update(name: 'Dave')
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'Dave'</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="user = User.find_by(name: 'David')
+user.update(name: 'Dave')
+">Copy</button>
 </div>
 <p>Esta es la manera más útil al actualizar varios atributos a la vez. Si, por otro lado, 
 quieres actualizar varios a la vez, encontrarás muy útil el método <code>update_all</code>:</p><div class="code_container">
-<pre><code class="language-ruby">User.update_all "max_login_attempts = 3, must_change_password = 'true'"
+<pre><code class="highlight ruby"><span class="no">User</span><span class="p">.</span><span class="nf">update_all</span> <span class="s2">"max_login_attempts = 3, must_change_password = 'true'"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="User.update_all &quot;max_login_attempts = 3, must_change_password = 'true'&quot;
+">Copy</button>
 </div>
 <h4 id="delete"><a class="anchorlink" href="#delete">5.4 Delete</a></h4><p>Asimismo, una vez que se recupera el objeto Active Record también puede ser destruído,
 lo cual lo borrará de la base de datos.</p><div class="code_container">
-<pre><code class="language-ruby">user = User.find_by(name: 'David')
-user.destroy
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">destroy</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="user = User.find_by(name: 'David')
+user.destroy
+">Copy</button>
 </div>
 <p>Si desea eliminar varios registros de forma masiva, puede usar el método <code>destroy_by</code> 
 o <code>destroy_all</code>.</p><div class="code_container">
-<pre><code class="language-ruby"># encontrar y destruir todos los usuarios llamados David
+<pre><code class="highlight ruby"><span class="c1"># encontrar y destruir todos los usuarios llamados David</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">destroy_by</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">)</span>
+
+<span class="c1"># destruir todos los usuarios</span>
+<span class="no">User</span><span class="p">.</span><span class="nf">destroy_all</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# encontrar y destruir todos los usuarios llamados David
 User.destroy_by(name: 'David')
 
 # destruir todos los usuarios
 User.destroy_all
-</code></pre>
+">Copy</button>
 </div>
 <h3 id="validations"><a class="anchorlink" href="#validations">6 Validations</a></h3><p>Validaciones</p><p>Active Record le permite validar el estado de un modelo antes de que se escriba
 en la base de datos. Existen varios métodos que puede utilizar para verificar su
@@ -470,14 +538,22 @@ operación en la base de datos. Todos estos tienen una contraparte explosiva, ba
 es, <code>save!</code> y <code>update!</code>), que son más estrictos en ese sentido 
 y arrojan una excepción <code>ActiveRecord::RecordInvalid</code> si la validación falla.
 Un rápido ejemplo para ilustrar:</p><div class="code_container">
-<pre><code class="language-ruby">class User &lt; ApplicationRecord
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">save</span>  <span class="c1"># =&gt; false</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">save!</span> <span class="c1"># =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't be blank</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User &lt; ApplicationRecord
   validates :name, presence: true
 end
 
 user = User.new
 user.save  # =&gt; false
 user.save! # =&gt; ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
-</code></pre>
+">Copy</button>
 </div>
 <p>Puedes aprender más acerca de validaciones en la guía <a href="active_record_validations.html">Active Record Validations
 guide</a>.</p><h3 id="callbacks"><a class="anchorlink" href="#callbacks">7 Callbacks</a></h3><p>Las retrollamadas (callbacks) de Active Record le permiten adjuntar código a ciertos eventos en el
@@ -488,7 +564,23 @@ la <a href="active_record_callbacks.html">Active Record Callbacks guide</a>.</p>
 migraciones (migrations). Las migraciones son ficheros guardados que se ejecutan contra cualquier 
 base de datos que Active Record soporte utilizando <code>rake</code>. Aquí hay una migración que 
 crea una tabla:</p><div class="code_container">
-<pre><code class="language-ruby">class CreatePublications &lt; ActiveRecord::Migration[6.0]
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">CreatePublications</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">6.0</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:publications</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:title</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">text</span> <span class="ss">:description</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">references</span> <span class="ss">:publication_type</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">integer</span> <span class="ss">:publisher_id</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:publisher_type</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">boolean</span> <span class="ss">:single_issue</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+    <span class="n">add_index</span> <span class="ss">:publications</span><span class="p">,</span> <span class="ss">:publication_type_id</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class CreatePublications &lt; ActiveRecord::Migration[6.0]
   def change
     create_table :publications do |t|
       t.string :title
@@ -503,7 +595,7 @@ crea una tabla:</p><div class="code_container">
     add_index :publications, :publication_type_id
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Rails mantiene el historial sobre que fichero fue actualizado en la base de datos y 
 provee características para deshacer los cambios. Para realmente crear la tabla, deberías ejecutar 

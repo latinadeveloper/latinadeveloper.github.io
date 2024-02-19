@@ -89,7 +89,7 @@
                   <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
                   <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
                   <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos (necesita traducción)</a></dd>
+                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
                   <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
                   <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
                   <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
@@ -140,7 +140,7 @@
                   <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
                   <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
                   <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos (necesita traducción)</option>
+                  <option value="asset_pipeline.html">La Canalización de Activos</option>
                   <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
                   <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
                   <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
@@ -233,8 +233,8 @@ Los correos tienen:</p>
 </ul>
 <h3 id="sending-emails"><a class="anchorlink" href="#sending-emails">2 Sending Emails</a></h3><p>Esta sección proporcionará una guía paso a paso para crear un envío de correo y su
 puntos de vista.</p><h4 id="walkthrough-to-generating-a-mailer"><a class="anchorlink" href="#walkthrough-to-generating-a-mailer">2.1 Walkthrough to Generating a Mailer</a></h4><h5 id="create-the-mailer"><a class="anchorlink" href="#create-the-mailer">2.1.1 Create the Mailer</a></h5><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate mailer UserMailer
-create  app/mailers/user_mailer.rb
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate mailer UserMailer
+<span class="go">create  app/mailers/user_mailer.rb
 create  app/mailers/application_mailer.rb
 invoke  erb
 create    app/views/user_mailer
@@ -243,37 +243,65 @@ create    app/views/layouts/mailer.html.erb
 invoke  test_unit
 create    test/mailers/user_mailer_test.rb
 create    test/mailers/previews/user_mailer_preview.rb
-</code></pre>
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate mailer UserMailer
+">Copy</button>
 </div>
 <div class="code_container">
-<pre><code class="language-ruby"># app/mailers/application_mailer.rb
+<pre><code class="highlight ruby"><span class="c1"># app/mailers/application_mailer.rb</span>
+<span class="k">class</span> <span class="nc">ApplicationMailer</span> <span class="o">&lt;</span> <span class="no">ActionMailer</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">default</span> <span class="ss">from: </span><span class="s2">"from@example.com"</span>
+  <span class="n">layout</span> <span class="s1">'mailer'</span>
+<span class="k">end</span>
+
+<span class="c1"># app/mailers/user_mailer.rb</span>
+<span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# app/mailers/application_mailer.rb
 class ApplicationMailer &lt; ActionMailer::Base
-  default from: "from@example.com"
+  default from: &quot;from@example.com&quot;
   layout 'mailer'
 end
 
 # app/mailers/user_mailer.rb
 class UserMailer &lt; ApplicationMailer
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Como puede ver, puede generar anuncios publicitarios del mismo modo que usa otros generadores con
 Rieles.</p><p>Si no desea utilizar un generador, puede crear su propio archivo dentro de
 <code>app/mailers</code>, solo asegúrate de que herede de <code>ActionMailer::Base</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class MyMailer &lt; ActionMailer::Base
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyMailer</span> <span class="o">&lt;</span> <span class="no">ActionMailer</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyMailer &lt; ActionMailer::Base
+end
+">Copy</button>
 </div>
 <h5 id="edit-the-mailer"><a class="anchorlink" href="#edit-the-mailer">2.1.2 Edit the Mailer</a></h5><p>Los remitentes de correo tienen métodos llamados "acciones" y utilizan vistas para estructurar su contenido.
 Donde un controlador genera contenido como HTML para enviar de vuelta al cliente, un Mailer
 crea un mensaje que se enviará por correo electrónico.</p><p><code>app/mailers/user_mailer.rb</code> contiene un mailer vacío:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
-end
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+<span class="k">end</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
+end
+">Copy</button>
 </div>
 <p>Agreguemos un método llamado <code>welcome_email</code>, que enviará un correo electrónico al usuario
 Dirección de correo electrónico registrado:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">default</span> <span class="ss">from: </span><span class="s1">'notifications@example.com'</span>
+
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+    <span class="vi">@url</span>  <span class="o">=</span> <span class="s1">'http://example.com/login'</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span> <span class="ss">subject: </span><span class="s1">'Welcome to My Awesome Site'</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email
@@ -282,7 +310,7 @@ Dirección de correo electrónico registrado:</p><div class="code_container">
     mail(to: @user.email, subject: 'Welcome to My Awesome Site')
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>A continuación se ofrece una explicación rápida de los elementos presentados en el método anterior. En
 una lista completa de todas las opciones disponibles, eche un vistazo más abajo en la
@@ -298,7 +326,25 @@ encabezados en.</li>
 </ul>
 <h5 id="create-a-mailer-view"><a class="anchorlink" href="#create-a-mailer-view">2.1.3 Create a Mailer View</a></h5><p>Crea un archivo llamado <code>welcome_email.html.erb</code> en <code>app/views/user_mailer/</code>. Este
 será la plantilla utilizada para el correo electrónico, formateada en HTML:</p><div class="code_container">
-<pre><code class="language-erb">&lt;!DOCTYPE html&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">content=</span><span class="s">'text/html; charset=UTF-8'</span> <span class="na">http-equiv=</span><span class="s">'Content-Type'</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Welcome to example.com, <span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span><span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      You have successfully signed up to example.com,
+      your username is: <span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">login</span> <span class="cp">%&gt;</span>.<span class="nt">&lt;br&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      To login to the site, just follow this link: <span class="cp">&lt;%=</span> <span class="vi">@url</span> <span class="cp">%&gt;</span>.
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Thanks for joining and have a great day!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta content='text/html; charset=UTF-8' http-equiv='Content-Type' /&gt;
@@ -315,12 +361,22 @@ será la plantilla utilizada para el correo electrónico, formateada en HTML:</p
     &lt;p&gt;Thanks for joining and have a great day!&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>También hagamos una parte de texto para este correo electrónico. No todos los clientes prefieren los correos electrónicos HTML,
 por lo que enviar ambos es una buena práctica. Para hacer esto, cree un archivo llamado
 <code>welcome_email.text.erb</code> en <code>app/views/user_mailer/</code>:</p><div class="code_container">
-<pre><code class="language-erb">Welcome to example.com, &lt;%= @user.name %&gt;
+<pre><code class="highlight erb">Welcome to example.com, <span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+===============================================
+
+You have successfully signed up to example.com,
+your username is: <span class="cp">&lt;%=</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">login</span> <span class="cp">%&gt;</span>.
+
+To login to the site, just follow this link: <span class="cp">&lt;%=</span> <span class="vi">@url</span> <span class="cp">%&gt;</span>.
+
+Thanks for joining and have a great day!
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Welcome to example.com, &lt;%= @user.name %&gt;
 ===============================================
 
 You have successfully signed up to example.com,
@@ -329,23 +385,47 @@ your username is: &lt;%= @user.login %&gt;.
 To login to the site, just follow this link: &lt;%= @url %&gt;.
 
 Thanks for joining and have a great day!
-</code></pre>
+">Copy</button>
 </div>
 <p>Cuando llame al método <code>mail</code> ahora, Action Mailer detectará las dos plantillas
 (texto y HTML) y generara automáticamente un correo electrónico <code>multipart/alternative</code>.</p><h5 id="calling-the-mailer"><a class="anchorlink" href="#calling-the-mailer">2.1.4 Calling the Mailer</a></h5><p>Los anuncios de correo son realmente otra forma de representar una vista. En lugar de representar una
 vista y enviarlo a través del protocolo HTTP, simplemente lo están enviando a través de
 los protocolos de correo electrónico. Debido a esto, tiene sentido que su
 controlador le diga al Mailer que envíe un correo electrónico cuando se cree un usuario con éxito.</p><p>Configurar esto es simple.</p><p>Primero, creemos un andamio simple de <code>User</code>:</p><div class="code_container">
-<pre><code class="language-shell-session">$ bin/rails generate scaffold user name email login
-$ bin/rails db:migrate
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold user name email login
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold user name email login
+bin/rails db:migrate
+">Copy</button>
 </div>
 <p>Ahora que tenemos un modelo de usuario para jugar, simplemente editaremos el
 <code>app/controllers/users_controller.rb</code> hace que indique al <code>UserMailer</code> que entregue
 un correo electrónico al usuario recién creado editando la acción de creación e insertando un
 llamar a <code>UserMailer.with(user:@user).welcome_email</code> justo después de que el usuario se haya guardado correctamente.</p><p>Action Mailer está muy bien integrado con Active Job para que se pueda enviar correos electrónicos al exterior
 del ciclo de solicitud-respuesta, por lo que el usuario no tiene que esperarlo:</p><div class="code_container">
-<pre><code class="language-ruby">class UsersController &lt; ApplicationController
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># POST /users</span>
+  <span class="c1"># POST /users.json</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">])</span>
+
+    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">save</span>
+        <span class="c1"># Tell the UserMailer to send a welcome email after save</span>
+        <span class="no">UserMailer</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">user: </span><span class="vi">@user</span><span class="p">).</span><span class="nf">welcome_email</span><span class="p">.</span><span class="nf">deliver_later</span>
+
+        <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">redirect_to</span><span class="p">(</span><span class="vi">@user</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'User was successfully created.'</span><span class="p">)</span> <span class="p">}</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@user</span><span class="p">,</span> <span class="ss">status: :created</span><span class="p">,</span> <span class="ss">location: </span><span class="vi">@user</span> <span class="p">}</span>
+      <span class="k">else</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">action: </span><span class="s1">'new'</span> <span class="p">}</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">errors</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UsersController &lt; ApplicationController
   # POST /users
   # POST /users.json
   def create
@@ -365,7 +445,7 @@ del ciclo de solicitud-respuesta, por lo que el usuario no tiene que esperarlo:<
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>El comportamiento predeterminado de Active Job es ejecutar trabajos a través del adaptador <code>:async</code>. Entonces, puedes usar
 <code>deliver_later</code> ahora para enviar correos electrónicos de forma asincrónica.
@@ -376,14 +456,22 @@ trabajos pendientes al reiniciar.
 Si necesita un backend persistente, deberá usar un adaptador de Active Job
 que tiene un backend persistente (Sidekiq, Resque, etc.).</p></div><div class="note"><p>Al llamar a <code>deliver_later</code>, el trabajo se colocará en la cola de <code>mailers</code>. Asegúrese de que el adaptador de trabajo activo lo admita, de lo contrario, el trabajo puede ignorarse silenciosamente y evitar la entrega de correo electrónico. Puede cambiar eso especificando la opción <code>config.action_mailer.deliver_later_queue_name</code>.</p></div><p>Si desea enviar correos electrónicos de inmediato (desde un cronjob, por ejemplo) simplemente llame
 <code>deliver_now</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class SendWeeklySummary
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">SendWeeklySummary</span>
+  <span class="k">def</span> <span class="nf">run</span>
+    <span class="no">User</span><span class="p">.</span><span class="nf">find_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span>
+      <span class="no">UserMailer</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">user: </span><span class="n">user</span><span class="p">).</span><span class="nf">weekly_summary</span><span class="p">.</span><span class="nf">deliver_now</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class SendWeeklySummary
   def run
     User.find_each do |user|
       UserMailer.with(user: user).weekly_summary.deliver_now
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Cualquier par de clave-valor que se pase a <code>with</code> se convierte en el <code>params</code> del envío de correo
 acción. Entonces, <code>with(user:@user,account:@user.account)</code> hace <code>params[:user]</code> y
@@ -417,8 +505,10 @@ texto, o multiparte, según las plantillas de correo electrónico que haya defin
 <a href="https://github.com/mikel/mail">Mail gem</a> adivinará automáticamente el
 mime_type, establezca la codificación y cree el archivo adjunto.</p>
 <div class="code_container">
-<pre><code class="language-ruby">attachments['filename.jpg'] = File.read('/path/to/filename.jpg')
+<pre><code class="highlight ruby"><span class="n">attachments</span><span class="p">[</span><span class="s1">'filename.jpg'</span><span class="p">]</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s1">'/path/to/filename.jpg'</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="attachments['filename.jpg'] = File.read('/path/to/filename.jpg')
+">Copy</button>
 </div>
 <p>Cuando se active el método <code>mail</code>, enviará un correo electrónico de varias partes con
 un archivo adjunto, correctamente anidado con el nivel superior siendo <code>multipart/mixed</code> y
@@ -434,13 +524,20 @@ diferente, codifique su contenido y pase el contenido codificado y la codificaci
 <p>Pase el nombre del archivo y especifique los encabezados y el contenido y Action Mailer y Mail
 utilizará la configuración que ingrese.</p>
 <div class="code_container">
-<pre><code class="language-ruby">  encoded_content = SpecialEncode(File.read('/path/to/filename.jpg'))
+<pre><code class="highlight ruby">  <span class="n">encoded_content</span> <span class="o">=</span> <span class="no">SpecialEncode</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s1">'/path/to/filename.jpg'</span><span class="p">))</span>
+  <span class="n">attachments</span><span class="p">[</span><span class="s1">'filename.jpg'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="ss">mime_type: </span><span class="s1">'application/gzip'</span><span class="p">,</span>
+    <span class="ss">encoding: </span><span class="s1">'SpecialEncoding'</span><span class="p">,</span>
+    <span class="ss">content: </span><span class="n">encoded_content</span>
+  <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  encoded_content = SpecialEncode(File.read('/path/to/filename.jpg'))
   attachments['filename.jpg'] = {
     mime_type: 'application/gzip',
     encoding: 'SpecialEncoding',
     content: encoded_content
   }
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>Si especifica una codificación, Mail asumirá que su contenido ya está
 codificado y no intentara codificarlo en Base64.</p></div>
@@ -451,10 +548,14 @@ codificado y no intentara codificarlo en Base64.</p></div>
 <li>
 <p>Primero, para decirle a Mail que convierta un adjunto en un adjunto en línea, simplemente llame a <code>#inline</code> en el método de adjuntos dentro de su Mailer:</p>
 <div class="code_container">
-<pre><code class="language-ruby">def welcome
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">welcome</span>
+  <span class="n">attachments</span><span class="p">.</span><span class="nf">inline</span><span class="p">[</span><span class="s1">'image.jpg'</span><span class="p">]</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">read</span><span class="p">(</span><span class="s1">'/path/to/image.jpg'</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def welcome
   attachments.inline['image.jpg'] = File.read('/path/to/image.jpg')
 end
-</code></pre>
+">Copy</button>
 </div>
 
 <ul>
@@ -463,10 +564,14 @@ qué archivo adjunto desea mostrar, llamando a <code>url</code> y luego pasando 
 resultado en el método <code>image_tag</code>:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;Hello there, this is our image&lt;/p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>Hello there, this is our image<span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">attachments</span><span class="p">[</span><span class="s1">'image.jpg'</span><span class="p">].</span><span class="nf">url</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;Hello there, this is our image&lt;/p&gt;
 
 &lt;%= image_tag attachments['image.jpg'].url %&gt;
-</code></pre>
+">Copy</button>
 </div>
 
 <ul>
@@ -474,10 +579,14 @@ resultado en el método <code>image_tag</code>:</li>
 después de la URL del archivo adjunto como podría hacerlo con cualquier otra imagen:</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-erb">&lt;p&gt;Hello there, this is our image&lt;/p&gt;
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>Hello there, this is our image<span class="nt">&lt;/p&gt;</span>
+
+<span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">attachments</span><span class="p">[</span><span class="s1">'image.jpg'</span><span class="p">].</span><span class="nf">url</span><span class="p">,</span> <span class="ss">alt: </span><span class="s1">'My Photo'</span><span class="p">,</span> <span class="ss">class: </span><span class="s1">'photos'</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;p&gt;Hello there, this is our image&lt;/p&gt;
 
 &lt;%= image_tag attachments['image.jpg'].url, alt: 'My Photo', class: 'photos' %&gt;
-</code></pre>
+">Copy</button>
 </div>
 </li>
 </ul>
@@ -485,36 +594,67 @@ después de la URL del archivo adjunto como podría hacerlo con cualquier otra i
 informando a todos los administradores de un nuevo registro) configurando la lista de correos electrónicos en el <code>:to</code>
 llave. La lista de correos electrónicos puede ser una serie de direcciones de correo electrónico o una sola cadena
 con las direcciones separadas por comas.</p><div class="code_container">
-<pre><code class="language-ruby">class AdminMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AdminMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">default</span> <span class="ss">to: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">Admin</span><span class="p">.</span><span class="nf">pluck</span><span class="p">(</span><span class="ss">:email</span><span class="p">)</span> <span class="p">},</span>
+          <span class="ss">from: </span><span class="s1">'notification@example.com'</span>
+
+  <span class="k">def</span> <span class="nf">new_registration</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">user</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">subject: </span><span class="s2">"New User Signup: </span><span class="si">#{</span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AdminMailer &lt; ApplicationMailer
   default to: -&gt; { Admin.pluck(:email) },
           from: 'notification@example.com'
 
   def new_registration(user)
     @user = user
-    mail(subject: "New User Signup: #{@user.email}")
+    mail(subject: &quot;New User Signup: #{@user.email}&quot;)
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Se puede utilizar el mismo formato para configurar copia carbón (Cc :) y copia carbón oculta
 (Cco :), utilizando las teclas <code>:cc</code> y <code>:bcc</code> respectivamente.</p><h5 id="sending-email-with-name"><a class="anchorlink" href="#sending-email-with-name">2.3.4 Sending Email With Name</a></h5><p>A veces desea mostrar el nombre de la persona en lugar de solo su correo electrónico
 dirección cuando reciben el correo electrónico. Puede utilizar <code>email_address_with_name</code> para
 ese:</p><div class="code_container">
-<pre><code class="language-ruby">def welcome_email
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">welcome_email</span>
+  <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+  <span class="n">mail</span><span class="p">(</span>
+    <span class="ss">to: </span><span class="n">email_address_with_name</span><span class="p">(</span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">name</span><span class="p">),</span>
+    <span class="ss">subject: </span><span class="s1">'Welcome to My Awesome Site'</span>
+  <span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def welcome_email
   @user = params[:user]
   mail(
     to: email_address_with_name(@user.email, @user.name),
     subject: 'Welcome to My Awesome Site'
   )
 end
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="mailer-views"><a class="anchorlink" href="#mailer-views">2.4 Mailer Views</a></h4><p>Las vistas de correo se encuentran en el directorio <code>app/views/name_of_mailer_class</code>.
 Las vista de correo específica es conocida por la clase porque su nombre es el mismo que el
 método de correo. En nuestro ejemplo anterior, nuestra vista de correo para el
 El método <code>welcome_email</code> estará en <code>app/views/user_mailer/welcome_email.html.erb</code>
 para la versión HTML y <code>welcome_email.text.erb</code> para la versión de texto sin formato.</p><p>Para cambiar la vista de correo predeterminada para su acción, haga algo como:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">default</span> <span class="ss">from: </span><span class="s1">'notifications@example.com'</span>
+
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+    <span class="vi">@url</span>  <span class="o">=</span> <span class="s1">'http://example.com/login'</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+         <span class="ss">subject: </span><span class="s1">'Welcome to My Awesome Site'</span><span class="p">,</span>
+         <span class="ss">template_path: </span><span class="s1">'notifications'</span><span class="p">,</span>
+         <span class="ss">template_name: </span><span class="s1">'another'</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email
@@ -526,13 +666,27 @@ para la versión HTML y <code>welcome_email.text.erb</code> para la versión de 
          template_name: 'another')
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>En este caso, buscará plantillas en <code>app/views/Notifications</code> con nombre
 <code>another</code>. También se puede especificar una matriz de rutas para <code>template_path</code>, y
 se buscará en orden.</p><p>Si desea más flexibilidad, también puede pasar un bloque y renderizar específicos
 plantillas o incluso renderizar en línea o texto sin usar un archivo de plantilla:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">default</span> <span class="ss">from: </span><span class="s1">'notifications@example.com'</span>
+
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+    <span class="vi">@url</span>  <span class="o">=</span> <span class="s1">'http://example.com/login'</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+         <span class="ss">subject: </span><span class="s1">'Welcome to My Awesome Site'</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="s1">'another_template'</span> <span class="p">}</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">text</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">plain: </span><span class="s1">'Render text'</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
   default from: 'notifications@example.com'
 
   def welcome_email
@@ -545,13 +699,22 @@ plantillas o incluso renderizar en línea o texto sin usar un archivo de plantil
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Esto representará la plantilla 'another_template.html.erb' para la parte HTML y
 utilice el texto renderizado para la parte de texto. El comando de renderizado es el mismo que se usa
 dentro de Action Controller, por lo que puede usar las mismas opciones, como
 <code>:text</code>,<code>:inline</code> etc.</p><p>Si deseas renderizar una plantilla ubicada fuera del directorio predeterminado <code>app/views/mailer_name/</code>, puedes aplicar el <code>prepend_view_path</code>, así:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">prepend_view_path</span> <span class="s2">"custom/path/to/mailer/view"</span>
+
+  <span class="c1"># This will try to load "custom/path/to/mailer/view/welcome_email" template</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class UserMailer &lt; ApplicationMailer
   prepend_view_path "custom/path/to/mailer/view"
 
   # This will try to load "custom/path/to/mailer/view/welcome_email" template
@@ -559,32 +722,51 @@ dentro de Action Controller, por lo que puede usar las mismas opciones, como
     # ...
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <p>También puede considerar usar el método <a href="https://guides.rubyonrails.org/action_view_overview.html#view-paths">append_view_path</a>.</p><h5 id="caching-mailer-view"><a class="anchorlink" href="#caching-mailer-view">2.4.1 Caching mailer view</a></h5><p>Puede realizar el almacenamiento en caché de fragmentos en vistas de correo como en vistas de aplicaciones utilizando el método <code>cache</code>.</p><div class="code_container">
-<pre><code class="language-erb">&lt;% cache do %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="vi">@company</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;% cache do %&gt;
   &lt;%= @company.name %&gt;
 &lt;% end %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <p>Y para utilizar esta función, debe configurar su aplicación con esto:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.perform_caching = true
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">perform_caching</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.perform_caching = true
+">Copy</button>
 </div>
 <p>El almacenamiento en caché de fragmentos también se admite en correos electrónicos de varias partes.
 Obtenga más información sobre el almacenamiento en caché en <a href="caching_with_rails.html">Rails caching guide</a>.</p><h4 id="action-mailer-layouts"><a class="anchorlink" href="#action-mailer-layouts">2.5 Action Mailer Layouts</a></h4><p>Al igual que las vistas de controlador, también puede tener diseños de correo. El nombre del diseño
 debe ser el mismo que su correo, como <code>user_mailer.html.erb</code> y
 <code>user_mailer.text.erb</code> para que su gestor de correo lo reconozca automáticamente como
 diseño.</p><p>Para usar un archivo diferente, llame a <code>layout</code> en su mailer:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">layout</span> <span class="s1">'awesome'</span> <span class="c1"># use awesome.(html|text).erb as the layout</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
   layout 'awesome' # use awesome.(html|text).erb as the layout
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Al igual que con las vistas del controlador, use <code>yield</code> para representar la vista dentro del
 diseño.</p><p>También puede pasar una opción <code>layout: 'layout_name'</code> a la llamada de renderización dentro
 el bloque de formato para especificar diferentes diseños para diferentes formatos:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">].</span><span class="nf">email</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">layout: </span><span class="s1">'my_layout'</span> <span class="p">}</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">text</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailer &lt; ApplicationMailer
   def welcome_email
     mail(to: params[:user].email) do |format|
       format.html { render layout: 'my_layout' }
@@ -592,7 +774,7 @@ el bloque de formato para especificar diferentes diseños para diferentes format
     end
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Representará la parte HTML usando el archivo <code>my_layout.html.erb</code> y la parte de texto
 con el archivo <code>user_mailer.text.erb</code> habitual si existe.</p><h4 id="previewing-emails"><a class="anchorlink" href="#previewing-emails">2.6 Previewing Emails</a></h4><p>Las vistas previas de Action Mailer proporcionan una manera de ver cómo se ven los correos electrónicos visitando un
@@ -601,12 +783,18 @@ URL especial que los muestra. En el ejemplo anterior, la clase de vista previa p
 <code>test/mailers/previews/user_mailer_preview.rb</code>. Para ver la vista previa de
 <code>welcome_email</code>, implemente un método que tenga el mismo nombre y llame
 <code>UserMailer.welcome_email</code>:</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailerPreview &lt; ActionMailer::Preview
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailerPreview</span> <span class="o">&lt;</span> <span class="no">ActionMailer</span><span class="o">::</span><span class="no">Preview</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="no">UserMailer</span><span class="p">.</span><span class="nf">with</span><span class="p">(</span><span class="ss">user: </span><span class="no">User</span><span class="p">.</span><span class="nf">first</span><span class="p">).</span><span class="nf">welcome_email</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class UserMailerPreview &lt; ActionMailer::Preview
   def welcome_email
     UserMailer.with(user: User.first).welcome_email
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Entonces la vista previa estará disponible en <a href="http://localhost:3000/rails/mailers/user_mailer/welcome_email">http://localhost:3000/rails/mailers/user_mailer/welcome_email</a>.</p><p>Si cambia algo en <code>app/views/user_mailer/welcome_email.html.erb</code>
 o el propio mailer, se recargará y renderizará automáticamente para que puedas
@@ -615,49 +803,67 @@ en <a href="http://localhost:3000/rails/mailers">http://localhost:3000/rails/mai
 Esto se puede configurar usando la opción <code>preview_path</code>. Por ejemplo, si tu
 desea cambiarlo a <code>lib/mailer_previews</code>, puede configurarlo en
 <code>config/application.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">preview_path</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/lib/mailer_previews"</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text='config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
+'>Copy</button>
 </div>
 <h4 id="generating-urls-in-action-mailer-views"><a class="anchorlink" href="#generating-urls-in-action-mailer-views">2.7 Generating URLs in Action Mailer Views</a></h4><p>A diferencia de los controladores, la instancia de correo no tiene ningún contexto sobre
 la solicitud entrante, por lo que deberá proporcionar el parámetro <code>:host</code> usted mismo.</p><p>Como el <code>:host</code> suele ser coherente en toda la aplicación, puede configurarlo
 globalmente en <code>config/application.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.default_url_options = { host: 'example.com' }
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">host: </span><span class="s1">'example.com'</span> <span class="p">}</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.default_url_options = { host: 'example.com' }
+">Copy</button>
 </div>
 <p>Debido a este comportamiento, no puede utilizar ninguno de los ayudantes <code>* _path</code> dentro de
 un correo electrónico. En su lugar, necesitará usar el ayudante asociado <code>* _url</code>. Por ejemplo
 En lugar de usar</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'welcome', welcome_path %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'welcome'</span><span class="p">,</span> <span class="n">welcome_path</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'welcome', welcome_path %&gt;
+">Copy</button>
 </div>
 <p>Necesitarás usar:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= link_to 'welcome', welcome_url %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s1">'welcome'</span><span class="p">,</span> <span class="n">welcome_url</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= link_to 'welcome', welcome_url %&gt;
+">Copy</button>
 </div>
 <p>Al usar la URL completa, sus enlaces ahora funcionarán en sus correos electrónicos.</p><h5 id="generating-urls-with-url-for"><a class="anchorlink" href="#generating-urls-with-url-for">2.7.1 Generating URLs with <code>url_for</code></a></h5><p><code>url_for</code> genera una URL completa por defecto en las plantillas.</p><p>Si no configuró la opción <code>:host</code> globalmente, asegúrese de pasarla a
 <code>url_for</code>.</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= url_for(host: 'example.com',
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">url_for</span><span class="p">(</span><span class="ss">host: </span><span class="s1">'example.com'</span><span class="p">,</span>
+            <span class="ss">controller: </span><span class="s1">'welcome'</span><span class="p">,</span>
+            <span class="ss">action: </span><span class="s1">'greeting'</span><span class="p">)</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= url_for(host: 'example.com',
             controller: 'welcome',
             action: 'greeting') %&gt;
-</code></pre>
+">Copy</button>
 </div>
 <h5 id="generating-urls-with-named-routes"><a class="anchorlink" href="#generating-urls-with-named-routes">2.7.2 Generating URLs with Named Routes</a></h5><p>Los clientes de correo electrónico no tienen contexto web, por lo que las rutas no tienen una base URL para completar
 la direcciones web. Por lo tanto, siempre debe usar la variante "_url" de la ruta nombrada ayudantes.</p><p>Si no configuró la opción <code>:host</code> globalmente, asegúrese de pasarla al
 asistente de URL.</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= user_url(@user, host: 'example.com') %&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">user_url</span><span class="p">(</span><span class="vi">@user</span><span class="p">,</span> <span class="ss">host: </span><span class="s1">'example.com'</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= user_url(@user, host: 'example.com') %&gt;
+">Copy</button>
 </div>
 <div class="note"><p>los enlaces que no sean <code>GET</code> requieren <a href="https://github.com/rails/rails/blob/master/actionview/app/assets/javascripts">rails-ujs</a> o
 <a href="https://github.com/rails/jquery-ujs">jQuery UJS</a> y no funcionará en plantillas de correo.
 Ellas darán lugar a solicitudes normales <code>GET</code>.</p></div><h4 id="adding-images-in-action-mailer-views"><a class="anchorlink" href="#adding-images-in-action-mailer-views">2.8 Adding images in Action Mailer Views</a></h4><p>A diferencia de los controladores, la instancia de correo no tiene ningún contexto sobre el
 solicitud entrante, por lo que deberá proporcionar el parámetro <code>:asset_host</code> usted mismo.</p><p>Como el <code>:asset_host</code> suele ser coherente en toda la aplicación, puede
 configúrelo globalmente en <code>config/application.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.asset_host = 'http://example.com'
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">=</span> <span class="s1">'http://example.com'</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.asset_host = 'http://example.com'
+">Copy</button>
 </div>
 <p>Ahora puede mostrar una imagen dentro de su correo electrónico.</p><div class="code_container">
-<pre><code class="language-ruby">&lt;%= image_tag 'image.jpg' %&gt;
-</code></pre>
+<pre><code class="highlight ruby"><span class="o">&lt;</span><span class="sx">%= image_tag 'image.jpg' %&gt;
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= image_tag 'image.jpg' %&gt;
+">Copy</button>
 </div>
 <h4 id="sending-multipart-emails"><a class="anchorlink" href="#sending-multipart-emails">2.9 Sending Multipart Emails</a></h4><p>Action Mailer enviará automáticamente correos electrónicos de varias partes si tiene diferentes
 plantillas para la misma acción. Entonces, para nuestro ejemplo de UserMailer, si tiene
@@ -667,7 +873,20 @@ con las versiones HTML y de texto configuradas como partes diferentes.</p><p>El 
 dentro del método <code>ActionMailer::Base.default</code>.</p><h4 id="sending-emails-with-dynamic-delivery-options"><a class="anchorlink" href="#sending-emails-with-dynamic-delivery-options">2.10 Sending Emails with Dynamic Delivery Options</a></h4><p>Si desea anular las opciones de entrega predeterminadas (por ejemplo, credenciales SMTP)
 mientras envía correos electrónicos, puede hacerlo usando <code>delivery_method_options</code> en el
 acción de correo.</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+    <span class="vi">@url</span>  <span class="o">=</span> <span class="n">user_url</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+    <span class="n">delivery_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">user_name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_user</span><span class="p">,</span>
+                         <span class="ss">password: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_password</span><span class="p">,</span>
+                         <span class="ss">address: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_host</span> <span class="p">}</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+         <span class="ss">subject: </span><span class="s2">"Please see the Terms and Conditions attached"</span><span class="p">,</span>
+         <span class="ss">delivery_method_options: </span><span class="n">delivery_options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class UserMailer &lt; ApplicationMailer
   def welcome_email
     @user = params[:user]
     @url  = user_url(@user)
@@ -679,12 +898,25 @@ acción de correo.</p><div class="code_container">
          delivery_method_options: delivery_options)
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="sending-emails-sending-emails-without-template-rendering"><a class="anchorlink" href="#sending-emails-sending-emails-without-template-rendering">2.11 Sending Emails without Template Rendering</a></h4><p>Si desea anular las opciones de entrega predeterminadas (por ejemplo, credenciales SMTP)
 mientras envía correos electrónicos, puede hacerlo usando <code>delivery_method_options</code> en la
 acción de correo.</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span>
+    <span class="vi">@url</span>  <span class="o">=</span> <span class="n">user_url</span><span class="p">(</span><span class="vi">@user</span><span class="p">)</span>
+    <span class="n">delivery_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">user_name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_user</span><span class="p">,</span>
+                         <span class="ss">password: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_password</span><span class="p">,</span>
+                         <span class="ss">address: </span><span class="n">params</span><span class="p">[</span><span class="ss">:company</span><span class="p">].</span><span class="nf">smtp_host</span> <span class="p">}</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+         <span class="ss">subject: </span><span class="s2">"Please see the Terms and Conditions attached"</span><span class="p">,</span>
+         <span class="ss">delivery_method_options: </span><span class="n">delivery_options</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class UserMailer &lt; ApplicationMailer
   def welcome_email
     @user = params[:user]
     @url  = user_url(@user)
@@ -696,13 +928,22 @@ acción de correo.</p><div class="code_container">
          delivery_method_options: delivery_options)
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h4 id="sending-emails-sending-emails-without-template-rendering"><a class="anchorlink" href="#sending-emails-sending-emails-without-template-rendering">2.12 Sending Emails without Template Rendering</a></h4><p>Puede haber casos en los que desee omitir el paso de representación de la plantilla y
 proporcione el cuerpo del correo electrónico como una cadena. Puedes lograr esto usando el <code>:body</code>
 opción. En tales casos, no olvide agregar la opción <code>:content_type</code>. Rieles
 de lo contrario, estará predeterminado en <code>text/plain</code>.</p><div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="k">def</span> <span class="nf">welcome_email</span>
+    <span class="n">mail</span><span class="p">(</span><span class="ss">to: </span><span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">].</span><span class="nf">email</span><span class="p">,</span>
+         <span class="ss">body: </span><span class="n">params</span><span class="p">[</span><span class="ss">:email_body</span><span class="p">],</span>
+         <span class="ss">content_type: </span><span class="s2">"text/html"</span><span class="p">,</span>
+         <span class="ss">subject: </span><span class="s2">"Already rendered!"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class UserMailer &lt; ApplicationMailer
   def welcome_email
     mail(to: params[:user].email,
          body: params[:email_body],
@@ -710,7 +951,7 @@ de lo contrario, estará predeterminado en <code>text/plain</code>.</p><div clas
          subject: "Already rendered!")
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 <h3 id="action-mailer-callbacks"><a class="anchorlink" href="#action-mailer-callbacks">3 Action Mailer Callbacks</a></h3><p>Action Mailer le permite especificar un <code>before_action</code>, <code>after_action</code> y
 <code>around_action</code>.</p>
@@ -721,7 +962,27 @@ correo similar a los controladores.</p></li>
 delivery_method_options o inserte encabezados y adjuntos predeterminados.</p></li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">class InvitationsMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InvitationsMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">before_action</span> <span class="p">{</span> <span class="vi">@inviter</span><span class="p">,</span> <span class="vi">@invitee</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:inviter</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="ss">:invitee</span><span class="p">]</span> <span class="p">}</span>
+  <span class="n">before_action</span> <span class="p">{</span> <span class="vi">@account</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:inviter</span><span class="p">].</span><span class="nf">account</span> <span class="p">}</span>
+
+  <span class="n">default</span> <span class="ss">to:       </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="vi">@invitee</span><span class="p">.</span><span class="nf">email_address</span> <span class="p">},</span>
+          <span class="ss">from:     </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="n">common_address</span><span class="p">(</span><span class="vi">@inviter</span><span class="p">)</span> <span class="p">},</span>
+          <span class="ss">reply_to: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="vi">@inviter</span><span class="p">.</span><span class="nf">email_address_with_name</span> <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">account_invitation</span>
+    <span class="n">mail</span> <span class="ss">subject: </span><span class="s2">"</span><span class="si">#{</span><span class="vi">@inviter</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2"> invited you to their Basecamp (</span><span class="si">#{</span><span class="vi">@account</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">)"</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">project_invitation</span>
+    <span class="vi">@project</span>    <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:project</span><span class="p">]</span>
+    <span class="vi">@summarizer</span> <span class="o">=</span> <span class="no">ProjectInvitationSummarizer</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="vi">@project</span><span class="p">.</span><span class="nf">bucket</span><span class="p">)</span>
+
+    <span class="n">mail</span> <span class="ss">subject: </span><span class="s2">"</span><span class="si">#{</span><span class="vi">@inviter</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">familiar</span><span class="si">}</span><span class="s2"> added you to a project in Basecamp (</span><span class="si">#{</span><span class="vi">@account</span><span class="p">.</span><span class="nf">name</span><span class="si">}</span><span class="s2">)"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class InvitationsMailer &lt; ApplicationMailer
   before_action { @inviter, @invitee = params[:inviter], params[:invitee] }
   before_action { @account = params[:inviter].account }
 
@@ -740,7 +1001,7 @@ delivery_method_options o inserte encabezados y adjuntos predeterminados.</p></l
     mail subject: "#{@inviter.name.familiar} added you to a project in Basecamp (#{@account.name})"
   end
 end
-</code></pre>
+'>Copy</button>
 </div>
 
 <ul>
@@ -748,7 +1009,43 @@ end
 se usan variables de instancia establecidas en su acción de correo.</li>
 </ul>
 <div class="code_container">
-<pre><code class="language-ruby">class UserMailer &lt; ApplicationMailer
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">UserMailer</span> <span class="o">&lt;</span> <span class="no">ApplicationMailer</span>
+  <span class="n">before_action</span> <span class="p">{</span> <span class="vi">@business</span><span class="p">,</span> <span class="vi">@user</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:business</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="ss">:user</span><span class="p">]</span> <span class="p">}</span>
+
+  <span class="n">after_action</span> <span class="ss">:set_delivery_options</span><span class="p">,</span>
+               <span class="ss">:prevent_delivery_to_guests</span><span class="p">,</span>
+               <span class="ss">:set_business_headers</span>
+
+  <span class="k">def</span> <span class="nf">feedback_message</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">campaign_message</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+    <span class="k">def</span> <span class="nf">set_delivery_options</span>
+      <span class="c1"># You have access to the mail instance,</span>
+      <span class="c1"># @business and @user instance variables here</span>
+      <span class="k">if</span> <span class="vi">@business</span> <span class="o">&amp;&amp;</span> <span class="vi">@business</span><span class="p">.</span><span class="nf">has_smtp_settings?</span>
+        <span class="n">mail</span><span class="p">.</span><span class="nf">delivery_method</span><span class="p">.</span><span class="nf">settings</span><span class="p">.</span><span class="nf">merge!</span><span class="p">(</span><span class="vi">@business</span><span class="p">.</span><span class="nf">smtp_settings</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">prevent_delivery_to_guests</span>
+      <span class="k">if</span> <span class="vi">@user</span> <span class="o">&amp;&amp;</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">guest?</span>
+        <span class="n">mail</span><span class="p">.</span><span class="nf">perform_deliveries</span> <span class="o">=</span> <span class="kp">false</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">set_business_headers</span>
+      <span class="k">if</span> <span class="vi">@business</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s2">"X-SMTPAPI-CATEGORY"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@business</span><span class="p">.</span><span class="nf">code</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text='class UserMailer &lt; ApplicationMailer
   before_action { @business, @user = params[:business], params[:user] }
 
   after_action :set_delivery_options,
@@ -783,7 +1080,7 @@ se usan variables de instancia establecidas en su acción de correo.</li>
       end
     end
 end
-</code></pre>
+'>Copy</button>
 </div>
 
 <ul>
@@ -793,9 +1090,12 @@ end
 de los mismos ayudantes que hay en  Action Controller.</p><p>También hay algunos métodos de ayuda específicos de Action Mailer disponibles en
 <code>ActionMailer::MailHelper</code>. Por ejemplo, estos permiten acceder al correo
 instancia desde su vista con <code>mailer</code>, y accediendo al mensaje como <code>message</code>:</p><div class="code_container">
-<pre><code class="language-erb">&lt;%= stylesheet_link_tag mailer.name.underscore %&gt;
-&lt;h1&gt;&lt;%= message.subject %&gt;&lt;/h1&gt;
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="n">mailer</span><span class="p">.</span><span class="nf">name</span><span class="p">.</span><span class="nf">underscore</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;h1&gt;</span><span class="cp">&lt;%=</span> <span class="n">message</span><span class="p">.</span><span class="nf">subject</span> <span class="cp">%&gt;</span><span class="nt">&lt;/h1&gt;</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="&lt;%= stylesheet_link_tag mailer.name.underscore %&gt;
+&lt;h1&gt;&lt;%= message.subject %&gt;&lt;/h1&gt;
+">Copy</button>
 </div>
 <h3 id="action-mailer-configuration"><a class="anchorlink" href="#action-mailer-configuration">5 Action Mailer Configuration</a></h3><p>Las siguientes opciones de configuración se realizan mejor en uno de los entornos
 archivos (environment.rb, production.rb, etc ...)</p>
@@ -880,7 +1180,17 @@ archivos (environment.rb, production.rb, etc ...)</p>
 <a href="configuring.html#configuring-action-mailer">Configuring Action Mailer</a> en
 nuestra guía Configuración de aplicaciones de rieles.</p><h4 id="example-action-mailer-configuration"><a class="anchorlink" href="#example-action-mailer-configuration">5.1 Example Action Mailer Configuration</a></h4><p>Un ejemplo sería agregar lo siguiente a su expediente
 <code>config/environments/$RAILS_ENV.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.delivery_method = :sendmail
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">delivery_method</span> <span class="o">=</span> <span class="ss">:sendmail</span>
+<span class="c1"># Defaults to:</span>
+<span class="c1"># config.action_mailer.sendmail_settings = {</span>
+<span class="c1">#   location: '/usr/sbin/sendmail',</span>
+<span class="c1">#   arguments: '-i'</span>
+<span class="c1"># }</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">raise_delivery_errors</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">default_options</span> <span class="o">=</span> <span class="p">{</span><span class="ss">from: </span><span class="s1">'no-reply@example.com'</span><span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.delivery_method = :sendmail
 # Defaults to:
 # config.action_mailer.sendmail_settings = {
 #   location: '/usr/sbin/sendmail',
@@ -889,11 +1199,21 @@ nuestra guía Configuración de aplicaciones de rieles.</p><h4 id="example-actio
 config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = true
 config.action_mailer.default_options = {from: 'no-reply@example.com'}
-</code></pre>
+">Copy</button>
 </div>
 <h4 id="action-mailer-configuration-for-gmail"><a class="anchorlink" href="#action-mailer-configuration-for-gmail">5.2 Action Mailer Configuration for Gmail</a></h4><p>Como Action Mailer ahora usa la <a href="https://github.com/mikel/mail">Mail gem</a>, esto
 se vuelve tan simple como agregar a su archivo <code>config/environment/$RAILS_ENV.rb</code>:</p><div class="code_container">
-<pre><code class="language-ruby">config.action_mailer.delivery_method = :smtp
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">delivery_method</span> <span class="o">=</span> <span class="ss">:smtp</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">address:              </span><span class="s1">'smtp.gmail.com'</span><span class="p">,</span>
+  <span class="ss">port:                 </span><span class="mi">587</span><span class="p">,</span>
+  <span class="ss">domain:               </span><span class="s1">'example.com'</span><span class="p">,</span>
+  <span class="ss">user_name:            </span><span class="s1">'&lt;username&gt;'</span><span class="p">,</span>
+  <span class="ss">password:             </span><span class="s1">'&lt;password&gt;'</span><span class="p">,</span>
+  <span class="ss">authentication:       </span><span class="s1">'plain'</span><span class="p">,</span>
+  <span class="ss">enable_starttls_auto: </span><span class="kp">true</span> <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
   address:              'smtp.gmail.com',
   port:                 587,
@@ -902,43 +1222,61 @@ config.action_mailer.smtp_settings = {
   password:             '&lt;password&gt;',
   authentication:       'plain',
   enable_starttls_auto: true }
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>A partir del 15 de julio de 2014, Google aumentó <a href="https://support.google.com/accounts/answer/6010255">its security measures</a> y ahora bloquea los intentos de las aplicaciones que considera menos seguras.
 Puedes cambiar tu configuración de Gmail <a href="https://www.google.com/settings/security/lesssecureapps">here</a> para permitir los intentos. Si su cuenta de Gmail tiene habilitada la autenticación de 2 factores,
 entonces deberás establecer un <a href="https://myaccount.google.com/apppasswords">app password</a> y utilícelo en lugar de su contraseña habitual. Alternativamente, puede
 utilice otro ESP para enviar un correo electrónico reemplazando "smtp.gmail.com" arriba con la dirección de su proveedor.</p></div><h3 id="mailer-testing"><a class="anchorlink" href="#mailer-testing">6 Mailer Testing</a></h3><p>Puede encontrar instrucciones detalladas sobre cómo probar sus anuncios en el
 <a href="testing.html#testing-your-mailers">testing guide</a>.</p><h3 id="intercepting-and-observing-emails"><a class="anchorlink" href="#intercepting-and-observing-emails">7 Intercepting and Observing Emails</a></h3><p>Action Mailer proporciona enlaces a los métodos de observador e interceptor de correo. Estos le permiten registrar clases que se llaman durante el ciclo de vida de la entrega de correo de cada correo electrónico enviado.</p><h4 id="intercepting-emails"><a class="anchorlink" href="#intercepting-emails">7.1 Intercepting Emails</a></h4><p>Los interceptores le permiten realizar modificaciones en los correos electrónicos antes de que se entreguen a los agentes de entrega. Una clase de interceptor debe implementar el método <code>:deliver_email(message)</code> que será llamado antes de que se envíe el correo electrónico.</p><div class="code_container">
-<pre><code class="language-ruby">class SandboxEmailInterceptor
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">SandboxEmailInterceptor</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">delivering_email</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="n">message</span><span class="p">.</span><span class="nf">to</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'sandbox@example.com'</span><span class="p">]</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class SandboxEmailInterceptor
   def self.delivering_email(message)
     message.to = ['sandbox@example.com']
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Antes de que el interceptor pueda hacer su trabajo, debe registrarlo con Action
 Marco de correo. Puede hacer esto en un archivo inicializador
 <code>config/initializers/sandbox_email_interceptor.rb</code></p><div class="code_container">
-<pre><code class="language-ruby">if Rails.env.staging?
+<pre><code class="highlight ruby"><span class="k">if</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">staging?</span>
+  <span class="no">ActionMailer</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">register_interceptor</span><span class="p">(</span><span class="no">SandboxEmailInterceptor</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="if Rails.env.staging?
   ActionMailer::Base.register_interceptor(SandboxEmailInterceptor)
 end
-</code></pre>
+">Copy</button>
 </div>
 <div class="note"><p>El ejemplo anterior utiliza un entorno personalizado llamado "ensayo" para un
 producción como servidor pero con fines de prueba. Puedes leer
 <a href="configuring.html#creating-rails-environments">Creating Rails environments</a>
 para obtener más información sobre los entornos personalizados de Rails.</p></div><h4 id="observing-emails"><a class="anchorlink" href="#observing-emails">7.2 Observing Emails</a></h4><p>Los observadores le dan acceso al mensaje de correo electrónico después de que se haya enviado. Una clase de observador debe implementar el método <code>:deliver_email(message)</code>, que se llamará después de que se envíe el correo electrónico.</p><div class="code_container">
-<pre><code class="language-ruby">class EmailDeliveryObserver
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">EmailDeliveryObserver</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">delivered_email</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="no">EmailDelivery</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class EmailDeliveryObserver
   def self.delivered_email(message)
     EmailDelivery.log(message)
   end
 end
-</code></pre>
+">Copy</button>
 </div>
 <p>Al igual que los interceptores, debe registrar observadores con el marco de Action Mailer. Puede hacer esto en un archivo inicializador
 <code>config/initializers/email_delivery_observer.rb</code></p><div class="code_container">
-<pre><code class="language-ruby">ActionMailer::Base.register_observer(EmailDeliveryObserver)
+<pre><code class="highlight ruby"><span class="no">ActionMailer</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">register_observer</span><span class="p">(</span><span class="no">EmailDeliveryObserver</span><span class="p">)</span>
 </code></pre>
+<button class="clipboard-button" data-clipboard-text="ActionMailer::Base.register_observer(EmailDeliveryObserver)
+">Copy</button>
 </div>
 
 
