@@ -1,179 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Rails Initialization Process — Ruby on Rails Guides</title>
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
-  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
-  <meta property="og:title" content="The Rails Initialization Process — Ruby on Rails Guides" />
-  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/The Rails Initialization ProcessEsta guía explica los aspectos internos del proceso de inicialización en Rails. Es una guía muy detallada y recomendada para desarrolladores avanzados de Rails.Después de leer esta guía, sabrá: Cómo utilizar bin / rails server. La línea de tiempo de la secuencia de inicialización de Rails. Donde la secuencia de arranque requiere diferentes archivos. Cómo se define y utiliza la interfaz Rails :: Server." />
-  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/The Rails Initialization ProcessEsta guía explica los aspectos internos del proceso de inicialización en Rails. Es una guía muy detallada y recomendada para desarrolladores avanzados de Rails.Después de leer esta guía, sabrá: Cómo utilizar bin / rails server. La línea de tiempo de la secuencia de inicialización de Rails. Donde la secuencia de arranque requiere diferentes archivos. Cómo se define y utiliza la interfaz Rails :: Server." />
+  <title>El Proceso de Inicialización de Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="El Proceso de Inicialización de Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.El Proceso de Inicialización de RailsEsta guía explica los aspectos internos del proceso de inicialización en Rails. Es una guía extremadamente detallada y se recomienda para desarrolladores avanzados de Rails.Después de leer esta guía, sabrás: Cómo usar bin/rails server. La secuencia temporal de la inicialización de Rails. Dónde se requieren diferentes archivos en la secuencia de arranque. Cómo se define y se utiliza la interfaz de Rails::Server." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.El Proceso de Inicialización de RailsEsta guía explica los aspectos internos del proceso de inicialización en Rails. Es una guía extremadamente detallada y se recomienda para desarrolladores avanzados de Rails.Después de leer esta guía, sabrás: Cómo usar bin/rails server. La secuencia temporal de la inicialización de Rails. Dónde se requieren diferentes archivos en la secuencia de arranque. Cómo se define y se utiliza la interfaz de Rails::Server." />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Ruby on Rails Guides" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
   <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
 </head>
+
 <body class="guide">
-  <div>
-<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
-  </div>
-  <div id="topNav">
+  <nav id="topNav" aria-label="Secondary">
     <div class="wrapper">
       <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
       <span class="red-button more-info-button">
         Más Ruby on Rails
       </span>
       <ul class="more-info-links s-hidden">
-        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
         <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
         <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
-        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
-        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
       </ul>
     </div>
-  </div>
-  <div id="header">
+  </nav>
+  <header id="page_header">
     <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
-      <ul class="nav">
-        <li><a class="nav-item" href="index.html">Inicio</a></li>
-        <li class="guides-index guides-index-large">
-          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
-          <div id="guides" class="clearfix" style="display: none;">
-            <hr />
-            <dl class="guides-section-container">
-                <div class="guides-section">
-                  <dt>Empieza Aqui</dt>
-                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Modelos</dt>
-                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
-                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
-                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
-                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
-                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
-                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Vistas</dt>
-                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
-                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Controladores</dt>
-                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
-                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Otros Componentes</dt>
-                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
-                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
-                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
-                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
-                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Temas Avanzados</dt>
-                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
-                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
-                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
-                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
-                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
-                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
-                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
-                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
-                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
-                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
-                </div>
-            </dl>
-          </div>
-        </li>
-        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
-        <li class="guides-index guides-index-small">
-          <select class="guides-index-item nav-item">
-            <option value="index.html">Guides Index</option>
-              <optgroup label="Empieza Aqui">
-                  <option value="getting_started.html">Introducción a Rails</option>
-              </optgroup>
-              <optgroup label="Modelos">
-                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
-                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
-                  <option value="active_record_validations.html">Validaciones de Active Record</option>
-                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
-                  <option value="association_basics.html">Asociaciones de Active Record</option>
-                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
-              </optgroup>
-              <optgroup label="Vistas">
-                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
-                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
-              </optgroup>
-              <optgroup label="Controladores">
-                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
-                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
-              </optgroup>
-              <optgroup label="Otros Componentes">
-                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
-                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
-                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
-                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
-                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
-              </optgroup>
-              <optgroup label="Temas Avanzados">
-                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
-                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
-                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
-                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
-                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
-                  <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos</option>
-                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
-                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
-                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
-                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
-              </optgroup>
-              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
-                  <option value="rails_on_rack.html">Rails on Rack</option>
-                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
-              </optgroup>
-          </select>
-        </li>
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
       </ul>
+      </nav>
     </div>
-  </div>
+  </header>
   <hr class="hide" />
 
-  <div id="feature">
+  <section id="feature">
     <div class="wrapper">
-      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>The Rails Initialization Process</h2><p>Esta guía explica los aspectos internos del proceso de inicialización en Rails.
-Es una guía muy detallada y recomendada para desarrolladores avanzados de Rails.</p><p>Después de leer esta guía, sabrá:</p>
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>El Proceso de Inicialización de Rails</h1><p>Esta guía explica los aspectos internos del proceso de inicialización en Rails.
+Es una guía extremadamente detallada y se recomienda para desarrolladores avanzados de Rails.</p><p>Después de leer esta guía, sabrás:</p>
 <ul>
-<li>Cómo utilizar <code>bin / rails server</code>.</li>
-<li>La línea de tiempo de la secuencia de inicialización de Rails.</li>
-<li>Donde la secuencia de arranque requiere diferentes archivos.</li>
-<li>Cómo se define y utiliza la interfaz Rails :: Server.</li>
+<li>Cómo usar <code>bin/rails server</code>.</li>
+<li>La secuencia temporal de la inicialización de Rails.</li>
+<li>Dónde se requieren diferentes archivos en la secuencia de arranque.</li>
+<li>Cómo se define y se utiliza la interfaz de Rails::Server.</li>
 </ul>
 
 
-                <div id="subCol">
-            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
             <ol class="chapters">
-<li>
-<a href="#launch-bang">Launch!</a>
+<li><a href="#¡despegue-bang">¡Despegue!</a>
 
 <ul>
 <li><a href="#bin-rails"><code>bin/rails</code></a></li>
@@ -182,41 +205,39 @@ Es una guía muy detallada y recomendada para desarrolladores avanzados de Rails
 <li><a href="#rails-command-rb"><code>rails/command.rb</code></a></li>
 <li><a href="#actionpack-lib-action-dispatch-rb"><code>actionpack/lib/action_dispatch.rb</code></a></li>
 <li><a href="#rails-commands-server-server-command-rb"><code>rails/commands/server/server_command.rb</code></a></li>
-<li><a href="#rack-lib-rack-server-rb">Rack: <code>lib/rack/server.rb</code></a></li>
+<li><a href="#¡despegue-bang-rack-lib-rack-server-rb">Rack: <code>lib/rack/server.rb</code></a></li>
 <li><a href="#config-application"><code>config/application</code></a></li>
 <li><a href="#rails-server-start"><code>Rails::Server#start</code></a></li>
 <li><a href="#config-environment-rb"><code>config/environment.rb</code></a></li>
 <li><a href="#config-application-rb"><code>config/application.rb</code></a></li>
-</ul>
-</li>
-<li>
-<a href="#loading-rails">Loading Rails</a>
+</ul></li>
+<li><a href="#cargando-rails">Cargando Rails</a>
 
 <ul>
 <li><a href="#railties-lib-rails-all-rb"><code>railties/lib/rails/all.rb</code></a></li>
-<li><a href="#back-to-config-environment-rb">Back to <code>config/environment.rb</code></a></li>
+<li><a href="#volvamos-a-config-environment-rb">Volvamos a <code>config/environment.rb</code></a></li>
 <li><a href="#railties-lib-rails-application-rb"><code>railties/lib/rails/application.rb</code></a></li>
-</ul>
-</li>
+<li><a href="#cargando-rails-rack-lib-rack-server-rb">Rack: lib/rack/server.rb</a></li>
+</ul></li>
 </ol>
 
-          </div>
+          </nav>
 
+
+      <hr>
     </div>
-  </div>
+  </section>
 
-  <div id="container">
+  <main id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <p>Esta guía pasa por todas las llamadas a métodos que se
-necesario para iniciar la pila de Ruby on Rails para un Rails predeterminado
-aplicación, explicando cada parte en detalle a lo largo del camino. Para esto
-guía, nos centraremos en lo que sucede cuando ejecuta <code>bin / rails server</code>
-para iniciar su aplicación.</p><div class="note"><p>Las rutas en esta guía son relativas a Rails o una aplicación Rails a menos que se especifique lo contrario.</p></div><p>SUGERENCIA: Si desea seguir la lectura mientras navega por Rails <a href="https://github.com/rails/rails">fuente
-código</a>, le recomendamos que utilice el <code>t</code>
-enlace de teclas para abrir el buscador de archivos dentro de GitHub y buscar archivos
-con rapidez.</p><h3 id="launch-bang"><a class="anchorlink" href="#launch-bang">1 Launch!</a></h3><p>Comencemos a arrancar e inicializar la aplicación. Una aplicación Rails suele
-comenzó ejecutando <code>bin/rails console</code> o <code>bin/rails server</code>.</p><h4 id="bin-rails"><a class="anchorlink" href="#bin-rails">1.1 <code>bin/rails</code></a></h4><p>Este archivo es el siguiente:</p><div class="code_container">
+        <p>Esta guía repasa cada llamada de método que es
+necesaria para iniciar la pila de Ruby on Rails para una aplicación Rails por defecto, explicando cada parte en detalle a lo largo del camino. Para esta
+guía, nos enfocaremos en lo que sucede cuando ejecutas <code>bin/rails server</code>
+para iniciar tu aplicación.</p><p>NOTA: Las rutas en esta guía son relativas a Rails o a una aplicación Rails a menos que se especifique lo contrario.</p><p>CONSEJO: Si deseas seguir mientras navegas por el <a href="https://github.com/rails/rails">código fuente de Rails</a>, te recomendamos que uses la tecla <code>t</code>
+para abrir el buscador de archivos dentro de GitHub y encontrar archivos
+rápidamente.</p><h2 id="¡despegue-bang"><a class="anchorlink" href="#¡despegue-bang"><span>1</span> ¡Despegue!</a></h2><p>Comencemos a iniciar e inicializar la aplicación. Una aplicación Rails generalmente
+se inicia ejecutando <code>bin/rails console</code> o <code>bin/rails server</code>.</p><h3 id="bin-rails"><a class="anchorlink" href="#bin-rails"><span>1.1</span> <code>bin/rails</code></a></h3><p>Este archivo es el siguiente:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="c1">#!/usr/bin/env ruby</span>
 <span class="no">APP_PATH</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s1">'../config/application'</span><span class="p">,</span> <span class="n">__dir__</span><span class="p">)</span>
 <span class="nb">require_relative</span> <span class="s2">"../config/boot"</span>
@@ -228,52 +249,23 @@ require_relative &quot;../config/boot&quot;
 require &quot;rails/commands&quot;
 ">Copy</button>
 </div>
-<p>La constante <code>APP_PATH</code> se utilizará más adelante en<code>rails / commands</code>. El archivo <code>config / boot</code> al que se hace referencia aquí es el archivo<code>config/boot.rb</code> en nuestra aplicación que es responsable de cargar Bundler y configurarlo.</p><h4 id="config-boot-rb"><a class="anchorlink" href="#config-boot-rb">1.2 <code>config/boot.rb</code></a></h4><p><code>config/boot.rb</code> contiene:</p><div class="code_container">
+<p>La constante <code>APP_PATH</code> se usará más adelante en <code>rails/commands</code>. El archivo <code>config/boot</code> referenciado aquí es el archivo <code>config/boot.rb</code> en nuestra aplicación que es responsable de cargar Bundler y configurarlo.</p><h3 id="config-boot-rb"><a class="anchorlink" href="#config-boot-rb"><span>1.2</span> <code>config/boot.rb</code></a></h3><p><code>config/boot.rb</code> contiene:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">ENV</span><span class="p">[</span><span class="s1">'BUNDLE_GEMFILE'</span><span class="p">]</span> <span class="o">||=</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s1">'../Gemfile'</span><span class="p">,</span> <span class="n">__dir__</span><span class="p">)</span>
 
-<span class="nb">require</span> <span class="s2">"bundler/setup"</span> <span class="c1"># Set up gems listed in the Gemfile.</span>
+<span class="nb">require</span> <span class="s2">"bundler/setup"</span> <span class="c1"># Configura las gemas listadas en el Gemfile.</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
 
-require &quot;bundler/setup&quot; # Set up gems listed in the Gemfile.
+require &quot;bundler/setup&quot; # Configura las gemas listadas en el Gemfile.
 ">Copy</button>
 </div>
-<p>En una aplicación estándar de Rails, hay un <code>Gemfile</code> que declara todos
-dependencias de la aplicación. Conjuntos de <code>config/boot.rb</code>
-<code>ENV['BUNDLE_GEMFILE']</code> a la ubicación de este archivo. Si el <code>Gemfile</code>
-existe, entonces se requiere <code>bundler/setup</code>. Bundler utiliza el require para
-configure la ruta de carga para las dependencias de su Gemfile.</p><p>Una aplicación estándar de Rails depende de varias gemas, específicamente:</p>
-<ul>
-<li>actioncable</li>
-<li>actionmailer</li>
-<li>actionpack</li>
-<li>actionview</li>
-<li>activejob</li>
-<li>activemodel</li>
-<li>activerecord</li>
-<li>activestorage</li>
-<li>activesupport</li>
-<li>actionmailbox</li>
-<li>actiontext</li>
-<li>arel</li>
-<li>builder</li>
-<li>bundler</li>
-<li>erubi</li>
-<li>i18n</li>
-<li>mail</li>
-<li>mime-types</li>
-<li>rack</li>
-<li>rack-test</li>
-<li>rails</li>
-<li>railties</li>
-<li>rake</li>
-<li>sqlite3</li>
-<li>thor</li>
-<li>tzinfo</li>
-</ul>
-<h4 id="rails-commands-rb"><a class="anchorlink" href="#rails-commands-rb">1.3 <code>rails/commands.rb</code></a></h4><p>Una vez que <code>config/boot.rb</code> haya terminado, el siguiente archivo que se requiere es
-<code>rails/commands</code>, que ayuda a expandir los alias. En el caso actual, el
-La matriz <code>ARGV</code> simplemente contiene el <code>server</code> que se pasará:</p><div class="code_container">
+<p>En una aplicación Rails estándar, hay un <code>Gemfile</code> que declara todas
+las dependencias de la aplicación. <code>config/boot.rb</code> establece
+<code>ENV['BUNDLE_GEMFILE']</code> en la ubicación de este archivo. Si el <code>Gemfile</code>
+existe, entonces se requiere <code>bundler/setup</code>. El require es usado por Bundler para
+configurar la ruta de carga para las dependencias de tu Gemfile.</p><h3 id="rails-commands-rb"><a class="anchorlink" href="#rails-commands-rb"><span>1.3</span> <code>rails/commands.rb</code></a></h3><p>Una vez que <code>config/boot.rb</code> ha terminado, el siguiente archivo que se requiere es
+<code>rails/commands</code>, que ayuda a expandir alias. En el caso actual, el
+array <code>ARGV</code> simplemente contiene <code>server</code>, que será pasado:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"rails/command"</span>
 
 <span class="n">aliases</span> <span class="o">=</span> <span class="p">{</span>
@@ -291,29 +283,29 @@ La matriz <code>ARGV</code> simplemente contiene el <code>server</code> que se p
 
 <span class="no">Rails</span><span class="o">::</span><span class="no">Command</span><span class="p">.</span><span class="nf">invoke</span> <span class="n">command</span><span class="p">,</span> <span class="no">ARGV</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require "rails/command"
+<button class="clipboard-button" data-clipboard-text="require &quot;rails/command&quot;
 
 aliases = {
-  "g"  =&gt; "generate",
-  "d"  =&gt; "destroy",
-  "c"  =&gt; "console",
-  "s"  =&gt; "server",
-  "db" =&gt; "dbconsole",
-  "r"  =&gt; "runner",
-  "t"  =&gt; "test"
+  &quot;g&quot;  => &quot;generate&quot;,
+  &quot;d&quot;  => &quot;destroy&quot;,
+  &quot;c&quot;  => &quot;console&quot;,
+  &quot;s&quot;  => &quot;server&quot;,
+  &quot;db&quot; => &quot;dbconsole&quot;,
+  &quot;r&quot;  => &quot;runner&quot;,
+  &quot;t&quot;  => &quot;test&quot;
 }
 
 command = ARGV.shift
 command = aliases[command] || command
 
 Rails::Command.invoke command, ARGV
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Si hubiéramos usado <code>s</code> en lugar de<code>servidor</code>, Rails habría usado los <code>alias</code>
-definido aquí para encontrar el comando correspondiente.</p><h4 id="rails-command-rb"><a class="anchorlink" href="#rails-command-rb">1.4 <code>rails/command.rb</code></a></h4><p>Cuando uno escribe un comando Rails, <code>invoke</code> intenta buscar un comando para el dado
-espacio de nombres y ejecuta el comando si lo encuentra.</p><p>Si Rails no reconoce el comando, le entrega las riendas a Rake.
-para ejecutar una tarea con el mismo nombre.</p><p>Como se muestra, <code>Rails::Command</code> muestra la salida de ayuda automáticamente si el <code>namespace</code>
-esta vacio.</p><div class="code_container">
+<p>Si hubiéramos usado <code>s</code> en lugar de <code>server</code>, Rails habría usado los <code>aliases</code>
+definidos aquí para encontrar el comando correspondiente.</p><h3 id="rails-command-rb"><a class="anchorlink" href="#rails-command-rb"><span>1.4</span> <code>rails/command.rb</code></a></h3><p>Cuando uno escribe un comando de Rails, <code>invoke</code> intenta buscar un comando para el
+espacio de nombres dado y ejecuta el comando si se encuentra.</p><p>Si Rails no reconoce el comando, le pasa el control a Rake
+para ejecutar una tarea con el mismo nombre.</p><p>Como se muestra, <code>Rails::Command</code> muestra automáticamente la salida de ayuda si el <code>namespace</code>
+está vacío.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">module</span> <span class="nn">Command</span>
     <span class="k">class</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>
@@ -340,9 +332,9 @@ esta vacio.</p><div class="code_container">
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rails
+<button class="clipboard-button" data-clipboard-text="module Rails
   module Command
-    class &lt;&lt; self
+    class << self
       def invoke(full_namespace, args = [], **config)
         namespace = full_namespace = full_namespace.to_s
 
@@ -352,22 +344,22 @@ esta vacio.</p><div class="code_container">
           command_name = namespace
         end
 
-        command_name, namespace = "help", "help" if command_name.blank? || HELP_MAPPINGS.include?(command_name)
-        command_name, namespace = "version", "version" if %w( -v --version ).include?(command_name)
+        command_name, namespace = &quot;help&quot;, &quot;help&quot; if command_name.blank? || HELP_MAPPINGS.include?(command_name)
+        command_name, namespace = &quot;version&quot;, &quot;version&quot; if %w( -v --version ).include?(command_name)
 
         command = find_by_namespace(namespace, command_name)
         if command &amp;&amp; command.all_commands[command_name]
           command.perform(command_name, args, config)
         else
-          find_by_namespace("rake").perform(full_namespace, args, config)
+          find_by_namespace(&quot;rake&quot;).perform(full_namespace, args, config)
         end
       end
     end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Con el comando <code>server</code>, Rails ejecutará el siguiente código:</p><div class="code_container">
+<p>Con el comando <code>server</code>, Rails ejecutará el siguiente código:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">module</span> <span class="nn">Command</span>
     <span class="k">class</span> <span class="nc">ServerCommand</span> <span class="o">&lt;</span> <span class="no">Base</span> <span class="c1"># :nodoc:</span>
@@ -377,8 +369,8 @@ end
         <span class="n">prepare_restart</span>
 
         <span class="no">Rails</span><span class="o">::</span><span class="no">Server</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">server_options</span><span class="p">).</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">server</span><span class="o">|</span>
-          <span class="c1"># Require application after server sets environment to propagate</span>
-          <span class="c1"># the --environment option.</span>
+          <span class="c1"># Requerir la aplicación después de que el servidor establezca el entorno para propagar</span>
+          <span class="c1"># la opción --environment.</span>
           <span class="nb">require</span> <span class="no">APP_PATH</span>
           <span class="no">Dir</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">root</span><span class="p">)</span>
 
@@ -395,23 +387,23 @@ end
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rails
+<button class="clipboard-button" data-clipboard-text="module Rails
   module Command
-    class ServerCommand &lt; Base # :nodoc:
+    class ServerCommand < Base # :nodoc:
       def perform
         extract_environment_option_from_argument
         set_application_directory!
         prepare_restart
 
         Rails::Server.new(server_options).tap do |server|
-          # Require application after server sets environment to propagate
-          # the --environment option.
+          # Requerir la aplicación después de que el servidor establezca el entorno para propagar
+          # la opción --environment.
           require APP_PATH
           Dir.chdir(Rails.application.root)
 
           if server.serveable?
             print_boot_information(server.server, server.served_url)
-            after_stop_callback = -&gt; { say "Exiting" unless options[:daemon] }
+            after_stop_callback = -> { say &quot;Exiting&quot; unless options[:daemon] }
             server.start(after_stop_callback)
           else
             say rack_server_suggestion(using)
@@ -421,14 +413,14 @@ end
     end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
 <p>Este archivo cambiará al directorio raíz de Rails (una ruta dos directorios arriba
-de <code>APP_PATH</code> que apunta a<code>config / application.rb</code>), pero solo si el
-No se encuentra el archivo <code>config.ru</code>. Esto luego inicia la clase <code>Rails :: Server</code>.</p><h4 id="actionpack-lib-action-dispatch-rb"><a class="anchorlink" href="#actionpack-lib-action-dispatch-rb">1.5 <code>actionpack/lib/action_dispatch.rb</code></a></h4><p>Action Dispatch es el componente de enrutamiento del marco de Rails.
-Agrega funcionalidad como enrutamiento, sesión y middlewares comunes.</p><h4 id="rails-commands-server-server-command-rb"><a class="anchorlink" href="#rails-commands-server-server-command-rb">1.6 <code>rails/commands/server/server_command.rb</code></a></h4><p>La clase <code>Rails::Server</code> se define en este archivo heredando de
-<code>Rack::Server</code>. Cuando se llama a <code>Rails::Server.new</code>, se llama a <code>initialize</code>
-método en <code>rails/commands/server/server_command.rb</code>:</p><div class="code_container">
+de <code>APP_PATH</code>, que apunta a <code>config/application.rb</code>), pero solo si el
+archivo <code>config.ru</code> no se encuentra. Esto luego inicia la clase <code>Rails::Server</code>.</p><h3 id="actionpack-lib-action-dispatch-rb"><a class="anchorlink" href="#actionpack-lib-action-dispatch-rb"><span>1.5</span> <code>actionpack/lib/action_dispatch.rb</code></a></h3><p>Action Dispatch es el componente de enrutamiento del marco de Rails.
+Añade funcionalidades como enrutamiento, sesión y middlewares comunes.</p><h3 id="rails-commands-server-server-command-rb"><a class="anchorlink" href="#rails-commands-server-server-command-rb"><span>1.6</span> <code>rails/commands/server/server_command.rb</code></a></h3><p>La clase <code>Rails::Server</code> se define en este archivo heredando de
+<code>Rack::Server</code>. Cuando se llama a <code>Rails::Server.new</code>, esto llama al método <code>initialize</code>
+en <code>rails/commands/server/server_command.rb</code>:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">class</span> <span class="nc">Server</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rack</span><span class="o">::</span><span class="no">Server</span>
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
@@ -440,7 +432,7 @@ método en <code>rails/commands/server/server_command.rb</code>:</p><div class="
 <span class="k">end</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="module Rails
-  class Server &lt; ::Rack::Server
+  class Server < ::Rack::Server
     def initialize(options = nil)
       @default_options = options || {}
       super(@default_options)
@@ -450,7 +442,7 @@ método en <code>rails/commands/server/server_command.rb</code>:</p><div class="
 end
 ">Copy</button>
 </div>
-<p>En primer lugar, se llama a <code>super</code> que llama al método <code>initialize</code> en <code>Rack::Server</code>.</p><h4 id="rack-lib-rack-server-rb"><a class="anchorlink" href="#rack-lib-rack-server-rb">1.7 Rack: <code>lib/rack/server.rb</code></a></h4><p><code>Rack::Server</code> es responsable de proporcionar una interfaz de servidor común para todas las aplicaciones basadas en Rack, de la que Rails ahora forma parte.</p><p>El método <code>initialize</code> en <code>Rack::Server</code> simplemente establece varias variables:</p><div class="code_container">
+<p>Primero, se llama a <code>super</code>, que llama al método <code>initialize</code> en <code>Rack::Server</code>.</p><h3 id="¡despegue-bang-rack-lib-rack-server-rb"><a class="anchorlink" href="#¡despegue-bang-rack-lib-rack-server-rb"><span>1.7</span> Rack: <code>lib/rack/server.rb</code></a></h3><p><code>Rack::Server</code> es responsable de proporcionar una interfaz de servidor común para todas las aplicaciones basadas en Rack, de las cuales Rails ahora forma parte.</p><p>El método <code>initialize</code> en <code>Rack::Server</code> simplemente establece varias variables:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
   <span class="k">class</span> <span class="nc">Server</span>
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">options</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
@@ -488,8 +480,8 @@ end
 end
 ">Copy</button>
 </div>
-<p>En este caso, el valor de retorno de <code>Rails :: Command :: ServerCommand # server_options</code> se asignará a<code>options</code>.
-Cuando se evalúan las líneas dentro de la instrucción if, se establecerán un par de variables de instancia.</p><p>El método <code>server_options</code> en<code>Rails :: Command :: ServerCommand</code> se define de la siguiente manera:</p><div class="code_container">
+<p>En este caso, el valor de retorno de <code>Rails::Command::ServerCommand#server_options</code> se asignará a <code>options</code>.
+Cuando se evalúan las líneas dentro de la declaración if, se establecerán un par de variables de instancia.</p><p>El método <code>server_options</code> en <code>Rails::Command::ServerCommand</code> se define de la siguiente manera:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">module</span> <span class="nn">Command</span>
     <span class="k">class</span> <span class="nc">ServerCommand</span>
@@ -543,9 +535,9 @@ Cuando se evalúan las líneas dentro de la instrucción if, se establecerán un
 end
 ">Copy</button>
 </div>
-<p>El valor se asignará a la variable de instancia <code>@ options</code>.</p><p>Después de que <code>super</code> haya terminado en <code>Rack::Server</code>, volvemos a
-<code>rails/commands/server/server_command.rb</code>. En este punto, <code>set_environment</code>
-se llama dentro del contexto del objeto <code>Rails::Server</code>.</p><div class="code_container">
+<p>El valor se asignará a la variable de instancia <code>@options</code>.</p><p>Después de que <code>super</code> haya terminado en <code>Rack::Server</code>, volvemos a
+<code>rails/commands/server/server_command.rb</code>. En este punto, se llama a <code>set_environment</code>
+dentro del contexto del objeto <code>Rails::Server</code>.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">module</span> <span class="nn">Server</span>
     <span class="k">def</span> <span class="nf">set_environment</span>
@@ -554,20 +546,20 @@ se llama dentro del contexto del objeto <code>Rails::Server</code>.</p><div clas
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rails
+<button class="clipboard-button" data-clipboard-text="module Rails
   module Server
     def set_environment
-      ENV["RAILS_ENV"] ||= options[:environment]
+      ENV[&quot;RAILS_ENV&quot;] ||= options[:environment]
     end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Después de que haya finalizado <code>initialize</code>, volvemos al comando del servidor
-donde se requiere <code>APP_PATH</code> (que se configuró anteriormente).</p><h4 id="config-application"><a class="anchorlink" href="#config-application">1.8 <code>config/application</code></a></h4><p>Cuando se ejecuta <code>require APP_PATH</code>, se carga <code>config/application.rb</code> (recordar
-que <code>APP_PATH</code> está definido en <code>bin/rails</code>). Este archivo existe en su aplicación
-y es gratis para que cambie según sus necesidades.</p><h4 id="rails-server-start"><a class="anchorlink" href="#rails-server-start">1.9 <code>Rails::Server#start</code></a></h4><p>Después de cargar <code>config/application</code>, se llama a <code>server.start</code>. Este método es
-definido así:</p><div class="code_container">
+<p>Después de que <code>initialize</code> haya terminado, volvemos al comando del servidor
+donde se requiere <code>APP_PATH</code> (que se estableció anteriormente).</p><h3 id="config-application"><a class="anchorlink" href="#config-application"><span>1.8</span> <code>config/application</code></a></h3><p>Cuando se ejecuta <code>require APP_PATH</code>, se carga <code>config/application.rb</code> (recuerda
+que <code>APP_PATH</code> se define en <code>bin/rails</code>). Este archivo existe en tu aplicación
+y eres libre de cambiarlo según tus necesidades.</p><h3 id="rails-server-start"><a class="anchorlink" href="#rails-server-start"><span>1.9</span> <code>Rails::Server#start</code></a></h3><p>Después de que se carga <code>config/application</code>, se llama a <code>server.start</code>. Este método se
+define así:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rails</span>
   <span class="k">class</span> <span class="nc">Server</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rack</span><span class="o">::</span><span class="no">Server</span>
     <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">after_stop_callback</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
@@ -577,7 +569,7 @@ definido así:</p><div class="code_container">
       <span class="n">log_to_stdout</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="ss">:log_stdout</span><span class="p">]</span>
 
       <span class="k">super</span><span class="p">()</span>
-      <span class="o">...</span>
+      <span class="c1"># ...</span>
     <span class="k">end</span>
 
     <span class="kp">private</span>
@@ -594,7 +586,7 @@ definido así:</p><div class="code_container">
       <span class="k">end</span>
 
       <span class="k">def</span> <span class="nf">log_to_stdout</span>
-        <span class="n">wrapped_app</span> <span class="c1"># touch the app so the logger is set up</span>
+        <span class="n">wrapped_app</span> <span class="c1"># toca la aplicación para que el logger esté configurado</span>
 
         <span class="n">console</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">STDOUT</span><span class="p">)</span>
         <span class="n">console</span><span class="p">.</span><span class="nf">formatter</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">formatter</span>
@@ -607,8 +599,8 @@ definido así:</p><div class="code_container">
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rails
-  class Server &lt; ::Rack::Server
+<button class="clipboard-button" data-clipboard-text="module Rails
+  class Server < ::Rack::Server
     def start(after_stop_callback = nil)
       trap(:INT) { exit }
       create_tmp_directories
@@ -616,24 +608,24 @@ definido así:</p><div class="code_container">
       log_to_stdout if options[:log_stdout]
 
       super()
-      ...
+      # ...
     end
 
     private
       def setup_dev_caching
-        if options[:environment] == "development"
+        if options[:environment] == &quot;development&quot;
           Rails::DevCaching.enable_by_argument(options[:caching])
         end
       end
 
       def create_tmp_directories
         %w(cache pids sockets).each do |dir_to_make|
-          FileUtils.mkdir_p(File.join(Rails.root, "tmp", dir_to_make))
+          FileUtils.mkdir_p(File.join(Rails.root, &quot;tmp&quot;, dir_to_make))
         end
       end
 
       def log_to_stdout
-        wrapped_app # touch the app so the logger is set up
+        wrapped_app # toca la aplicación para que el logger esté configurado
 
         console = ActiveSupport::Logger.new(STDOUT)
         console.formatter = Rails.logger.formatter
@@ -645,17 +637,17 @@ definido así:</p><div class="code_container">
       end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Este método crea una trampa para las señales <code>INT</code>, por lo que si <code>CTRL-C</code> el servidor, saldrá del proceso.
-Como podemos ver en el código aquí, creará el <code>tmp/cache</code>,
-Directorios <code>tmp/pids</code> y <code>tmp/sockets</code>. Luego habilita el almacenamiento en caché en desarrollo
-si se llama a <code>bin/rails server</code> con <code>--dev-caching</code>. Finalmente, llama a <code>wrap_app</code> que es
+<p>Este método crea una trampa para señales <code>INT</code>, por lo que si presionas <code>CTRL-C</code> en el servidor, saldrá del proceso.
+Como podemos ver en el código aquí, creará los directorios <code>tmp/cache</code>,
+<code>tmp/pids</code> y <code>tmp/sockets</code>. Luego habilita la caché en desarrollo
+si <code>bin/rails server</code> se llama con <code>--dev-caching</code>. Finalmente, llama a <code>wrapped_app</code>, que es
 responsable de crear la aplicación Rack, antes de crear y asignar una instancia
-de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llamará a <code>Rack::Server.start</code> que comienza su definición de la siguiente manera:</p><div class="code_container">
+de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llamará a <code>Rack::Server.start</code>, que comienza su definición como sigue:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
   <span class="k">class</span> <span class="nc">Server</span>
-    <span class="k">def</span> <span class="nf">start</span> <span class="o">&amp;</span><span class="n">blk</span>
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blk</span><span class="p">)</span>
       <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="ss">:warn</span><span class="p">]</span>
         <span class="vg">$-w</span> <span class="o">=</span> <span class="kp">true</span>
       <span class="k">end</span>
@@ -678,8 +670,8 @@ de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llama
 
       <span class="n">check_pid!</span> <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="ss">:pid</span><span class="p">]</span>
 
-      <span class="c1"># Touch the wrapped app, so that the config.ru is loaded before</span>
-      <span class="c1"># daemonization (i.e. before chdir, etc).</span>
+      <span class="c1"># Toca la aplicación envuelta, para que config.ru se cargue antes de</span>
+      <span class="c1"># la demonización (es decir, antes de chdir, etc.).</span>
       <span class="n">handle_profiling</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="ss">:heapfile</span><span class="p">],</span> <span class="n">options</span><span class="p">[</span><span class="ss">:profile_mode</span><span class="p">],</span> <span class="n">options</span><span class="p">[</span><span class="ss">:profile_file</span><span class="p">])</span> <span class="k">do</span>
         <span class="n">wrapped_app</span>
       <span class="k">end</span>
@@ -701,9 +693,9 @@ de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llama
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rack
+<button class="clipboard-button" data-clipboard-text="module Rack
   class Server
-    def start &amp;blk
+    def start(&amp;blk)
       if options[:warn]
         $-w = true
       end
@@ -718,7 +710,7 @@ de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llama
 
       if options[:debug]
         $DEBUG = true
-        require "pp"
+        require &quot;pp&quot;
         p options[:server]
         pp wrapped_app
         pp app
@@ -726,8 +718,8 @@ de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llama
 
       check_pid! if options[:pid]
 
-      # Touch the wrapped app, so that the config.ru is loaded before
-      # daemonization (i.e. before chdir, etc).
+      # Toca la aplicación envuelta, para que config.ru se cargue antes de
+      # la demonización (es decir, antes de chdir, etc.).
       handle_profiling(options[:heapfile], options[:profile_mode], options[:profile_file]) do
         wrapped_app
       end
@@ -748,11 +740,11 @@ de <code>ActiveSupport::Logger</code>.</p><p>El método <code>super</code> llama
     end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>La parte interesante de una aplicación Rails es la última línea, <code>server.run</code>. Aquí nos encontramos con el método <code>wrap_app</code> nuevamente, que esta vez
-vamos a explorar más (a pesar de que se ejecutó antes, y
-así memorizado por ahora).</p><div class="code_container">
+<p>La parte interesante para una aplicación Rails es la última línea, <code>server.run</code>. Aquí encontramos nuevamente el método <code>wrapped_app</code>, que esta vez
+vamos a explorar más (aunque ya se ejecutó antes, y
+por lo tanto, ya está memorizado).</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
   <span class="k">class</span> <span class="nc">Server</span>
     <span class="k">def</span> <span class="nf">wrapped_app</span>
@@ -770,13 +762,14 @@ así memorizado por ahora).</p><div class="code_container">
 end
 ">Copy</button>
 </div>
-<p>El método <code>app</code> aquí se define así:</p><div class="code_container">
+<p>El método <code>app</code> aquí se define así:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
   <span class="k">class</span> <span class="nc">Server</span>
     <span class="k">def</span> <span class="nf">app</span>
       <span class="vi">@app</span> <span class="o">||=</span> <span class="n">options</span><span class="p">[</span><span class="ss">:builder</span><span class="p">]</span> <span class="p">?</span> <span class="n">build_app_from_string</span> <span class="p">:</span> <span class="n">build_app_and_options_from_config</span>
     <span class="k">end</span>
-    <span class="o">...</span>
+
+    <span class="c1"># ...</span>
 
     <span class="kp">private</span>
       <span class="k">def</span> <span class="nf">build_app_and_options_from_config</span>
@@ -792,21 +785,21 @@ end
       <span class="k">def</span> <span class="nf">build_app_from_string</span>
         <span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="p">.</span><span class="nf">new_from_string</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">options</span><span class="p">[</span><span class="ss">:builder</span><span class="p">])</span>
       <span class="k">end</span>
-
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rack
+<button class="clipboard-button" data-clipboard-text="module Rack
   class Server
     def app
       @app ||= options[:builder] ? build_app_from_string : build_app_and_options_from_config
     end
-    ...
+
+    # ...
 
     private
       def build_app_and_options_from_config
         if !::File.exist? options[:config]
-          abort "configuration #{options[:config]} not found"
+          abort &quot;configuration #{options[:config]} not found&quot;
         end
 
         app, options = Rack::Builder.parse_file(self.options[:config], opt_parser)
@@ -817,89 +810,88 @@ end
       def build_app_from_string
         Rack::Builder.new_from_string(self.options[:builder])
       end
-
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>El valor <code>options[:config]</code> predeterminado es <code>config.ru</code> que contiene esto:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># This file is used by Rack-based servers to start the application.</span>
+<p>El valor de <code>options[:config]</code> por defecto es <code>config.ru</code>, que contiene esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Este archivo es usado por servidores basados en Rack para iniciar la aplicación.</span>
 
 <span class="nb">require_relative</span> <span class="s2">"config/environment"</span>
 
 <span class="n">run</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# This file is used by Rack-based servers to start the application.
+<button class="clipboard-button" data-clipboard-text="# Este archivo es usado por servidores basados en Rack para iniciar la aplicación.
 
-require_relative "config/environment"
+require_relative &quot;config/environment&quot;
 
 run Rails.application
-'>Copy</button>
+">Copy</button>
 </div>
-<p>El método <code>Rack::Builder.parse_file</code> aquí toma el contenido de este archivo <code>config.ru</code> y lo analiza usando este código:</p><div class="code_container">
+<p>El método <code>Rack::Builder.parse_file</code> aquí toma el contenido de este archivo <code>config.ru</code> y lo analiza usando este código:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
   <span class="k">class</span> <span class="nc">Builder</span>
     <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">load_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="no">Server</span><span class="o">::</span><span class="no">Options</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span>
-      <span class="o">...</span>
+      <span class="c1"># ...</span>
       <span class="n">app</span> <span class="o">=</span> <span class="n">new_from_string</span> <span class="n">cfgfile</span><span class="p">,</span> <span class="n">config</span>
-      <span class="o">...</span>
+      <span class="c1"># ...</span>
     <span class="k">end</span>
 
-    <span class="o">...</span>
+    <span class="c1"># ...</span>
 
-    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new_from_string</span><span class="p">(</span><span class="n">builder_script</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">"(rackup)"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">new_from_string</span><span class="p">(</span><span class="n">builder_script</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="s2">"(rackup)"</span><span class="p">)</span>
       <span class="nb">eval</span> <span class="s2">"Rack::Builder.new {</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">builder_script</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">}.to_app"</span><span class="p">,</span>
         <span class="no">TOPLEVEL_BINDING</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module Rack
+<button class="clipboard-button" data-clipboard-text="module Rack
   class Builder
     def self.load_file(path, opts = Server::Options.new)
-      ...
+      # ...
       app = new_from_string cfgfile, config
-      ...
+      # ...
     end
 
-    ...
+    # ...
 
-    def self.new_from_string(builder_script, file="(rackup)")
-      eval "Rack::Builder.new {\n" + builder_script + "\n}.to_app",
+    def self.new_from_string(builder_script, file = &quot;(rackup)&quot;)
+      eval &quot;Rack::Builder.new {\n&quot; + builder_script + &quot;\n}.to_app&quot;,
         TOPLEVEL_BINDING, file, 0
     end
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>El método <code>initialize</code> de <code>Rack::Builder</code> tomará el bloque aquí y lo ejecutará dentro de una instancia de <code>Rack :: Builder</code>.
+<p>El método <code>initialize</code> de <code>Rack::Builder</code> tomará el bloque aquí y lo ejecutará dentro de una instancia de <code>Rack::Builder</code>.
 Aquí es donde ocurre la mayor parte del proceso de inicialización de Rails.
-La línea <code>require</code> para<code>config/environment.rb</code> en <code>config.ru</code> es la primera en ejecutarse:</p><div class="code_container">
+La línea <code>require</code> para <code>config/environment.rb</code> en <code>config.ru</code> es la primera en ejecutarse:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require_relative</span> <span class="s2">"config/environment"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require_relative "config/environment"
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="require_relative &quot;config/environment&quot;
+">Copy</button>
 </div>
-<h4 id="config-environment-rb"><a class="anchorlink" href="#config-environment-rb">1.10 <code>config/environment.rb</code></a></h4><p>Este archivo es el archivo común requerido por <code>config.ru</code> (<code>bin/rails server</code>) y Passenger. Aquí es donde se encuentran estas dos formas de ejecutar el servidor; todo antes de este punto ha sido la configuración de Rack and Rails.</p><p>Este archivo comienza requiriendo <code>config/application.rb</code>:</p><div class="code_container">
+<h3 id="config-environment-rb"><a class="anchorlink" href="#config-environment-rb"><span>1.10</span> <code>config/environment.rb</code></a></h3><p>Este archivo es el archivo común requerido por <code>config.ru</code> (<code>bin/rails server</code>) y Passenger. Aquí es donde estos dos métodos para ejecutar el servidor se encuentran; todo lo anterior a este punto ha sido configuración de Rack y Rails.</p><p>Este archivo comienza requiriendo <code>config/application.rb</code>:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require_relative</span> <span class="s2">"application"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require_relative "application"
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="require_relative &quot;application&quot;
+">Copy</button>
 </div>
-<h4 id="config-application-rb"><a class="anchorlink" href="#config-application-rb">1.11 <code>config/application.rb</code></a></h4><p>Este archivo requiere <code>config/boot.rb</code>:`</p><div class="code_container">
+<h3 id="config-application-rb"><a class="anchorlink" href="#config-application-rb"><span>1.11</span> <code>config/application.rb</code></a></h3><p>Este archivo requiere <code>config/boot.rb</code>:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require_relative</span> <span class="s2">"boot"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require_relative "boot"
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="require_relative &quot;boot&quot;
+">Copy</button>
 </div>
-<p>Pero solo si no se ha requerido antes, que sería el caso en <code>bin/rails server</code>
-pero <strong>no</strong> sería el caso de Passenger.</p><p>¡Entonces comienza la diversión!</p><h3 id="loading-rails"><a class="anchorlink" href="#loading-rails">2 Loading Rails</a></h3><p>La siguiente línea en <code>config/application.rb</code> es:</p><div class="code_container">
+<p>Pero solo si no se ha requerido antes, lo cual sería el caso en <code>bin/rails server</code>
+pero <strong>no</strong> sería el caso con Passenger.</p><p>¡Entonces comienza la diversión!</p><h2 id="cargando-rails"><a class="anchorlink" href="#cargando-rails"><span>2</span> Cargando Rails</a></h2><p>La siguiente línea en <code>config/application.rb</code> es:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"rails/all"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require "rails/all"
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="require &quot;rails/all&quot;
+">Copy</button>
 </div>
-<h4 id="railties-lib-rails-all-rb"><a class="anchorlink" href="#railties-lib-rails-all-rb">2.1 <code>railties/lib/rails/all.rb</code></a></h4><p>Este archivo es responsable de requerir todos los marcos individuales de Rails:</p><div class="code_container">
+<h3 id="railties-lib-rails-all-rb"><a class="anchorlink" href="#railties-lib-rails-all-rb"><span>2.1</span> <code>railties/lib/rails/all.rb</code></a></h3><p>Este archivo es responsable de requerir todos los marcos individuales de Rails:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"rails"</span>
 
 <span class="sx">%w(
@@ -913,7 +905,6 @@ pero <strong>no</strong> sería el caso de Passenger.</p><p>¡Entonces comienza 
   action_mailbox/engine
   action_text/engine
   rails/test_unit/railtie
-  sprockets/railtie
 )</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">railtie</span><span class="o">|</span>
   <span class="k">begin</span>
     <span class="nb">require</span> <span class="n">railtie</span>
@@ -921,7 +912,7 @@ pero <strong>no</strong> sería el caso de Passenger.</p><p>¡Entonces comienza 
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require "rails"
+<button class="clipboard-button" data-clipboard-text="require &quot;rails&quot;
 
 %w(
   active_record/railtie
@@ -934,64 +925,255 @@ pero <strong>no</strong> sería el caso de Passenger.</p><p>¡Entonces comienza 
   action_mailbox/engine
   action_text/engine
   rails/test_unit/railtie
-  sprockets/railtie
 ).each do |railtie|
   begin
     require railtie
   rescue LoadError
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Aquí es donde se cargan todos los frameworks Rails y así se hacen
-disponible para la aplicación. No entraremos en detalles de lo que pasa
-dentro de cada uno de esos marcos, pero le recomendamos que intente
-Explórelos por su cuenta.</p><p>Por ahora, solo tenga en cuenta que la funcionalidad común, como los motores Rails,
-La configuración de I18n y Rails se define aquí.</p><h4 id="back-to-config-environment-rb"><a class="anchorlink" href="#back-to-config-environment-rb">2.2 Back to <code>config/environment.rb</code></a></h4><p>El resto de <code>config/application.rb</code> define la configuración del
-<code>Rails::Application</code> que se utilizará una vez que la aplicación esté completamente
-inicializado. Cuando <code>config/application.rb</code> haya terminado de cargar Rails y definido
-el espacio de nombres de la aplicación, volvemos a <code>config/environment.rb</code>. Aquí el
-la aplicación se inicializa con <code>Rails.application.initialize!</code>, que es
-definido en <code>rails/application.rb</code>.</p><h4 id="railties-lib-rails-application-rb"><a class="anchorlink" href="#railties-lib-rails-application-rb">2.3 <code>railties/lib/rails/application.rb</code></a></h4><p>El método <code>initialize!</code> Se ve así:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">initialize!</span><span class="p">(</span><span class="n">group</span> <span class="o">=</span> <span class="ss">:default</span><span class="p">)</span> <span class="c1">#:nodoc:</span>
+<p>Aquí es donde se cargan todos los marcos de Rails y, por lo tanto, se hacen
+disponibles para la aplicación. No entraremos en detalle sobre lo que sucede
+dentro de cada uno de esos marcos, pero se te anima a intentar
+explorarlos por tu cuenta.</p><p>Por ahora, solo ten en cuenta que funcionalidades comunes como motores de Rails,
+I18n y configuración de Rails se están definiendo aquí.</p><h3 id="volvamos-a-config-environment-rb"><a class="anchorlink" href="#volvamos-a-config-environment-rb"><span>2.2</span> Volvamos a <code>config/environment.rb</code></a></h3><p>El resto de <code>config/application.rb</code> define la configuración para el
+<code>Rails::Application</code>, que se usará una vez que la aplicación esté completamente
+inicializada. Cuando <code>config/application.rb</code> ha terminado de cargar Rails y ha definido
+el espacio de nombres de la aplicación, volvemos a <code>config/environment.rb</code>. Aquí, la
+aplicación se inicializa con <code>Rails.application.initialize!</code>, que se
+define en <code>rails/application.rb</code>.</p><h3 id="railties-lib-rails-application-rb"><a class="anchorlink" href="#railties-lib-rails-application-rb"><span>2.3</span> <code>railties/lib/rails/application.rb</code></a></h3><p>El método <code>initialize!</code> se ve así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">initialize!</span><span class="p">(</span><span class="n">group</span> <span class="o">=</span> <span class="ss">:default</span><span class="p">)</span> <span class="c1"># :nodoc:</span>
   <span class="k">raise</span> <span class="s2">"Application has been already initialized."</span> <span class="k">if</span> <span class="vi">@initialized</span>
   <span class="n">run_initializers</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="nb">self</span><span class="p">)</span>
   <span class="vi">@initialized</span> <span class="o">=</span> <span class="kp">true</span>
   <span class="nb">self</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='def initialize!(group = :default) #:nodoc:
-  raise "Application has been already initialized." if @initialized
+<button class="clipboard-button" data-clipboard-text="def initialize!(group = :default) # :nodoc:
+  raise &quot;Application has been already initialized.&quot; if @initialized
   run_initializers(group, self)
   @initialized = true
   self
 end
-'>Copy</button>
+">Copy</button>
 </div>
+<p>Solo puedes inicializar una aplicación una vez. Los <a href="configuring.html#initializers">inicializadores</a> de Railtie
+se ejecutan a través del método <code>run_initializers</code>, que se define en
+<code>railties/lib/rails/initializable.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">run_initializers</span><span class="p">(</span><span class="n">group</span> <span class="o">=</span> <span class="ss">:default</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@ran</span><span class="p">)</span>
+  <span class="n">initializers</span><span class="p">.</span><span class="nf">tsort_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">initializer</span><span class="o">|</span>
+    <span class="n">initializer</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="k">if</span> <span class="n">initializer</span><span class="p">.</span><span class="nf">belongs_to?</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+  <span class="k">end</span>
+  <span class="vi">@ran</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def run_initializers(group = :default, *args)
+  return if instance_variable_defined?(:@ran)
+  initializers.tsort_each do |initializer|
+    initializer.run(*args) if initializer.belongs_to?(group)
+  end
+  @ran = true
+end
+">Copy</button>
+</div>
+<p>El código de <code>run_initializers</code> en sí es complicado. Lo que Rails está haciendo aquí es
+recorrer todos los ancestros de la clase buscando aquellos que respondan a un
+método <code>initializers</code>. Luego ordena los ancestros por nombre y los ejecuta.
+Por ejemplo, la clase <code>Engine</code> hará que todos los motores estén disponibles al
+proporcionar un método <code>initializers</code> en ellos.</p><p>La clase <code>Rails::Application</code>, tal como se define en <code>railties/lib/rails/application.rb</code>
+define los inicializadores <code>bootstrap</code>, <code>railtie</code> y <code>finisher</code>. Los inicializadores <code>bootstrap</code>
+preparan la aplicación (como inicializar el logger), mientras que los inicializadores <code>finisher</code>
+(como construir la pila de middleware) se ejecutan al final. Los inicializadores <code>railtie</code>
+son los inicializadores que se han definido en el propio <code>Rails::Application</code> y se ejecutan entre los <code>bootstrap</code> y los <code>finishers</code>.</p><p>NOTA: No confundas los inicializadores de Railtie en general con el <a href="configuring.html#using-initializer-files">initializer</a>
+instance de inicializadores o sus inicializadores de configuración asociados en <code>config/initializers</code>.</p><p>Después de que esto se hace, volvemos a <code>Rack::Server</code>.</p><h3 id="cargando-rails-rack-lib-rack-server-rb"><a class="anchorlink" href="#cargando-rails-rack-lib-rack-server-rb"><span>2.4</span> Rack: lib/rack/server.rb</a></h3><p>La última vez que nos fuimos, el método <code>app</code> estaba siendo definido:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
+  <span class="k">class</span> <span class="nc">Server</span>
+    <span class="k">def</span> <span class="nf">app</span>
+      <span class="vi">@app</span> <span class="o">||=</span> <span class="n">options</span><span class="p">[</span><span class="ss">:builder</span><span class="p">]</span> <span class="p">?</span> <span class="n">build_app_from_string</span> <span class="p">:</span> <span class="n">build_app_and_options_from_config</span>
+    <span class="k">end</span>
 
+    <span class="c1"># ...</span>
 
-        <h3>Comentarios Sobre el Contenido</h3>
+    <span class="kp">private</span>
+      <span class="k">def</span> <span class="nf">build_app_and_options_from_config</span>
+        <span class="k">if</span> <span class="o">!::</span><span class="no">File</span><span class="p">.</span><span class="nf">exist?</span> <span class="n">options</span><span class="p">[</span><span class="ss">:config</span><span class="p">]</span>
+          <span class="nb">abort</span> <span class="s2">"configuration </span><span class="si">#{</span><span class="n">options</span><span class="p">[</span><span class="ss">:config</span><span class="p">]</span><span class="si">}</span><span class="s2"> not found"</span>
+        <span class="k">end</span>
+
+        <span class="n">app</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="p">.</span><span class="nf">parse_file</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">options</span><span class="p">[</span><span class="ss">:config</span><span class="p">],</span> <span class="n">opt_parser</span><span class="p">)</span>
+        <span class="vi">@options</span><span class="p">.</span><span class="nf">merge!</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="o">|</span> <span class="n">old</span> <span class="p">}</span>
+        <span class="n">app</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">build_app_from_string</span>
+        <span class="no">Rack</span><span class="o">::</span><span class="no">Builder</span><span class="p">.</span><span class="nf">new_from_string</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">options</span><span class="p">[</span><span class="ss">:builder</span><span class="p">])</span>
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Rack
+  class Server
+    def app
+      @app ||= options[:builder] ? build_app_from_string : build_app_and_options_from_config
+    end
+
+    # ...
+
+    private
+      def build_app_and_options_from_config
+        if !::File.exist? options[:config]
+          abort &quot;configuration #{options[:config]} not found&quot;
+        end
+
+        app, options = Rack::Builder.parse_file(self.options[:config], opt_parser)
+        @options.merge!(options) { |key, old, new| old }
+        app
+      end
+
+      def build_app_from_string
+        Rack::Builder.new_from_string(self.options[:builder])
+      end
+  end
+end
+">Copy</button>
+</div>
+<p>En este punto, <code>app</code> es la propia aplicación Rails (un middleware), y lo que
+sucede a continuación es que Rack llamará a todos los middlewares proporcionados:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
+  <span class="k">class</span> <span class="nc">Server</span>
+    <span class="kp">private</span>
+      <span class="k">def</span> <span class="nf">build_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="n">middleware</span><span class="p">[</span><span class="n">options</span><span class="p">[</span><span class="ss">:environment</span><span class="p">]].</span><span class="nf">reverse_each</span> <span class="k">do</span> <span class="o">|</span><span class="n">middleware</span><span class="o">|</span>
+          <span class="n">middleware</span> <span class="o">=</span> <span class="n">middleware</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">middleware</span><span class="p">.</span><span class="nf">respond_to?</span><span class="p">(</span><span class="ss">:call</span><span class="p">)</span>
+          <span class="k">next</span> <span class="k">unless</span> <span class="n">middleware</span>
+          <span class="n">klass</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span> <span class="o">=</span> <span class="n">middleware</span>
+          <span class="n">app</span> <span class="o">=</span> <span class="n">klass</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">end</span>
+        <span class="n">app</span>
+      <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Rack
+  class Server
+    private
+      def build_app(app)
+        middleware[options[:environment]].reverse_each do |middleware|
+          middleware = middleware.call(self) if middleware.respond_to?(:call)
+          next unless middleware
+          klass, *args = middleware
+          app = klass.new(app, *args)
+        end
+        app
+      end
+  end
+end
+">Copy</button>
+</div>
+<p>Recuerda, <code>build_app</code> fue llamado (por <code>wrapped_app</code>) en la última línea de <code>Rack::Server#start</code>.
+Así es como se veía cuando nos fuimos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">server</span><span class="p">.</span><span class="nf">run</span> <span class="n">wrapped_app</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">blk</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="server.run wrapped_app, options, &amp;blk
+">Copy</button>
+</div>
+<p>En este punto, la implementación de <code>server.run</code> dependerá del
+servidor que estés usando. Por ejemplo, si estuvieras usando Puma, así es como
+se vería el método <code>run</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Rack</span>
+  <span class="k">module</span> <span class="nn">Handler</span>
+    <span class="k">module</span> <span class="nn">Puma</span>
+      <span class="c1"># ...</span>
+      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{})</span>
+        <span class="n">conf</span>   <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">config</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+
+        <span class="n">events</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="ss">:Silent</span><span class="p">)</span> <span class="p">?</span> <span class="o">::</span><span class="no">Puma</span><span class="o">::</span><span class="no">Events</span><span class="p">.</span><span class="nf">strings</span> <span class="p">:</span> <span class="o">::</span><span class="no">Puma</span><span class="o">::</span><span class="no">Events</span><span class="p">.</span><span class="nf">stdio</span>
+
+        <span class="n">launcher</span> <span class="o">=</span> <span class="o">::</span><span class="no">Puma</span><span class="o">::</span><span class="no">Launcher</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">conf</span><span class="p">,</span> <span class="ss">events: </span><span class="n">events</span><span class="p">)</span>
+
+        <span class="k">yield</span> <span class="n">launcher</span> <span class="k">if</span> <span class="nb">block_given?</span>
+        <span class="k">begin</span>
+          <span class="n">launcher</span><span class="p">.</span><span class="nf">run</span>
+        <span class="k">rescue</span> <span class="no">Interrupt</span>
+          <span class="nb">puts</span> <span class="s2">"* Deteniendo con gracia, esperando que las solicitudes terminen"</span>
+          <span class="n">launcher</span><span class="p">.</span><span class="nf">stop</span>
+          <span class="nb">puts</span> <span class="s2">"* ¡Adiós!"</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+      <span class="c1"># ...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Rack
+  module Handler
+    module Puma
+      # ...
+      def self.run(app, options = {})
+        conf   = self.config(app, options)
+
+        events = options.delete(:Silent) ? ::Puma::Events.strings : ::Puma::Events.stdio
+
+        launcher = ::Puma::Launcher.new(conf, events: events)
+
+        yield launcher if block_given?
+        begin
+          launcher.run
+        rescue Interrupt
+          puts &quot;* Deteniendo con gracia, esperando que las solicitudes terminen&quot;
+          launcher.stop
+          puts &quot;* ¡Adiós!&quot;
+        end
+      end
+      # ...
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>No profundizaremos en la configuración del servidor en sí, pero este es
+el último paso de nuestro viaje en el proceso de inicialización de Rails.</p><p>Esta visión general de alto nivel te ayudará a entender cuándo se
+ejecuta tu código y cómo, y en general a convertirte en un mejor desarrollador de Rails. Si
+aún quieres saber más, el propio código fuente de Rails es probablemente el
+mejor lugar para ir a continuación.</p>
+        <hr>
+        <h3>Comentarios</h3>
         <p>
-          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+          Se te anima a ayudar a mejorar la calidad de esta guía.
         </p>
         <p>
-          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
-
-          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
-          Please contribute if you see any typos or factual errors.
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
         </p>
-
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
       </div>
     </div>
-  </div>
+  </main>
 
   <hr class="hide" />
-  <div id="footer">
+  <footer id="page_footer">
     <div class="wrapper">
-      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
-<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
 
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
     </div>
-  </div>
+  </footer>
 </body>
 </html>

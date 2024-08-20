@@ -1,282 +1,691 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Conceptos Básicos del Active Model — Ruby on Rails Guides</title>
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
-  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
-  <meta property="og:title" content="Conceptos Básicos del Active Model — Ruby on Rails Guides" />
-  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Conceptos Básicos del Active ModelEsta guía debe proporcionarle todo lo que necesita para comenzar a usar el modelo clases Active Model permite que los ayudantes de Action Pack interactúen con Objetos simples de Ruby. Active Model también ayuda a construir ORM personalizados para su uso fuera del marco de Rails.Después de leer esta guía, sabrá: Cómo se comporta un modelo de registro activo. Cómo funcionan las devoluciones de llamada y las validaciones. Cómo funcionan los serializadores. Cómo se integra Active Model con el marco de internacionalización de Rails (i18n)." />
-  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Conceptos Básicos del Active ModelEsta guía debe proporcionarle todo lo que necesita para comenzar a usar el modelo clases Active Model permite que los ayudantes de Action Pack interactúen con Objetos simples de Ruby. Active Model también ayuda a construir ORM personalizados para su uso fuera del marco de Rails.Después de leer esta guía, sabrá: Cómo se comporta un modelo de registro activo. Cómo funcionan las devoluciones de llamada y las validaciones. Cómo funcionan los serializadores. Cómo se integra Active Model con el marco de internacionalización de Rails (i18n)." />
+  <title>Conceptos Básicos de Active Model — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Conceptos Básicos de Active Model — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Conceptos Básicos de Active ModelEsta guía le proporcionará lo que necesita para comenzar a usar Active Model. Active Model proporciona una forma para que los ayudantes de Action Pack y Action View interactúen con objetos Ruby simples. También ayuda a construir ORM personalizados para su uso fuera del marco de Rails.Después de leer esta guía, sabrá: Qué es Active Model y cómo se relaciona con Active Record. Los diferentes módulos que se incluyen en Active Model. Cómo usar Active Model en sus clases." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Conceptos Básicos de Active ModelEsta guía le proporcionará lo que necesita para comenzar a usar Active Model. Active Model proporciona una forma para que los ayudantes de Action Pack y Action View interactúen con objetos Ruby simples. También ayuda a construir ORM personalizados para su uso fuera del marco de Rails.Después de leer esta guía, sabrá: Qué es Active Model y cómo se relaciona con Active Record. Los diferentes módulos que se incluyen en Active Model. Cómo usar Active Model en sus clases." />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Ruby on Rails Guides" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
   <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
 </head>
+
 <body class="guide">
-  <div>
-<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
-  </div>
-  <div id="topNav">
+  <nav id="topNav" aria-label="Secondary">
     <div class="wrapper">
       <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
       <span class="red-button more-info-button">
         Más Ruby on Rails
       </span>
       <ul class="more-info-links s-hidden">
-        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
         <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
         <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
-        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
-        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
       </ul>
     </div>
-  </div>
-  <div id="header">
+  </nav>
+  <header id="page_header">
     <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
-      <ul class="nav">
-        <li><a class="nav-item" href="index.html">Inicio</a></li>
-        <li class="guides-index guides-index-large">
-          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
-          <div id="guides" class="clearfix" style="display: none;">
-            <hr />
-            <dl class="guides-section-container">
-                <div class="guides-section">
-                  <dt>Empieza Aqui</dt>
-                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Modelos</dt>
-                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
-                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
-                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
-                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
-                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
-                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Vistas</dt>
-                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
-                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Controladores</dt>
-                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
-                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Otros Componentes</dt>
-                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
-                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
-                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
-                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
-                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Temas Avanzados</dt>
-                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
-                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
-                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
-                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
-                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
-                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
-                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
-                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
-                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
-                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
-                </div>
-            </dl>
-          </div>
-        </li>
-        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
-        <li class="guides-index guides-index-small">
-          <select class="guides-index-item nav-item">
-            <option value="index.html">Guides Index</option>
-              <optgroup label="Empieza Aqui">
-                  <option value="getting_started.html">Introducción a Rails</option>
-              </optgroup>
-              <optgroup label="Modelos">
-                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
-                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
-                  <option value="active_record_validations.html">Validaciones de Active Record</option>
-                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
-                  <option value="association_basics.html">Asociaciones de Active Record</option>
-                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
-              </optgroup>
-              <optgroup label="Vistas">
-                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
-                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
-              </optgroup>
-              <optgroup label="Controladores">
-                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
-                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
-              </optgroup>
-              <optgroup label="Otros Componentes">
-                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
-                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
-                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
-                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
-                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
-              </optgroup>
-              <optgroup label="Temas Avanzados">
-                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
-                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
-                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
-                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
-                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
-                  <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos</option>
-                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
-                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
-                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
-                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
-              </optgroup>
-              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
-                  <option value="rails_on_rack.html">Rails on Rack</option>
-                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
-              </optgroup>
-          </select>
-        </li>
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
       </ul>
+      </nav>
     </div>
-  </div>
+  </header>
   <hr class="hide" />
 
-  <div id="feature">
+  <section id="feature">
     <div class="wrapper">
-      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h2>Conceptos Básicos del Active Model</h2><p>Esta guía debe proporcionarle todo lo que necesita para comenzar a usar el modelo
-clases Active Model permite que los ayudantes de Action Pack interactúen con
-Objetos simples de Ruby. Active Model también ayuda a construir ORM personalizados para su uso
-fuera del marco de Rails.</p><p>Después de leer esta guía, sabrá:</p>
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Conceptos Básicos de Active Model</h1><p>Esta guía le proporcionará lo que necesita para comenzar a usar Active Model. Active Model proporciona una forma para que los ayudantes de Action Pack y Action View interactúen con objetos Ruby simples. También ayuda a construir ORM personalizados para su uso fuera del marco de Rails.</p><p>Después de leer esta guía, sabrá:</p>
 <ul>
-<li>Cómo se comporta un modelo de registro activo.</li>
-<li>Cómo funcionan las devoluciones de llamada y las validaciones.</li>
-<li>Cómo funcionan los serializadores.</li>
-<li>Cómo se integra Active Model con el marco de internacionalización de Rails (i18n).</li>
+<li>Qué es Active Model y cómo se relaciona con Active Record.</li>
+<li>Los diferentes módulos que se incluyen en Active Model.</li>
+<li>Cómo usar Active Model en sus clases.</li>
 </ul>
 
 
-                <div id="subCol">
-            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
             <ol class="chapters">
-<li>
-<a href="#what-is-active-model-questionmark">What is Active Model?</a>
+<li><a href="#¿qué-es-active-model-questionmark">¿Qué es Active Model?</a>
 
 <ul>
-<li><a href="#attribute-methods">Attribute Methods</a></li>
-<li><a href="#callbacks">Callbacks</a></li>
-<li><a href="#conversion">Conversion</a></li>
-<li><a href="#dirty">Dirty</a></li>
-<li><a href="#validations">Validations</a></li>
-<li><a href="#naming">Naming</a></li>
+<li><a href="#api">API</a></li>
 <li><a href="#model">Model</a></li>
-<li><a href="#serialization">Serialization</a></li>
-<li><a href="#translation">Translation</a></li>
-<li><a href="#lint-tests">Lint Tests</a></li>
+<li><a href="#attributes">Attributes</a></li>
+<li><a href="#asignación-de-atributos">Asignación de Atributos</a></li>
+<li><a href="#métodos-de-atributo">Métodos de Atributo</a></li>
+<li><a href="#callbacks">Callbacks</a></li>
+<li><a href="#conversión">Conversión</a></li>
+<li><a href="#dirty">Dirty</a></li>
+<li><a href="#nombramiento">Nombramiento</a></li>
 <li><a href="#securepassword">SecurePassword</a></li>
-</ul>
-</li>
+<li><a href="#serialización">Serialización</a></li>
+<li><a href="#traducción">Traducción</a></li>
+<li><a href="#validaciones">Validaciones</a></li>
+<li><a href="#pruebas-de-lint">Pruebas de Lint</a></li>
+</ul></li>
 </ol>
 
-          </div>
+          </nav>
 
+
+      <hr>
     </div>
-  </div>
+  </section>
 
-  <div id="container">
+  <main id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="what-is-active-model-questionmark"><a class="anchorlink" href="#what-is-active-model-questionmark">1 What is Active Model?</a></h3><p>Active Model es una biblioteca que contiene varios módulos utilizados en el desarrollo
-clases que necesitan algunas características presentes en Active Record.
-Algunos de estos módulos se explican a continuación.</p><h4 id="attribute-methods"><a class="anchorlink" href="#attribute-methods">1.1 Attribute Methods</a></h4><p>El módulo <code>ActiveModel::AttributeMethods</code> puede agregar prefijos y sufijos personalizados
-sobre los métodos de una clase. Se utiliza definiendo los prefijos y sufijos y
-qué métodos en el objeto los usarán.</p><div class="code_container">
+        <h2 id="¿qué-es-active-model-questionmark"><a class="anchorlink" href="#¿qué-es-active-model-questionmark"><span>1</span> ¿Qué es Active Model?</a></h2><p>Para entender Active Model, necesita saber un poco sobre <a href="active_record_basics.html">Active Record</a>. Active Record es un ORM (Mapeador de Objetos Relacional) que conecta objetos cuyos datos requieren almacenamiento persistente a una base de datos relacional. Sin embargo, tiene funcionalidades que son útiles fuera del ORM, algunas de estas incluyen validaciones, callbacks, traducciones, la capacidad de crear atributos personalizados, etc.</p><p>Parte de esta funcionalidad fue abstraída de Active Record para formar Active Model. Active Model es una biblioteca que contiene varios módulos que se pueden usar en objetos Ruby simples que requieren características similares a los modelos pero no están vinculados a ninguna tabla en una base de datos.</p><p>En resumen, mientras que Active Record proporciona una interfaz para definir modelos que corresponden a tablas de bases de datos, Active Model proporciona funcionalidad para construir clases Ruby similares a modelos que no necesariamente necesitan estar respaldadas por una base de datos. Active Model se puede usar independientemente de Active Record.</p><p>Algunos de estos módulos se explican a continuación.</p><h3 id="api"><a class="anchorlink" href="#api"><span>1.1</span> API</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/API.html"><code>ActiveModel::API</code></a> agrega la capacidad para que una clase funcione con <a href="https://edgeapi.rubyonrails.org/files/actionpack/README_rdoc.html">Action Pack</a> y <a href="action_view_overview.html">Action View</a> directamente.</p><p>Al incluir <code>ActiveModel::API</code>, se incluyen otros módulos por defecto que le permiten obtener características como:</p>
+<ul>
+<li><a href="#asignación-de-atributos">Asignación de Atributos</a></li>
+<li><a href="#conversión">Conversión</a></li>
+<li><a href="#nombramiento">Nombramiento</a></li>
+<li><a href="#traducción">Traducción</a></li>
+<li><a href="#validaciones">Validaciones</a></li>
+</ul>
+<p>Aquí hay un ejemplo de una clase que incluye <code>ActiveModel::API</code> y cómo se puede usar:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">EmailContact</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">API</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:message</span>
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:message</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+
+  <span class="k">def</span> <span class="nf">deliver</span>
+    <span class="k">if</span> <span class="n">valid?</span>
+      <span class="c1"># Entregar correo electrónico</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class EmailContact
+  include ActiveModel::API
+
+  attr_accessor :name, :email, :message
+  validates :name, :email, :message, presence: true
+
+  def deliver
+    if valid?
+      # Entregar correo electrónico
+    end
+  end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">email_contact</span> <span class="o">=</span> <span class="no">EmailContact</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"David"</span><span class="p">,</span> <span class="ss">email: </span><span class="s2">"david@example.com"</span><span class="p">,</span> <span class="ss">message: </span><span class="s2">"Hello World"</span><span class="p">)</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">email_contact</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># Asignación de Atributos</span>
+<span class="p">=&gt;</span> <span class="s2">"David"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">email_contact</span><span class="p">.</span><span class="nf">to_model</span> <span class="o">==</span> <span class="n">email_contact</span> <span class="c1"># Conversión</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">email_contact</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># Nombramiento</span>
+<span class="p">=&gt;</span> <span class="s2">"EmailContact"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="no">EmailContact</span><span class="p">.</span><span class="nf">human_attribute_name</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="c1"># Traducción si la configuración regional está establecida</span>
+<span class="p">=&gt;</span> <span class="s2">"Name"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">email_contact</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># Validaciones</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">empty_contact</span> <span class="o">=</span> <span class="no">EmailContact</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">empty_contact</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="email_contact = EmailContact.new(name: &quot;David&quot;, email: &quot;david@example.com&quot;, message: &quot;Hello World&quot;)
+email_contact.name # Asignación de Atributos
+email_contact.to_model == email_contact # Conversión
+email_contact.model_name.name # Nombramiento
+EmailContact.human_attribute_name(&quot;name&quot;) # Traducción si la configuración regional está establecida
+email_contact.valid? # Validaciones
+empty_contact = EmailContact.new
+empty_contact.valid?
+">Copy</button>
+</div>
+<p>Cualquier clase que incluya <code>ActiveModel::API</code> se puede usar con <code>form_with</code>, <code>render</code> y cualquier otro <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers.html">método de ayuda de Action View</a>, al igual que los objetos de Active Record.</p><p>Por ejemplo, <code>form_with</code> se puede usar para crear un formulario para un objeto <code>EmailContact</code> de la siguiente manera:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="no">EmailContact</span><span class="p">.</span><span class="nf">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:name</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= form_with model: EmailContact.new do |form| %>
+  <%= form.text_field :name %>
+<% end %>
+">Copy</button>
+</div>
+<p>lo que resulta en el siguiente HTML:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/email_contacts"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"email_contact[name]"</span> <span class="na">id=</span><span class="s">"email_contact_name"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<form action=&quot;/email_contacts&quot; method=&quot;post&quot;>
+  <input type=&quot;text&quot; name=&quot;email_contact[name]&quot; id=&quot;email_contact_name&quot;>
+</form>
+">Copy</button>
+</div>
+<p><code>render</code> se puede usar para renderizar un parcial con el objeto:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="vi">@email_contact</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= render @email_contact %>
+">Copy</button>
+</div>
+<p>NOTA: Puede aprender más sobre cómo usar <code>form_with</code> y <code>render</code> con objetos compatibles con <code>ActiveModel::API</code> en las guías <a href="form_helpers.html">Ayudantes de Formularios de Action View</a> y <a href="layouts_and_rendering.html">Layouts y Renderizado</a>, respectivamente.</p><h3 id="model"><a class="anchorlink" href="#model"><span>1.2</span> Model</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Model.html"><code>ActiveModel::Model</code></a> incluye <a href="#api">ActiveModel::API</a> para interactuar con Action Pack y Action View por defecto, y es el enfoque recomendado para implementar clases Ruby similares a modelos. Se extenderá en el futuro para agregar más funcionalidad.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Model</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:age</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::Model
+
+  attr_accessor :name, :age
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'bob'</span><span class="p">,</span> <span class="ss">age: </span><span class="s1">'18'</span><span class="p">)</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="c1"># =&gt; "bob"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">age</span>  <span class="c1"># =&gt; "18"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new(name: 'bob', age: '18')
+person.name # => &quot;bob&quot;
+person.age  # => &quot;18&quot;
+">Copy</button>
+</div>
+<h3 id="attributes"><a class="anchorlink" href="#attributes"><span>1.3</span> Attributes</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Attributes.html"><code>ActiveModel::Attributes</code></a> le permite definir tipos de datos, establecer valores predeterminados y manejar la conversión y serialización en objetos Ruby simples. Esto puede ser útil para datos de formularios que producirán conversiones similares a Active Record para cosas como fechas y booleanos en objetos regulares.</p><p>Para usar <code>Attributes</code>, incluya el módulo en su clase de modelo y defina sus atributos usando la macro <code>attribute</code>. Acepta un nombre, un tipo de conversión, un valor predeterminado y cualquier otra opción compatible con el tipo de atributo.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Attributes</span>
+
+  <span class="n">attribute</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="n">attribute</span> <span class="ss">:date_of_birth</span><span class="p">,</span> <span class="ss">:date</span>
+  <span class="n">attribute</span> <span class="ss">:active</span><span class="p">,</span> <span class="ss">:boolean</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::Attributes
+
+  attribute :name, :string
+  attribute :date_of_birth, :date
+  attribute :active, :boolean, default: true
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Jane"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"Jane"</span>
+
+<span class="c"># Convierte la cadena a una fecha establecida por el atributo
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">date_of_birth</span> <span class="o">=</span> <span class="s2">"2020-01-01"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">date_of_birth</span>
+<span class="p">=&gt;</span> <span class="no">Wed</span><span class="p">,</span> <span class="mo">01</span> <span class="no">Jan</span> <span class="mi">2020</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">date_of_birth</span><span class="p">.</span><span class="nf">class</span>
+<span class="p">=&gt;</span> <span class="no">Date</span>
+
+<span class="c"># Usa el valor predeterminado establecido por el atributo
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">active</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="c"># Convierte el entero a un booleano establecido por el atributo
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">active</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">active</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.name = &quot;Jane&quot;
+person.name
+person.date_of_birth = &quot;2020-01-01&quot;
+person.date_of_birth
+person.date_of_birth.class
+person.active
+person.active = 0
+person.active
+">Copy</button>
+</div>
+<p>Algunos métodos adicionales descritos a continuación están disponibles cuando se utiliza <code>ActiveModel::Attributes</code>.</p><h4 id="método-attribute-names"><a class="anchorlink" href="#método-attribute-names"><span>1.3.1</span> Método: <code>attribute_names</code></a></h4><p>El método <code>attribute_names</code> devuelve un array de nombres de atributos.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">attribute_names</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"date_of_birth"</span><span class="p">,</span> <span class="s2">"active"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.attribute_names
+">Copy</button>
+</div>
+<h4 id="método-attributes"><a class="anchorlink" href="#método-attributes"><span>1.3.2</span> Método: <code>attributes</code></a></h4><p>El método <code>attributes</code> devuelve un hash de todos los atributos con sus nombres como claves y los valores de los atributos como valores.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">attributes</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Jane"</span><span class="p">,</span> <span class="s2">"date_of_birth"</span> <span class="o">=&gt;</span> <span class="no">Wed</span><span class="p">,</span> <span class="mo">01</span> <span class="no">Jan</span> <span class="mi">2020</span><span class="p">,</span> <span class="s2">"active"</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.attributes
+">Copy</button>
+</div>
+<h3 id="asignación-de-atributos"><a class="anchorlink" href="#asignación-de-atributos"><span>1.4</span> Asignación de Atributos</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/AttributeAssignment.html"><code>ActiveModel::AttributeAssignment</code></a> le permite establecer los atributos de un objeto pasando un hash de atributos con claves que coinciden con los nombres de los atributos. Esto es útil cuando desea establecer múltiples atributos a la vez.</p><p>Considere la siguiente clase:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeAssignment</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:date_of_birth</span><span class="p">,</span> <span class="ss">:active</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::AttributeAssignment
+
+  attr_accessor :name, :date_of_birth, :active
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="c"># Establecer múltiples atributos a la vez
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">assign_attributes</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John"</span><span class="p">,</span> <span class="ss">date_of_birth: </span><span class="s2">"1998-01-01"</span><span class="p">,</span> <span class="ss">active: </span><span class="kp">false</span><span class="p">)</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"John"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">date_of_birth</span>
+<span class="p">=&gt;</span> <span class="no">Thu</span><span class="p">,</span> <span class="mo">01</span> <span class="no">Jan</span> <span class="mi">1998</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">active</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.assign_attributes(name: &quot;John&quot;, date_of_birth: &quot;1998-01-01&quot;, active: false)
+person.name
+person.date_of_birth
+person.active
+">Copy</button>
+</div>
+<p>Si el hash pasado responde al método <code>permitted?</code> y el valor de retorno de este método es <code>false</code>, se lanza una excepción <code>ActiveModel::ForbiddenAttributesError</code>.</p><p>NOTA: <code>permitted?</code> se utiliza para la integración de <a href="https://guides.rubyonrails.org/action_controller_overview.html#strong-parameters">parámetros fuertes</a> en la que está asignando un atributo de parámetros de una solicitud.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="c"># Usando comprobaciones de parámetros fuertes, construir un hash de atributos similar a los parámetros de una solicitud
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">params</span> <span class="o">=</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Parameters</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"John"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">ActionController</span><span class="o">::</span><span class="no">Parameters</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=</span><span class="kt">&gt;</span> <span class="s2">"John"</span><span class="p">}</span> <span class="ss">permitted: </span><span class="kp">false</span><span class="o">&gt;</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">assign_attributes</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="c1"># Raises ActiveModel::ForbiddenAttributesError</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="kp">nil</span>
+
+<span class="c"># Permitir los atributos que queremos permitir la asignación
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">permitted_params</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">ActionController</span><span class="o">::</span><span class="no">Parameters</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=</span><span class="kt">&gt;</span> <span class="s2">"John"</span><span class="p">}</span> <span class="ss">permitted: </span><span class="kp">true</span><span class="o">&gt;</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">assign_attributes</span><span class="p">(</span><span class="n">permitted_params</span><span class="p">)</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"John"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+params = ActionController::Parameters.new(name: &quot;John&quot;)
+person.assign_attributes(params)
+person.name
+permitted_params = params.permit(:name)
+person.assign_attributes(permitted_params)
+person.name
+">Copy</button>
+</div>
+<h4 id="alias-del-método-attributes"><a class="anchorlink" href="#alias-del-método-attributes"><span>1.4.1</span> Alias del Método: <code>attributes=</code></a></h4><p>El método <code>assign_attributes</code> tiene un alias <code>attributes=</code>.</p><div class="interstitial info"><p>Un alias de método es un método que realiza la misma acción que otro método, pero se llama de manera diferente. Los alias existen por el bien de la legibilidad y la conveniencia.</p></div><p>El siguiente ejemplo demuestra el uso del método <code>attributes=</code> para establecer múltiples atributos a la vez:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">attributes</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">name: </span><span class="s2">"John"</span><span class="p">,</span> <span class="ss">date_of_birth: </span><span class="s2">"1998-01-01"</span><span class="p">,</span> <span class="ss">active: </span><span class="kp">false</span> <span class="p">}</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"John"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">date_of_birth</span>
+<span class="p">=&gt;</span> <span class="s2">"1998-01-01"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.attributes = { name: &quot;John&quot;, date_of_birth: &quot;1998-01-01&quot;, active: false }
+person.name
+person.date_of_birth
+">Copy</button>
+</div>
+<div class="interstitial info"><p><code>assign_attributes</code> y <code>attributes=</code> son ambas llamadas de método y aceptan el hash de atributos para asignar como argumento. En muchos casos, Ruby permite que se omitan los paréntesis <code>()</code> de las llamadas a métodos y las llaves <code>{}</code> de las definiciones de hash.<br><br>
+Los métodos "setter" como <code>attributes=</code> se escriben comúnmente sin <code>()</code>, aunque incluirlos funciona de la misma manera y requieren que el hash siempre incluya <code>{}</code>. <code>person.attributes=({ name: "John" })</code> está bien, pero <code>person.attributes = name: "John"</code> resulta en un <code>SyntaxError</code>.<br><br>
+Otras llamadas a métodos como <code>assign_attributes</code> pueden o no contener tanto paréntesis <code>()</code> como <code>{}</code> para el argumento hash. Por ejemplo, <code>assign_attributes name: "John"</code> y <code>assign_attributes({ name: "John" })</code> son ambos códigos Ruby perfectamente válidos, sin embargo, <code>assign_attributes { name: "John" }</code> no lo es, porque Ruby no puede diferenciar ese argumento hash de un bloque y lanzará un <code>SyntaxError</code>.</p></div><h3 id="métodos-de-atributo"><a class="anchorlink" href="#métodos-de-atributo"><span>1.5</span> Métodos de Atributo</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/AttributeMethods.html"><code>ActiveModel::AttributeMethods</code></a> proporciona una forma de definir métodos dinámicamente para los atributos de un modelo. Este módulo es particularmente útil para simplificar el acceso y manipulación de atributos, y puede agregar prefijos y sufijos personalizados a los métodos de una clase. Puede definir los prefijos y sufijos y qué métodos en el objeto los usarán de la siguiente manera:</p>
+<ol>
+<li>Incluya <code>ActiveModel::AttributeMethods</code> en su clase.</li>
+<li>Llame a cada uno de los métodos que desea agregar, como <code>attribute_method_suffix</code>, <code>attribute_method_prefix</code>, <code>attribute_method_affix</code>.</li>
+<li>Llame a <code>define_attribute_methods</code> después de los otros métodos para declarar el(los) atributo(s) que deberían tener prefijos y sufijos.</li>
+<li>Defina los diversos métodos genéricos <code>_attribute</code> que ha declarado. El parámetro <code>attribute</code> en estos métodos será reemplazado por el argumento pasado en <code>define_attribute_methods</code>. En el ejemplo a continuación es <code>name</code>.</li>
+</ol>
+<p>NOTA: <code>attribute_method_prefix</code> y <code>attribute_method_suffix</code> se utilizan para definir los prefijos y sufijos que se usarán para crear los métodos. <code>attribute_method_affix</code> se utiliza para definir tanto el prefijo como el sufijo al mismo tiempo.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
 
-  <span class="n">attribute_method_prefix</span> <span class="s1">'reset_'</span>
-  <span class="n">attribute_method_suffix</span> <span class="s1">'_highest?'</span>
-  <span class="n">define_attribute_methods</span> <span class="s1">'age'</span>
+  <span class="n">attribute_method_affix</span> <span class="ss">prefix: </span><span class="s2">"reset_"</span><span class="p">,</span> <span class="ss">suffix: </span><span class="s2">"_to_default!"</span>
+  <span class="n">attribute_method_prefix</span> <span class="s2">"first_"</span><span class="p">,</span> <span class="s2">"last_"</span>
+  <span class="n">attribute_method_suffix</span> <span class="s2">"_short?"</span>
 
-  <span class="nb">attr_accessor</span> <span class="ss">:age</span>
+  <span class="n">define_attribute_methods</span> <span class="s2">"name"</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span>
 
   <span class="kp">private</span>
-    <span class="k">def</span> <span class="nf">reset_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-      <span class="nb">send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># Llamada al método de atributo para 'first_name'</span>
+    <span class="k">def</span> <span class="nf">first_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="n">attribute</span><span class="p">).</span><span class="nf">split</span><span class="p">.</span><span class="nf">first</span>
     <span class="k">end</span>
 
-    <span class="k">def</span> <span class="nf">attribute_highest?</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
-      <span class="nb">send</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span>
+    <span class="c1"># Llamada al método de atributo para 'last_name'</span>
+    <span class="k">def</span> <span class="nf">last_attribute</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="n">attribute</span><span class="p">).</span><span class="nf">split</span><span class="p">.</span><span class="nf">last</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Llamada al método de atributo para 'name_short?'</span>
+    <span class="k">def</span> <span class="nf">attribute_short?</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="n">attribute</span><span class="p">).</span><span class="nf">length</span> <span class="o">&lt;</span> <span class="mi">5</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Llamada al método de atributo 'reset_name_to_default!'</span>
+    <span class="k">def</span> <span class="nf">reset_attribute_to_default!</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="s2">"Default Name"</span><span class="p">)</span>
     <span class="k">end</span>
 <span class="k">end</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">age</span> <span class="o">=</span> <span class="mi">110</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">age_highest?</span>  <span class="c1"># =&gt; true</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">reset_age</span>     <span class="c1"># =&gt; 0</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">age_highest?</span>  <span class="c1"># =&gt; false</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
   include ActiveModel::AttributeMethods
 
-  attribute_method_prefix 'reset_'
-  attribute_method_suffix '_highest?'
-  define_attribute_methods 'age'
+  attribute_method_affix prefix: &quot;reset_&quot;, suffix: &quot;_to_default!&quot;
+  attribute_method_prefix &quot;first_&quot;, &quot;last_&quot;
+  attribute_method_suffix &quot;_short?&quot;
 
-  attr_accessor :age
+  define_attribute_methods &quot;name&quot;
+
+  attr_accessor :name
 
   private
-    def reset_attribute(attribute)
-      send(&quot;#{attribute}=&quot;, 0)
+    # Llamada al método de atributo para 'first_name'
+    def first_attribute(attribute)
+      public_send(attribute).split.first
     end
 
-    def attribute_highest?(attribute)
-      send(attribute) &gt; 100
+    # Llamada al método de atributo para 'last_name'
+    def last_attribute(attribute)
+      public_send(attribute).split.last
+    end
+
+    # Llamada al método de atributo para 'name_short?'
+    def attribute_short?(attribute)
+      public_send(attribute).length < 5
+    end
+
+    # Llamada al método de atributo 'reset_name_to_default!'
+    def reset_attribute_to_default!(attribute)
+      public_send(&quot;#{attribute}=&quot;, &quot;Default Name&quot;)
     end
 end
-
-person = Person.new
-person.age = 110
-person.age_highest?  # =&gt; true
-person.reset_age     # =&gt; 0
-person.age_highest?  # =&gt; false
 ">Copy</button>
 </div>
-<h4 id="callbacks"><a class="anchorlink" href="#callbacks">1.2 Callbacks</a></h4><p><code>ActiveModel::Callbacks</code> ofrece devoluciones de llamada de estilo Active Record. Esto proporciona una
-capacidad de definir devoluciones de llamada que se ejecutan en los momentos apropiados.
-Después de definir las devoluciones de llamada, puede envolverlas con antes, después y alrededor
-métodos personalizados</p><div class="code_container">
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Jane Doe"</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name</span>
+<span class="p">=&gt;</span> <span class="s2">"Jane"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">last_name</span>
+<span class="p">=&gt;</span> <span class="s2">"Doe"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name_short?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">reset_name_to_default!</span>
+<span class="p">=&gt;</span> <span class="s2">"Default Name"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.name = &quot;Jane Doe&quot;
+person.first_name
+person.last_name
+person.name_short?
+person.reset_name_to_default!
+">Copy</button>
+</div>
+<p>Si llama a un método que no está definido, lanzará un error <code>NoMethodError</code>.</p><h4 id="método-alias-attribute"><a class="anchorlink" href="#método-alias-attribute"><span>1.5.1</span> Método: <code>alias_attribute</code></a></h4><p><code>ActiveModel::AttributeMethods</code> proporciona alias de métodos de atributo usando <code>alias_attribute</code>.</p><p>El ejemplo a continuación crea un atributo alias para <code>name</code> llamado <code>full_name</code>. Devuelven el mismo valor, pero el alias <code>full_name</code> refleja mejor que el atributo incluye un nombre y un apellido.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">AttributeMethods</span>
+
+  <span class="n">attribute_method_suffix</span> <span class="s2">"_short?"</span>
+  <span class="n">define_attribute_methods</span> <span class="ss">:name</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span>
+
+  <span class="n">alias_attribute</span> <span class="ss">:full_name</span><span class="p">,</span> <span class="ss">:name</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">attribute_short?</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="n">attribute</span><span class="p">).</span><span class="nf">length</span> <span class="o">&lt;</span> <span class="mi">5</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::AttributeMethods
+
+  attribute_method_suffix &quot;_short?&quot;
+  define_attribute_methods :name
+
+  attr_accessor :name
+
+  alias_attribute :full_name, :name
+
+  private
+    def attribute_short?(attribute)
+      public_send(attribute).length < 5
+    end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Joe Doe"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"Joe Doe"</span>
+
+<span class="c"># `full_name` es el alias de `name` y devuelve el mismo valor
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">full_name</span>
+<span class="p">=&gt;</span> <span class="s2">"Joe Doe"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name_short?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="c"># `full_name_short?` es el alias de `name_short?` y devuelve el mismo valor
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">full_name_short?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.name = &quot;Joe Doe&quot;
+person.name
+person.full_name
+person.name_short?
+person.full_name_short?
+">Copy</button>
+</div>
+<h3 id="callbacks"><a class="anchorlink" href="#callbacks"><span>1.6</span> Callbacks</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Callbacks.html"><code>ActiveModel::Callbacks</code></a> proporciona a los objetos Ruby simples <a href="active_record_callbacks.html">callbacks al estilo de Active Record</a>. Los callbacks le permiten engancharse en eventos del ciclo de vida del modelo, como <code>before_update</code> y <code>after_create</code>, así como definir lógica personalizada para ejecutarse en puntos específicos en el ciclo de vida del modelo.</p><p>Puede implementar <code>ActiveModel::Callbacks</code> siguiendo los pasos a continuación:</p>
+<ol>
+<li>Extienda <code>ActiveModel::Callbacks</code> dentro de su clase.</li>
+<li>Emplee <code>define_model_callbacks</code> para establecer una lista de métodos que deberían tener callbacks asociados. Cuando designe un método como <code>:update</code>, incluirá automáticamente los tres callbacks predeterminados (<code>before</code>, <code>around</code> y <code>after</code>) para el evento <code>:update</code>.</li>
+<li>Dentro del método definido, utilice <code>run_callbacks</code>, que ejecutará la cadena de callbacks cuando se active el evento específico.</li>
+<li>En su clase, puede utilizar los métodos <code>before_update</code>, <code>after_update</code> y <code>around_update</code> de la misma manera que los usaría en un modelo de Active Record.</li>
+</ol>
+<div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Callbacks</span>
 
   <span class="n">define_model_callbacks</span> <span class="ss">:update</span>
 
   <span class="n">before_update</span> <span class="ss">:reset_me</span>
+  <span class="n">after_update</span> <span class="ss">:finalize_me</span>
+  <span class="n">around_update</span> <span class="ss">:log_me</span>
 
+  <span class="c1"># Método `define_model_callbacks` que contiene `run_callbacks` que ejecuta el callback(s) para el evento dado</span>
   <span class="k">def</span> <span class="nf">update</span>
     <span class="n">run_callbacks</span><span class="p">(</span><span class="ss">:update</span><span class="p">)</span> <span class="k">do</span>
-      <span class="c1"># This method is called when update is called on an object.</span>
+      <span class="nb">puts</span> <span class="s2">"update method called"</span>
     <span class="k">end</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">reset_me</span>
-    <span class="c1"># This method is called when update is called on an object as a before_update callback is defined.</span>
-  <span class="k">end</span>
+  <span class="kp">private</span>
+    <span class="c1"># Cuando se llama a update en un objeto, este método es llamado por el callback `before_update`</span>
+    <span class="k">def</span> <span class="nf">reset_me</span>
+      <span class="nb">puts</span> <span class="s2">"reset_me method: called before the update method"</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Cuando se llama a update en un objeto, este método es llamado por el callback `after_update`</span>
+    <span class="k">def</span> <span class="nf">finalize_me</span>
+      <span class="nb">puts</span> <span class="s2">"finalize_me method: called after the update method"</span>
+    <span class="k">end</span>
+
+    <span class="c1"># Cuando se llama a update en un objeto, este método es llamado por el callback `around_update`</span>
+    <span class="k">def</span> <span class="nf">log_me</span>
+      <span class="nb">puts</span> <span class="s2">"log_me method: called around the update method"</span>
+      <span class="k">yield</span>
+      <span class="nb">puts</span> <span class="s2">"log_me method: block successfully called"</span>
+    <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
@@ -285,371 +694,833 @@ métodos personalizados</p><div class="code_container">
   define_model_callbacks :update
 
   before_update :reset_me
+  after_update :finalize_me
+  around_update :log_me
 
+  # Método `define_model_callbacks` que contiene `run_callbacks` que ejecuta el callback(s) para el evento dado
   def update
     run_callbacks(:update) do
-      # This method is called when update is called on an object.
+      puts &quot;update method called&quot;
     end
   end
 
-  def reset_me
-    # This method is called when update is called on an object as a before_update callback is defined.
+  private
+    # Cuando se llama a update en un objeto, este método es llamado por el callback `before_update`
+    def reset_me
+      puts &quot;reset_me method: called before the update method&quot;
+    end
+
+    # Cuando se llama a update en un objeto, este método es llamado por el callback `after_update`
+    def finalize_me
+      puts &quot;finalize_me method: called after the update method&quot;
+    end
+
+    # Cuando se llama a update en un objeto, este método es llamado por el callback `around_update`
+    def log_me
+      puts &quot;log_me method: called around the update method&quot;
+      yield
+      puts &quot;log_me method: block successfully called&quot;
+    end
+end
+">Copy</button>
+</div>
+<p>La clase anterior producirá lo siguiente, lo que indica el orden en que se están llamando los callbacks:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">update</span>
+<span class="go">reset_me method: called before the update method
+log_me method: called around the update method
+update method called
+log_me method: block successfully called
+finalize_me method: called after the update method
+</span><span class="p">=&gt;</span> <span class="kp">nil</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.update
+">Copy</button>
+</div>
+<p>Según el ejemplo anterior, al definir un callback 'around', recuerde <code>yield</code> al bloque, de lo contrario, no se ejecutará.</p><p>NOTA: <code>method_name</code> pasado a <code>define_model_callbacks</code> no debe terminar con <code>!</code>, <code>?</code> o <code>=</code>. Además, definir el mismo callback varias veces sobrescribirá las definiciones de callbacks anteriores.</p><h4 id="definición-de-callbacks-específicos"><a class="anchorlink" href="#definición-de-callbacks-específicos"><span>1.6.1</span> Definición de Callbacks Específicos</a></h4><p>Puede optar por crear callbacks específicos pasando la opción <code>only</code> al método <code>define_model_callbacks</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">define_model_callbacks</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:after</span><span class="p">,</span> <span class="ss">:before</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="define_model_callbacks :update, :create, only: [:after, :before]
+">Copy</button>
+</div>
+<p>Esto creará solo los callbacks <code>before_create</code> / <code>after_create</code> y <code>before_update</code> / <code>after_update</code>, pero omitirá los <code>around_*</code>. La opción se aplicará a todos los callbacks definidos en esa llamada de método. Es posible llamar a <code>define_model_callbacks</code> varias veces para especificar diferentes eventos del ciclo de vida:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">define_model_callbacks</span> <span class="ss">:create</span><span class="p">,</span> <span class="ss">only: :after</span>
+<span class="n">define_model_callbacks</span> <span class="ss">:update</span><span class="p">,</span> <span class="ss">only: :before</span>
+<span class="n">define_model_callbacks</span> <span class="ss">:destroy</span><span class="p">,</span> <span class="ss">only: :around</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="define_model_callbacks :create, only: :after
+define_model_callbacks :update, only: :before
+define_model_callbacks :destroy, only: :around
+">Copy</button>
+</div>
+<p>Esto creará solo los métodos <code>after_create</code>, <code>before_update</code> y <code>around_destroy</code>.</p><h4 id="definición-de-callbacks-con-una-clase"><a class="anchorlink" href="#definición-de-callbacks-con-una-clase"><span>1.6.2</span> Definición de Callbacks con una Clase</a></h4><p>Puede pasar una clase a <code>before_&lt;type&gt;</code>, <code>after_&lt;type&gt;</code> y <code>around_&lt;type&gt;</code> para tener más control sobre cuándo y en qué contexto se activan sus callbacks. El callback activará el método <code>&lt;action&gt;_&lt;type&gt;</code> de esa clase, pasando una instancia de la clase como argumento.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Callbacks</span>
+
+  <span class="n">define_model_callbacks</span> <span class="ss">:create</span>
+  <span class="n">before_create</span> <span class="no">PersonCallbacks</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">PersonCallbacks</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">before_create</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="c1"># `obj` es la instancia de Person en la que se está llamando el callback</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  extend ActiveModel::Callbacks
+
+  define_model_callbacks :create
+  before_create PersonCallbacks
+end
+
+class PersonCallbacks
+  def self.before_create(obj)
+    # `obj` es la instancia de Person en la que se está llamando el callback
   end
 end
 ">Copy</button>
 </div>
-<h4 id="conversion"><a class="anchorlink" href="#conversion">1.3 Conversion</a></h4><p>Si una clase define los métodos <code>persisted?</code> e <code>id</code>, entonces puede incluir el
-Módulo <code>ActiveModel::Conversion</code> en esa clase, y llame a la conversión Rails
-métodos en objetos de esa clase.</p><div class="code_container">
+<h4 id="abortando-callbacks"><a class="anchorlink" href="#abortando-callbacks"><span>1.6.3</span> Abortando Callbacks</a></h4><p>La cadena de callbacks se puede abortar en cualquier momento lanzando <code>:abort</code>. Esto es similar a cómo funcionan los callbacks de Active Record.</p><p>En el ejemplo a continuación, dado que lanzamos <code>:abort</code> antes de una actualización en el método <code>reset_me</code>, la cadena de callbacks restante, incluido <code>before_update</code>, se abortará, y el cuerpo del método <code>update</code> no se ejecutará.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Callbacks</span>
+
+  <span class="n">define_model_callbacks</span> <span class="ss">:update</span>
+
+  <span class="n">before_update</span> <span class="ss">:reset_me</span>
+  <span class="n">after_update</span> <span class="ss">:finalize_me</span>
+  <span class="n">around_update</span> <span class="ss">:log_me</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="n">run_callbacks</span><span class="p">(</span><span class="ss">:update</span><span class="p">)</span> <span class="k">do</span>
+      <span class="nb">puts</span> <span class="s2">"update method called"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+    <span class="k">def</span> <span class="nf">reset_me</span>
+      <span class="nb">puts</span> <span class="s2">"reset_me method: called before the update method"</span>
+      <span class="kp">throw</span> <span class="ss">:abort</span>
+      <span class="nb">puts</span> <span class="s2">"reset_me method: some code after abort"</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">finalize_me</span>
+      <span class="nb">puts</span> <span class="s2">"finalize_me method: called after the update method"</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">log_me</span>
+      <span class="nb">puts</span> <span class="s2">"log_me method: called around the update method"</span>
+      <span class="k">yield</span>
+      <span class="nb">puts</span> <span class="s2">"log_me method: block successfully called"</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  extend ActiveModel::Callbacks
+
+  define_model_callbacks :update
+
+  before_update :reset_me
+  after_update :finalize_me
+  around_update :log_me
+
+  def update
+    run_callbacks(:update) do
+      puts &quot;update method called&quot;
+    end
+  end
+
+  private
+    def reset_me
+      puts &quot;reset_me method: called before the update method&quot;
+      throw :abort
+      puts &quot;reset_me method: some code after abort&quot;
+    end
+
+    def finalize_me
+      puts &quot;finalize_me method: called after the update method&quot;
+    end
+
+    def log_me
+      puts &quot;log_me method: called around the update method&quot;
+      yield
+      puts &quot;log_me method: block successfully called&quot;
+    end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">update</span>
+<span class="go">reset_me method: called before the update method
+</span><span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.update
+">Copy</button>
+</div>
+<h3 id="conversión"><a class="anchorlink" href="#conversión"><span>1.7</span> Conversión</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Conversion.html"><code>ActiveModel::Conversion</code></a> es una colección de métodos que le permiten convertir su objeto a diferentes formas para diferentes propósitos. Un caso de uso común es convertir su objeto a una cadena o un entero para construir URLs, campos de formulario y más.</p><p>El módulo <code>ActiveModel::Conversion</code> agrega los siguientes métodos: <code>to_model</code>, <code>to_key</code>, <code>to_param</code> y <code>to_partial_path</code> a las clases.</p><p>Los valores de retorno de los métodos dependen de si <code>persisted?</code> está definido y si se proporciona un <code>id</code>. El método <code>persisted?</code> debe devolver <code>true</code> si el objeto ha sido guardado en la base de datos o almacén, de lo contrario, debe devolver <code>false</code>. El <code>id</code> debe hacer referencia al id del objeto o nil si el objeto no está guardado.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Conversion</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:id</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="vi">@id</span> <span class="o">=</span> <span class="nb">id</span>
+  <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">persisted?</span>
-    <span class="kp">false</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">id</span>
-    <span class="kp">nil</span>
+    <span class="nb">id</span><span class="p">.</span><span class="nf">present?</span>
   <span class="k">end</span>
 <span class="k">end</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">to_model</span> <span class="o">==</span> <span class="n">person</span>  <span class="c1"># =&gt; true</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">to_key</span>              <span class="c1"># =&gt; nil</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">to_param</span>            <span class="c1"># =&gt; nil</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
   include ActiveModel::Conversion
+  attr_accessor :id
+
+  def initialize(id)
+    @id = id
+  end
 
   def persisted?
-    false
-  end
-
-  def id
-    nil
+    id.present?
   end
 end
-
-person = Person.new
-person.to_model == person  # =&gt; true
-person.to_key              # =&gt; nil
-person.to_param            # =&gt; nil
 ">Copy</button>
 </div>
-<h4 id="dirty"><a class="anchorlink" href="#dirty">1.4 Dirty</a></h4><p>Un objeto se ensucia cuando ha pasado por uno o más cambios en su
-atributos y no se ha guardado. <code>ActiveModel::Dirty</code> da la capacidad de
-compruebe si un objeto ha sido cambiado o no. También tiene atributos basados
-métodos de acceso. Consideremos una clase de persona con atributos <code>first_name</code>
-y <code>last_name</code>:</p><div class="code_container">
+<h4 id="to-model"><a class="anchorlink" href="#to-model"><span>1.7.1</span> to_model</a></h4><p>El método <code>to_model</code> devuelve el propio objeto.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_model</span> <span class="o">==</span> <span class="n">person</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new(1)
+person.to_model == person
+">Copy</button>
+</div>
+<p>Si su modelo no actúa como un objeto Active Model, entonces debe definir <code>:to_model</code> usted mismo devolviendo un objeto proxy que envuelva su objeto con métodos compatibles con Active Model.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="k">def</span> <span class="nf">to_model</span>
+    <span class="c1"># Un objeto proxy que envuelve su objeto con métodos compatibles con Active Model.</span>
+    <span class="no">PersonModel</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  def to_model
+    # Un objeto proxy que envuelve su objeto con métodos compatibles con Active Model.
+    PersonModel.new(self)
+  end
+end
+">Copy</button>
+</div>
+<h4 id="to-key"><a class="anchorlink" href="#to-key"><span>1.7.2</span> to_key</a></h4><p>El método <code>to_key</code> devuelve un array de los atributos clave del objeto si alguno de los atributos está configurado, independientemente de si el objeto está persistido. Devuelve nil si no hay atributos clave.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_key</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.to_key
+">Copy</button>
+</div>
+<p>NOTA: Un atributo clave es un atributo que se utiliza para identificar el objeto. Por ejemplo, en un modelo respaldado por una base de datos, el atributo clave es la clave primaria.</p><h4 id="to-param"><a class="anchorlink" href="#to-param"><span>1.7.3</span> to_param</a></h4><p>El método <code>to_param</code> devuelve una representación <code>string</code> de la clave del objeto adecuada para su uso en URLs, o <code>nil</code> en el caso de que <code>persisted?</code> sea <code>false</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_param</span>
+<span class="p">=&gt;</span> <span class="s2">"1"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.to_param
+">Copy</button>
+</div>
+<h4 id="to-partial-path"><a class="anchorlink" href="#to-partial-path"><span>1.7.4</span> to_partial_path</a></h4><p>El método <code>to_partial_path</code> devuelve una <code>string</code> que representa la ruta asociada con el objeto. Action Pack utiliza esto para encontrar un parcial adecuado para representar el objeto.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_partial_path</span>
+<span class="p">=&gt;</span> <span class="s2">"people/person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.to_partial_path
+">Copy</button>
+</div>
+<h3 id="dirty"><a class="anchorlink" href="#dirty"><span>1.8</span> Dirty</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Dirty.html"><code>ActiveModel::Dirty</code></a> es útil para rastrear cambios realizados en los atributos del modelo antes de que se guarden. Esta funcionalidad le permite determinar qué atributos han sido modificados, cuáles eran sus valores anteriores y actuales, y realizar acciones basadas en esos cambios. Es particularmente útil para auditoría, validación y lógica condicional dentro de su aplicación. Proporciona una forma de rastrear cambios en su objeto de la misma manera que Active Record.</p><p>Un objeto se vuelve "sucio" cuando ha pasado por uno o más cambios en sus atributos y no ha sido guardado. Tiene métodos de acceso basados en atributos.</p><p>Para usar <code>ActiveModel::Dirty</code>, necesita:</p>
+<ol>
+<li>Incluir el módulo en su clase.</li>
+<li>Definir los métodos de atributo para los que desea rastrear cambios, usando <code>define_attribute_methods</code>.</li>
+<li>Llamar a <code>[attr_name]_will_change!</code> antes de cada cambio en el atributo rastreado.</li>
+<li>Llamar a <code>changes_applied</code> después de que los cambios se hayan persistido.</li>
+<li>Llamar a <code>clear_changes_information</code> cuando desee restablecer la información de cambios.</li>
+<li>Llamar a <code>restore_attributes</code> cuando desee restaurar los datos anteriores.</li>
+</ol>
+<p>Luego puede usar los métodos proporcionados por <code>ActiveModel::Dirty</code> para consultar el objeto por su lista de todos los atributos cambiados, los valores originales de los atributos cambiados y los cambios realizados en los atributos.</p><p>Consideremos una clase <code>Person</code> con los atributos <code>first_name</code> y <code>last_name</code> y determinemos cómo podemos usar <code>ActiveModel::Dirty</code> para rastrear cambios en estos atributos.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Dirty</span>
+
+  <span class="nb">attr_reader</span> <span class="ss">:first_name</span><span class="p">,</span> <span class="ss">:last_name</span>
   <span class="n">define_attribute_methods</span> <span class="ss">:first_name</span><span class="p">,</span> <span class="ss">:last_name</span>
 
-  <span class="k">def</span> <span class="nf">first_name</span>
-    <span class="vi">@first_name</span>
+  <span class="k">def</span> <span class="nf">initialize</span>
+    <span class="vi">@first_name</span> <span class="o">=</span> <span class="kp">nil</span>
+    <span class="vi">@last_name</span> <span class="o">=</span> <span class="kp">nil</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">first_name</span><span class="o">=</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="n">first_name_will_change!</span>
+    <span class="n">first_name_will_change!</span> <span class="k">unless</span> <span class="n">value</span> <span class="o">==</span> <span class="vi">@first_name</span>
     <span class="vi">@first_name</span> <span class="o">=</span> <span class="n">value</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">last_name</span>
-    <span class="vi">@last_name</span>
-  <span class="k">end</span>
-
   <span class="k">def</span> <span class="nf">last_name</span><span class="o">=</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="n">last_name_will_change!</span>
+    <span class="n">last_name_will_change!</span> <span class="k">unless</span> <span class="n">value</span> <span class="o">==</span> <span class="vi">@last_name</span>
     <span class="vi">@last_name</span> <span class="o">=</span> <span class="n">value</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">save</span>
-    <span class="c1"># do save work...</span>
+    <span class="c1"># Persistir datos - borra datos sucios y mueve `changes` a `previous_changes`.</span>
     <span class="n">changes_applied</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">reload!</span>
+    <span class="c1"># Borra todos los datos sucios: cambios actuales y cambios anteriores.</span>
+    <span class="n">clear_changes_information</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">rollback!</span>
+    <span class="c1"># Restaura todos los datos anteriores de los atributos proporcionados.</span>
+    <span class="n">restore_attributes</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
   include ActiveModel::Dirty
+
+  attr_reader :first_name, :last_name
   define_attribute_methods :first_name, :last_name
 
-  def first_name
-    @first_name
+  def initialize
+    @first_name = nil
+    @last_name = nil
   end
 
   def first_name=(value)
-    first_name_will_change!
+    first_name_will_change! unless value == @first_name
     @first_name = value
   end
 
-  def last_name
-    @last_name
-  end
-
   def last_name=(value)
-    last_name_will_change!
+    last_name_will_change! unless value == @last_name
     @last_name = value
   end
 
   def save
-    # do save work...
+    # Persistir datos - borra datos sucios y mueve `changes` a `previous_changes`.
     changes_applied
+  end
+
+  def reload!
+    # Borra todos los datos sucios: cambios actuales y cambios anteriores.
+    clear_changes_information
+  end
+
+  def rollback!
+    # Restaura todos los datos anteriores de los atributos proporcionados.
+    restore_attributes
   end
 end
 ">Copy</button>
 </div>
-<h5 id="querying-object-directly-for-its-list-of-all-changed-attributes"><a class="anchorlink" href="#querying-object-directly-for-its-list-of-all-changed-attributes">1.4.1 Querying object directly for its list of all changed attributes.</a></h5><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">changed?</span> <span class="c1"># =&gt; false</span>
+<h4 id="consultar-un-objeto-directamente-por-su-lista-de-todos-los-atributos-cambiados"><a class="anchorlink" href="#consultar-un-objeto-directamente-por-su-lista-de-todos-los-atributos-cambiados"><span>1.8.1</span> Consultar un Objeto Directamente por su Lista de Todos los Atributos Cambiados</a></h4><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="c"># Un objeto `Person` recién instanciado no ha cambiado:
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">changed?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
 
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name</span> <span class="o">=</span> <span class="s2">"First Name"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name</span> <span class="c1"># =&gt; "First Name"</span>
-
-<span class="c1"># returns true if any of the attributes have unsaved changes.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">changed?</span> <span class="c1"># =&gt; true</span>
-
-<span class="c1"># returns a list of attributes that have changed before saving.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">changed</span> <span class="c1"># =&gt; ["first_name"]</span>
-
-<span class="c1"># returns a Hash of the attributes that have changed with their original values.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">changed_attributes</span> <span class="c1"># =&gt; {"first_name"=&gt;nil}</span>
-
-<span class="c1"># returns a Hash of changes, with the attribute names as the keys, and the</span>
-<span class="c1"># values as an array of the old and new values for that field.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">changes</span> <span class="c1"># =&gt; {"first_name"=&gt;[nil, "First Name"]}</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name</span> <span class="o">=</span> <span class="s2">"Jane Doe"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name</span>
+<span class="p">=&gt;</span> <span class="s2">"Jane Doe"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='person = Person.new
-person.changed? # =&gt; false
-
-person.first_name = "First Name"
-person.first_name # =&gt; "First Name"
-
-# returns true if any of the attributes have unsaved changes.
-person.changed? # =&gt; true
-
-# returns a list of attributes that have changed before saving.
-person.changed # =&gt; ["first_name"]
-
-# returns a Hash of the attributes that have changed with their original values.
-person.changed_attributes # =&gt; {"first_name"=&gt;nil}
-
-# returns a Hash of changes, with the attribute names as the keys, and the
-# values as an array of the old and new values for that field.
-person.changes # =&gt; {"first_name"=&gt;[nil, "First Name"]}
-'>Copy</button>
-</div>
-<h5 id="attribute-based-accessor-methods"><a class="anchorlink" href="#attribute-based-accessor-methods">1.4.2 Attribute based accessor methods</a></h5><p>Rastree si el atributo particular ha sido cambiado o no.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># attr_name_changed?</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name</span> <span class="c1"># =&gt; "First Name"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name_changed?</span> <span class="c1"># =&gt; true</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='# attr_name_changed?
-person.first_name # =&gt; "First Name"
-person.first_name_changed? # =&gt; true
-'>Copy</button>
-</div>
-<p>Rastrea el valor anterior del atributo.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># attr_name_was accessor</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name_was</span> <span class="c1"># =&gt; nil</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="# attr_name_was accessor
-person.first_name_was # =&gt; nil
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.changed?
+person.first_name = &quot;Jane Doe&quot;
+person.first_name
 ">Copy</button>
 </div>
-<p>Realice un seguimiento del valor anterior y actual del atributo modificado. Devuelve una matriz
-si se cambia, de lo contrario devuelve nil.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># attr_name_change</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">first_name_change</span> <span class="c1"># =&gt; [nil, "First Name"]</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">last_name_change</span> <span class="c1"># =&gt; nil</span>
+<p><strong><code>changed?</code></strong> devuelve <code>true</code> si alguno de los atributos tiene cambios no guardados, <code>false</code> de lo contrario.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">changed?</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# attr_name_change
-person.first_name_change # =&gt; [nil, "First Name"]
-person.last_name_change # =&gt; nil
-'>Copy</button>
-</div>
-<h4 id="validations"><a class="anchorlink" href="#validations">1.5 Validations</a></h4><p>El módulo <code>ActiveModel::Validations</code> agrega la capacidad de validar objetos
-como en Active Record.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validations</span>
-
-  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:token</span>
-
-  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
-  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">with: </span><span class="sr">/\A([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})\z/i</span>
-  <span class="n">validates!</span> <span class="ss">:token</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
-<span class="k">end</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="s2">"2b1f325"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>                        <span class="c1"># =&gt; false</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s1">'vishnu'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s1">'me'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>                        <span class="c1"># =&gt; false</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s1">'me@vishnuatrai.com'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>                        <span class="c1"># =&gt; true</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="kp">nil</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>                        <span class="c1"># =&gt; raises ActiveModel::StrictValidationFailed</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="class Person
-  include ActiveModel::Validations
-
-  attr_accessor :name, :email, :token
-
-  validates :name, presence: true
-  validates_format_of :email, with: /\A([^\s]+)((?:[-a-z0-9]\.)[a-z]{2,})\z/i
-  validates! :token, presence: true
-end
-
-person = Person.new
-person.token = &quot;2b1f325&quot;
-person.valid?                        # =&gt; false
-person.name = 'vishnu'
-person.email = 'me'
-person.valid?                        # =&gt; false
-person.email = 'me@vishnuatrai.com'
-person.valid?                        # =&gt; true
-person.token = nil
-person.valid?                        # =&gt; raises ActiveModel::StrictValidationFailed
+<button class="clipboard-button" data-clipboard-text="person.changed?
 ">Copy</button>
 </div>
-<h4 id="naming"><a class="anchorlink" href="#naming">1.6 Naming</a></h4><p><code>ActiveModel::Naming</code> agrega una serie de métodos de clase que hacen que la denominación y el enrutamiento
-Más fácil de administrar. El módulo define el método de clase <code>model_name</code> que
-definirá un número de accesos usando algunos métodos <code>ActiveSupport::Inflector</code>.</p><div class="code_container">
+<p><strong><code>changed</code></strong> devuelve un array con el nombre de los atributos que contienen cambios no guardados.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">changed</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="s2">"first_name"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.changed
+">Copy</button>
+</div>
+<p><strong><code>changed_attributes</code></strong> devuelve un hash de los atributos con cambios no guardados indicando sus valores originales como <code>attr =&gt; valor original</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">changed_attributes</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"first_name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.changed_attributes
+">Copy</button>
+</div>
+<p><strong><code>changes</code></strong> devuelve un hash de cambios, con los nombres de los atributos como las claves, y los valores como un array de los valores originales y nuevos como <code>attr =&gt; [valor original, valor nuevo]</code>.</p><div class="interstitial code">
+<pre><code class="highlight plaintext">irb&gt; person.changes
+=&gt; {"first_name" =&gt; [nil, "Jane Doe"]}
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="irb> person.changes
+=> {&quot;first_name&quot; => [nil, &quot;Jane Doe&quot;]}
+">Copy</button>
+</div>
+<p><strong><code>previous_changes</code></strong> devuelve un hash de atributos que fueron cambiados antes de que el modelo fuera guardado (es decir, antes de que se llame a <code>changes_applied</code>).</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">previous_changes</span>
+<span class="p">=&gt;</span> <span class="p">{}</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">save</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">previous_changes</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"first_name"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="kp">nil</span><span class="p">,</span> <span class="s2">"Jane Doe"</span><span class="p">]}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.previous_changes
+person.save
+person.previous_changes
+">Copy</button>
+</div>
+<h4 id="métodos-de-acceso-basados-en-atributos"><a class="anchorlink" href="#métodos-de-acceso-basados-en-atributos"><span>1.8.2</span> Métodos de Acceso Basados en Atributos</a></h4><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">changed?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name</span> <span class="o">=</span> <span class="s2">"John Doe"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name</span>
+<span class="p">=&gt;</span> <span class="s2">"John Doe"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.changed?
+person.first_name = &quot;John Doe&quot;
+person.first_name
+">Copy</button>
+</div>
+<p><strong><code>[attr_name]_changed?</code></strong> comprueba si el atributo en particular ha sido cambiado o no.</p><div class="interstitial code">
+<pre><code class="highlight plaintext">irb&gt; person.first_name_changed?
+=&gt; true
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="irb> person.first_name_changed?
+=> true
+">Copy</button>
+</div>
+<p><strong><code>[attr_name]_was</code></strong> rastrea el valor anterior del atributo.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name_was</span>
+<span class="p">=&gt;</span> <span class="kp">nil</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.first_name_was
+">Copy</button>
+</div>
+<p><strong><code>[attr_name]_change</code></strong> rastrea tanto los valores anteriores como actuales del atributo cambiado. Devuelve un array con <code>[valor original, valor nuevo]</code> si ha cambiado, de lo contrario devuelve <code>nil</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name_change</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="kp">nil</span><span class="p">,</span> <span class="s2">"John Doe"</span><span class="p">]</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">last_name_change</span>
+<span class="p">=&gt;</span> <span class="kp">nil</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.first_name_change
+person.last_name_change
+">Copy</button>
+</div>
+<p><strong><code>[attr_name]_previously_changed?</code></strong> comprueba si el atributo en particular ha sido cambiado antes de que el modelo fuera guardado (es decir, antes de que se llame a <code>changes_applied</code>).</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name_previously_changed?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">save</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name_previously_changed?</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.first_name_previously_changed?
+person.save
+person.first_name_previously_changed?
+">Copy</button>
+</div>
+<p><strong><code>[attr_name]_previous_change</code></strong> rastrea tanto los valores anteriores como actuales del atributo cambiado antes de que el modelo fuera guardado (es decir, antes de que se llame a <code>changes_applied</code>). Devuelve un array con <code>[valor original, valor nuevo]</code> si ha cambiado, de lo contrario devuelve <code>nil</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">first_name_previous_change</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="kp">nil</span><span class="p">,</span> <span class="s2">"John Doe"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person.first_name_previous_change
+">Copy</button>
+</div>
+<h3 id="nombramiento"><a class="anchorlink" href="#nombramiento"><span>1.9</span> Nombramiento</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Naming.html"><code>ActiveModel::Naming</code></a> agrega un método de clase y métodos de ayuda para facilitar la gestión de nombres y enrutamiento. El módulo define el método de clase <code>model_name</code> que definirá varios accesores utilizando algunos métodos de <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Inflector.html"><code>ActiveSupport::Inflector</code></a>.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
 <span class="k">end</span>
-
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">name</span>                <span class="c1"># =&gt; "Person"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">singular</span>            <span class="c1"># =&gt; "person"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">plural</span>              <span class="c1"># =&gt; "people"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">element</span>             <span class="c1"># =&gt; "person"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">human</span>               <span class="c1"># =&gt; "Person"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">collection</span>          <span class="c1"># =&gt; "people"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">param_key</span>           <span class="c1"># =&gt; "person"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">i18n_key</span>            <span class="c1"># =&gt; :person</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">route_key</span>           <span class="c1"># =&gt; "people"</span>
-<span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">singular_route_key</span>  <span class="c1"># =&gt; "person"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='class Person
+<button class="clipboard-button" data-clipboard-text="class Person
   extend ActiveModel::Naming
 end
-
-Person.model_name.name                # =&gt; "Person"
-Person.model_name.singular            # =&gt; "person"
-Person.model_name.plural              # =&gt; "people"
-Person.model_name.element             # =&gt; "person"
-Person.model_name.human               # =&gt; "Person"
-Person.model_name.collection          # =&gt; "people"
-Person.model_name.param_key           # =&gt; "person"
-Person.model_name.i18n_key            # =&gt; :person
-Person.model_name.route_key           # =&gt; "people"
-Person.model_name.singular_route_key  # =&gt; "person"
-'>Copy</button>
+">Copy</button>
 </div>
-<h4 id="model"><a class="anchorlink" href="#model">1.7 Model</a></h4><p><code>ActiveModel::Model</code> agrega la capacidad para que una clase funcione con Action Pack y
-Vista de acción desde el primer momento.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">EmailContact</span>
-  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Model</span>
+<p><strong><code>name</code></strong> devuelve el nombre del modelo.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"Person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.name
+">Copy</button>
+</div>
+<p><strong><code>singular</code></strong> devuelve el nombre de clase singular de un registro o clase.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">singular</span>
+<span class="p">=&gt;</span> <span class="s2">"person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.singular
+">Copy</button>
+</div>
+<p><strong><code>plural</code></strong> devuelve el nombre de clase plural de un registro o clase.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">plural</span>
+<span class="p">=&gt;</span> <span class="s2">"people"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.plural
+">Copy</button>
+</div>
+<p><strong><code>element</code></strong> elimina el espacio de nombres y devuelve el nombre en snake_case singular. Generalmente es utilizado por Action Pack y/o ayudantes de Action View para ayudar en la representación del nombre de parciales/formularios.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">element</span>
+<span class="p">=&gt;</span> <span class="s2">"person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.element
+">Copy</button>
+</div>
+<p><strong><code>human</code></strong> transforma el nombre del modelo en un formato más humano, utilizando I18n. Por defecto, subrayará y luego humanizará el nombre de la clase.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">human</span>
+<span class="p">=&gt;</span> <span class="s2">"Person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.human
+">Copy</button>
+</div>
+<p><strong><code>collection</code></strong> elimina el espacio de nombres y devuelve el nombre en snake_case plural. Generalmente es utilizado por Action Pack y/o ayudantes de Action View para ayudar en la representación del nombre de parciales/formularios.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">collection</span>
+<span class="p">=&gt;</span> <span class="s2">"people"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.collection
+">Copy</button>
+</div>
+<p><strong><code>param_key</code></strong> devuelve una cadena para usar en nombres de parámetros.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">param_key</span>
+<span class="p">=&gt;</span> <span class="s2">"person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.param_key
+">Copy</button>
+</div>
+<p><strong><code>i18n_key</code></strong> devuelve el nombre de la clave i18n. Subraya el nombre del modelo y luego lo devuelve como un símbolo.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">i18n_key</span>
+<span class="p">=&gt;</span> <span class="ss">:person</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.i18n_key
+">Copy</button>
+</div>
+<p><strong><code>route_key</code></strong> devuelve una cadena para usar al generar nombres de rutas.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">route_key</span>
+<span class="p">=&gt;</span> <span class="s2">"people"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.route_key
+">Copy</button>
+</div>
+<p><strong><code>singular_route_key</code></strong> devuelve una cadena para usar al generar nombres de rutas.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">singular_route_key</span>
+<span class="p">=&gt;</span> <span class="s2">"person"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.singular_route_key
+">Copy</button>
+</div>
+<p><strong><code>uncountable?</code></strong> identifica si el nombre de clase de un registro o clase es incontable.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">model_name</span><span class="p">.</span><span class="nf">uncountable?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Person.model_name.uncountable?
+">Copy</button>
+</div>
+<p>NOTA: Algunos métodos de <code>Naming</code>, como <code>param_key</code>, <code>route_key</code> y <code>singular_route_key</code>, difieren para modelos con espacio de nombres según si están dentro de un <a href="engines.html">motor</a> aislado.</p><h4 id="personalizar-el-nombre-del-modelo"><a class="anchorlink" href="#personalizar-el-nombre-del-modelo"><span>1.9.1</span> Personalizar el Nombre del Modelo</a></h4><p>A veces puede querer personalizar el nombre del modelo que se utiliza en los ayudantes de formularios y generación de URL. Esto puede ser útil en situaciones donde desea usar un nombre más amigable para el modelo, mientras que aún puede referenciarlo usando su espacio de nombres completo.</p><p>Por ejemplo, digamos que tiene un espacio de nombres <code>Person</code> en su aplicación Rails y desea crear un formulario para un nuevo <code>Person::Profile</code>.</p><p>Por defecto, Rails generaría el formulario con la URL <code>/person/profiles</code>, que incluye el espacio de nombres <code>person</code>. Sin embargo, si desea que la URL simplemente apunte a <code>profiles</code> sin el espacio de nombres, puede personalizar el método <code>model_name</code> de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Person</span>
+  <span class="k">class</span> <span class="nc">Profile</span>
+    <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Model</span>
 
-  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:message</span>
-  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:message</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
-
-  <span class="k">def</span> <span class="nf">deliver</span>
-    <span class="k">if</span> <span class="n">valid?</span>
-      <span class="c1"># deliver email</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">model_name</span>
+      <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Name</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="nb">self</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"Profile"</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="class EmailContact
-  include ActiveModel::Model
+<button class="clipboard-button" data-clipboard-text="module Person
+  class Profile
+    include ActiveModel::Model
 
-  attr_accessor :name, :email, :message
-  validates :name, :email, :message, presence: true
-
-  def deliver
-    if valid?
-      # deliver email
+    def self.model_name
+      ActiveModel::Name.new(self, nil, &quot;Profile&quot;)
     end
   end
 end
 ">Copy</button>
 </div>
-<p>Al incluir <code>ActiveModel::Model</code> obtienes algunas características como:</p>
-<ul>
-<li>nombre del modelo introspección</li>
-<li>conversiones</li>
-<li>traducciones</li>
-<li>validaciones</li>
-</ul>
-<p>También le brinda la capacidad de inicializar un objeto con un hash de atributos,
-como cualquier objeto de Active Record.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">email_contact</span> <span class="o">=</span> <span class="no">EmailContact</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s1">'David'</span><span class="p">,</span>
-                                 <span class="ss">email: </span><span class="s1">'david@example.com'</span><span class="p">,</span>
-                                 <span class="ss">message: </span><span class="s1">'Hello World'</span><span class="p">)</span>
-<span class="n">email_contact</span><span class="p">.</span><span class="nf">name</span>       <span class="c1"># =&gt; 'David'</span>
-<span class="n">email_contact</span><span class="p">.</span><span class="nf">email</span>      <span class="c1"># =&gt; 'david@example.com'</span>
-<span class="n">email_contact</span><span class="p">.</span><span class="nf">valid?</span>     <span class="c1"># =&gt; true</span>
-<span class="n">email_contact</span><span class="p">.</span><span class="nf">persisted?</span> <span class="c1"># =&gt; false</span>
+<p>Con esta configuración, cuando use el ayudante <code>form_with</code> para crear un formulario para crear un nuevo <code>Person::Profile</code>, Rails generará el formulario con la URL <code>/profiles</code> en lugar de <code>/person/profiles</code>, porque el método <code>model_name</code> ha sido sobrescrito para devolver <code>Profile</code>.</p><p>Además, los ayudantes de ruta se generarán sin el espacio de nombres, por lo que puede usar <code>profiles_path</code> en lugar de <code>person_profiles_path</code> para generar la URL para el recurso <code>profiles</code>. Para usar el ayudante <code>profiles_path</code>, necesita definir las rutas para el modelo <code>Person::Profile</code> en su archivo <code>config/routes.rb</code> de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:profiles</span>
+<span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="email_contact = EmailContact.new(name: 'David',
-                                 email: 'david@example.com',
-                                 message: 'Hello World')
-email_contact.name       # =&gt; 'David'
-email_contact.email      # =&gt; 'david@example.com'
-email_contact.valid?     # =&gt; true
-email_contact.persisted? # =&gt; false
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
+  resources :profiles
+end
 ">Copy</button>
 </div>
-<p>Cualquier clase que incluya <code>ActiveModel::Model</code> puede usarse con<code>form_with</code>,
-<code>render</code> y cualquier otro método auxiliar de Action View, como Active Record
-objetos.</p><h4 id="serialization"><a class="anchorlink" href="#serialization">1.8 Serialization</a></h4><p><code>ActiveModel::Serialization</code> proporciona serialización básica para su objeto.
-Debe declarar un atributo Hash que contiene los atributos que desea
-publicar por fascículos. Los atributos deben ser cadenas, no símbolos.</p><div class="code_container">
+<p>Consecuentemente, puede esperar que el modelo devuelva los siguientes valores para los métodos que se describieron en la sección anterior:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="nb">name</span> <span class="o">=</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Name</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="no">Person</span><span class="o">::</span><span class="no">Profile</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"Profile"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">ActiveModel</span><span class="o">::</span><span class="no">Name</span><span class="p">:</span><span class="mh">0x000000014c5dbae0</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="nb">name</span><span class="p">.</span><span class="nf">singular</span>
+<span class="p">=&gt;</span> <span class="s2">"profile"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="nb">name</span><span class="p">.</span><span class="nf">singular_route_key</span>
+<span class="p">=&gt;</span> <span class="s2">"profile"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="nb">name</span><span class="p">.</span><span class="nf">route_key</span>
+<span class="p">=&gt;</span> <span class="s2">"profiles"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="name = ActiveModel::Name.new(Person::Profile, nil, &quot;Profile&quot;)
+name.singular
+name.singular_route_key
+name.route_key
+">Copy</button>
+</div>
+<h3 id="securepassword"><a class="anchorlink" href="#securepassword"><span>1.10</span> SecurePassword</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/SecurePassword.html"><code>ActiveModel::SecurePassword</code></a> proporciona una forma de almacenar de forma segura cualquier contraseña en un formulario cifrado. Cuando incluye este módulo, se proporciona un método de clase <code>has_secure_password</code> que define un accesor <code>password</code> con ciertas validaciones por defecto.</p><p><code>ActiveModel::SecurePassword</code> depende de <a href="https://github.com/bcrypt-ruby/bcrypt-ruby" title="BCrypt"><code>bcrypt</code></a>, por lo que incluya este gem en su <code>Gemfile</code> para usarlo.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"bcrypt"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;bcrypt&quot;
+">Copy</button>
+</div>
+<p><code>ActiveModel::SecurePassword</code> requiere que tenga un atributo <code>password_digest</code>.</p><p>Las siguientes validaciones se agregan automáticamente:</p>
+<ol>
+<li>La contraseña debe estar presente en la creación.</li>
+<li>Confirmación de la contraseña (usando un atributo <code>password_confirmation</code>).</li>
+<li>La longitud máxima de una contraseña es de 72 bytes (requerido ya que <code>bcrypt</code> trunca la cadena a este tamaño antes de cifrarla).</li>
+</ol>
+<p>NOTA: Si no se necesita la validación de confirmación de contraseña, simplemente deje el valor para <code>password_confirmation</code> (es decir, no proporcione un campo de formulario para ello). Cuando este atributo tiene un valor <code>nil</code>, la validación no se activará.</p><p>Para una mayor personalización, es posible suprimir las validaciones predeterminadas pasando <code>validations: false</code> como argumento.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">SecurePassword</span>
+
+  <span class="n">has_secure_password</span>
+  <span class="n">has_secure_password</span> <span class="ss">:recovery_password</span><span class="p">,</span> <span class="ss">validations: </span><span class="kp">false</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:password_digest</span><span class="p">,</span> <span class="ss">:recovery_password_digest</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::SecurePassword
+
+  has_secure_password
+  has_secure_password :recovery_password, validations: false
+
+  attr_accessor :password_digest, :recovery_password_digest
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="c"># Cuando la contraseña está en blanco.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="c"># Cuando la confirmación no coincide con la contraseña.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="s2">"aditya"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s2">"nomatch"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="c"># Cuando la longitud de la contraseña excede 72.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s2">"a"</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="c"># Cuando solo se proporciona la contraseña sin password_confirmation.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="s2">"aditya"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="c"># Cuando se pasan todas las validaciones.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s2">"aditya"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">recovery_password</span> <span class="o">=</span> <span class="s2">"42password"</span>
+<span class="err">
+</span><span class="c"># `authenticate` es un alias para `authenticate_password`
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="s2">"aditya"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">Person</span><span class="kt">&gt;</span> <span class="c1"># == person</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="s2">"notright"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate_password</span><span class="p">(</span><span class="s2">"aditya"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">Person</span><span class="kt">&gt;</span> <span class="c1"># == person</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate_password</span><span class="p">(</span><span class="s2">"notright"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate_recovery_password</span><span class="p">(</span><span class="s2">"aditya"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate_recovery_password</span><span class="p">(</span><span class="s2">"42password"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">Person</span><span class="kt">&gt;</span> <span class="c1"># == person</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">authenticate_recovery_password</span><span class="p">(</span><span class="s2">"notright"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">password_digest</span>
+<span class="p">=&gt;</span> <span class="s2">"$2a$04$gF8RfZdoXHvyTjHhiU4ZsO.kQqV9oonYZu31PRE4hLQn3xM2qkpIy"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">recovery_password_digest</span>
+<span class="p">=&gt;</span> <span class="s2">"$2a$04$iOfhwahFymCs5weB3BNH/uXkTG65HR.qpW.bNhEjFP3ftli3o5DQC"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.valid?
+person.password = &quot;aditya&quot;
+person.password_confirmation = &quot;nomatch&quot;
+person.valid?
+person.password = person.password_confirmation = &quot;a&quot; * 100
+person.valid?
+person.password = &quot;aditya&quot;
+person.valid?
+person.password = person.password_confirmation = &quot;aditya&quot;
+person.valid?
+person.recovery_password = &quot;42password&quot;
+person.authenticate(&quot;aditya&quot;)
+person.authenticate(&quot;notright&quot;)
+person.authenticate_password(&quot;aditya&quot;)
+person.authenticate_password(&quot;notright&quot;)
+person.authenticate_recovery_password(&quot;aditya&quot;)
+person.authenticate_recovery_password(&quot;42password&quot;)
+person.authenticate_recovery_password(&quot;notright&quot;)
+person.password_digest
+person.recovery_password_digest
+">Copy</button>
+</div>
+<h3 id="serialización"><a class="anchorlink" href="#serialización"><span>1.11</span> Serialización</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Serialization.html"><code>ActiveModel::Serialization</code></a> proporciona serialización básica para su objeto. Necesita declarar un hash de atributos que contenga los atributos que desea serializar. Los atributos deben ser cadenas, no símbolos.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Serialization</span>
 
-  <span class="nb">attr_accessor</span> <span class="ss">:name</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:age</span>
 
   <span class="k">def</span> <span class="nf">attributes</span>
-    <span class="p">{</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+    <span class="c1"># Declaración de atributos que se serializarán</span>
+    <span class="p">{</span> <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"age"</span> <span class="o">=&gt;</span> <span class="kp">nil</span> <span class="p">}</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">capitalized_name</span>
+    <span class="c1"># Los métodos declarados se pueden incluir posteriormente en el hash serializado</span>
+    <span class="nb">name</span><span class="o">&amp;</span><span class="p">.</span><span class="nf">capitalize</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
   include ActiveModel::Serialization
 
-  attr_accessor :name
+  attr_accessor :name, :age
 
   def attributes
-    {'name' =&gt; nil}
+    # Declaración de atributos que se serializarán
+    { &quot;name&quot; => nil, &quot;age&quot; => nil }
+  end
+
+  def capitalized_name
+    # Los métodos declarados se pueden incluir posteriormente en el hash serializado
+    name&amp;.capitalize
   end
 end
 ">Copy</button>
 </div>
-<p>Ahora puede acceder a un Hash serializado de su objeto utilizando el método <code>serializable_hash</code>.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span>   <span class="c1"># =&gt; {"name"=&gt;nil}</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Bob"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span>   <span class="c1"># =&gt; {"name"=&gt;"Bob"}</span>
+<p>Ahora puede acceder a un hash serializado de su objeto utilizando el método <code>serializable_hash</code>. Las opciones válidas para <code>serializable_hash</code> incluyen <code>:only</code>, <code>:except</code>, <code>:methods</code> y <code>:include</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"age"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+
+<span class="c"># Establecer los atributos name y age y serializar el objeto
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"bob"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">age</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"bob"</span><span class="p">,</span> <span class="s2">"age"</span> <span class="o">=&gt;</span> <span class="mi">22</span><span class="p">}</span>
+
+<span class="c"># Usar la opción methods para incluir el método capitalized_name
+</span><span class="gp">irb&gt;</span><span class="w">  </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span><span class="p">(</span><span class="ss">methods: :capitalized_name</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"bob"</span><span class="p">,</span> <span class="s2">"age"</span> <span class="o">=&gt;</span> <span class="mi">22</span><span class="p">,</span> <span class="s2">"capitalized_name"</span> <span class="o">=&gt;</span> <span class="s2">"Bob"</span><span class="p">}</span>
+
+<span class="c"># Usar el método only para incluir solo el atributo name
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span><span class="p">(</span><span class="ss">only: :name</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"bob"</span><span class="p">}</span>
+
+<span class="c"># Usar el método except para excluir el atributo name
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span><span class="p">(</span><span class="ss">except: :name</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"age"</span> <span class="o">=&gt;</span> <span class="mi">22</span><span class="p">}</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='person = Person.new
-person.serializable_hash   # =&gt; {"name"=&gt;nil}
-person.name = "Bob"
-person.serializable_hash   # =&gt; {"name"=&gt;"Bob"}
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.serializable_hash
+person.name = &quot;bob&quot;
+person.age = 22
+person.serializable_hash
+ person.serializable_hash(methods: :capitalized_name)
+person.serializable_hash(only: :name)
+person.serializable_hash(except: :name)
+">Copy</button>
 </div>
-<h5 id="serialization-activemodel-serializers"><a class="anchorlink" href="#serialization-activemodel-serializers">1.8.1 ActiveModel::Serializers</a></h5><p>Active Model también proporciona el módulo <code>ActiveModel::Serializers::JSON</code>
-para serialización / deserialización JSON. Este módulo incluye automáticamente el
-discutido anteriormente módulo <code>ActiveModel::Serialization</code>.</p><h6 id="serialization-activemodel-serializers-activemodel-serializers"><a class="anchorlink" href="#serialization-activemodel-serializers-activemodel-serializers">1.8.1.1 ActiveModel::Serializers::</a></h6><p>Para usar <code>ActiveModel::Serializers::JSON</code> solo necesita cambiar el
-módulo que está incluyendo desde <code>ActiveModel::Serialization</code> a <code>ActiveModel::Serializers::JSON</code>.</p><div class="code_container">
+<p>El ejemplo para utilizar la opción <code>includes</code> requiere un escenario ligeramente más complejo como se define a continuación:</p><div class="interstitial code">
+<pre><code class="highlight ruby">  <span class="k">class</span> <span class="nc">Person</span>
+    <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Serialization</span>
+    <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:notes</span> <span class="c1"># Emular has_many :notes</span>
+
+    <span class="k">def</span> <span class="nf">attributes</span>
+      <span class="p">{</span> <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">class</span> <span class="nc">Note</span>
+    <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Serialization</span>
+    <span class="nb">attr_accessor</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span>
+
+    <span class="k">def</span> <span class="nf">attributes</span>
+      <span class="p">{</span> <span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"text"</span> <span class="o">=&gt;</span> <span class="kp">nil</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  class Person
+    include ActiveModel::Serialization
+    attr_accessor :name, :notes # Emular has_many :notes
+
+    def attributes
+      { &quot;name&quot; => nil }
+    end
+  end
+
+  class Note
+    include ActiveModel::Serialization
+    attr_accessor :title, :text
+
+    def attributes
+      { &quot;title&quot; => nil, &quot;text&quot; => nil }
+    end
+  end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">note</span> <span class="o">=</span> <span class="no">Note</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">note</span><span class="p">.</span><span class="nf">title</span> <span class="o">=</span> <span class="s2">"Weekend Plans"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">note</span><span class="p">.</span><span class="nf">text</span> <span class="o">=</span> <span class="s2">"Some text here"</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Napoleon"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">notes</span> <span class="o">=</span> <span class="p">[</span><span class="n">note</span><span class="p">]</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Napoleon"</span><span class="p">}</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">serializable_hash</span><span class="p">(</span><span class="ss">include: </span><span class="p">{</span> <span class="ss">notes: </span><span class="p">{</span> <span class="ss">only: </span><span class="s2">"title"</span> <span class="p">}})</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Napoleon"</span><span class="p">,</span> <span class="s2">"notes"</span> <span class="o">=&gt;</span> <span class="p">[{</span><span class="s2">"title"</span> <span class="o">=&gt;</span> <span class="s2">"Weekend Plans"</span><span class="p">}]}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="note = Note.new
+note.title = &quot;Weekend Plans&quot;
+note.text = &quot;Some text here&quot;
+person = Person.new
+person.name = &quot;Napoleon&quot;
+person.notes = [note]
+person.serializable_hash
+person.serializable_hash(include: { notes: { only: &quot;title&quot; }})
+">Copy</button>
+</div>
+<h4 id="activemodel-serializers-json"><a class="anchorlink" href="#activemodel-serializers-json"><span>1.11.1</span> ActiveModel::Serializers::JSON</a></h4><p>Active Model también proporciona el módulo <a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html"><code>ActiveModel::Serializers::JSON</code></a> para serialización/deserialización JSON.</p><p>Para usar la serialización JSON, cambie el módulo que está incluyendo de <code>ActiveModel::Serialization</code> a <code>ActiveModel::Serializers::JSON</code>. Ya incluye el primero, por lo que no hay necesidad de incluirlo explícitamente.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Serializers</span><span class="o">::</span><span class="no">JSON</span>
 
   <span class="nb">attr_accessor</span> <span class="ss">:name</span>
 
   <span class="k">def</span> <span class="nf">attributes</span>
-    <span class="p">{</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+    <span class="p">{</span> <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
@@ -659,26 +1530,38 @@ módulo que está incluyendo desde <code>ActiveModel::Serialization</code> a <co
   attr_accessor :name
 
   def attributes
-    {'name' =&gt; nil}
+    { &quot;name&quot; => nil }
   end
 end
 ">Copy</button>
 </div>
-<p>El método <code>as_json</code>, similar a <code>serializable_hash</code>, proporciona un Hash que representa
-el modelo.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">as_json</span> <span class="c1"># =&gt; {"name"=&gt;nil}</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Bob"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">as_json</span> <span class="c1"># =&gt; {"name"=&gt;"Bob"}</span>
+<p>El método <code>as_json</code>, similar a <code>serializable_hash</code>, proporciona un hash que representa el modelo con sus claves como una cadena. El método <code>to_json</code> devuelve una cadena JSON que representa el modelo.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="c"># Un hash que representa el modelo con sus claves como una cadena
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">as_json</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+
+<span class="c"># Una cadena JSON que representa el modelo
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_json</span>
+<span class="p">=&gt;</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:null}"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Bob"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">as_json</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="s2">"Bob"</span><span class="p">}</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">to_json</span>
+<span class="p">=&gt;</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Bob</span><span class="se">\"</span><span class="s2">}"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='person = Person.new
-person.as_json # =&gt; {"name"=&gt;nil}
-person.name = "Bob"
-person.as_json # =&gt; {"name"=&gt;"Bob"}
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.as_json
+person.to_json
+person.name = &quot;Bob&quot;
+person.as_json
+person.to_json
+">Copy</button>
 </div>
-<p>También puede definir los atributos para un modelo a partir de una cadena JSON.
-Sin embargo, debe definir el método <code>atributos =</code> en su clase:</p><div class="code_container">
+<p>También puede definir los atributos para un modelo a partir de una cadena JSON. Para hacer esto, primero defina el método <code>attributes=</code> en su clase:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Serializers</span><span class="o">::</span><span class="no">JSON</span>
 
@@ -686,12 +1569,12 @@ Sin embargo, debe definir el método <code>atributos =</code> en su clase:</p><d
 
   <span class="k">def</span> <span class="nf">attributes</span><span class="o">=</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
     <span class="nb">hash</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span>
-      <span class="nb">send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+      <span class="n">public_send</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">="</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">attributes</span>
-    <span class="p">{</span><span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="kp">nil</span><span class="p">}</span>
+    <span class="p">{</span> <span class="s2">"name"</span> <span class="o">=&gt;</span> <span class="kp">nil</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
@@ -702,30 +1585,35 @@ Sin embargo, debe definir el método <code>atributos =</code> en su clase:</p><d
 
   def attributes=(hash)
     hash.each do |key, value|
-      send(&quot;#{key}=&quot;, value)
+      public_send(&quot;#{key}=&quot;, value)
     end
   end
 
   def attributes
-    {'name' =&gt; nil}
+    { &quot;name&quot; => nil }
   end
 end
 ">Copy</button>
 </div>
-<p>Ahora es posible crear una instancia de <code>Person</code> y establecer atributos usando <code>from_json</code>.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">json</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">name: </span><span class="s1">'Bob'</span> <span class="p">}.</span><span class="nf">to_json</span>
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">)</span> <span class="c1"># =&gt; #&lt;Person:0x00000100c773f0 @name="Bob"&gt;</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">name</span>            <span class="c1"># =&gt; "Bob"</span>
+<p>Ahora es posible crear una instancia de <code>Person</code> y establecer atributos usando <code>from_json</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">json</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">name: </span><span class="s2">"Bob"</span> <span class="p">}.</span><span class="nf">to_json</span>
+<span class="p">=&gt;</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Bob</span><span class="se">\"</span><span class="s2">}"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">from_json</span><span class="p">(</span><span class="n">json</span><span class="p">)</span>
+<span class="gp">=&gt; #&lt;Person:0x00000100c773f0 @name="Bob"&gt;</span><span class="w">
+</span><span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span>
+<span class="p">=&gt;</span> <span class="s2">"Bob"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="json = { name: 'Bob' }.to_json
+<button class="clipboard-button" data-clipboard-text="json = { name: &quot;Bob&quot; }.to_json
 person = Person.new
-person.from_json(json) # =&gt; #&lt;Person:0x00000100c773f0 @name=&quot;Bob&quot;&gt;
-person.name            # =&gt; &quot;Bob&quot;
+person.from_json(json)
+person.name
 ">Copy</button>
 </div>
-<h4 id="translation"><a class="anchorlink" href="#translation">1.9 Translation</a></h4><p><code>ActiveModel::Translation</code> proporciona integración entre su objeto y los rieles
-marco de internacionalización (i18n).</p><div class="code_container">
+<h3 id="traducción"><a class="anchorlink" href="#traducción"><span>1.12</span> Traducción</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Translation.html"><code>ActiveModel::Translation</code></a> proporciona integración entre su objeto y el <a href="i18n.html">marco de internacionalización (i18n) de Rails</a>.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
   <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Translation</span>
 <span class="k">end</span>
@@ -735,50 +1623,139 @@ marco de internacionalización (i18n).</p><div class="code_container">
 end
 ">Copy</button>
 </div>
-<p>Con el método <code>human_attribute_name</code>, puede transformar los nombres de atributos en un
-formato más legible para los humanos. El formato legible por humanos se define en sus archivos locales.</p>
-<ul>
-<li>config/locales/app.pt-BR.yml</li>
-</ul>
-<div class="code_container">
-<pre><code class="highlight yml">  <span class="na">pt-BR</span><span class="pi">:</span>
-    <span class="na">activemodel</span><span class="pi">:</span>
-      <span class="na">attributes</span><span class="pi">:</span>
-        <span class="na">person</span><span class="pi">:</span>
-          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Nome'</span>
+<p>Con el método <code>human_attribute_name</code>, puede transformar nombres de atributos en un formato más legible para humanos. El formato legible para humanos se define en su(s) archivo(s) de configuración regional.</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="c1"># config/locales/app.pt-BR.yml</span>
+<span class="na">pt-BR</span><span class="pi">:</span>
+  <span class="na">activemodel</span><span class="pi">:</span>
+    <span class="na">attributes</span><span class="pi">:</span>
+      <span class="na">person</span><span class="pi">:</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Nome"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="  pt-BR:
-    activemodel:
-      attributes:
-        person:
-          name: 'Nome'
+<button class="clipboard-button" data-clipboard-text="pt-BR:
+  activemodel:
+    attributes:
+      person:
+        name: &quot;Nome&quot;
 ">Copy</button>
 </div>
-<div class="code_container">
-<pre><code class="highlight ruby"><span class="no">Person</span><span class="p">.</span><span class="nf">human_attribute_name</span><span class="p">(</span><span class="s1">'name'</span><span class="p">)</span> <span class="c1"># =&gt; "Nome"</span>
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">human_attribute_name</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="s2">"Name"</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="no">I18n</span><span class="p">.</span><span class="nf">locale</span> <span class="o">=</span> <span class="ss">:"pt-BR"</span>
+<span class="p">=&gt;</span> <span class="ss">:"pt-BR"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Person</span><span class="p">.</span><span class="nf">human_attribute_name</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="s2">"Nome"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="Person.human_attribute_name('name') # =&gt; &quot;Nome&quot;
+<button class="clipboard-button" data-clipboard-text="Person.human_attribute_name(&quot;name&quot;)
+I18n.locale = :&quot;pt-BR&quot;
+Person.human_attribute_name(&quot;name&quot;)
 ">Copy</button>
 </div>
-<h4 id="lint-tests"><a class="anchorlink" href="#lint-tests">1.10 Lint Tests</a></h4><p><code>ActiveModel::Lint::Tests</code> le permite probar si un objeto cumple con
-el API del modelo activo.</p>
-<ul>
-<li>
-<p><code>app/models/person.rb</code></p>
-<div class="code_container">
+<h3 id="validaciones"><a class="anchorlink" href="#validaciones"><span>1.13</span> Validaciones</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations.html"><code>ActiveModel::Validations</code></a> agrega la capacidad de validar objetos y es importante para garantizar la integridad y consistencia de los datos dentro de su aplicación. Al incorporar validaciones en sus modelos, puede definir reglas que gobiernan la corrección de los valores de los atributos y prevenir datos no válidos.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Model</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Validations</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:token</span>
+
+  <span class="n">validates</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
+  <span class="n">validates</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">format: </span><span class="p">{</span> <span class="ss">with: </span><span class="no">URI</span><span class="o">::</span><span class="no">MailTo</span><span class="o">::</span><span class="no">EMAIL_REGEXP</span> <span class="p">}</span>
+  <span class="n">validates!</span> <span class="ss">:token</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span>
 <span class="k">end</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="class Person
-  include ActiveModel::Model
+  include ActiveModel::Validations
+
+  attr_accessor :name, :email, :token
+
+  validates :name, presence: true
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates! :token, presence: true
 end
 ">Copy</button>
 </div>
-</li>
-<li>
-<p><code>test/models/person_test.rb</code></p>
-<div class="code_container">
+<div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="s2">"2b1f325"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Jane Doe"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s2">"me"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s2">"jane.doe@gmail.com"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="kp">true</span>
+
+<span class="c"># `token` usa validate! y lanzará una excepción cuando no esté establecido.
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">token</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="s2">"Token can't be blank (ActiveModel::StrictValidationFailed)"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.token = &quot;2b1f325&quot;
+person.valid?
+person.name = &quot;Jane Doe&quot;
+person.email = &quot;me&quot;
+person.valid?
+person.email = &quot;jane.doe@gmail.com&quot;
+person.valid?
+person.token = nil
+person.valid?
+">Copy</button>
+</div>
+<h4 id="métodos-y-opciones-de-validación"><a class="anchorlink" href="#métodos-y-opciones-de-validación"><span>1.13.1</span> Métodos y Opciones de Validación</a></h4><p>Puede agregar validaciones usando algunos de los siguientes métodos:</p>
+<ul>
+<li><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validate"><code>validate</code></a>: Agrega validación a través de un método o un bloque a la clase.</p></li>
+<li><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates"><code>validates</code></a>: Un atributo se puede pasar al método <code>validates</code> y proporciona un acceso directo a todos los validadores predeterminados.</p></li>
+<li><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates-21"><code>validates!</code></a> o establecer <code>strict: true</code>: Se utiliza para definir validaciones que no pueden ser corregidas por los usuarios finales y se consideran excepcionales. Cada validador definido con un signo de exclamación o la opción <code>:strict</code> establecida en true siempre lanzará <code>ActiveModel::StrictValidationFailed</code> en lugar de agregar a los errores cuando la validación falla.</p></li>
+<li><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates_with"><code>validates_with</code></a>: Pasa el registro a la clase o clases especificadas y les permite agregar errores basados en condiciones más complejas.</p></li>
+<li><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validates_each"><code>validates_each</code></a>: Valida cada atributo contra un bloque.</p></li>
+</ul>
+<p>Algunas de las opciones a continuación se pueden usar con ciertos validadores. Para determinar si la opción que está utilizando se puede usar con un validador específico, lea la <a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html">documentación de validación</a>.</p>
+<ul>
+<li><p><code>:on</code>: Especifica el contexto en el que agregar la validación. Puede pasar un símbolo o un array de símbolos. (por ejemplo, <code>on: :create</code> o <code>on: :custom_validation_context</code> o <code>on: [:create, :custom_validation_context]</code>). Las validaciones sin una opción <code>:on</code> se ejecutarán sin importar el contexto. Las validaciones con alguna opción <code>:on</code> solo se ejecutarán en el contexto especificado. Puede pasar el contexto al validar a través de <code>valid?(:context)</code>.</p></li>
+<li><p><code>:if</code>: Especifica un método, proc o cadena para llamar para determinar si la validación debe ocurrir (por ejemplo, <code>if: :allow_validation</code>, o <code>if: -&gt; { signup_step &gt; 2 }</code>). El método, proc o cadena debe devolver o evaluar a un valor <code>true</code> o <code>false</code>.</p></li>
+<li><p><code>:unless</code>: Especifica un método, proc o cadena para llamar para determinar si la validación no debe ocurrir (por ejemplo, <code>unless: :skip_validation</code>, o <code>unless: Proc.new { |user| user.signup_step &lt;= 2 }</code>). El método, proc o cadena debe devolver o evaluar a un valor <code>true</code> o <code>false</code>.</p></li>
+<li><p><code>:allow_nil</code>: Omite la validación si el atributo es <code>nil</code>.</p></li>
+<li><p><code>:allow_blank</code>: Omite la validación si el atributo está en blanco.</p></li>
+<li><p><code>:strict</code>: Si la opción <code>:strict</code> está establecida en true, lanzará <code>ActiveModel::StrictValidationFailed</code> en lugar de agregar el error. La opción <code>:strict</code> también se puede establecer en cualquier otra excepción.</p></li>
+</ul>
+<p>NOTA: Llamar a <code>validate</code> varias veces en el mismo método sobrescribirá las definiciones anteriores.</p><h4 id="errores"><a class="anchorlink" href="#errores"><span>1.13.2</span> Errores</a></h4><p><code>ActiveModel::Validations</code> agrega automáticamente un método <code>errors</code> a sus instancias inicializadas con un nuevo objeto <a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Errors.html"><code>ActiveModel::Errors</code></a>, por lo que no hay necesidad de hacerlo manualmente.</p><p>Ejecute <code>valid?</code> en el objeto para verificar si el objeto es válido o no. Si el objeto no es válido, devolverá <code>false</code> y los errores se agregarán al objeto <code>errors</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
+<span class="err">
+</span><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s2">"me"</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">valid?</span>
+<span class="p">=&gt;</span> <span class="c1"># Raises Token can't be blank (ActiveModel::StrictValidationFailed)</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">to_hash</span>
+<span class="p">=&gt;</span> <span class="p">{</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"can't be blank"</span><span class="p">],</span> <span class="ss">:email</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s2">"is invalid"</span><span class="p">]}</span>
+
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">person</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span>
+<span class="p">=&gt;</span> <span class="p">[</span><span class="s2">"Name can't be blank"</span><span class="p">,</span> <span class="s2">"Email is invalid"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="person = Person.new
+person.email = &quot;me&quot;
+person.valid?
+person.errors.to_hash
+person.errors.full_messages
+">Copy</button>
+</div>
+<h3 id="pruebas-de-lint"><a class="anchorlink" href="#pruebas-de-lint"><span>1.14</span> Pruebas de Lint</a></h3><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Lint/Tests.html"><code>ActiveModel::Lint::Tests</code></a> le permite probar si un objeto cumple con la API de Active Model. Al incluir <code>ActiveModel::Lint::Tests</code> en su TestCase, incluirá pruebas que le dirán si su objeto es completamente compatible, o si no lo es, qué aspectos de la API no están implementados.</p><p>Estas pruebas no intentan determinar la corrección semántica de los valores devueltos. Por ejemplo, podría implementar <code>valid?</code> para que siempre devuelva <code>true</code>, y las pruebas pasarían. Depende de usted asegurarse de que los valores sean semánticamente significativos.</p><p>Se espera que los objetos que pase devuelvan un objeto compatible de una llamada a <code>to_model</code>. Está perfectamente bien que <code>to_model</code> devuelva <code>self</code>.</p>
+<ul>
+<li><p><code>app/models/person.rb</code></p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">API</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  include ActiveModel::API
+end
+">Copy</button>
+</div></li>
+<li><p><code>test/models/person_test.rb</code></p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"test_helper"</span>
 
 <span class="k">class</span> <span class="nc">PersonTest</span> <span class="o">&lt;</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">TestCase</span>
@@ -789,20 +1766,19 @@ end
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='require "test_helper"
+<button class="clipboard-button" data-clipboard-text="require &quot;test_helper&quot;
 
-class PersonTest &lt; ActiveSupport::TestCase
+class PersonTest < ActiveSupport::TestCase
   include ActiveModel::Lint::Tests
 
   setup do
     @model = Person.new
   end
 end
-'>Copy</button>
-</div>
-</li>
+">Copy</button>
+</div></li>
 </ul>
-<div class="code_container">
+<p>Consulte <a href="https://edgeapi.rubyonrails.org/classes/ActiveModel/Lint/Tests.html">la documentación de métodos de prueba</a> para obtener más detalles.</p><p>Para ejecutar las pruebas, puede usar el siguiente comando:</p><div class="interstitial code">
 <pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails test</span>
 <span class="go">
 Run options: --seed 14596
@@ -818,133 +1794,43 @@ Finished in 0.024899s, 240.9735 runs/s, 1204.8677 assertions/s.
 <button class="clipboard-button" data-clipboard-text="bin/rails test
 ">Copy</button>
 </div>
-<p>No se requiere un objeto para implementar todas las API para trabajar con
-Action Pack. Este módulo solo tiene la intención de proporcionar orientación en caso de que desee todo
-características fuera de la caja.</p><h4 id="securepassword"><a class="anchorlink" href="#securepassword">1.11 SecurePassword</a></h4><p><code>ActiveModel::SecurePassword</code> proporciona una forma de almacenar de forma segura cualquier
-contraseña en forma cifrada. Cuando incluye este módulo, se proporciona 
-el método de clase <code>has_secure_password</code> que define
-el acceso de <code>password</code> con ciertas validaciones por defecto.</p><h5 id="requirements"><a class="anchorlink" href="#requirements">1.11.1 Requirements</a></h5><p><code>ActiveModel::SecurePassword</code> depende de <a href="https://github.com/codahale/bcrypt-ruby" title="BCrypt"><code>bcrypt</code></a>,
-así que incluye esta gema en tu <code>Gemfile</code> para usar<code>ActiveModel::SecurePassword</code> correctamente.
-Para que esto funcione, el modelo debe tener un descriptor de acceso denominado <code>XXX_digest</code>.
-Donde <code>XXX</code> es el nombre del atributo de su contraseña deseada.
-Las siguientes validaciones se agregan automáticamente:</p>
-<ol>
-<li>La contraseña debe estar presente.</li>
-<li>La contraseña debe ser igual a su confirmación (siempre que se pase <code>XXX_confirmation</code>).</li>
-<li>La longitud máxima de una contraseña es 72 (requerida por <code>bcrypt</code> de la que depende ActiveModel::SecurePassword)</li>
-</ol>
-<h5 id="examples"><a class="anchorlink" href="#examples">1.11.2 Examples</a></h5><div class="code_container">
-<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
-  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">SecurePassword</span>
-  <span class="n">has_secure_password</span>
-  <span class="n">has_secure_password</span> <span class="ss">:recovery_password</span><span class="p">,</span> <span class="ss">validations: </span><span class="kp">false</span>
 
-  <span class="nb">attr_accessor</span> <span class="ss">:password_digest</span><span class="p">,</span> <span class="ss">:recovery_password_digest</span>
-<span class="k">end</span>
-
-<span class="n">person</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">new</span>
-
-<span class="c1"># When password is blank.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
-
-<span class="c1"># When the confirmation doesn't match the password.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="s1">'aditya'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s1">'nomatch'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
-
-<span class="c1"># When the length of password exceeds 72.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s1">'a'</span> <span class="o">*</span> <span class="mi">100</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; false</span>
-
-<span class="c1"># When only password is supplied with no password_confirmation.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="s1">'aditya'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
-
-<span class="c1"># When all validations are passed.</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">password</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="nf">password_confirmation</span> <span class="o">=</span> <span class="s1">'aditya'</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">valid?</span> <span class="c1"># =&gt; true</span>
-
-<span class="n">person</span><span class="p">.</span><span class="nf">recovery_password</span> <span class="o">=</span> <span class="s2">"42password"</span>
-
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="s1">'aditya'</span><span class="p">)</span> <span class="c1"># =&gt; person</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate</span><span class="p">(</span><span class="s1">'notright'</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate_password</span><span class="p">(</span><span class="s1">'aditya'</span><span class="p">)</span> <span class="c1"># =&gt; person</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate_password</span><span class="p">(</span><span class="s1">'notright'</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
-
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate_recovery_password</span><span class="p">(</span><span class="s1">'42password'</span><span class="p">)</span> <span class="c1"># =&gt; person</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">authenticate_recovery_password</span><span class="p">(</span><span class="s1">'notright'</span><span class="p">)</span> <span class="c1"># =&gt; false</span>
-
-<span class="n">person</span><span class="p">.</span><span class="nf">password_digest</span> <span class="c1"># =&gt; "$2a$04$gF8RfZdoXHvyTjHhiU4ZsO.kQqV9oonYZu31PRE4hLQn3xM2qkpIy"</span>
-<span class="n">person</span><span class="p">.</span><span class="nf">recovery_password_digest</span> <span class="c1"># =&gt; "$2a$04$iOfhwahFymCs5weB3BNH/uXkTG65HR.qpW.bNhEjFP3ftli3o5DQC"</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="class Person
-  include ActiveModel::SecurePassword
-  has_secure_password
-  has_secure_password :recovery_password, validations: false
-
-  attr_accessor :password_digest, :recovery_password_digest
-end
-
-person = Person.new
-
-# When password is blank.
-person.valid? # =&gt; false
-
-# When the confirmation doesn't match the password.
-person.password = 'aditya'
-person.password_confirmation = 'nomatch'
-person.valid? # =&gt; false
-
-# When the length of password exceeds 72.
-person.password = person.password_confirmation = 'a' * 100
-person.valid? # =&gt; false
-
-# When only password is supplied with no password_confirmation.
-person.password = 'aditya'
-person.valid? # =&gt; true
-
-# When all validations are passed.
-person.password = person.password_confirmation = 'aditya'
-person.valid? # =&gt; true
-
-person.recovery_password = &quot;42password&quot;
-
-person.authenticate('aditya') # =&gt; person
-person.authenticate('notright') # =&gt; false
-person.authenticate_password('aditya') # =&gt; person
-person.authenticate_password('notright') # =&gt; false
-
-person.authenticate_recovery_password('42password') # =&gt; person
-person.authenticate_recovery_password('notright') # =&gt; false
-
-person.password_digest # =&gt; &quot;$2a$04$gF8RfZdoXHvyTjHhiU4ZsO.kQqV9oonYZu31PRE4hLQn3xM2qkpIy&quot;
-person.recovery_password_digest # =&gt; &quot;$2a$04$iOfhwahFymCs5weB3BNH/uXkTG65HR.qpW.bNhEjFP3ftli3o5DQC&quot;
-">Copy</button>
-</div>
-
-
-        <h3>Comentarios Sobre el Contenido</h3>
+        <hr>
+        <h3>Comentarios</h3>
         <p>
-          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+          Se te anima a ayudar a mejorar la calidad de esta guía.
         </p>
         <p>
-          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
-
-          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
-          Please contribute if you see any typos or factual errors.
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
         </p>
-
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
       </div>
     </div>
-  </div>
+  </main>
 
   <hr class="hide" />
-  <div id="footer">
+  <footer id="page_footer">
     <div class="wrapper">
-      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
-<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
 
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
     </div>
-  </div>
+  </footer>
 </body>
 </html>

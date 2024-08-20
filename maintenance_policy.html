@@ -1,0 +1,251 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de Mantenimiento para Ruby on Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Política de Mantenimiento para Ruby on Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Política de Mantenimiento para Ruby on RailsEl soporte del framework Rails se divide en tres grupos: Nuevas características, correcciones de errores y problemas de seguridad. Se manejan de la siguiente manera, todas las versiones, excepto las versiones de seguridad, en formato X.Y.Z." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Política de Mantenimiento para Ruby on RailsEl soporte del framework Rails se divide en tres grupos: Nuevas características, correcciones de errores y problemas de seguridad. Se manejan de la siguiente manera, todas las versiones, excepto las versiones de seguridad, en formato X.Y.Z." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Política de Mantenimiento para Ruby on Rails</h1><p>El soporte del framework Rails se divide en tres grupos: Nuevas características, correcciones de errores y problemas de seguridad. Se manejan de la siguiente manera, todas las versiones, excepto las versiones de seguridad, en formato <code>X.Y.Z</code>.</p>
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#versionado">Versionado</a></li>
+<li><a href="#nuevas-características">Nuevas Características</a></li>
+<li><a href="#correcciones-de-errores">Correcciones de Errores</a></li>
+<li><a href="#problemas-de-seguridad">Problemas de Seguridad</a></li>
+<li><a href="#series-de-versiones-al-fin-de-su-vida-útil">Series de Versiones al Fin de su Vida Útil</a></li>
+<li><a href="#calendario-de-lanzamientos">Calendario de Lanzamientos</a></li>
+<li><a href="#paquetes-npm">Paquetes npm</a></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="versionado"><a class="anchorlink" href="#versionado"><span>1</span> Versionado</a></h2><p>Rails sigue una versión modificada de <a href="https://semver.org/">semver</a>:</p><p><strong>Patch <code>Z</code></strong></p><p>Solo correcciones de errores, sin cambios en la API, sin nuevas características.
+Excepto cuando sea necesario para correcciones de seguridad.</p><p><strong>Minor <code>Y</code></strong></p><p>Nuevas características, pueden contener cambios en la API (Sirven como versiones mayores de Semver).
+Los cambios incompatibles se acompañan de avisos de desaprobación en la versión menor o mayor anterior.</p><p><strong>Major <code>X</code></strong></p><p>Nuevas características, es probable que contengan cambios en la API. La diferencia entre las versiones menores y mayores de Rails es la magnitud de los cambios incompatibles, y generalmente se reservan para ocasiones especiales.</p><h2 id="nuevas-características"><a class="anchorlink" href="#nuevas-características"><span>2</span> Nuevas Características</a></h2><p>Las nuevas características solo se agregan a la rama principal y no estarán disponibles en las versiones Patch.</p><h2 id="correcciones-de-errores"><a class="anchorlink" href="#correcciones-de-errores"><span>3</span> Correcciones de Errores</a></h2><p>Las versiones menores recibirán correcciones de errores durante un año después del primer lanzamiento en su serie. Por ejemplo, si una teórica 1.1.0 se lanza el 1 de enero de 2023, recibirá correcciones de errores hasta el 1 de enero de 2024. Después de eso, se considerará no soportada.</p><p>Las correcciones de errores generalmente se agregan a la rama principal y se retroportan a la rama x-y-stable de la última serie de lanzamientos si hay suficiente necesidad. Cuando se han agregado suficientes correcciones de errores a una rama x-y-stable, se construye una nueva versión Patch a partir de ella. Por ejemplo, una teórica versión Patch 1.2.2 se construiría a partir de la rama 1-2-stable.</p><p>Para series no soportadas, las correcciones de errores pueden coincidentemente aterrizar en una rama estable, pero no se lanzarán en una versión oficial. Se recomienda apuntar su aplicación a la rama estable usando Git para versiones no soportadas.</p><h2 id="problemas-de-seguridad"><a class="anchorlink" href="#problemas-de-seguridad"><span>4</span> Problemas de Seguridad</a></h2><p>Las versiones menores recibirán correcciones de seguridad durante dos años después del primer lanzamiento en su serie. Por ejemplo, si una teórica 1.1.0 se lanza el 1 de enero de 2023, recibirá correcciones de seguridad hasta el 1 de enero de 2025. Después de eso, alcanzará su fin de vida.</p><p>Estas versiones se crean tomando la última versión lanzada, aplicando los parches de seguridad y lanzándola. Esos parches se aplican luego al final de la rama x-y-stable. Por ejemplo, una teórica versión de seguridad 1.2.2.1 se construiría a partir de 1.2.2, y luego se agregaría al final de 1-2-stable. Esto significa que las versiones de seguridad son fáciles de actualizar si está ejecutando la última versión de Rails.</p><p>Solo se incluirán parches de seguridad directos en las versiones de seguridad. Las correcciones para errores no relacionados con la seguridad resultantes de un parche de seguridad pueden publicarse en la rama x-y-stable de una versión y solo se lanzarán como un nuevo gem de acuerdo con la política de Correcciones de Errores.</p><p>Las versiones de seguridad se cortan de la última rama/etiqueta de versión de seguridad. De lo contrario, podría haber cambios incompatibles en la versión de seguridad. Una versión de seguridad solo debe contener los cambios necesarios para garantizar que la aplicación sea segura, de modo que sea más fácil para las aplicaciones permanecer actualizadas.</p><h2 id="series-de-versiones-al-fin-de-su-vida-útil"><a class="anchorlink" href="#series-de-versiones-al-fin-de-su-vida-útil"><span>5</span> Series de Versiones al Fin de su Vida Útil</a></h2><p>Cuando una serie de versiones alcanza su fin de vida, es su propia responsabilidad lidiar con errores y problemas de seguridad. Podemos proporcionar retroportaciones de las correcciones y fusionarlas, sin embargo, no se lanzarán nuevas versiones. Recomendamos apuntar su aplicación a la rama estable usando Git. Si no se siente cómodo manteniendo sus propias versiones, debe actualizar a una versión soportada.</p><h2 id="calendario-de-lanzamientos"><a class="anchorlink" href="#calendario-de-lanzamientos"><span>6</span> Calendario de Lanzamientos</a></h2><p>Nuestro objetivo es lanzar una versión que contenga nuevas características cada seis meses. En el raro caso de que no se realice un lanzamiento en un año, extenderemos el período de soporte para el lanzamiento anterior hasta que se realice el próximo lanzamiento.</p><h2 id="paquetes-npm"><a class="anchorlink" href="#paquetes-npm"><span>7</span> Paquetes npm</a></h2><p>Debido a una restricción con npm, no podemos usar el cuarto dígito para las versiones de seguridad de los <a href="https://www.npmjs.com/org/rails">paquetes npm</a> proporcionados por Rails. Esto significa que en lugar de la versión gem equivalente <code>7.0.1.4</code>, el paquete npm será versionado <code>7.0.104</code>.</p><p>La versión se calculará como <code>X.Y.Z0A</code>, donde <code>A</code> es la versión de seguridad.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

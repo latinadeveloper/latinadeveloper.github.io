@@ -1,0 +1,702 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cifrado de Active Record — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Cifrado de Active Record — Ruby on Rails Guides" />
+  <meta name="description" content="Cifrado de Active RecordEsta guía cubre el cifrado de la información de su base de datos utilizando Active Record.Después de leer esta guía, sabrá: Cómo configurar el cifrado de la base de datos con Active Record. Cómo migrar datos no cifrados. Cómo hacer coexistir diferentes esquemas de cifrado. Cómo utilizar la API. Cómo configurar la biblioteca y cómo extenderla." />
+  <meta property="og:description" content="Cifrado de Active RecordEsta guía cubre el cifrado de la información de su base de datos utilizando Active Record.Después de leer esta guía, sabrá: Cómo configurar el cifrado de la base de datos con Active Record. Cómo migrar datos no cifrados. Cómo hacer coexistir diferentes esquemas de cifrado. Cómo utilizar la API. Cómo configurar la biblioteca y cómo extenderla." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <h1>Cifrado de Active Record</h1><p>Esta guía cubre el cifrado de la información de su base de datos utilizando Active Record.</p><p>Después de leer esta guía, sabrá:</p>
+<ul>
+<li>Cómo configurar el cifrado de la base de datos con Active Record.</li>
+<li>Cómo migrar datos no cifrados.</li>
+<li>Cómo hacer coexistir diferentes esquemas de cifrado.</li>
+<li>Cómo utilizar la API.</li>
+<li>Cómo configurar la biblioteca y cómo extenderla.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#¿por-qué-cifrar-datos-a-nivel-de-aplicación-questionmark">¿Por qué cifrar datos a nivel de aplicación?</a></li>
+<li><a href="#uso-básico">Uso básico</a>
+
+<ul>
+<li><a href="#uso-básico-configuración">Configuración</a></li>
+<li><a href="#declaración-de-atributos-cifrados">Declaración de Atributos Cifrados</a></li>
+<li><a href="#cifrado-determinista-y-no-determinista">Cifrado Determinista y No Determinista</a></li>
+</ul></li>
+<li><a href="#características">Características</a>
+
+<ul>
+<li><a href="#action-text">Action Text</a></li>
+<li><a href="#fixtures">Fixtures</a></li>
+<li><a href="#tipos-soportados">Tipos Soportados</a></li>
+<li><a href="#ignorar-mayúsculas-y-minúsculas">Ignorar Mayúsculas y Minúsculas</a></li>
+<li><a href="#soporte-para-datos-no-cifrados">Soporte para Datos No Cifrados</a></li>
+<li><a href="#soporte-para-esquemas-de-cifrado-anteriores">Soporte para Esquemas de Cifrado Anteriores</a></li>
+<li><a href="#restricciones-únicas">Restricciones Únicas</a></li>
+<li><a href="#filtrado-de-parámetros-nombrados-como-columnas-cifradas">Filtrado de Parámetros Nombrados como Columnas Cifradas</a></li>
+<li><a href="#codificación">Codificación</a></li>
+</ul></li>
+<li><a href="#gestión-de-claves">Gestión de Claves</a>
+
+<ul>
+<li><a href="#proveedores-de-claves-integrados">Proveedores de Claves Integrados</a></li>
+<li><a href="#proveedores-de-claves-personalizados">Proveedores de Claves Personalizados</a></li>
+<li><a href="#proveedores-de-claves-específicos-del-modelo">Proveedores de Claves Específicos del Modelo</a></li>
+<li><a href="#claves-específicas-del-modelo">Claves Específicas del Modelo</a></li>
+<li><a href="#rotación-de-claves">Rotación de Claves</a></li>
+<li><a href="#almacenamiento-de-referencias-de-claves">Almacenamiento de Referencias de Claves</a></li>
+</ul></li>
+<li><a href="#api">API</a>
+
+<ul>
+<li><a href="#api-básica">API Básica</a></li>
+</ul></li>
+<li><a href="#configuración">Configuración</a>
+
+<ul>
+<li><a href="#opciones-de-configuración">Opciones de Configuración</a></li>
+<li><a href="#contextos-de-cifrado">Contextos de Cifrado</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <p>Active Record admite el cifrado a nivel de aplicación. Funciona declarando qué atributos deben ser cifrados y cifrándolos y descifrándolos de manera transparente cuando sea necesario. La capa de cifrado se sitúa entre la base de datos y la aplicación. La aplicación accederá a datos no cifrados, pero la base de datos los almacenará cifrados.</p><h2 id="¿por-qué-cifrar-datos-a-nivel-de-aplicación-questionmark"><a class="anchorlink" href="#¿por-qué-cifrar-datos-a-nivel-de-aplicación-questionmark"><span>1</span> ¿Por qué cifrar datos a nivel de aplicación?</a></h2><p>El cifrado de Active Record existe para proteger información sensible en su aplicación. Un ejemplo típico es la información personal identificable de los usuarios. Pero, ¿por qué querría cifrado a nivel de aplicación si ya está cifrando su base de datos en reposo?</p><p>Como beneficio práctico inmediato, cifrar atributos sensibles agrega una capa de seguridad adicional. Por ejemplo, si un atacante obtuviera acceso a su base de datos, una instantánea de la misma o a los registros de su aplicación, no podría entender la información cifrada. Además, el cifrado puede evitar que los desarrolladores expongan accidentalmente datos sensibles de los usuarios en los registros de la aplicación.</p><p>Pero más importante aún, al usar el cifrado de Active Record, define qué constituye información sensible en su aplicación a nivel de código. El cifrado de Active Record permite un control granular del acceso a los datos en su aplicación y servicios que consumen datos de su aplicación. Por ejemplo, considere <a href="https://github.com/basecamp/console1984">consolas de Rails auditables que protegen datos cifrados</a> o consulte el sistema integrado para <a href="#filtrado-de-parámetros-nombrados-como-columnas-cifradas">filtrar automáticamente parámetros de controladores</a>.</p><h2 id="uso-básico"><a class="anchorlink" href="#uso-básico"><span>2</span> Uso básico</a></h2><h3 id="uso-básico-configuración"><a class="anchorlink" href="#uso-básico-configuración"><span>2.1</span> Configuración</a></h3><p>Ejecute <code>bin/rails db:encryption:init</code> para generar un conjunto de claves aleatorias:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:encryption:init
+<span class="go">Agregue esta entrada a las credenciales del entorno objetivo:
+
+active_record_encryption:
+  primary_key: EGY8WhulUOXixybod7ZWwMIL68R9o5kC
+  deterministic_key: aPA5XyALhf75NNnMzaspW7akTfZp0lPY
+  key_derivation_salt: xEY0dt6TZcAMg52K7O84wYzkjvbA62Hz
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:encryption:init
+">Copy</button>
+</div>
+<p>Estos valores se pueden almacenar copiando y pegando los valores generados en sus <a href="/security.html#custom-credentials">credenciales de Rails</a> existentes. Alternativamente, estos valores se pueden configurar desde otras fuentes, como variables de entorno:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">primary_key</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY'</span><span class="p">]</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">deterministic_key</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY'</span><span class="p">]</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">key_derivation_salt</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT'</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
+config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
+config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']
+">Copy</button>
+</div>
+<p>NOTA: Estos valores generados tienen una longitud de 32 bytes. Si los genera usted mismo, las longitudes mínimas que debe usar son 12 bytes para la clave primaria (esto se utilizará para derivar la clave AES de 32 bytes) y 20 bytes para la sal.</p><h3 id="declaración-de-atributos-cifrados"><a class="anchorlink" href="#declaración-de-atributos-cifrados"><span>2.2</span> Declaración de Atributos Cifrados</a></h3><p>Los atributos cifrables se definen a nivel del modelo. Estos son atributos regulares de Active Record respaldados por una columna con el mismo nombre.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">encrypts</span> <span class="ss">:title</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article < ApplicationRecord
+  encrypts :title
+end
+">Copy</button>
+</div>
+<p>La biblioteca cifrará de manera transparente estos atributos antes de guardarlos en la base de datos y los descifrará al recuperarlos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">create</span> <span class="ss">title: </span><span class="s2">"¡Cifrar todo!"</span>
+<span class="n">article</span><span class="p">.</span><span class="nf">title</span> <span class="c1"># =&gt; "¡Cifrar todo!"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="article = Article.create title: &quot;¡Cifrar todo!&quot;
+article.title # => &quot;¡Cifrar todo!&quot;
+">Copy</button>
+</div>
+<p>Pero, bajo el capó, el SQL ejecutado se ve así:</p><div class="interstitial code">
+<pre><code class="highlight sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="nv">`articles`</span> <span class="p">(</span><span class="nv">`title`</span><span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'{</span><span class="se">\"</span><span class="s1">p</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">n7J0/ol+a7DRMeaE</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">h</span><span class="se">\"</span><span class="s1">:{</span><span class="se">\"</span><span class="s1">iv</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">DXZMDWUKfp3bg/Yu</span><span class="se">\"</span><span class="s1">,</span><span class="se">\"</span><span class="s1">at</span><span class="se">\"</span><span class="s1">:</span><span class="se">\"</span><span class="s1">X1/YjMHbHD4talgF9dt61A==</span><span class="se">\"</span><span class="s1">}}'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="INSERT INTO `articles` (`title`) VALUES ('{\&quot;p\&quot;:\&quot;n7J0/ol+a7DRMeaE\&quot;,\&quot;h\&quot;:{\&quot;iv\&quot;:\&quot;DXZMDWUKfp3bg/Yu\&quot;,\&quot;at\&quot;:\&quot;X1/YjMHbHD4talgF9dt61A==\&quot;}}')
+">Copy</button>
+</div>
+<h4 id="importante-sobre-el-almacenamiento-y-el-tamaño-de-la-columna"><a class="anchorlink" href="#importante-sobre-el-almacenamiento-y-el-tamaño-de-la-columna"><span>2.2.1</span> Importante: Sobre el Almacenamiento y el Tamaño de la Columna</a></h4><p>El cifrado requiere espacio adicional debido a la codificación Base64 y a los metadatos almacenados junto con las cargas cifradas. Al utilizar el proveedor de clave de cifrado de sobre integrado, puede estimar el peor caso de sobrecarga en alrededor de 255 bytes. Esta sobrecarga es insignificante en tamaños mayores. No solo porque se diluye, sino porque la biblioteca utiliza compresión por defecto, lo que puede ofrecer hasta un 30% de ahorro de almacenamiento sobre la versión no cifrada para cargas más grandes.</p><p>Hay una preocupación importante sobre los tamaños de las columnas de cadena: en las bases de datos modernas, el tamaño de la columna determina el <em>número de caracteres</em> que puede asignar, no el número de bytes. Por ejemplo, con UTF-8, cada carácter puede ocupar hasta cuatro bytes, por lo que, potencialmente, una columna en una base de datos que use UTF-8 puede almacenar hasta cuatro veces su tamaño en términos de <em>número de bytes</em>. Ahora, las cargas cifradas son cadenas binarias serializadas como Base64, por lo que pueden almacenarse en columnas <code>string</code> regulares. Debido a que son una secuencia de bytes ASCII, una columna cifrada puede ocupar hasta cuatro veces el tamaño de su versión clara. Por lo tanto, incluso si los bytes almacenados en la base de datos son los mismos, la columna debe ser cuatro veces más grande.</p><p>En la práctica, esto significa:</p>
+<ul>
+<li>Al cifrar textos cortos escritos en alfabetos occidentales (principalmente caracteres ASCII), debe tener en cuenta esa sobrecarga adicional de 255 al definir el tamaño de la columna.</li>
+<li>Al cifrar textos cortos escritos en alfabetos no occidentales, como el cirílico, debe multiplicar el tamaño de la columna por 4. Tenga en cuenta que la sobrecarga de almacenamiento es de 255 bytes como máximo.</li>
+<li>Al cifrar textos largos, puede ignorar las preocupaciones sobre el tamaño de la columna.</li>
+</ul>
+<p>Algunos ejemplos:</p>
+<table><thead>
+<tr>
+<th>Contenido a cifrar</th>
+<th>Tamaño original de la columna</th>
+<th>Tamaño recomendado de la columna cifrada</th>
+<th>Sobrecarga de almacenamiento (peor caso)</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Direcciones de correo electrónico</td>
+<td>string(255)</td>
+<td>string(510)</td>
+<td>255 bytes</td>
+</tr>
+<tr>
+<td>Secuencia corta de emojis</td>
+<td>string(255)</td>
+<td>string(1020)</td>
+<td>255 bytes</td>
+</tr>
+<tr>
+<td>Resumen de textos escritos en alfabetos no occidentales</td>
+<td>string(500)</td>
+<td>string(2000)</td>
+<td>255 bytes</td>
+</tr>
+<tr>
+<td>Texto largo arbitrario</td>
+<td>text</td>
+<td>text</td>
+<td>insignificante</td>
+</tr>
+</tbody></table>
+<h3 id="cifrado-determinista-y-no-determinista"><a class="anchorlink" href="#cifrado-determinista-y-no-determinista"><span>2.3</span> Cifrado Determinista y No Determinista</a></h3><p>Por defecto, el cifrado de Active Record utiliza un enfoque no determinista para el cifrado. No determinista, en este contexto, significa que cifrar el mismo contenido con la misma contraseña dos veces resultará en diferentes textos cifrados. Este enfoque mejora la seguridad al dificultar el criptoanálisis de los textos cifrados y hacer imposible consultar la base de datos.</p><p>Puede utilizar la opción <code>deterministic:</code> para generar vectores de inicialización de manera determinista, habilitando efectivamente la consulta de datos cifrados.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Author</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">encrypts</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="no">Author</span><span class="p">.</span><span class="nf">find_by_email</span><span class="p">(</span><span class="s2">"some@email.com"</span><span class="p">)</span> <span class="c1"># Puede consultar el modelo normalmente</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Author < ApplicationRecord
+  encrypts :email, deterministic: true
+end
+
+Author.find_by_email(&quot;some@email.com&quot;) # Puede consultar el modelo normalmente
+">Copy</button>
+</div>
+<p>Se recomienda el enfoque no determinista a menos que necesite consultar los datos.</p><p>NOTA: En modo no determinista, Active Record utiliza AES-GCM con una clave de 256 bits y un vector de inicialización aleatorio. En modo determinista, también utiliza AES-GCM, pero el vector de inicialización se genera como un digest HMAC-SHA-256 de la clave y los contenidos a cifrar.</p><p>NOTA: Puede desactivar el cifrado determinista omitiendo una <code>deterministic_key</code>.</p><h2 id="características"><a class="anchorlink" href="#características"><span>3</span> Características</a></h2><h3 id="action-text"><a class="anchorlink" href="#action-text"><span>3.1</span> Action Text</a></h3><p>Puede cifrar atributos de Action Text pasando <code>encrypted: true</code> en su declaración.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Message</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_rich_text</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">encrypted: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Message < ApplicationRecord
+  has_rich_text :content, encrypted: true
+end
+">Copy</button>
+</div>
+<p>NOTA: Aún no se admite pasar opciones de cifrado individuales a los atributos de Action Text. Utilizará cifrado no determinista con las opciones de cifrado globales configuradas.</p><h3 id="fixtures"><a class="anchorlink" href="#fixtures"><span>3.2</span> Fixtures</a></h3><p>Puede obtener fixtures de Rails cifrados automáticamente agregando esta opción a su <code>test.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">encrypt_fixtures</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.encrypt_fixtures = true
+">Copy</button>
+</div>
+<p>Cuando está habilitado, todos los atributos cifrables se cifrarán según la configuración de cifrado definida en el modelo.</p><h4 id="fixtures-de-action-text"><a class="anchorlink" href="#fixtures-de-action-text"><span>3.2.1</span> Fixtures de Action Text</a></h4><p>Para cifrar fixtures de Action Text, debe colocarlos en <code>fixtures/action_text/encrypted_rich_texts.yml</code>.</p><h3 id="tipos-soportados"><a class="anchorlink" href="#tipos-soportados"><span>3.3</span> Tipos Soportados</a></h3><p><code>active_record.encryption</code> serializará valores utilizando el tipo subyacente antes de cifrarlos, pero, a menos que use un <code>message_serializer</code> personalizado, <em>deben ser serializables como cadenas</em>. Los tipos estructurados como <code>serialized</code> son compatibles de forma predeterminada.</p><p>Si necesita admitir un tipo personalizado, la forma recomendada es usar un <a href="https://edgeapi.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Serialization/ClassMethods.html">atributo serializado</a>. La declaración del atributo serializado debe ir <strong>antes</strong> de la declaración de cifrado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># CORRECTO</span>
+<span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">serialize</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">type: </span><span class="no">Title</span>
+  <span class="n">encrypts</span> <span class="ss">:title</span>
+<span class="k">end</span>
+
+<span class="c1"># INCORRECTO</span>
+<span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">encrypts</span> <span class="ss">:title</span>
+  <span class="n">serialize</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">type: </span><span class="no">Title</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# CORRECTO
+class Article < ApplicationRecord
+  serialize :title, type: Title
+  encrypts :title
+end
+
+# INCORRECTO
+class Article < ApplicationRecord
+  encrypts :title
+  serialize :title, type: Title
+end
+">Copy</button>
+</div>
+<h3 id="ignorar-mayúsculas-y-minúsculas"><a class="anchorlink" href="#ignorar-mayúsculas-y-minúsculas"><span>3.4</span> Ignorar Mayúsculas y Minúsculas</a></h3><p>Puede que necesite ignorar las mayúsculas y minúsculas al consultar datos cifrados de manera determinista. Dos enfoques facilitan esto:</p><p>Puede usar la opción <code>:downcase</code> al declarar el atributo cifrado para convertir el contenido a minúsculas antes de que ocurra el cifrado.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="n">encrypts</span> <span class="ss">:email_address</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">downcase: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  encrypts :email_address, deterministic: true, downcase: true
+end
+">Copy</button>
+</div>
+<p>Cuando se usa <code>:downcase</code>, se pierde el caso original. En algunas situaciones, puede que quiera ignorar el caso solo al consultar mientras también almacena el caso original. Para esas situaciones, puede usar la opción <code>:ignore_case</code>. Esto requiere que agregue una nueva columna llamada <code>original_&lt;column_name&gt;</code> para almacenar el contenido sin cambiar el caso:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Label</span>
+  <span class="n">encrypts</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">ignore_case: </span><span class="kp">true</span> <span class="c1"># el contenido con el caso original se almacenará en la columna `original_name`</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Label
+  encrypts :name, deterministic: true, ignore_case: true # el contenido con el caso original se almacenará en la columna `original_name`
+end
+">Copy</button>
+</div>
+<h3 id="soporte-para-datos-no-cifrados"><a class="anchorlink" href="#soporte-para-datos-no-cifrados"><span>3.5</span> Soporte para Datos No Cifrados</a></h3><p>Para facilitar las migraciones de datos no cifrados, la biblioteca incluye la opción <code>config.active_record.encryption.support_unencrypted_data</code>. Cuando está configurada en <code>true</code>:</p>
+<ul>
+<li>Intentar leer atributos cifrados que no están cifrados funcionará normalmente, sin generar ningún error.</li>
+<li>Las consultas con atributos cifrados de manera determinista incluirán la versión "texto claro" de ellos para admitir la búsqueda de contenido cifrado y no cifrado. Debe configurar <code>config.active_record.encryption.extend_queries = true</code> para habilitar esto.</li>
+</ul>
+<p><strong>Esta opción está destinada a ser utilizada durante períodos de transición</strong> mientras los datos claros y cifrados deben coexistir. Ambos están configurados en <code>false</code> de forma predeterminada, que es el objetivo recomendado para cualquier aplicación: se generarán errores al trabajar con datos no cifrados.</p><h3 id="soporte-para-esquemas-de-cifrado-anteriores"><a class="anchorlink" href="#soporte-para-esquemas-de-cifrado-anteriores"><span>3.6</span> Soporte para Esquemas de Cifrado Anteriores</a></h3><p>Cambiar las propiedades de cifrado de los atributos puede romper los datos existentes. Por ejemplo, imagine que quiere hacer un atributo determinista no determinista. Si simplemente cambia la declaración en el modelo, la lectura de textos cifrados existentes fallará porque el método de cifrado es diferente ahora.</p><p>Para admitir estas situaciones, puede declarar esquemas de cifrado anteriores que se utilizarán en dos escenarios:</p>
+<ul>
+<li>Al leer datos cifrados, el cifrado de Active Record intentará esquemas de cifrado anteriores si el esquema actual no funciona.</li>
+<li>Al consultar datos deterministas, agregará textos cifrados utilizando esquemas anteriores para que las consultas funcionen sin problemas con datos cifrados con diferentes esquemas. Debe configurar <code>config.active_record.encryption.extend_queries = true</code> para habilitar esto.</li>
+</ul>
+<p>Puede configurar esquemas de cifrado anteriores:</p>
+<ul>
+<li>A nivel global</li>
+<li>Por atributo</li>
+</ul>
+<h4 id="esquemas-de-cifrado-anteriores-globales"><a class="anchorlink" href="#esquemas-de-cifrado-anteriores-globales"><span>3.6.1</span> Esquemas de Cifrado Anteriores Globales</a></h4><p>Puede agregar esquemas de cifrado anteriores agregándolos como una lista de propiedades utilizando la propiedad de configuración <code>previous</code> en su <code>application.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">previous</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span> <span class="ss">key_provider: </span><span class="no">MyOldKeyProvider</span><span class="p">.</span><span class="nf">new</span> <span class="p">}</span> <span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.previous = [ { key_provider: MyOldKeyProvider.new } ]
+">Copy</button>
+</div>
+<h4 id="esquemas-de-cifrado-por-atributo"><a class="anchorlink" href="#esquemas-de-cifrado-por-atributo"><span>3.6.2</span> Esquemas de Cifrado por Atributo</a></h4><p>Use <code>:previous</code> al declarar el atributo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span>
+  <span class="n">encrypts</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">previous: </span><span class="p">{</span> <span class="ss">deterministic: </span><span class="kp">false</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article
+  encrypts :title, deterministic: true, previous: { deterministic: false }
+end
+">Copy</button>
+</div>
+<h4 id="esquemas-de-cifrado-y-atributos-deterministas"><a class="anchorlink" href="#esquemas-de-cifrado-y-atributos-deterministas"><span>3.6.3</span> Esquemas de Cifrado y Atributos Deterministas</a></h4><p>Al agregar esquemas de cifrado anteriores:</p>
+<ul>
+<li>Con <strong>cifrado no determinista</strong>, la nueva información siempre se cifrará con el esquema de cifrado <em>más reciente</em> (actual).</li>
+<li>Con <strong>cifrado determinista</strong>, la nueva información siempre se cifrará con el esquema de cifrado <em>más antiguo</em> de manera predeterminada.</li>
+</ul>
+<p>Típicamente, con el cifrado determinista, se desea que los textos cifrados permanezcan constantes. Puede cambiar este comportamiento configurando <code>deterministic: { fixed: false }</code>. En ese caso, utilizará el esquema de cifrado <em>más reciente</em> para cifrar datos nuevos.</p><h3 id="restricciones-únicas"><a class="anchorlink" href="#restricciones-únicas"><span>3.7</span> Restricciones Únicas</a></h3><p>NOTA: Las restricciones únicas solo se pueden usar con datos cifrados de manera determinista.</p><h4 id="validaciones-únicas"><a class="anchorlink" href="#validaciones-únicas"><span>3.7.1</span> Validaciones Únicas</a></h4><p>Las validaciones únicas son compatibles normalmente siempre que las consultas extendidas estén habilitadas (<code>config.active_record.encryption.extend_queries = true</code>).</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="n">validates</span> <span class="ss">:email_address</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span>
+  <span class="n">encrypts</span> <span class="ss">:email_address</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">downcase: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  validates :email_address, uniqueness: true
+  encrypts :email_address, deterministic: true, downcase: true
+end
+">Copy</button>
+</div>
+<p>También funcionarán al combinar datos cifrados y no cifrados, y al configurar esquemas de cifrado anteriores.</p><p>NOTA: Si desea ignorar el caso, asegúrese de usar <code>downcase:</code> o <code>ignore_case:</code> en la declaración <code>encrypts</code>. Usar la opción <code>case_sensitive:</code> en la validación no funcionará.</p><h4 id="índices-únicos"><a class="anchorlink" href="#índices-únicos"><span>3.7.2</span> Índices Únicos</a></h4><p>Para admitir índices únicos en columnas cifradas de manera determinista, debe asegurarse de que su texto cifrado nunca cambie.</p><p>Para fomentar esto, los atributos deterministas siempre usarán el esquema de cifrado más antiguo disponible de manera predeterminada cuando se configuren múltiples esquemas de cifrado. De lo contrario, es su responsabilidad asegurarse de que las propiedades de cifrado no cambien para estos atributos, o los índices únicos no funcionarán.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span>
+  <span class="n">encrypts</span> <span class="ss">:email_address</span><span class="p">,</span> <span class="ss">deterministic: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person
+  encrypts :email_address, deterministic: true
+end
+">Copy</button>
+</div>
+<h3 id="filtrado-de-parámetros-nombrados-como-columnas-cifradas"><a class="anchorlink" href="#filtrado-de-parámetros-nombrados-como-columnas-cifradas"><span>3.8</span> Filtrado de Parámetros Nombrados como Columnas Cifradas</a></h3><p>Por defecto, las columnas cifradas están configuradas para ser <a href="action_controller_overview.html#parameters-filtering">filtradas automáticamente en los registros de Rails</a>. Puede desactivar este comportamiento agregando lo siguiente a su <code>application.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">add_to_filter_parameters</span> <span class="o">=</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.add_to_filter_parameters = false
+">Copy</button>
+</div>
+<p>Si el filtrado está habilitado, pero desea excluir columnas específicas del filtrado automático, agréguelas a <code>config.active_record.encryption.excluded_from_filter_parameters</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">excluded_from_filter_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:catchphrase</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.excluded_from_filter_parameters = [:catchphrase]
+">Copy</button>
+</div>
+<p>Al generar el parámetro de filtro, Rails usará el nombre del modelo como prefijo. Por ejemplo: para <code>Person#name</code>, el parámetro de filtro será <code>person.name</code>.</p><h3 id="codificación"><a class="anchorlink" href="#codificación"><span>3.9</span> Codificación</a></h3><p>La biblioteca preservará la codificación para valores de cadena cifrados de manera no determinista.</p><p>Debido a que la codificación se almacena junto con la carga cifrada, los valores cifrados de manera determinista forzarán la codificación UTF-8 de manera predeterminada. Por lo tanto, el mismo valor con una codificación diferente resultará en un texto cifrado diferente al cifrarlo. Generalmente, querrá evitar esto para mantener las consultas y las restricciones de unicidad funcionando, por lo que la biblioteca realizará la conversión automáticamente en su nombre.</p><p>Puede configurar la codificación predeterminada deseada para el cifrado determinista con:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">forced_encoding_for_deterministic_encryption</span> <span class="o">=</span> <span class="no">Encoding</span><span class="o">::</span><span class="no">US_ASCII</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.forced_encoding_for_deterministic_encryption = Encoding::US_ASCII
+">Copy</button>
+</div>
+<p>Y puede desactivar este comportamiento y preservar la codificación en todos los casos con:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">forced_encoding_for_deterministic_encryption</span> <span class="o">=</span> <span class="kp">nil</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.forced_encoding_for_deterministic_encryption = nil
+">Copy</button>
+</div>
+<h2 id="gestión-de-claves"><a class="anchorlink" href="#gestión-de-claves"><span>4</span> Gestión de Claves</a></h2><p>Los proveedores de claves implementan estrategias de gestión de claves. Puede configurar proveedores de claves a nivel global o por atributo.</p><h3 id="proveedores-de-claves-integrados"><a class="anchorlink" href="#proveedores-de-claves-integrados"><span>4.1</span> Proveedores de Claves Integrados</a></h3><h4 id="derivedsecretkeyprovider"><a class="anchorlink" href="#derivedsecretkeyprovider"><span>4.1.1</span> DerivedSecretKeyProvider</a></h4><p>Un proveedor de claves que servirá claves derivadas de las contraseñas proporcionadas utilizando PBKDF2.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">key_provider</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="o">::</span><span class="no">DerivedSecretKeyProvider</span><span class="p">.</span><span class="nf">new</span><span class="p">([</span><span class="s2">"algunas contraseñas"</span><span class="p">,</span> <span class="s2">"de las que derivar claves. "</span><span class="p">,</span> <span class="s2">"Estas deben estar en"</span><span class="p">,</span> <span class="s2">"credenciales"</span><span class="p">])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.key_provider = ActiveRecord::Encryption::DerivedSecretKeyProvider.new([&quot;algunas contraseñas&quot;, &quot;de las que derivar claves. &quot;, &quot;Estas deben estar en&quot;, &quot;credenciales&quot;])
+">Copy</button>
+</div>
+<p>NOTA: Por defecto, <code>active_record.encryption</code> configura un <code>DerivedSecretKeyProvider</code> con las claves definidas en <code>active_record.encryption.primary_key</code>.</p><h4 id="envelopeencryptionkeyprovider"><a class="anchorlink" href="#envelopeencryptionkeyprovider"><span>4.1.2</span> EnvelopeEncryptionKeyProvider</a></h4><p>Implementa una estrategia simple de <a href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#enveloping">cifrado de sobre</a>:</p>
+<ul>
+<li>Genera una clave aleatoria para cada operación de cifrado de datos</li>
+<li>Almacena la clave de datos con los datos mismos, cifrada con una clave primaria definida en la credencial <code>active_record.encryption.primary_key</code>.</li>
+</ul>
+<p>Puede configurar Active Record para usar este proveedor de claves agregando esto a su <code>application.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">key_provider</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="o">::</span><span class="no">EnvelopeEncryptionKeyProvider</span><span class="p">.</span><span class="nf">new</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.key_provider = ActiveRecord::Encryption::EnvelopeEncryptionKeyProvider.new
+">Copy</button>
+</div>
+<p>Como con otros proveedores de claves integrados, puede proporcionar una lista de claves primarias en <code>active_record.encryption.primary_key</code> para implementar esquemas de rotación de claves.</p><h3 id="proveedores-de-claves-personalizados"><a class="anchorlink" href="#proveedores-de-claves-personalizados"><span>4.2</span> Proveedores de Claves Personalizados</a></h3><p>Para esquemas de gestión de claves más avanzados, puede configurar un proveedor de claves personalizado en un inicializador:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="p">.</span><span class="nf">key_provider</span> <span class="o">=</span> <span class="no">MyKeyProvider</span><span class="p">.</span><span class="nf">new</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Encryption.key_provider = MyKeyProvider.new
+">Copy</button>
+</div>
+<p>Un proveedor de claves debe implementar esta interfaz:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyKeyProvider</span>
+  <span class="k">def</span> <span class="nf">encryption_key</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">decryption_keys</span><span class="p">(</span><span class="n">encrypted_message</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyKeyProvider
+  def encryption_key
+  end
+
+  def decryption_keys(encrypted_message)
+  end
+end
+">Copy</button>
+</div>
+<p>Ambos métodos devuelven objetos <code>ActiveRecord::Encryption::Key</code>:</p>
+<ul>
+<li><code>encryption_key</code> devuelve la clave utilizada para cifrar algún contenido</li>
+<li><code>decryption keys</code> devuelve una lista de claves potenciales para descifrar un mensaje dado</li>
+</ul>
+<p>Una clave puede incluir etiquetas arbitrarias que se almacenarán sin cifrar con el mensaje. Puede usar <code>ActiveRecord::Encryption::Message#headers</code> para examinar esos valores al descifrar.</p><h3 id="proveedores-de-claves-específicos-del-modelo"><a class="anchorlink" href="#proveedores-de-claves-específicos-del-modelo"><span>4.3</span> Proveedores de Claves Específicos del Modelo</a></h3><p>Puede configurar un proveedor de claves por clase con la opción <code>:key_provider</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">encrypts</span> <span class="ss">:summary</span><span class="p">,</span> <span class="ss">key_provider: </span><span class="no">ArticleKeyProvider</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article < ApplicationRecord
+  encrypts :summary, key_provider: ArticleKeyProvider.new
+end
+">Copy</button>
+</div>
+<h3 id="claves-específicas-del-modelo"><a class="anchorlink" href="#claves-específicas-del-modelo"><span>4.4</span> Claves Específicas del Modelo</a></h3><p>Puede configurar una clave dada por clase con la opción <code>:key</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">encrypts</span> <span class="ss">:summary</span><span class="p">,</span> <span class="ss">key: </span><span class="s2">"alguna clave secreta para resúmenes de artículos"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Article < ApplicationRecord
+  encrypts :summary, key: &quot;alguna clave secreta para resúmenes de artículos&quot;
+end
+">Copy</button>
+</div>
+<p>Active Record utiliza la clave para derivar la clave utilizada para cifrar y descifrar los datos.</p><h3 id="rotación-de-claves"><a class="anchorlink" href="#rotación-de-claves"><span>4.5</span> Rotación de Claves</a></h3><p><code>active_record.encryption</code> puede trabajar con listas de claves para admitir la implementación de esquemas de rotación de claves:</p>
+<ul>
+<li>La <strong>última clave</strong> se utilizará para cifrar contenido nuevo.</li>
+<li>Todas las claves se intentarán al descifrar contenido hasta que una funcione.</li>
+</ul>
+<div class="interstitial code">
+<pre><code class="highlight yml"><span class="na">active_record_encryption</span><span class="pi">:</span>
+  <span class="na">primary_key</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">a1cc4d7b9f420e40a337b9e68c5ecec6</span> <span class="c1"># Las claves anteriores aún pueden descifrar contenido existente</span>
+    <span class="pi">-</span> <span class="s">bc17e7b413fd4720716a7633027f8cc4</span> <span class="c1"># Activa, cifra nuevo contenido</span>
+  <span class="na">key_derivation_salt</span><span class="pi">:</span> <span class="s">a3226b97b3b2f8372d1fc6d497a0c0d3</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="active_record_encryption:
+  primary_key:
+    - a1cc4d7b9f420e40a337b9e68c5ecec6 # Las claves anteriores aún pueden descifrar contenido existente
+    - bc17e7b413fd4720716a7633027f8cc4 # Activa, cifra nuevo contenido
+  key_derivation_salt: a3226b97b3b2f8372d1fc6d497a0c0d3
+">Copy</button>
+</div>
+<p>Esto habilita flujos de trabajo en los que mantiene una lista corta de claves agregando nuevas claves, recifrando contenido y eliminando claves antiguas.</p><p>NOTA: La rotación de claves no se admite actualmente para el cifrado determinista.</p><p>NOTA: El cifrado de Active Record aún no proporciona gestión automática de procesos de rotación de claves. Todas las piezas están allí, pero esto aún no se ha implementado.</p><h3 id="almacenamiento-de-referencias-de-claves"><a class="anchorlink" href="#almacenamiento-de-referencias-de-claves"><span>4.6</span> Almacenamiento de Referencias de Claves</a></h3><p>Puede configurar <code>active_record.encryption.store_key_references</code> para hacer que <code>active_record.encryption</code> almacene una referencia a la clave de cifrado en el mensaje cifrado mismo.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">store_key_references</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.store_key_references = true
+">Copy</button>
+</div>
+<p>Hacer esto permite un descifrado más eficiente porque el sistema ahora puede localizar claves directamente en lugar de probar listas de claves. El precio a pagar es el almacenamiento: los datos cifrados serán un poco más grandes.</p><h2 id="api"><a class="anchorlink" href="#api"><span>5</span> API</a></h2><h3 id="api-básica"><a class="anchorlink" href="#api-básica"><span>5.1</span> API Básica</a></h3><p>El cifrado de ActiveRecord está destinado a ser utilizado de manera declarativa, pero ofrece una API para escenarios de uso avanzado.</p><h4 id="cifrar-y-descifrar"><a class="anchorlink" href="#cifrar-y-descifrar"><span>5.1.1</span> Cifrar y Descifrar</a></h4><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">article</span><span class="p">.</span><span class="nf">encrypt</span> <span class="c1"># cifra o recifra todos los atributos cifrables</span>
+<span class="n">article</span><span class="p">.</span><span class="nf">decrypt</span> <span class="c1"># descifra todos los atributos cifrables</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="article.encrypt # cifra o recifra todos los atributos cifrables
+article.decrypt # descifra todos los atributos cifrables
+">Copy</button>
+</div>
+<h4 id="leer-texto-cifrado"><a class="anchorlink" href="#leer-texto-cifrado"><span>5.1.2</span> Leer Texto Cifrado</a></h4><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">article</span><span class="p">.</span><span class="nf">ciphertext_for</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="article.ciphertext_for(:title)
+">Copy</button>
+</div>
+<h4 id="comprobar-si-el-atributo-está-cifrado-o-no"><a class="anchorlink" href="#comprobar-si-el-atributo-está-cifrado-o-no"><span>5.1.3</span> Comprobar si el Atributo está Cifrado o No</a></h4><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">article</span><span class="p">.</span><span class="nf">encrypted_attribute?</span><span class="p">(</span><span class="ss">:title</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="article.encrypted_attribute?(:title)
+">Copy</button>
+</div>
+<h2 id="configuración"><a class="anchorlink" href="#configuración"><span>6</span> Configuración</a></h2><h3 id="opciones-de-configuración"><a class="anchorlink" href="#opciones-de-configuración"><span>6.1</span> Opciones de Configuración</a></h3><p>Puede configurar las opciones de cifrado de Active Record en su <code>application.rb</code> (el escenario más común) o en un archivo de configuración de entorno específico <code>config/environments/&lt;env name&gt;.rb</code> si desea configurarlas por entorno.</p><p>ADVERTENCIA: Se recomienda utilizar el soporte de credenciales integrado de Rails para almacenar claves. Si prefiere configurarlas manualmente a través de propiedades de configuración, asegúrese de no comprometerlas con su código (por ejemplo, use variables de entorno).</p><h4 id="config-active-record-encryption-support-unencrypted-data"><a class="anchorlink" href="#config-active-record-encryption-support-unencrypted-data"><span>6.1.1</span> <code>config.active_record.encryption.support_unencrypted_data</code></a></h4><p>Cuando es verdadero, los datos no cifrados se pueden leer normalmente. Cuando es falso, generará errores. Predeterminado: <code>false</code>.</p><h4 id="config-active-record-encryption-extend-queries"><a class="anchorlink" href="#config-active-record-encryption-extend-queries"><span>6.1.2</span> <code>config.active_record.encryption.extend_queries</code></a></h4><p>Cuando es verdadero, las consultas que hacen referencia a atributos cifrados de manera determinista se modificarán para incluir valores adicionales si es necesario. Esos valores adicionales serán la versión en texto claro del valor (cuando <code>config.active_record.encryption.support_unencrypted_data</code> sea verdadero) y valores cifrados con esquemas de cifrado anteriores, si los hay (según lo proporcionado con la opción <code>previous:</code>). Predeterminado: <code>false</code> (experimental).</p><h4 id="config-active-record-encryption-encrypt-fixtures"><a class="anchorlink" href="#config-active-record-encryption-encrypt-fixtures"><span>6.1.3</span> <code>config.active_record.encryption.encrypt_fixtures</code></a></h4><p>Cuando es verdadero, los atributos cifrables en los fixtures se cifrarán automáticamente al cargarlos. Predeterminado: <code>false</code>.</p><h4 id="config-active-record-encryption-store-key-references"><a class="anchorlink" href="#config-active-record-encryption-store-key-references"><span>6.1.4</span> <code>config.active_record.encryption.store_key_references</code></a></h4><p>Cuando es verdadero, se almacena una referencia a la clave de cifrado en los encabezados del mensaje cifrado. Esto permite un descifrado más rápido cuando se utilizan múltiples claves. Predeterminado: <code>false</code>.</p><h4 id="config-active-record-encryption-add-to-filter-parameters"><a class="anchorlink" href="#config-active-record-encryption-add-to-filter-parameters"><span>6.1.5</span> <code>config.active_record.encryption.add_to_filter_parameters</code></a></h4><p>Cuando es verdadero, los nombres de los atributos cifrados se agregan automáticamente a <a href="configuring.html#config-filter-parameters"><code>config.filter_parameters</code></a> y no se mostrarán en los registros. Predeterminado: <code>true</code>.</p><h4 id="config-active-record-encryption-excluded-from-filter-parameters"><a class="anchorlink" href="#config-active-record-encryption-excluded-from-filter-parameters"><span>6.1.6</span> <code>config.active_record.encryption.excluded_from_filter_parameters</code></a></h4><p>Puede configurar una lista de parámetros que no se filtrarán cuando <code>config.active_record.encryption.add_to_filter_parameters</code> sea verdadero. Predeterminado: <code>[]</code>.</p><h4 id="config-active-record-encryption-validate-column-size"><a class="anchorlink" href="#config-active-record-encryption-validate-column-size"><span>6.1.7</span> <code>config.active_record.encryption.validate_column_size</code></a></h4><p>Agrega una validación basada en el tamaño de la columna. Esto se recomienda para evitar almacenar valores enormes utilizando cargas altamente comprimibles. Predeterminado: <code>true</code>.</p><h4 id="config-active-record-encryption-primary-key"><a class="anchorlink" href="#config-active-record-encryption-primary-key"><span>6.1.8</span> <code>config.active_record.encryption.primary_key</code></a></h4><p>La clave o listas de claves utilizadas para derivar claves de cifrado de datos raíz. La forma en que se utilizan depende del proveedor de claves configurado. Es preferible configurarlo a través de la credencial <code>active_record_encryption.primary_key</code>.</p><h4 id="config-active-record-encryption-deterministic-key"><a class="anchorlink" href="#config-active-record-encryption-deterministic-key"><span>6.1.9</span> <code>config.active_record.encryption.deterministic_key</code></a></h4><p>La clave o lista de claves utilizadas para el cifrado determinista. Es preferible configurarlo a través de la credencial <code>active_record_encryption.deterministic_key</code>.</p><h4 id="config-active-record-encryption-key-derivation-salt"><a class="anchorlink" href="#config-active-record-encryption-key-derivation-salt"><span>6.1.10</span> <code>config.active_record.encryption.key_derivation_salt</code></a></h4><p>La sal utilizada al derivar claves. Es preferible configurarlo a través de la credencial <code>active_record_encryption.key_derivation_salt</code>.</p><h4 id="config-active-record-encryption-forced-encoding-for-deterministic-encryption"><a class="anchorlink" href="#config-active-record-encryption-forced-encoding-for-deterministic-encryption"><span>6.1.11</span> <code>config.active_record.encryption.forced_encoding_for_deterministic_encryption</code></a></h4><p>La codificación predeterminada para atributos cifrados de manera determinista. Puede desactivar la codificación forzada configurando esta opción en <code>nil</code>. Es <code>Encoding::UTF_8</code> de manera predeterminada.</p><h4 id="config-active-record-encryption-hash-digest-class"><a class="anchorlink" href="#config-active-record-encryption-hash-digest-class"><span>6.1.12</span> <code>config.active_record.encryption.hash_digest_class</code></a></h4><p>El algoritmo de resumen utilizado para derivar claves. <code>OpenSSL::Digest::SHA256</code> de manera predeterminada.</p><h4 id="config-active-record-encryption-support-sha1-for-non-deterministic-encryption"><a class="anchorlink" href="#config-active-record-encryption-support-sha1-for-non-deterministic-encryption"><span>6.1.13</span> <code>config.active_record.encryption.support_sha1_for_non_deterministic_encryption</code></a></h4><p>Admite el descifrado de datos cifrados de manera no determinista con una clase de resumen SHA1. El valor predeterminado es falso, lo que significa que solo admitirá el algoritmo de resumen configurado en <code>config.active_record.encryption.hash_digest_class</code>.</p><h3 id="contextos-de-cifrado"><a class="anchorlink" href="#contextos-de-cifrado"><span>6.2</span> Contextos de Cifrado</a></h3><p>Un contexto de cifrado define los componentes de cifrado que se utilizan en un momento dado. Hay un contexto de cifrado predeterminado basado en su configuración global, pero puede configurar un contexto personalizado para un atributo dado o al ejecutar un bloque específico de código.</p><p>NOTA: Los contextos de cifrado son un mecanismo de configuración flexible pero avanzado. La mayoría de los usuarios no deberían preocuparse por ellos.</p><p>Los componentes principales de los contextos de cifrado son:</p>
+<ul>
+<li><code>encryptor</code>: expone la API interna para cifrar y descifrar datos. Interactúa con un <code>key_provider</code> para construir mensajes cifrados y manejar su serialización. El cifrado/descifrado en sí mismo lo realiza el <code>cipher</code> y la serialización por <code>message_serializer</code>.</li>
+<li><code>cipher</code>: el algoritmo de cifrado en sí mismo (AES 256 GCM)</li>
+<li><code>key_provider</code>: proporciona claves de cifrado y descifrado.</li>
+<li><code>message_serializer</code>: serializa y deserializa cargas cifradas (<code>Message</code>).</li>
+</ul>
+<p>NOTA: Si decide construir su propio <code>message_serializer</code>, es importante usar mecanismos seguros que no puedan deserializar objetos arbitrarios. Un escenario comúnmente admitido es cifrar datos no cifrados existentes. Un atacante puede aprovechar esto para ingresar una carga manipulada antes de que ocurra el cifrado y realizar ataques RCE. Esto significa que los serializadores personalizados deben evitar <code>Marshal</code>, <code>YAML.load</code> (use <code>YAML.safe_load</code> en su lugar) o <code>JSON.load</code> (use <code>JSON.parse</code> en su lugar).</p><h4 id="contexto-de-cifrado-global"><a class="anchorlink" href="#contexto-de-cifrado-global"><span>6.2.1</span> Contexto de Cifrado Global</a></h4><p>El contexto de cifrado global es el que se utiliza de forma predeterminada y se configura como otras propiedades de configuración en su <code>application.rb</code> o archivos de configuración de entorno.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">key_provider</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="o">::</span><span class="no">EnvelopeEncryptionKeyProvider</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">encryptor</span> <span class="o">=</span> <span class="no">MyEncryptor</span><span class="p">.</span><span class="nf">new</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.key_provider = ActiveRecord::Encryption::EnvelopeEncryptionKeyProvider.new
+config.active_record.encryption.encryptor = MyEncryptor.new
+">Copy</button>
+</div>
+<h4 id="contextos-de-cifrado-por-atributo"><a class="anchorlink" href="#contextos-de-cifrado-por-atributo"><span>6.2.2</span> Contextos de Cifrado por Atributo</a></h4><p>Puede anular los parámetros del contexto de cifrado pasándolos en la declaración del atributo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Attribute</span>
+  <span class="n">encrypts</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">encryptor: </span><span class="no">MyAttributeEncryptor</span><span class="p">.</span><span class="nf">new</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Attribute
+  encrypts :title, encryptor: MyAttributeEncryptor.new
+end
+">Copy</button>
+</div>
+<h4 id="contexto-de-cifrado-al-ejecutar-un-bloque-de-código"><a class="anchorlink" href="#contexto-de-cifrado-al-ejecutar-un-bloque-de-código"><span>6.2.3</span> Contexto de Cifrado al Ejecutar un Bloque de Código</a></h4><p>Puede usar <code>ActiveRecord::Encryption.with_encryption_context</code> para establecer un contexto de cifrado para un bloque de código dado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="p">.</span><span class="nf">with_encryption_context</span><span class="p">(</span><span class="ss">encryptor: </span><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="o">::</span><span class="no">NullEncryptor</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Encryption.with_encryption_context(encryptor: ActiveRecord::Encryption::NullEncryptor.new) do
+  # ...
+end
+">Copy</button>
+</div>
+<h4 id="contextos-de-cifrado-integrados"><a class="anchorlink" href="#contextos-de-cifrado-integrados"><span>6.2.4</span> Contextos de Cifrado Integrados</a></h4><h5 id="desactivar-cifrado"><a class="anchorlink" href="#desactivar-cifrado"><span>6.2.4.1</span> Desactivar Cifrado</a></h5><p>Puede ejecutar código sin cifrado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="p">.</span><span class="nf">without_encryption</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Encryption.without_encryption do
+  # ...
+end
+">Copy</button>
+</div>
+<p>Esto significa que leer texto cifrado devolverá el texto cifrado, y el contenido guardado se almacenará sin cifrar.</p><h5 id="proteger-datos-cifrados"><a class="anchorlink" href="#proteger-datos-cifrados"><span>6.2.4.2</span> Proteger Datos Cifrados</a></h5><p>Puede ejecutar código sin cifrado pero evitar sobrescribir contenido cifrado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Encryption</span><span class="p">.</span><span class="nf">protecting_encrypted_data</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Encryption.protecting_encrypted_data do
+  # ...
+end
+">Copy</button>
+</div>
+<p>Esto puede ser útil si desea proteger los datos cifrados mientras ejecuta código arbitrario contra ellos (por ejemplo, en una consola de Rails).</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,864 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contribuyendo a Ruby on Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Contribuyendo a Ruby on Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Contribuyendo a Ruby on RailsEsta guía cubre cómo tú puedes ser parte del desarrollo continuo de Ruby on Rails.Después de leer esta guía, sabrás: Cómo usar GitHub para reportar problemas. Cómo clonar la rama principal y ejecutar el conjunto de pruebas. Cómo ayudar a resolver problemas existentes. Cómo contribuir a la documentación de Ruby on Rails. Cómo contribuir al código de Ruby on Rails. Ruby on Rails no es &quot;el framework de otra persona&quot;. A lo largo de los años, miles de personas han contribuido a Ruby on Rails, desde un solo carácter hasta cambios arquitectónicos masivos o documentación significativa, todo para mejorar Ruby on Rails para todos. Incluso si aún no te sientes preparado para escribir código o documentación, hay varias otras formas en las que puedes contribuir, desde reportar problemas hasta probar parches.Como se menciona en el README de Rails, se espera que todos los que interactúan en Rails y en los subproyectos de código, rastreadores de problemas, salas de chat, tableros de discusión y listas de correo sigan el código de conducta de Rails." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Contribuyendo a Ruby on RailsEsta guía cubre cómo tú puedes ser parte del desarrollo continuo de Ruby on Rails.Después de leer esta guía, sabrás: Cómo usar GitHub para reportar problemas. Cómo clonar la rama principal y ejecutar el conjunto de pruebas. Cómo ayudar a resolver problemas existentes. Cómo contribuir a la documentación de Ruby on Rails. Cómo contribuir al código de Ruby on Rails. Ruby on Rails no es &quot;el framework de otra persona&quot;. A lo largo de los años, miles de personas han contribuido a Ruby on Rails, desde un solo carácter hasta cambios arquitectónicos masivos o documentación significativa, todo para mejorar Ruby on Rails para todos. Incluso si aún no te sientes preparado para escribir código o documentación, hay varias otras formas en las que puedes contribuir, desde reportar problemas hasta probar parches.Como se menciona en el README de Rails, se espera que todos los que interactúan en Rails y en los subproyectos de código, rastreadores de problemas, salas de chat, tableros de discusión y listas de correo sigan el código de conducta de Rails." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Contribuyendo a Ruby on Rails</h1><p>Esta guía cubre cómo <em>tú</em> puedes ser parte del desarrollo continuo de Ruby on Rails.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Cómo usar GitHub para reportar problemas.</li>
+<li>Cómo clonar la rama principal y ejecutar el conjunto de pruebas.</li>
+<li>Cómo ayudar a resolver problemas existentes.</li>
+<li>Cómo contribuir a la documentación de Ruby on Rails.</li>
+<li>Cómo contribuir al código de Ruby on Rails.</li>
+</ul>
+<p>Ruby on Rails no es &quot;el framework de otra persona&quot;. A lo largo de los años, miles de personas han contribuido a Ruby on Rails, desde un solo carácter hasta cambios arquitectónicos masivos o documentación significativa, todo para mejorar Ruby on Rails para todos. Incluso si aún no te sientes preparado para escribir código o documentación, hay varias otras formas en las que puedes contribuir, desde reportar problemas hasta probar parches.</p><p>Como se menciona en el <a href="https://github.com/rails/rails/blob/main/README.md">README de Rails</a>, se espera que todos los que interactúan en Rails y en los subproyectos de código, rastreadores de problemas, salas de chat, tableros de discusión y listas de correo sigan el <a href="https://rubyonrails.org/conduct">código de conducta de Rails</a>.</p>
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#reportando-un-problema">Reportando un Problema</a>
+
+<ul>
+<li><a href="#creando-un-informe-de-error">Creando un Informe de Error</a></li>
+<li><a href="#crear-un-caso-de-prueba-ejecutable">Crear un Caso de Prueba Ejecutable</a></li>
+<li><a href="#tratamiento-especial-para-problemas-de-seguridad">Tratamiento Especial para Problemas de Seguridad</a></li>
+<li><a href="#¿qué-hay-de-las-solicitudes-de-funciones-questionmark">¿Qué hay de las Solicitudes de Funciones?</a></li>
+</ul></li>
+<li><a href="#ayudando-a-resolver-problemas-existentes">Ayudando a Resolver Problemas Existentes</a>
+
+<ul>
+<li><a href="#verificando-informes-de-errores">Verificando Informes de Errores</a></li>
+<li><a href="#probando-parches">Probando Parches</a></li>
+</ul></li>
+<li><a href="#contribuyendo-a-la-documentación-de-rails">Contribuyendo a la Documentación de Rails</a></li>
+<li><a href="#traduciendo-las-guías-de-rails">Traduciendo las Guías de Rails</a></li>
+<li><a href="#contribuyendo-al-código-de-rails">Contribuyendo al Código de Rails</a>
+
+<ul>
+<li><a href="#configurando-un-entorno-de-desarrollo">Configurando un Entorno de Desarrollo</a></li>
+<li><a href="#clonar-el-repositorio-de-rails">Clonar el Repositorio de Rails</a></li>
+<li><a href="#instalar-bundle">Instalar Bundle</a></li>
+<li><a href="#ejecutar-una-aplicación-contra-tu-rama-local">Ejecutar una Aplicación Contra tu Rama Local</a></li>
+<li><a href="#escribir-tu-código">Escribir tu Código</a></li>
+<li><a href="#mide-el-rendimiento-de-tu-código">Mide el Rendimiento de tu Código</a></li>
+<li><a href="#ejecutando-pruebas">Ejecutando Pruebas</a></li>
+<li><a href="#advertencias">Advertencias</a></li>
+<li><a href="#actualizando-la-documentación">Actualizando la Documentación</a></li>
+<li><a href="#actualizando-el-changelog">Actualizando el CHANGELOG</a></li>
+<li><a href="#cambios-rompedores">Cambios Rompedores</a></li>
+<li><a href="#ignorando-archivos-creados-por-tu-editor-ide">Ignorando Archivos Creados por tu Editor / IDE</a></li>
+<li><a href="#actualizando-el-gemfile-lock">Actualizando el Gemfile.lock</a></li>
+<li><a href="#cometer-tus-cambios">Cometer tus Cambios</a></li>
+<li><a href="#actualiza-tu-rama">Actualiza tu Rama</a></li>
+<li><a href="#bifurcar">Bifurcar</a></li>
+<li><a href="#abre-una-solicitud-de-extracción">Abre una Solicitud de Extracción</a></li>
+<li><a href="#recibe-algunos-comentarios">Recibe Algunos Comentarios</a></li>
+<li><a href="#itera-según-sea-necesario">Itera según sea Necesario</a></li>
+<li><a href="#versiones-antiguas-de-ruby-on-rails">Versiones Antiguas de Ruby on Rails</a></li>
+</ul></li>
+<li><a href="#contribuyentes-de-rails">Contribuyentes de Rails</a></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="reportando-un-problema"><a class="anchorlink" href="#reportando-un-problema"><span>1</span> Reportando un Problema</a></h2><p>Ruby on Rails utiliza <a href="https://github.com/rails/rails/issues">Seguimiento de Problemas de GitHub</a> para rastrear problemas (principalmente errores y contribuciones de nuevo código). Si has encontrado un error en Ruby on Rails, este es el lugar para comenzar. Necesitarás crear una cuenta gratuita de GitHub para enviar un problema, comentar sobre problemas o crear solicitudes de extracción.</p><p>NOTA: Los errores en la versión más reciente de Ruby on Rails probablemente recibirán más atención. Además, el equipo central de Rails siempre está interesado en recibir comentarios de aquellos que pueden tomarse el tiempo para probar <em>edge Rails</em> (el código para la versión de Rails que está actualmente en desarrollo). Más adelante en esta guía, descubrirás cómo obtener edge Rails para pruebas. Consulta nuestra <a href="maintenance_policy.html">política de mantenimiento</a> para obtener información sobre qué versiones están soportadas. Nunca reportes un problema de seguridad en el rastreador de problemas de GitHub.</p><h3 id="creando-un-informe-de-error"><a class="anchorlink" href="#creando-un-informe-de-error"><span>1.1</span> Creando un Informe de Error</a></h3><p>Si has encontrado un problema en Ruby on Rails que no es un riesgo de seguridad, busca en los <a href="https://github.com/rails/rails/issues">Problemas</a> en GitHub, por si ya ha sido reportado. Si no puedes encontrar ningún problema abierto en GitHub que aborde el problema que encontraste, tu próximo paso será <a href="https://github.com/rails/rails/issues/new">abrir un nuevo problema</a>. (Consulta la siguiente sección para informar problemas de seguridad).</p><p>Hemos proporcionado una plantilla de problemas para que cuando crees un problema incluyas toda la información necesaria para determinar si hay un error en el framework. Cada problema debe incluir un título y una descripción clara del problema. Asegúrate de incluir tanta información relevante como sea posible, incluyendo un ejemplo de código o una prueba fallida que demuestre el comportamiento esperado, así como tu configuración del sistema. Tu objetivo debe ser facilitarte a ti mismo, y a otros, reproducir el error y encontrar una solución.</p><p>Una vez que abras un problema, puede que no vea actividad de inmediato a menos que sea un tipo de error "Código Rojo, Misión Crítica, el Mundo se Está Acabando". Eso no significa que no nos importe tu error, solo que hay muchos problemas y solicitudes de extracción por revisar. Otras personas con el mismo problema pueden encontrar tu problema, confirmar el error y pueden colaborar contigo para solucionarlo. Si sabes cómo solucionar el error, adelante, abre una solicitud de extracción.</p><h3 id="crear-un-caso-de-prueba-ejecutable"><a class="anchorlink" href="#crear-un-caso-de-prueba-ejecutable"><span>1.2</span> Crear un Caso de Prueba Ejecutable</a></h3><p>Tener una forma de reproducir tu problema ayudará a las personas a confirmarlo, investigarlo y, en última instancia, solucionarlo. Puedes hacer esto proporcionando un caso de prueba ejecutable. Para facilitar este proceso, hemos preparado varias plantillas de informes de errores para que las uses como punto de partida:</p>
+<ul>
+<li>Plantilla para problemas de Active Record (modelos, base de datos): <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record.rb">enlace</a></li>
+<li>Plantilla para problemas de pruebas de Active Record (migración): <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_record_migrations.rb">enlace</a></li>
+<li>Plantilla para problemas de Action Pack (controladores, enrutamiento): <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_controller.rb">enlace</a></li>
+<li>Plantilla para problemas de Action View (vistas, ayudantes): <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_view.rb">enlace</a></li>
+<li>Plantilla para problemas de Active Job: <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_job.rb">enlace</a></li>
+<li>Plantilla para problemas de Active Storage: <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/active_storage.rb">enlace</a></li>
+<li>Plantilla para problemas de Action Mailer: <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailer.rb">enlace</a></li>
+<li>Plantilla para problemas de Action Mailbox: <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/action_mailbox.rb">enlace</a></li>
+<li>Plantilla genérica para otros problemas: <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/generic.rb">enlace</a></li>
+</ul>
+<p>Estas plantillas incluyen el código base para configurar un caso de prueba. Copia el contenido de la plantilla adecuada en un archivo <code>.rb</code> y haz los cambios necesarios para demostrar el problema. Puedes ejecutarlo ejecutando <code>ruby the_file.rb</code> en tu terminal. Si todo va bien, deberías ver que tu caso de prueba falla.</p><p>Luego puedes compartir tu caso de prueba ejecutable como un <a href="https://gist.github.com">gist</a> o pegar el contenido en la descripción del problema.</p><h3 id="tratamiento-especial-para-problemas-de-seguridad"><a class="anchorlink" href="#tratamiento-especial-para-problemas-de-seguridad"><span>1.3</span> Tratamiento Especial para Problemas de Seguridad</a></h3><p>ADVERTENCIA: Por favor, no informes vulnerabilidades de seguridad con informes de problemas públicos de GitHub. La <a href="https://rubyonrails.org/security">página de política de seguridad de Rails</a> detalla el procedimiento a seguir para problemas de seguridad.</p><h3 id="¿qué-hay-de-las-solicitudes-de-funciones-questionmark"><a class="anchorlink" href="#¿qué-hay-de-las-solicitudes-de-funciones-questionmark"><span>1.4</span> ¿Qué hay de las Solicitudes de Funciones?</a></h3><p>Por favor, no pongas elementos de "solicitud de función" en los Problemas de GitHub. Si hay una nueva función que deseas ver añadida a Ruby on Rails, tendrás que escribir el código tú mismo o convencer a alguien más para que se asocie contigo para escribir el código. Más adelante en esta guía, encontrarás instrucciones detalladas para proponer un parche para Ruby on Rails. Si ingresas un elemento de lista de deseos en los Problemas de GitHub sin código, puedes esperar que se marque como "inválido" tan pronto como se revise.</p><p>A veces, la línea entre 'error' y 'función' es difícil de trazar. Generalmente, una función es cualquier cosa que agrega un nuevo comportamiento, mientras que un error es cualquier cosa que causa un comportamiento incorrecto. A veces, el equipo central tendrá que tomar una decisión de juicio. Dicho esto, la distinción generalmente determina con qué parche se lanza tu cambio; ¡nos encantan las presentaciones de funciones! Simplemente no se retroportarán a las ramas de mantenimiento.</p><p>Si deseas recibir comentarios sobre una idea para una función antes de hacer el trabajo para crear un parche, por favor comienza una discusión en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-core">tablero de discusión de rails-core</a>. Es posible que no recibas respuesta, lo que significa que todos son indiferentes. Puedes encontrar a alguien que también esté interesado en construir esa función. Puedes recibir un "Esto no será aceptado". Pero es el lugar adecuado para discutir nuevas ideas. Los Problemas de GitHub no son un lugar particularmente bueno para las discusiones a veces largas e involucradas que requieren las nuevas funciones.</p><h2 id="ayudando-a-resolver-problemas-existentes"><a class="anchorlink" href="#ayudando-a-resolver-problemas-existentes"><span>2</span> Ayudando a Resolver Problemas Existentes</a></h2><p>Más allá de reportar problemas, puedes ayudar al equipo central a resolver los existentes proporcionando comentarios sobre ellos. Si eres nuevo en el desarrollo central de Rails, proporcionar comentarios te ayudará a familiarizarte con la base de código y los procesos.</p><p>Si revisas la <a href="https://github.com/rails/rails/issues">lista de problemas</a> en Problemas de GitHub, encontrarás muchos problemas que ya requieren atención. ¿Qué puedes hacer al respecto? Bastante, en realidad:</p><h3 id="verificando-informes-de-errores"><a class="anchorlink" href="#verificando-informes-de-errores"><span>2.1</span> Verificando Informes de Errores</a></h3><p>Para empezar, ayuda simplemente verificar los informes de errores. ¿Puedes reproducir el problema reportado en tu computadora? Si es así, puedes agregar un comentario al problema diciendo que estás viendo lo mismo.</p><p>Si un problema es muy vago, ¿puedes ayudar a reducirlo a algo más específico? Tal vez puedas proporcionar información adicional para reproducir el error, o tal vez puedas eliminar pasos innecesarios que no son necesarios para demostrar el problema.</p><p>Si encuentras un informe de error sin una prueba, es muy útil contribuir con una prueba fallida. Esta también es una gran manera de explorar el código fuente: mirar los archivos de prueba existentes te enseñará cómo escribir más pruebas. Las nuevas pruebas se contribuyen mejor en forma de parche, como se explica más adelante en la sección <a href="#contribuyendo-al-código-de-rails">Contribuyendo al Código de Rails</a>.</p><p>Cualquier cosa que puedas hacer para hacer que los informes de errores sean más concisos o fáciles de reproducir ayuda a las personas que intentan escribir código para solucionar esos errores, ya sea que termines escribiendo el código tú mismo o no.</p><h3 id="probando-parches"><a class="anchorlink" href="#probando-parches"><span>2.2</span> Probando Parches</a></h3><p>También puedes ayudar examinando las solicitudes de extracción que se han enviado a Ruby on Rails a través de GitHub. Para aplicar los cambios de alguien, primero crea una rama dedicada:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout <span class="nt">-b</span> testing_branch
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout -b testing_branch
+">Copy</button>
+</div>
+<p>Luego, puedes usar su rama remota para actualizar tu base de código. Por ejemplo, digamos que el usuario de GitHub JohnSmith ha bifurcado y subido a una rama de tema "orange" ubicada en <a href="https://github.com/JohnSmith/rails">https://github.com/JohnSmith/rails</a>.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>remote add JohnSmith https://github.com/JohnSmith/rails.git
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>pull JohnSmith orange
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git remote add JohnSmith https://github.com/JohnSmith/rails.git
+git pull JohnSmith orange
+">Copy</button>
+</div>
+<p>Una alternativa a agregar su remoto a tu checkout es usar la <a href="https://cli.github.com/">herramienta CLI de GitHub</a> para verificar su solicitud de extracción.</p><p>Después de aplicar su rama, ¡pruébala! Aquí hay algunas cosas en las que pensar:</p>
+<ul>
+<li>¿El cambio realmente funciona?</li>
+<li>¿Estás contento con las pruebas? ¿Puedes seguir lo que están probando? ¿Faltan pruebas?</li>
+<li>¿Tiene la cobertura de documentación adecuada? ¿Debería actualizarse la documentación en otro lugar?</li>
+<li>¿Te gusta la implementación? ¿Puedes pensar en una manera más agradable o rápida de implementar una parte de su cambio?</li>
+</ul>
+<p>Una vez que estés satisfecho de que la solicitud de extracción contiene un buen cambio, comenta en el problema de GitHub indicando tus hallazgos. Tu comentario debe indicar que te gusta el cambio y qué te gusta de él. Algo como:</p>
+<blockquote>
+<p>Me gusta la forma en que has reestructurado ese código en generate_finder_sql, mucho más agradable. Las pruebas también se ven bien.</p></blockquote>
+<p>Si tu comentario simplemente dice "+1", es probable que otros revisores no lo tomen muy en serio. Demuestra que te tomaste el tiempo para revisar la solicitud de extracción.</p><h2 id="contribuyendo-a-la-documentación-de-rails"><a class="anchorlink" href="#contribuyendo-a-la-documentación-de-rails"><span>3</span> Contribuyendo a la Documentación de Rails</a></h2><p>Ruby on Rails tiene dos conjuntos principales de documentación: las guías, que te ayudan a aprender sobre Ruby on Rails, y la API, que sirve como referencia.</p><p>Puedes ayudar a mejorar las guías de Rails o la referencia de la API haciéndolas más coherentes, consistentes o legibles, agregando información faltante, corrigiendo errores factuales, corrigiendo errores tipográficos o actualizándolas con la última versión de edge Rails.</p><p>Para hacerlo, realiza cambios en los archivos fuente de las guías de Rails (ubicados <a href="https://github.com/rails/rails/tree/main/guides/source">aquí</a> en GitHub) o comentarios RDoc en el código fuente. Luego abre una solicitud de extracción para aplicar tus cambios a la rama principal.</p><p>Usa <code>[ci skip]</code> en el título de tu solicitud de extracción para evitar ejecutar la construcción de CI para cambios en la documentación.</p><p>Una vez que abras una PR, se implementará una vista previa de la documentación para facilitar la revisión y colaboración. Al final de la página de la Solicitud de Extracción, deberías ver una lista de verificaciones de estado, busca <code>buildkite/docs-preview</code> y haz clic en "detalles".</p><p><img src="images/docs_preview/status_checks.png" alt="Verificaciones de estado de la Solicitud de Extracción de GitHub rails/rails"></p><p>Esto te llevará a la página de construcción de Buildkite, si el trabajo fue exitoso habrá una anotación con enlaces a la API generada y Guías sobre la lista de trabajos.</p><p><img src="images/docs_preview/annotation.png" alt="Anotación de Buildkite rails/docs-preview enlaces API y Guías"></p><p>Al trabajar con documentación, ten en cuenta las <a href="api_documentation_guidelines.html">Guías de Documentación de la API</a> y las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>.</p><h2 id="traduciendo-las-guías-de-rails"><a class="anchorlink" href="#traduciendo-las-guías-de-rails"><span>4</span> Traduciendo las Guías de Rails</a></h2><p>Estamos encantados de que la gente se ofrezca como voluntaria para traducir las guías de Rails. Solo sigue estos pasos:</p>
+<ul>
+<li>Bifurca <a href="https://github.com/rails/rails">https://github.com/rails/rails</a>.</li>
+<li>Agrega una carpeta de origen para tu idioma, por ejemplo: <em>guides/source/it-IT</em> para italiano.</li>
+<li>Copia el contenido de <em>guides/source</em> en tu directorio de idioma y tradúcelos.</li>
+<li>NO traduzcas los archivos HTML, ya que se generan automáticamente.</li>
+</ul>
+<p>Ten en cuenta que las traducciones no se envían al repositorio de Rails; tu trabajo vive en tu bifurcación, como se describe anteriormente. Esto se debe a que, en la práctica, el mantenimiento de la documentación a través de parches solo es sostenible en inglés.</p><p>Para generar las guías en formato HTML, necesitarás instalar las dependencias de las guías, <code>cd</code> en el directorio <em>guides</em>, y luego ejecutar (por ejemplo, para it-IT):</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">#</span><span class="w"> </span>solo instala gemas necesarias para las guías. Para deshacer, ejecuta: <span class="nb">bundle </span>config <span class="nt">--delete</span> without
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle install</span> <span class="nt">--without</span> job cable storage <span class="nb">test </span>db
+<span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>guides/
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate:html <span class="nv">GUIDES_LANGUAGE</span><span class="o">=</span>it-IT
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle install --without job cable storage test db
+cd guides/
+bundle exec rake guides:generate:html GUIDES_LANGUAGE=it-IT
+">Copy</button>
+</div>
+<p>Esto generará las guías en un directorio <em>output</em>.</p><p>NOTA: La gema Redcarpet no funciona con JRuby.</p><h2 id="contribuyendo-al-código-de-rails"><a class="anchorlink" href="#contribuyendo-al-código-de-rails"><span>5</span> Contribuyendo al Código de Rails</a></h2><h3 id="configurando-un-entorno-de-desarrollo"><a class="anchorlink" href="#configurando-un-entorno-de-desarrollo"><span>5.1</span> Configurando un Entorno de Desarrollo</a></h3><p>Para pasar de enviar errores a ayudar a resolver problemas existentes o contribuir con tu propio código a Ruby on Rails, <em>debes</em> poder ejecutar su conjunto de pruebas. En esta sección de la guía, aprenderás cómo configurar las pruebas en tu computadora.</p><h4 id="usando-github-codespaces"><a class="anchorlink" href="#usando-github-codespaces"><span>5.1.1</span> Usando GitHub Codespaces</a></h4><p>Si eres miembro de una organización que tiene habilitado codespaces, puedes bifurcar Rails en esa organización y usar codespaces en GitHub. El Codespace se inicializará con todas las dependencias necesarias y te permitirá ejecutar todas las pruebas.</p><h4 id="usando-contenedores-remotos-de-vs-code"><a class="anchorlink" href="#usando-contenedores-remotos-de-vs-code"><span>5.1.2</span> Usando Contenedores Remotos de VS Code</a></h4><p>Si tienes <a href="https://code.visualstudio.com">Visual Studio Code</a> y <a href="https://www.docker.com">Docker</a> instalados, puedes usar el <a href="https://code.visualstudio.com/docs/remote/containers-tutorial">plugin de contenedores remotos de VS Code</a>. El plugin leerá la configuración de <a href="https://github.com/rails/rails/tree/main/.devcontainer"><code>.devcontainer</code></a> en el repositorio y construirá el contenedor Docker localmente.</p><h4 id="usando-dev-container-cli"><a class="anchorlink" href="#usando-dev-container-cli"><span>5.1.3</span> Usando Dev Container CLI</a></h4><p>Alternativamente, con <a href="https://www.docker.com">Docker</a> y <a href="https://github.com/npm/cli">npm</a> instalados, puedes ejecutar <a href="https://github.com/devcontainers/cli">Dev Container CLI</a> para utilizar la configuración de <a href="https://github.com/rails/rails/tree/main/.devcontainer"><code>.devcontainer</code></a> desde la línea de comandos.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>npm <span class="nb">install</span> <span class="nt">-g</span> @devcontainers/cli
+<span class="gp">$</span><span class="w"> </span><span class="nb">cd rails</span>
+<span class="gp">$</span><span class="w"> </span>devcontainer up <span class="nt">--workspace-folder</span> <span class="nb">.</span>
+<span class="gp">$</span><span class="w"> </span>devcontainer <span class="nb">exec</span> <span class="nt">--workspace-folder</span> <span class="nb">.</span> bash
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="npm install -g @devcontainers/cli
+cd rails
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . bash
+">Copy</button>
+</div>
+<h4 id="usando-rails-dev-box"><a class="anchorlink" href="#usando-rails-dev-box"><span>5.1.4</span> Usando rails-dev-box</a></h4><p>También es posible usar el <a href="https://github.com/rails/rails-dev-box">rails-dev-box</a> para obtener un entorno de desarrollo listo. Sin embargo, el rails-dev-box utiliza Vagrant y Virtual Box, que no funcionarán en Macs con silicio de Apple.</p><h4 id="desarrollo-local"><a class="anchorlink" href="#desarrollo-local"><span>5.1.5</span> Desarrollo Local</a></h4><p>Cuando no puedas usar GitHub Codespaces, consulta <a href="development_dependencies_install.html">esta otra guía</a> sobre cómo configurar el desarrollo local. Esto se considera la forma difícil porque la instalación de dependencias puede ser específica del sistema operativo.</p><h3 id="clonar-el-repositorio-de-rails"><a class="anchorlink" href="#clonar-el-repositorio-de-rails"><span>5.2</span> Clonar el Repositorio de Rails</a></h3><p>Para poder contribuir con código, necesitas clonar el repositorio de Rails:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>clone https://github.com/rails/rails.git
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git clone https://github.com/rails/rails.git
+">Copy</button>
+</div>
+<p>y crear una rama dedicada:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd rails</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout <span class="nt">-b</span> my_new_branch
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd rails
+git checkout -b my_new_branch
+">Copy</button>
+</div>
+<p>No importa mucho qué nombre uses porque esta rama solo existirá en tu computadora local y en tu repositorio personal en GitHub. No será parte del repositorio Git de Rails.</p><h3 id="instalar-bundle"><a class="anchorlink" href="#instalar-bundle"><span>5.3</span> Instalar Bundle</a></h3><p>Instala las gemas requeridas.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle install</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle install
+">Copy</button>
+</div>
+<h3 id="ejecutar-una-aplicación-contra-tu-rama-local"><a class="anchorlink" href="#ejecutar-una-aplicación-contra-tu-rama-local"><span>5.4</span> Ejecutar una Aplicación Contra tu Rama Local</a></h3><p>En caso de que necesites una aplicación Rails ficticia para probar cambios, el flag <code>--dev</code> de <code>rails new</code> genera una aplicación que usa tu rama local:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd rails</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rails </span>new ~/my-test-app <span class="nt">--dev</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd rails
+bundle exec rails new ~/my-test-app --dev
+">Copy</button>
+</div>
+<p>La aplicación generada en <code>~/my-test-app</code> se ejecuta contra tu rama local y, en particular, ve cualquier modificación al reiniciar el servidor.</p><p>Para paquetes de JavaScript, puedes usar <a href="https://yarnpkg.com/cli/link"><code>yarn link</code></a> para obtener tu rama local en una aplicación generada:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd rails</span>/activestorage
+<span class="gp">$</span><span class="w"> </span><span class="nb">yarn link</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">cd</span> ~/my-test-app
+<span class="gp">$</span><span class="w"> </span><span class="nb">yarn link</span> <span class="s2">"@rails/activestorage"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd rails/activestorage
+yarn link
+cd ~/my-test-app
+yarn link &quot;@rails/activestorage&quot;
+">Copy</button>
+</div>
+<h3 id="escribir-tu-código"><a class="anchorlink" href="#escribir-tu-código"><span>5.5</span> Escribir tu Código</a></h3><p>Ahora es el momento de escribir algo de código. Al hacer cambios para Rails, aquí hay algunas cosas a tener en cuenta:</p>
+<ul>
+<li>Sigue el estilo y las convenciones de Rails.</li>
+<li>Usa los modismos y ayudantes de Rails.</li>
+<li>Incluye pruebas que fallen sin tu código y pasen con él.</li>
+<li>Actualiza la documentación (alrededor), ejemplos en otros lugares y las guías: cualquier cosa que se vea afectada por tu contribución.</li>
+<li>Si el cambio agrega, elimina o cambia una función, asegúrate de incluir una entrada en el CHANGELOG. Si tu cambio es una corrección de errores, no es necesario una entrada en el CHANGELOG.</li>
+</ul>
+<p>CONSEJO: Los cambios que son cosméticos y no agregan nada sustancial a la estabilidad, funcionalidad o capacidad de prueba de Rails generalmente no serán aceptados (lee más sobre <a href="https://github.com/rails/rails/pull/13771#issuecomment-32746700">nuestra razón detrás de esta decisión</a>).</p><h4 id="sigue-las-convenciones-de-codificación"><a class="anchorlink" href="#sigue-las-convenciones-de-codificación"><span>5.5.1</span> Sigue las Convenciones de Codificación</a></h4><p>Rails sigue un conjunto simple de convenciones de estilo de codificación:</p>
+<ul>
+<li>Dos espacios, sin tabulaciones (para la sangría).</li>
+<li>Sin espacios en blanco al final. Las líneas en blanco no deben tener espacios.</li>
+<li>Indentar y no dejar línea en blanco después de private/protected.</li>
+<li>Usa la sintaxis de Ruby &gt;= 1.9 para hashes. Prefiere <code>{ a: :b }</code> sobre <code>{ :a =&gt; :b }</code>.</li>
+<li>Prefiere <code>&amp;&amp;</code>/<code>||</code> sobre <code>and</code>/<code>or</code>.</li>
+<li>Prefiere <code>class &lt;&lt; self</code> sobre <code>self.method</code> para métodos de clase.</li>
+<li>Usa <code>my_method(my_arg)</code> no <code>my_method( my_arg )</code> o <code>my_method my_arg</code>.</li>
+<li>Usa <code>a = b</code> y no <code>a=b</code>.</li>
+<li>Usa métodos <code>assert_not</code> en lugar de <code>refute</code>.</li>
+<li>Prefiere <code>method { do_stuff }</code> en lugar de <code>method{do_stuff}</code> para bloques de una sola línea.</li>
+<li>Sigue las convenciones en el código fuente que ya ves usadas.</li>
+</ul>
+<p>Los anteriores son lineamientos: por favor, usa tu mejor juicio al usarlos.</p><p>Además, tenemos reglas de <a href="https://www.rubocop.org/">RuboCop</a> definidas para codificar algunas de nuestras convenciones de codificación. Puedes ejecutar RuboCop localmente contra el archivo que has modificado antes de enviar una solicitud de extracción:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec </span>rubocop actionpack/lib/action_controller/metal/strong_parameters.rb
+<span class="go">Inspecting 1 file
+</span><span class="c">.
+</span><span class="go">
+1 file inspected, no offenses detected
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rubocop actionpack/lib/action_controller/metal/strong_parameters.rb
+">Copy</button>
+</div>
+<h3 id="mide-el-rendimiento-de-tu-código"><a class="anchorlink" href="#mide-el-rendimiento-de-tu-código"><span>5.6</span> Mide el Rendimiento de tu Código</a></h3><p>Para cambios que podrían tener un impacto en el rendimiento, por favor mide el rendimiento de tu código y mide el impacto. Deberías considerar incluir esta información en tu mensaje de commit, para permitir que futuros colaboradores verifiquen fácilmente tus hallazgos y determinen si aún son relevantes. (Por ejemplo, futuras optimizaciones en la VM de Ruby podrían hacer innecesarias ciertas optimizaciones).</p><p>Cuando optimices para un escenario específico que te importa, es fácil perjudicar el rendimiento en otros casos comunes. Por lo tanto, debes probar tu cambio contra una lista de escenarios representativos, idealmente extraídos de aplicaciones de producción del mundo real.</p><p>Puedes usar la <a href="https://github.com/rails/rails/blob/main/guides/bug_report_templates/benchmark.rb">plantilla de benchmark</a> como punto de partida. Incluye el código base para configurar un benchmark usando la gema <a href="https://github.com/evanphx/benchmark-ips">benchmark-ips</a>. La plantilla está diseñada para probar cambios relativamente autónomos que se pueden integrar en el script.</p><h3 id="ejecutando-pruebas"><a class="anchorlink" href="#ejecutando-pruebas"><span>5.7</span> Ejecutando Pruebas</a></h3><p>No es costumbre en Rails ejecutar el conjunto completo de pruebas antes de enviar cambios. El conjunto de pruebas de railties, en particular, toma mucho tiempo, y tomará un tiempo especialmente largo si el código fuente está montado en <code>/vagrant</code> como sucede en el flujo de trabajo recomendado con el <a href="https://github.com/rails/rails-dev-box">rails-dev-box</a>.</p><p>Como compromiso, prueba lo que tu código obviamente afecta, y si el cambio no está en railties, ejecuta todo el conjunto de pruebas del componente afectado. Si todas las pruebas pasan, eso es suficiente para proponer tu contribución. Tenemos <a href="https://buildkite.com/rails/rails">Buildkite</a> como una red de seguridad para detectar fallos inesperados en otros lugares.</p><h4 id="todo-rails"><a class="anchorlink" href="#todo-rails"><span>5.7.1</span> Todo Rails:</a></h4><p>Para ejecutar todas las pruebas, haz:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd rails</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd rails
+bundle exec rake test
+">Copy</button>
+</div>
+<h4 id="para-un-componente-particular"><a class="anchorlink" href="#para-un-componente-particular"><span>5.7.2</span> Para un Componente Particular</a></h4><p>Puedes ejecutar pruebas solo para un componente particular (por ejemplo, Action Pack). Por ejemplo, para ejecutar pruebas de Action Mailer:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionmailer
+<span class="gp">$</span><span class="w"> </span>bin/test
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionmailer
+bin/test
+">Copy</button>
+</div>
+<h4 id="para-un-directorio-específico"><a class="anchorlink" href="#para-un-directorio-específico"><span>5.7.3</span> Para un Directorio Específico</a></h4><p>Puedes ejecutar pruebas solo para un directorio específico de un componente particular (por ejemplo, modelos en Active Storage). Por ejemplo, para ejecutar pruebas en <code>/activestorage/test/models</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>activestorage
+<span class="gp">$</span><span class="w"> </span>bin/test models
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd activestorage
+bin/test models
+">Copy</button>
+</div>
+<h4 id="para-un-archivo-específico"><a class="anchorlink" href="#para-un-archivo-específico"><span>5.7.4</span> Para un Archivo Específico</a></h4><p>Puedes ejecutar las pruebas para un archivo particular:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionview
+<span class="gp">$</span><span class="w"> </span>bin/test <span class="nb">test</span>/template/form_helper_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionview
+bin/test test/template/form_helper_test.rb
+">Copy</button>
+</div>
+<h4 id="ejecutando-una-sola-prueba"><a class="anchorlink" href="#ejecutando-una-sola-prueba"><span>5.7.5</span> Ejecutando una Sola Prueba</a></h4><p>Puedes ejecutar una sola prueba por nombre usando la opción <code>-n</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionmailer
+<span class="gp">$</span><span class="w"> </span>bin/test <span class="nb">test</span>/mail_layout_test.rb <span class="nt">-n</span> test_explicit_class_layout
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionmailer
+bin/test test/mail_layout_test.rb -n test_explicit_class_layout
+">Copy</button>
+</div>
+<h4 id="para-una-línea-específica"><a class="anchorlink" href="#para-una-línea-específica"><span>5.7.6</span> Para una Línea Específica</a></h4><p>Averiguar el nombre no siempre es fácil, pero si conoces el número de línea en el que comienza tu prueba, esta opción es para ti:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>railties
+<span class="gp">$</span><span class="w"> </span>bin/test <span class="nb">test</span>/application/asset_debugging_test.rb:69
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd railties
+bin/test test/application/asset_debugging_test.rb:69
+">Copy</button>
+</div>
+<h4 id="ejecutando-pruebas-con-una-semilla-específica"><a class="anchorlink" href="#ejecutando-pruebas-con-una-semilla-específica"><span>5.7.7</span> Ejecutando Pruebas con una Semilla Específica</a></h4><p>La ejecución de pruebas se randomiza con una semilla de randomización. Si estás experimentando fallos de prueba aleatorios, puedes reproducir más precisamente un escenario de prueba fallido configurando específicamente la semilla de randomización.</p><p>Ejecutando todas las pruebas para un componente:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionmailer
+<span class="gp">$</span><span class="w"> </span><span class="nv">SEED</span><span class="o">=</span>15002 bin/test
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionmailer
+SEED=15002 bin/test
+">Copy</button>
+</div>
+<p>Ejecutando un solo archivo de prueba:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionmailer
+<span class="gp">$</span><span class="w"> </span><span class="nv">SEED</span><span class="o">=</span>15002 bin/test <span class="nb">test</span>/mail_layout_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionmailer
+SEED=15002 bin/test test/mail_layout_test.rb
+">Copy</button>
+</div>
+<h4 id="ejecutando-pruebas-en-serie"><a class="anchorlink" href="#ejecutando-pruebas-en-serie"><span>5.7.8</span> Ejecutando Pruebas en Serie</a></h4><p>Las pruebas unitarias de Action Pack y Action View se ejecutan en paralelo por defecto. Si estás experimentando fallos de prueba aleatorios, puedes configurar la semilla de randomización y dejar que estas pruebas unitarias se ejecuten en serie configurando <code>PARALLEL_WORKERS=1</code></p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>actionview
+<span class="gp">$</span><span class="w"> </span><span class="nv">PARALLEL_WORKERS</span><span class="o">=</span>1 <span class="nv">SEED</span><span class="o">=</span>53708 bin/test <span class="nb">test</span>/template/test_case_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd actionview
+PARALLEL_WORKERS=1 SEED=53708 bin/test test/template/test_case_test.rb
+">Copy</button>
+</div>
+<h4 id="probando-active-record"><a class="anchorlink" href="#probando-active-record"><span>5.7.9</span> Probando Active Record</a></h4><p>Primero, crea las bases de datos que necesitarás. Puedes encontrar una lista de los nombres de tablas requeridos, nombres de usuario y contraseñas en <code>activerecord/test/config.example.yml</code>.</p><p>Para MySQL y PostgreSQL, es suficiente ejecutar:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>activerecord
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>db:mysql:build
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd activerecord
+bundle exec rake db:mysql:build
+">Copy</button>
+</div>
+<p>O:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>activerecord
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>db:postgresql:build
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd activerecord
+bundle exec rake db:postgresql:build
+">Copy</button>
+</div>
+<p>Esto no es necesario para SQLite3.</p><p>Así es como ejecutas el conjunto de pruebas de Active Record solo para SQLite3:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>activerecord
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>:sqlite3
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="cd activerecord
+bundle exec rake test:sqlite3
+">Copy</button>
+</div>
+<p>Ahora puedes ejecutar las pruebas como lo hiciste para <code>sqlite3</code>. Las tareas son respectivamente:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>:mysql2
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>:trilogy
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>:postgresql
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake test:mysql2
+bundle exec rake test:trilogy
+bundle exec rake test:postgresql
+">Copy</button>
+</div>
+<p>Finalmente,</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake test</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake test
+">Copy</button>
+</div>
+<p>ahora ejecutará los tres en turno.</p><p>También puedes ejecutar cualquier prueba individual por separado:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nv">ARCONN</span><span class="o">=</span>mysql2 <span class="nb">bundle exec ruby</span> <span class="nt">-Itest</span> <span class="nb">test</span>/cases/associations/has_many_associations_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ARCONN=mysql2 bundle exec ruby -Itest test/cases/associations/has_many_associations_test.rb
+">Copy</button>
+</div>
+<p>Para ejecutar una sola prueba contra todos los adaptadores, usa:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span><span class="nv">TEST</span><span class="o">=</span><span class="nb">test</span>/cases/associations/has_many_associations_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake TEST=test/cases/associations/has_many_associations_test.rb
+">Copy</button>
+</div>
+<p>También puedes invocar <code>test_jdbcmysql</code>, <code>test_jdbcsqlite3</code> o <code>test_jdbcpostgresql</code>. Consulta el archivo <code>activerecord/RUNNING_UNIT_TESTS.rdoc</code> para obtener información sobre cómo ejecutar pruebas de base de datos más específicas.</p><h4 id="usando-depuradores-con-pruebas"><a class="anchorlink" href="#usando-depuradores-con-pruebas"><span>5.7.10</span> Usando Depuradores con Pruebas</a></h4><p>Para usar un depurador externo (pry, byebug, etc.), instala el depurador y úsalo como de costumbre. Si ocurren problemas con el depurador, ejecuta las pruebas en serie configurando <code>PARALLEL_WORKERS=1</code> o ejecuta una sola prueba con <code>-n test_long_test_name</code>.</p><p>Si ejecutas pruebas contra generadores, necesitarás configurar <code>RAILS_LOG_TO_STDOUT=true</code> para que las herramientas de depuración funcionen.</p><div class="interstitial code">
+<pre><code class="highlight sh"><span class="nv">RAILS_LOG_TO_STDOUT</span><span class="o">=</span><span class="nb">true</span> ./bin/test <span class="nb">test</span>/generators/actions_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="RAILS_LOG_TO_STDOUT=true ./bin/test test/generators/actions_test.rb
+">Copy</button>
+</div>
+<h3 id="advertencias"><a class="anchorlink" href="#advertencias"><span>5.8</span> Advertencias</a></h3><p>El conjunto de pruebas se ejecuta con advertencias habilitadas. Idealmente, Ruby on Rails no debería emitir advertencias, pero puede haber algunas, así como algunas de bibliotecas de terceros. Por favor ignóralas (¡o arréglalas!) si las hay, y envía parches que no emitan nuevas advertencias.</p><p>El CI de Rails elevará si se introducen advertencias. Para implementar el mismo comportamiento localmente, establece <code>RAILS_STRICT_WARNINGS=1</code> al ejecutar el conjunto de pruebas.</p><h3 id="actualizando-la-documentación"><a class="anchorlink" href="#actualizando-la-documentación"><span>5.9</span> Actualizando la Documentación</a></h3><p>Las <a href="https://guides.rubyonrails.org/">guías</a> de Ruby on Rails proporcionan una visión general de alto nivel de las características de Rails, mientras que la <a href="https://edgeapi.rubyonrails.org/">documentación de la API</a> profundiza en los detalles.</p><p>Si tu PR agrega una nueva función o cambia cómo se comporta una función existente, revisa la documentación relevante y actualízala o agrégala según sea necesario.</p><p>Por ejemplo, si modificas el analizador de imágenes de Active Storage para agregar un nuevo campo de metadatos, deberías actualizar la sección <a href="active_storage_overview.html#analyzing-files">Analizando Archivos</a> de la guía de Active Storage para reflejar eso.</p><h3 id="actualizando-el-changelog"><a class="anchorlink" href="#actualizando-el-changelog"><span>5.10</span> Actualizando el CHANGELOG</a></h3><p>El CHANGELOG es una parte importante de cada lanzamiento. Mantiene la lista de cambios para cada versión de Rails.</p><p>Debes agregar una entrada <strong>en la parte superior</strong> del CHANGELOG del framework que modificaste si estás agregando o eliminando una función, o agregando avisos de deprecación. Refactorizaciones, correcciones de errores menores y cambios en la documentación generalmente no deben ir al CHANGELOG.</p><p>Una entrada en el CHANGELOG debe resumir qué se cambió y debe terminar con el nombre del autor. Puedes usar varias líneas si necesitas más espacio y puedes adjuntar ejemplos de código indentados con 4 espacios. Si un cambio está relacionado con un problema específico, debes adjuntar el número del problema. Aquí hay un ejemplo de entrada en el CHANGELOG:</p><div class="interstitial code">
+<pre><code class="highlight markdown"><span class="p">*</span>   Resumen de un cambio que describe brevemente qué se cambió. Puedes usar varias
+    líneas y envolverlas alrededor de 80 caracteres. Los ejemplos de código están bien también, si es necesario:<span class="sb">
+
+        class Foo
+          def bar
+            puts 'baz'
+          end
+        end
+
+    Puedes continuar después del ejemplo de código y puedes adjuntar el número del problema.
+
+    Soluciona #1234.
+
+    *Tu Nombre*
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="*   Resumen de un cambio que describe brevemente qué se cambió. Puedes usar varias
+    líneas y envolverlas alrededor de 80 caracteres. Los ejemplos de código están bien también, si es necesario:
+
+        class Foo
+          def bar
+            puts 'baz'
+          end
+        end
+
+    Puedes continuar después del ejemplo de código y puedes adjuntar el número del problema.
+
+    Soluciona #1234.
+
+    *Tu Nombre*
+">Copy</button>
+</div>
+<h3 id="cambios-rompedores"><a class="anchorlink" href="#cambios-rompedores"><span>5.11</span> Cambios Rompedores</a></h3><p>Cualquier cambio que pueda romper aplicaciones existentes se considera un cambio rompedor. Para facilitar la actualización de aplicaciones Rails, los cambios rompedores requieren un ciclo de deprecación.</p><h4 id="eliminando-comportamiento"><a class="anchorlink" href="#eliminando-comportamiento"><span>5.11.1</span> Eliminando Comportamiento</a></h4><p>Si tu cambio rompedor elimina un comportamiento existente, primero necesitarás agregar una advertencia de deprecación mientras mantienes el comportamiento existente.</p><p>Como ejemplo, digamos que quieres eliminar un método público en <code>ActiveRecord::Base</code>. Si la rama principal apunta a la versión 7.0 no lanzada, Rails 7.0 necesitará mostrar una advertencia de deprecación. Esto asegura que cualquiera que actualice a cualquier versión de Rails 7.0 verá la advertencia de deprecación. En Rails 7.1, el método puede ser eliminado.</p><p>Podrías agregar la siguiente advertencia de deprecación:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">deprecated_method</span>
+  <span class="no">ActiveRecord</span><span class="p">.</span><span class="nf">deprecator</span><span class="p">.</span><span class="nf">warn</span><span class="p">(</span><span class="o">&lt;&lt;-</span><span class="no">MSG</span><span class="p">.</span><span class="nf">squish</span><span class="p">)</span><span class="sh">
+    `ActiveRecord::Base.deprecated_method` está en desuso y se eliminará en Rails 7.1.
+</span><span class="no">  MSG</span>
+  <span class="c1"># Comportamiento existente</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def deprecated_method
+  ActiveRecord.deprecator.warn(<<-MSG.squish)
+    `ActiveRecord::Base.deprecated_method` está en desuso y se eliminará en Rails 7.1.
+  MSG
+  # Comportamiento existente
+end
+">Copy</button>
+</div>
+<h4 id="cambiando-comportamiento"><a class="anchorlink" href="#cambiando-comportamiento"><span>5.11.2</span> Cambiando Comportamiento</a></h4><p>Si tu cambio rompedor cambia el comportamiento existente, necesitarás agregar un valor predeterminado del framework. Los valores predeterminados del framework facilitan las actualizaciones de Rails al permitir que las aplicaciones cambien a los nuevos valores predeterminados uno por uno.</p><p>Para implementar un nuevo valor predeterminado del framework, primero crea una configuración agregando un accesorio en el framework objetivo. Establece el valor predeterminado al comportamiento existente para asegurarte de que nada se rompa durante una actualización.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">ActiveJob</span>
+  <span class="n">mattr_accessor</span> <span class="ss">:existing_behavior</span><span class="p">,</span> <span class="ss">default: </span><span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module ActiveJob
+  mattr_accessor :existing_behavior, default: true
+end
+">Copy</button>
+</div>
+<p>La nueva configuración te permite implementar condicionalmente el nuevo comportamiento:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">changed_method</span>
+  <span class="k">if</span> <span class="no">ActiveJob</span><span class="p">.</span><span class="nf">existing_behavior</span>
+    <span class="c1"># Comportamiento existente</span>
+  <span class="k">else</span>
+    <span class="c1"># Nuevo comportamiento</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def changed_method
+  if ActiveJob.existing_behavior
+    # Comportamiento existente
+  else
+    # Nuevo comportamiento
+  end
+end
+">Copy</button>
+</div>
+<p>Para establecer el nuevo valor predeterminado del framework, establece el nuevo valor en <code>Rails::Application::Configuration#load_defaults</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">load_defaults</span><span class="p">(</span><span class="n">target_version</span><span class="p">)</span>
+  <span class="k">case</span> <span class="n">target_version</span><span class="p">.</span><span class="nf">to_s</span>
+  <span class="k">when</span> <span class="s2">"7.1"</span>
+    <span class="c1"># ...</span>
+    <span class="k">if</span> <span class="nb">respond_to?</span><span class="p">(</span><span class="ss">:active_job</span><span class="p">)</span>
+      <span class="n">active_job</span><span class="p">.</span><span class="nf">existing_behavior</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="k">end</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def load_defaults(target_version)
+  case target_version.to_s
+  when &quot;7.1&quot;
+    # ...
+    if respond_to?(:active_job)
+      active_job.existing_behavior = false
+    end
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<p>Para facilitar la actualización, es necesario agregar el nuevo valor predeterminado a la plantilla de <code>new_framework_defaults</code>. Agrega una sección comentada, estableciendo el nuevo valor:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># new_framework_defaults_7_2.rb.tt</span>
+
+<span class="c1"># Rails.application.config.active_job.existing_behavior = false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# new_framework_defaults_7_2.rb.tt
+
+# Rails.application.config.active_job.existing_behavior = false
+">Copy</button>
+</div>
+<p>Como último paso, agrega la nueva configuración a la guía de configuración en <code>configuration.md</code>:</p><div class="interstitial code">
+<pre><code class="highlight markdown"><span class="gu">#### `config.active_job.existing_behavior</span>
+
+| A partir de la versión | El valor predeterminado es |
+| ---------------------- | -------------------------- |
+| (original)             | <span class="sb">`true`</span>                     |
+| 7.1                    | <span class="sb">`false`</span>                    |
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="#### `config.active_job.existing_behavior
+
+| A partir de la versión | El valor predeterminado es |
+| ---------------------- | -------------------------- |
+| (original)             | `true`                     |
+| 7.1                    | `false`                    |
+">Copy</button>
+</div>
+<h3 id="ignorando-archivos-creados-por-tu-editor-ide"><a class="anchorlink" href="#ignorando-archivos-creados-por-tu-editor-ide"><span>5.12</span> Ignorando Archivos Creados por tu Editor / IDE</a></h3><p>Algunos editores e IDEs crearán archivos o carpetas ocultas dentro de la carpeta <code>rails</code>. En lugar de excluirlos manualmente de cada commit o agregarlos al <code>.gitignore</code> de Rails, deberías agregarlos a tu propio <a href="https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files#configuring-ignored-files-for-all-repositories-on-your-computer">archivo gitignore global</a>.</p><h3 id="actualizando-el-gemfile-lock"><a class="anchorlink" href="#actualizando-el-gemfile-lock"><span>5.13</span> Actualizando el Gemfile.lock</a></h3><p>Algunos cambios requieren actualizaciones de dependencias. En estos casos, asegúrate de ejecutar <code>bundle update</code> para obtener la versión correcta de la dependencia y comprometer el archivo <code>Gemfile.lock</code> dentro de tus cambios.</p><h3 id="cometer-tus-cambios"><a class="anchorlink" href="#cometer-tus-cambios"><span>5.14</span> Cometer tus Cambios</a></h3><p>Cuando estés satisfecho con el código en tu computadora, necesitas comprometer los cambios a Git:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>commit <span class="nt">-a</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git commit -a
+">Copy</button>
+</div>
+<p>Esto debería abrir tu editor para escribir un mensaje de commit. Cuando hayas terminado, guarda y cierra para continuar.</p><p>Un mensaje de commit bien formateado y descriptivo es muy útil para que otros entiendan por qué se hizo el cambio, así que por favor tómate el tiempo para escribirlo.</p><p>Un buen mensaje de commit se ve así:</p><div class="interstitial code">
+<pre><code class="highlight markdown">Resumen corto (idealmente 50 caracteres o menos)
+
+Descripción más detallada, si es necesario. Cada línea debe envolver a
+72 caracteres. Intenta ser tan descriptivo como puedas. Incluso si
+piensas que el contenido del commit es obvio, puede que no sea obvio
+para otros. Agrega cualquier descripción que ya esté presente en los
+problemas relevantes; no debería ser necesario visitar una página web
+para verificar la historia.
+
+La sección de descripción puede tener múltiples párrafos.
+
+Los ejemplos de código se pueden incrustar indentándolos con 4 espacios:<span class="sb">
+
+    class ArticlesController
+      def index
+        render json: Article.limit(10)
+      end
+    end
+
+</span>También puedes agregar puntos de viñeta:
+<span class="p">
+-</span> haz un punto de viñeta comenzando una línea con un guion (-)
+  o un asterisco (<span class="err">*</span>)
+<span class="p">
+-</span> envuelve líneas a 72 caracteres e indenta cualquier línea adicional
+  con 2 espacios para mayor legibilidad
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Resumen corto (idealmente 50 caracteres o menos)
+
+Descripción más detallada, si es necesario. Cada línea debe envolver a
+72 caracteres. Intenta ser tan descriptivo como puedas. Incluso si
+piensas que el contenido del commit es obvio, puede que no sea obvio
+para otros. Agrega cualquier descripción que ya esté presente en los
+problemas relevantes; no debería ser necesario visitar una página web
+para verificar la historia.
+
+La sección de descripción puede tener múltiples párrafos.
+
+Los ejemplos de código se pueden incrustar indentándolos con 4 espacios:
+
+    class ArticlesController
+      def index
+        render json: Article.limit(10)
+      end
+    end
+
+También puedes agregar puntos de viñeta:
+
+- haz un punto de viñeta comenzando una línea con un guion (-)
+  o un asterisco (*)
+
+- envuelve líneas a 72 caracteres e indenta cualquier línea adicional
+  con 2 espacios para mayor legibilidad
+">Copy</button>
+</div>
+<p>CONSEJO. Por favor, fusiona tus commits en un solo commit cuando sea apropiado. Esto
+simplifica futuros cherry picks y mantiene el historial de git limpio.</p><h3 id="actualiza-tu-rama"><a class="anchorlink" href="#actualiza-tu-rama"><span>5.15</span> Actualiza tu Rama</a></h3><p>Es bastante probable que hayan ocurrido otros cambios en la rama principal mientras estabas trabajando. Para obtener nuevos cambios en la rama principal:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout main
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>pull <span class="nt">--rebase</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout main
+git pull --rebase
+">Copy</button>
+</div>
+<p>Ahora reaplica tu parche sobre los últimos cambios:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout my_new_branch
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>rebase main
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout my_new_branch
+git rebase main
+">Copy</button>
+</div>
+<p>¿No hay conflictos? ¿Las pruebas aún pasan? ¿El cambio aún te parece razonable? Entonces empuja los cambios rebasados a GitHub:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>push <span class="nt">--force-with-lease</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git push --force-with-lease
+">Copy</button>
+</div>
+<p>No permitimos forzar empujes en la base del repositorio rails/rails, pero puedes forzar empujar a tu bifurcación. Al hacer rebase, esto es un requisito ya que el historial ha cambiado.</p><h3 id="bifurcar"><a class="anchorlink" href="#bifurcar"><span>5.16</span> Bifurcar</a></h3><p>Navega al <a href="https://github.com/rails/rails">repositorio de GitHub de Rails</a> y presiona "Fork" en la esquina superior derecha.</p><p>Agrega el nuevo remoto a tu repositorio local en tu máquina local:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>remote add fork https://github.com/&lt;tu nombre de usuario&gt;/rails.git
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git remote add fork https://github.com/<tu nombre de usuario>/rails.git
+">Copy</button>
+</div>
+<p>Es posible que hayas clonado tu repositorio local desde rails/rails, o que hayas clonado desde tu repositorio bifurcado. Los siguientes comandos de git asumen que has hecho un "rails" remoto que apunta a rails/rails.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>remote add <span class="nb">rails </span>https://github.com/rails/rails.git
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git remote add rails https://github.com/rails/rails.git
+">Copy</button>
+</div>
+<p>Descarga nuevos commits y ramas del repositorio oficial:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>fetch <span class="nb">rails</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git fetch rails
+">Copy</button>
+</div>
+<p>Fusiona el nuevo contenido:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout main
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>rebase <span class="nb">rails</span>/main
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout my_new_branch
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>rebase <span class="nb">rails</span>/main
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout main
+git rebase rails/main
+git checkout my_new_branch
+git rebase rails/main
+">Copy</button>
+</div>
+<p>Actualiza tu bifurcación:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>push fork main
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>push fork my_new_branch
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git push fork main
+git push fork my_new_branch
+">Copy</button>
+</div>
+<h3 id="abre-una-solicitud-de-extracción"><a class="anchorlink" href="#abre-una-solicitud-de-extracción"><span>5.17</span> Abre una Solicitud de Extracción</a></h3><p>Navega al repositorio de Rails al que acabas de subir (por ejemplo, <a href="https://github.com/tu-nombre-de-usuario/rails">https://github.com/tu-nombre-de-usuario/rails</a>) y haz clic en "Pull Requests" en la barra superior (justo encima del código). En la siguiente página, haz clic en "New pull request" en la esquina superior derecha.</p><p>La solicitud de extracción debe apuntar al repositorio base <code>rails/rails</code> y a la rama <code>main</code>. El repositorio principal será tu trabajo (<code>tu-nombre-de-usuario/rails</code>), y la rama será el nombre que le diste a tu rama. Haz clic en "create pull request" cuando estés listo.</p><p>Asegúrate de que los conjuntos de cambios que introdujiste estén incluidos. Completa algunos detalles sobre tu posible parche, utilizando la plantilla de solicitud de extracción proporcionada. Cuando hayas terminado, haz clic en "Create pull request".</p><h3 id="recibe-algunos-comentarios"><a class="anchorlink" href="#recibe-algunos-comentarios"><span>5.18</span> Recibe Algunos Comentarios</a></h3><p>La mayoría de las solicitudes de extracción pasarán por algunas iteraciones antes de ser fusionadas. Diferentes colaboradores a veces tendrán diferentes opiniones, y a menudo los parches necesitarán ser revisados antes de que puedan ser fusionados.</p><p>Algunos colaboradores de Rails tienen activadas las notificaciones por correo electrónico de GitHub, pero otros no. Además, (casi) todos los que trabajan en Rails son voluntarios, por lo que puede llevar algunos días recibir tus primeros comentarios sobre una solicitud de extracción. ¡No te desesperes! A veces es rápido; a veces es lento. Así es la vida de código abierto.</p><p>Si ha pasado más de una semana y no has escuchado nada, es posible que desees intentar empujar las cosas un poco. Puedes usar el canal <em>contributions</em> en el <a href="https://discord.gg/d8N68BCw49">servidor de Discord de Ruby on Rails</a>, o el <a href="https://discuss.rubyonrails.org/c/rubyonrails-core">tablero de discusión de rubyonrails-core</a> para esto. También puedes dejar otro comentario en la solicitud de extracción. Es mejor evitar mencionar directamente a los mantenedores individuales, ya que tenemos un ancho de banda limitado y es posible que no podamos revisar tu PR.</p><p>Mientras esperas comentarios sobre tu solicitud de extracción, abre algunas otras solicitudes de extracción y da a alguien más algunos comentarios. ¡Ellos lo apreciarán de la misma manera que tú aprecias los comentarios sobre tus parches!</p><p>Ten en cuenta que solo los equipos de Core y Committers tienen permiso para fusionar cambios de código. Si alguien da comentarios y "aprueba" tus cambios, es posible que no tenga la capacidad o la última palabra para fusionar tu cambio.</p><h3 id="itera-según-sea-necesario"><a class="anchorlink" href="#itera-según-sea-necesario"><span>5.19</span> Itera según sea Necesario</a></h3><p>Es totalmente posible que los comentarios que recibas sugieran cambios. No te desanimes: todo el punto de contribuir a un proyecto de código abierto activo es aprovechar el conocimiento de la comunidad. Si las personas te animan a ajustar tu código, entonces vale la pena hacer los ajustes y volver a enviarlo. Si los comentarios son que tu código no será fusionado, aún podrías pensar en lanzarlo como una gema.</p><h4 id="fusionando-commits"><a class="anchorlink" href="#fusionando-commits"><span>5.19.1</span> Fusionando Commits</a></h4><p>Una de las cosas que podemos pedirte es que "fusionar tus commits", lo que combinará todos tus commits en un solo commit. Preferimos solicitudes de extracción que sean un solo commit. Esto facilita el backport de cambios a ramas estables, fusionar facilita revertir commits incorrectos, y el historial de git puede ser un poco más fácil de seguir. Rails es un proyecto grande, y un montón de commits extraños pueden agregar mucho ruido.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>fetch <span class="nb">rails</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout my_new_branch
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>rebase <span class="nt">-i</span> <span class="nb">rails</span>/main
+<span class="go">
+</span><span class="gp">&lt; Elige 'squash' para todos tus commits excepto el primero. &gt;</span><span class="w">
+</span><span class="gp">&lt; Edita el mensaje de commit para que tenga sentido y describa todos tus cambios. &gt;</span><span class="w">
+</span><span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>push fork my_new_branch <span class="nt">--force-with-lease</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git fetch rails
+git checkout my_new_branch
+git rebase -i rails/main
+git push fork my_new_branch --force-with-lease
+">Copy</button>
+</div>
+<p>Deberías poder actualizar la solicitud de extracción en GitHub y ver que ha sido actualizada.</p><h4 id="actualizando-una-solicitud-de-extracción"><a class="anchorlink" href="#actualizando-una-solicitud-de-extracción"><span>5.19.2</span> Actualizando una Solicitud de Extracción</a></h4><p>A veces se te pedirá que realices algunos cambios en el código que ya has comprometido. Esto puede incluir enmendar commits existentes. En este caso, Git no te permitirá empujar los cambios ya que la rama empujada y la rama local no coinciden. En lugar de abrir una nueva solicitud de extracción, puedes forzar el empuje a tu rama en GitHub como se describió anteriormente en la sección de fusión de commits:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>commit <span class="nt">--amend</span>
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>push fork my_new_branch <span class="nt">--force-with-lease</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git commit --amend
+git push fork my_new_branch --force-with-lease
+">Copy</button>
+</div>
+<p>Esto actualizará la rama y la solicitud de extracción en GitHub con tu nuevo código. Al forzar el empuje con <code>--force-with-lease</code>, git actualizará de manera más segura el remoto que con un típico <code>-f</code>, lo que puede eliminar trabajo del remoto que no tienes ya.</p><h3 id="versiones-antiguas-de-ruby-on-rails"><a class="anchorlink" href="#versiones-antiguas-de-ruby-on-rails"><span>5.20</span> Versiones Antiguas de Ruby on Rails</a></h3><p>Si deseas agregar una corrección a versiones de Ruby on Rails más antiguas que el próximo lanzamiento, necesitarás configurar y cambiar a tu propia rama de seguimiento local. Aquí hay un ejemplo para cambiar a la rama 7-0-stable:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>branch <span class="nt">--track</span> 7-0-stable <span class="nb">rails</span>/7-0-stable
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout 7-0-stable
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git branch --track 7-0-stable rails/7-0-stable
+git checkout 7-0-stable
+">Copy</button>
+</div>
+<p>NOTA: Antes de trabajar en versiones antiguas, por favor consulta la <a href="maintenance_policy.html">política de mantenimiento</a>. No se aceptarán cambios en versiones que hayan llegado al final de su vida útil.</p><h4 id="retroportando"><a class="anchorlink" href="#retroportando"><span>5.20.1</span> Retroportando</a></h4><p>Los cambios que se fusionan en la rama principal están destinados al próximo lanzamiento principal de Rails. A veces, puede ser beneficioso propagar tus cambios a ramas estables para su inclusión en lanzamientos de mantenimiento. Generalmente, las correcciones de seguridad y correcciones de errores son buenos candidatos para un retroporte, mientras que las nuevas funciones y parches que cambian el comportamiento esperado no serán aceptados. Cuando tengas dudas, es mejor consultar a un miembro del equipo de Rails antes de retroportar tus cambios para evitar esfuerzos desperdiciados.</p><p>Primero, asegúrate de que tu rama principal esté actualizada.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout main
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>pull <span class="nt">--rebase</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout main
+git pull --rebase
+">Copy</button>
+</div>
+<p>Cambia a la rama a la que estás retroportando, por ejemplo, <code>7-0-stable</code> y asegúrate de que esté actualizada:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout 7-0-stable
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>reset <span class="nt">--hard</span> origin/7-0-stable
+<span class="gp">$</span><span class="w"> </span><span class="nb">git </span>checkout <span class="nt">-b</span> my-backport-branch
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git checkout 7-0-stable
+git reset --hard origin/7-0-stable
+git checkout -b my-backport-branch
+">Copy</button>
+</div>
+<p>Si estás retroportando una solicitud de extracción fusionada, encuentra el commit para la fusión y haz un cherry-pick:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">git </span>cherry-pick <span class="nt">-m1</span> MERGE_SHA
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="git cherry-pick -m1 MERGE_SHA
+">Copy</button>
+</div>
+<p>Corrige cualquier conflicto que ocurra en el cherry-pick, empuja tus cambios y luego abre un PR apuntando a la rama estable a la que estás retroportando. Si tienes un conjunto de cambios más complejo, la documentación de <a href="https://git-scm.com/docs/git-cherry-pick">cherry-pick</a> puede ayudarte.</p><h2 id="contribuyentes-de-rails"><a class="anchorlink" href="#contribuyentes-de-rails"><span>6</span> Contribuyentes de Rails</a></h2><p>Todas las contribuciones reciben crédito en <a href="https://contributors.rubyonrails.org">Contribuyentes de Rails</a>.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

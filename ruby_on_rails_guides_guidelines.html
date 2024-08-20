@@ -1,0 +1,381 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guías de Ruby on Rails: Directrices — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Guías de Ruby on Rails: Directrices — Ruby on Rails Guides" />
+  <meta name="description" content="Guías de Ruby on Rails: DirectricesEsta guía documenta las directrices para escribir Guías de Ruby on Rails. Esta guía se sigue a sí misma en un bucle elegante, sirviendo como ejemplo.Después de leer esta guía, sabrás: Sobre las convenciones a usar en la documentación de Rails. Cómo generar guías localmente." />
+  <meta property="og:description" content="Guías de Ruby on Rails: DirectricesEsta guía documenta las directrices para escribir Guías de Ruby on Rails. Esta guía se sigue a sí misma en un bucle elegante, sirviendo como ejemplo.Después de leer esta guía, sabrás: Sobre las convenciones a usar en la documentación de Rails. Cómo generar guías localmente." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <h1>Guías de Ruby on Rails: Directrices</h1><p>Esta guía documenta las directrices para escribir Guías de Ruby on Rails. Esta guía se sigue a sí misma en un bucle elegante, sirviendo como ejemplo.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Sobre las convenciones a usar en la documentación de Rails.</li>
+<li>Cómo generar guías localmente.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#markdown">Markdown</a></li>
+<li><a href="#prólogo">Prólogo</a></li>
+<li><a href="#encabezados">Encabezados</a></li>
+<li><a href="#enlace-al-api">Enlace al API</a></li>
+<li><a href="#ajuste-de-columnas">Ajuste de Columnas</a></li>
+<li><a href="#directrices-de-documentación-del-api">Directrices de Documentación del API</a></li>
+<li><a href="#guías-en-html">Guías en HTML</a>
+
+<ul>
+<li><a href="#guías-en-html-generación">Generación</a></li>
+<li><a href="#validación">Validación</a></li>
+</ul></li>
+<li><a href="#guías-para-kindle">Guías para Kindle</a>
+
+<ul>
+<li><a href="#guías-para-kindle-generación">Generación</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="markdown"><a class="anchorlink" href="#markdown"><span>1</span> Markdown</a></h2><p>Las guías se escriben en <a href="https://help.github.com/articles/github-flavored-markdown">Markdown con sabor a GitHub</a>. Hay una <a href="https://daringfireball.net/projects/markdown/syntax">documentación exhaustiva para Markdown</a>, así como una <a href="https://daringfireball.net/projects/markdown/basics">hoja de referencia</a>.</p><h2 id="prólogo"><a class="anchorlink" href="#prólogo"><span>2</span> Prólogo</a></h2><p>Cada guía debe comenzar con un texto motivacional en la parte superior (esa es la pequeña introducción en el área azul). El prólogo debe decirle al lector de qué trata la guía y qué aprenderá. Como ejemplo, vea la <a href="routing.html">Guía de Enrutamiento</a>.</p><h2 id="encabezados"><a class="anchorlink" href="#encabezados"><span>3</span> Encabezados</a></h2><p>El título de cada guía usa un encabezado <code>h1</code>; las secciones de la guía usan encabezados <code>h2</code>; las subsecciones usan encabezados <code>h3</code>; etc. Tenga en cuenta que el HTML generado usará etiquetas de encabezado comenzando con <code>&lt;h2&gt;</code>.</p><div class="interstitial code">
+<pre><code class="highlight markdown"><span class="gu">Título de la Guía
+=================
+</span>
+<span class="gh">Sección
+-------
+</span>
+<span class="gu">### Sub Sección</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Título de la Guía
+=================
+
+Sección
+-------
+
+### Sub Sección
+">Copy</button>
+</div>
+<p>Al escribir encabezados, capitalice todas las palabras excepto preposiciones, conjunciones, artículos internos y formas del verbo "ser":</p><div class="interstitial code">
+<pre><code class="highlight markdown"><span class="gu">#### Aserciones y Pruebas de Trabajos dentro de Componentes</span>
+<span class="gu">#### La Pila de Middleware es un Array</span>
+<span class="gu">#### ¿Cuándo se Guardan los Objetos?</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="#### Aserciones y Pruebas de Trabajos dentro de Componentes
+#### La Pila de Middleware es un Array
+#### ¿Cuándo se Guardan los Objetos?
+">Copy</button>
+</div>
+<p>Use el mismo formato en línea que el texto regular:</p><div class="interstitial code">
+<pre><code class="highlight markdown"><span class="gu">##### La Opción `:content_type`</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="##### La Opción `:content_type`
+">Copy</button>
+</div>
+<h2 id="enlace-al-api"><a class="anchorlink" href="#enlace-al-api"><span>4</span> Enlace al API</a></h2><p>Los enlaces al API (<code>api.rubyonrails.org</code>) son procesados por el generador de guías de la siguiente manera:</p><p>Los enlaces que incluyen una etiqueta de versión se dejan intactos. Por ejemplo</p><div class="interstitial code">
+<pre><code class="highlight plaintext">https://api.rubyonrails.org/v5.0.1/classes/ActiveRecord/Attributes/ClassMethods.html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="https://api.rubyonrails.org/v5.0.1/classes/ActiveRecord/Attributes/ClassMethods.html
+">Copy</button>
+</div>
+<p>no se modifica.</p><p>Por favor, use estos en notas de versión, ya que deben apuntar a la versión correspondiente sin importar el objetivo que se esté generando.</p><p>Si el enlace no incluye una etiqueta de versión y se están generando guías de borde, el dominio se reemplaza por <code>edgeapi.rubyonrails.org</code>. Por ejemplo,</p><div class="interstitial code">
+<pre><code class="highlight plaintext">https://api.rubyonrails.org/classes/ActionDispatch/Response.html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="https://api.rubyonrails.org/classes/ActionDispatch/Response.html
+">Copy</button>
+</div>
+<p>se convierte en</p><div class="interstitial code">
+<pre><code class="highlight plaintext">https://edgeapi.rubyonrails.org/classes/ActionDispatch/Response.html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="https://edgeapi.rubyonrails.org/classes/ActionDispatch/Response.html
+">Copy</button>
+</div>
+<p>Si el enlace no incluye una etiqueta de versión y se están generando guías de lanzamiento, se inyecta la versión de Rails. Por ejemplo, si estamos generando las guías para v5.1.0, el enlace</p><div class="interstitial code">
+<pre><code class="highlight plaintext">https://api.rubyonrails.org/classes/ActionDispatch/Response.html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="https://api.rubyonrails.org/classes/ActionDispatch/Response.html
+">Copy</button>
+</div>
+<p>se convierte en</p><div class="interstitial code">
+<pre><code class="highlight plaintext">https://api.rubyonrails.org/v5.1.0/classes/ActionDispatch/Response.html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="https://api.rubyonrails.org/v5.1.0/classes/ActionDispatch/Response.html
+">Copy</button>
+</div>
+<p>Por favor, no enlace manualmente a <code>edgeapi.rubyonrails.org</code>.</p><h2 id="ajuste-de-columnas"><a class="anchorlink" href="#ajuste-de-columnas"><span>5</span> Ajuste de Columnas</a></h2><p>No reformatee guías antiguas solo para ajustar columnas. Pero las nuevas secciones y guías deben ajustarse a 80 columnas.</p><h2 id="directrices-de-documentación-del-api"><a class="anchorlink" href="#directrices-de-documentación-del-api"><span>6</span> Directrices de Documentación del API</a></h2><p>Las guías y el API deben ser coherentes y consistentes cuando sea apropiado. En particular, estas secciones de las <a href="api_documentation_guidelines.html">Directrices de Documentación del API</a> también se aplican a las guías:</p>
+<ul>
+<li><a href="api_documentation_guidelines.html#wording">Redacción</a></li>
+<li><a href="api_documentation_guidelines.html#american-english">Inglés</a></li>
+<li><a href="api_documentation_guidelines.html#example-code">Código de Ejemplo</a></li>
+<li><a href="api_documentation_guidelines.html#file-names">Nombres de Archivos</a></li>
+<li><a href="api_documentation_guidelines.html#fonts">Fuentes</a></li>
+</ul>
+<h2 id="guías-en-html"><a class="anchorlink" href="#guías-en-html"><span>7</span> Guías en HTML</a></h2><p>Antes de generar las guías, asegúrese de tener la última versión de
+Bundler instalada en su sistema. Para instalar la última versión de Bundler, ejecute <code>gem install bundler</code>.</p><p>Si ya tiene Bundler instalado, puede actualizar con <code>gem update bundler</code>.</p><h3 id="guías-en-html-generación"><a class="anchorlink" href="#guías-en-html-generación"><span>7.1</span> Generación</a></h3><p>Para generar todas las guías, simplemente <code>cd</code> en el directorio <code>guides</code>, ejecute <code>bundle install</code>, y ejecute:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake guides:generate
+">Copy</button>
+</div>
+<p>o</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate:html
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake guides:generate:html
+">Copy</button>
+</div>
+<p>Los archivos HTML resultantes se pueden encontrar en el directorio <code>./output</code>.</p><p>Para procesar <code>my_guide.md</code> y nada más, use la variable de entorno <code>ONLY</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">touch </span>my_guide.md
+<span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate <span class="nv">ONLY</span><span class="o">=</span>my_guide
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="touch my_guide.md
+bundle exec rake guides:generate ONLY=my_guide
+">Copy</button>
+</div>
+<p>Por defecto, las guías que no han sido modificadas no se procesan, por lo que <code>ONLY</code> rara vez es necesario en la práctica.</p><p>Para forzar el procesamiento de todas las guías, pase <code>ALL=1</code>.</p><p>Si desea generar guías en un idioma que no sea inglés, puede mantenerlas en un directorio separado bajo <code>source</code> (por ejemplo, <code>source/es</code>) y usar la variable de entorno <code>GUIDES_LANGUAGE</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate <span class="nv">GUIDES_LANGUAGE</span><span class="o">=</span>es
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake guides:generate GUIDES_LANGUAGE=es
+">Copy</button>
+</div>
+<p>Si desea ver todas las variables de entorno que puede usar para configurar el script de generación, simplemente ejecute:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rake</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rake
+">Copy</button>
+</div>
+<h3 id="validación"><a class="anchorlink" href="#validación"><span>7.2</span> Validación</a></h3><p>Por favor, valide el HTML generado con:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:validate
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake guides:validate
+">Copy</button>
+</div>
+<p>Particularmente, los títulos obtienen un ID generado a partir de su contenido y esto a menudo lleva a duplicados.</p><h2 id="guías-para-kindle"><a class="anchorlink" href="#guías-para-kindle"><span>8</span> Guías para Kindle</a></h2><h3 id="guías-para-kindle-generación"><a class="anchorlink" href="#guías-para-kindle-generación"><span>8.1</span> Generación</a></h3><p>Para generar guías para Kindle, use la siguiente tarea de rake:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bundle exec rake </span>guides:generate:kindle
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bundle exec rake guides:generate:kindle
+">Copy</button>
+</div>
+
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

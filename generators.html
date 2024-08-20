@@ -1,0 +1,697 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Creación y Personalización de Generadores y Plantillas de Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Creación y Personalización de Generadores y Plantillas de Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Creación y Personalización de Generadores y Plantillas de RailsLos generadores de Rails son una herramienta esencial para mejorar tu flujo de trabajo. Con esta guía, aprenderás cómo crear generadores y personalizar los existentes.Después de leer esta guía, sabrás: Cómo ver qué generadores están disponibles en tu aplicación. Cómo crear un generador usando plantillas. Cómo busca Rails los generadores antes de invocarlos. Cómo personalizar tu scaffold sobrescribiendo las plantillas del generador. Cómo personalizar tu scaffold sobrescribiendo los generadores. Cómo usar alternativas para evitar sobrescribir un gran conjunto de generadores. Cómo crear una plantilla de aplicación." />
+  <meta property="og:description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Creación y Personalización de Generadores y Plantillas de RailsLos generadores de Rails son una herramienta esencial para mejorar tu flujo de trabajo. Con esta guía, aprenderás cómo crear generadores y personalizar los existentes.Después de leer esta guía, sabrás: Cómo ver qué generadores están disponibles en tu aplicación. Cómo crear un generador usando plantillas. Cómo busca Rails los generadores antes de invocarlos. Cómo personalizar tu scaffold sobrescribiendo las plantillas del generador. Cómo personalizar tu scaffold sobrescribiendo los generadores. Cómo usar alternativas para evitar sobrescribir un gran conjunto de generadores. Cómo crear una plantilla de aplicación." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Creación y Personalización de Generadores y Plantillas de Rails</h1><p>Los generadores de Rails son una herramienta esencial para mejorar tu flujo de trabajo. Con esta guía, aprenderás cómo crear generadores y personalizar los existentes.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Cómo ver qué generadores están disponibles en tu aplicación.</li>
+<li>Cómo crear un generador usando plantillas.</li>
+<li>Cómo busca Rails los generadores antes de invocarlos.</li>
+<li>Cómo personalizar tu scaffold sobrescribiendo las plantillas del generador.</li>
+<li>Cómo personalizar tu scaffold sobrescribiendo los generadores.</li>
+<li>Cómo usar alternativas para evitar sobrescribir un gran conjunto de generadores.</li>
+<li>Cómo crear una plantilla de aplicación.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#primer-contacto">Primer Contacto</a></li>
+<li><a href="#creando-tu-primer-generador">Creando Tu Primer Generador</a></li>
+<li><a href="#creando-generadores-con-generadores">Creando Generadores con Generadores</a></li>
+<li><a href="#opciones-de-línea-de-comando-del-generador">Opciones de Línea de Comando del Generador</a></li>
+<li><a href="#resolución-del-generador">Resolución del Generador</a></li>
+<li><a href="#sobrescribiendo-plantillas-de-generadores-de-rails">Sobrescribiendo Plantillas de Generadores de Rails</a></li>
+<li><a href="#sobrescribiendo-generadores-de-rails">Sobrescribiendo Generadores de Rails</a>
+
+<ul>
+<li><a href="#alternativas-de-generadores">Alternativas de Generadores</a></li>
+</ul></li>
+<li><a href="#plantillas-de-aplicación">Plantillas de Aplicación</a></li>
+<li><a href="#métodos-auxiliares-del-generador">Métodos Auxiliares del Generador</a></li>
+<li><a href="#pruebas-de-generadores">Pruebas de Generadores</a></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="primer-contacto"><a class="anchorlink" href="#primer-contacto"><span>1</span> Primer Contacto</a></h2><p>Cuando creas una aplicación usando el comando <code>rails</code>, de hecho estás usando un generador de Rails. Después de eso, puedes obtener una lista de todos los generadores disponibles invocando <code>bin/rails generate</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new myapp
+<span class="gp">$</span><span class="w"> </span><span class="nb">cd </span>myapp
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new myapp
+cd myapp
+bin/rails generate
+">Copy</button>
+</div>
+<p>NOTA: Para crear una aplicación de Rails usamos el comando global <code>rails</code> que utiliza la versión de Rails instalada a través de <code>gem install rails</code>. Cuando estamos dentro del directorio de tu aplicación, usamos el comando <code>bin/rails</code> que utiliza la versión de Rails incluida con la aplicación.</p><p>Obtendrás una lista de todos los generadores que vienen con Rails. Para ver una descripción detallada de un generador en particular, invoca el generador con la opción <code>--help</code>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold <span class="nt">--help</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold --help
+">Copy</button>
+</div>
+<h2 id="creando-tu-primer-generador"><a class="anchorlink" href="#creando-tu-primer-generador"><span>2</span> Creando Tu Primer Generador</a></h2><p>Los generadores están construidos sobre <a href="https://github.com/rails/thor">Thor</a>, que proporciona opciones poderosas para el análisis y una gran API para manipular archivos.</p><p>Vamos a construir un generador que crea un archivo inicializador llamado <code>initializer.rb</code> dentro de <code>config/initializers</code>. El primer paso es crear un archivo en <code>lib/generators/initializer_generator.rb</code> con el siguiente contenido:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InitializerGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">Base</span>
+  <span class="k">def</span> <span class="nf">create_initializer_file</span>
+    <span class="n">create_file</span> <span class="s2">"config/initializers/initializer.rb"</span><span class="p">,</span> <span class="o">&lt;&lt;~</span><span class="no">RUBY</span><span class="sh">
+      # Añade contenido de inicialización aquí
+</span><span class="no">    RUBY</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class InitializerGenerator < Rails::Generators::Base
+  def create_initializer_file
+    create_file &quot;config/initializers/initializer.rb&quot;, <<~RUBY
+      # Añade contenido de inicialización aquí
+    RUBY
+  end
+end
+">Copy</button>
+</div>
+<p>Nuestro nuevo generador es bastante simple: hereda de <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Base.html"><code>Rails::Generators::Base</code></a> y tiene una definición de método. Cuando se invoca un generador, cada método público en el generador se ejecuta secuencialmente en el orden en que está definido. Nuestro método invoca <a href="https://www.rubydoc.info/gems/thor/Thor/Actions#create_file-instance_method"><code>create_file</code></a>, que creará un archivo en el destino dado con el contenido dado.</p><p>Para invocar nuestro nuevo generador, ejecutamos:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate initializer
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate initializer
+">Copy</button>
+</div>
+<p>Antes de continuar, veamos la descripción de nuestro nuevo generador:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate initializer <span class="nt">--help</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate initializer --help
+">Copy</button>
+</div>
+<p>Rails generalmente puede derivar una buena descripción si un generador está en un espacio de nombres, como <code>ActiveRecord::Generators::ModelGenerator</code>, pero no en este caso. Podemos resolver este problema de dos maneras. La primera forma de agregar una descripción es llamando a <a href="https://www.rubydoc.info/gems/thor/Thor#desc-class_method"><code>desc</code></a> dentro de nuestro generador:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InitializerGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">desc</span> <span class="s2">"Este generador crea un archivo inicializador en config/initializers"</span>
+  <span class="k">def</span> <span class="nf">create_initializer_file</span>
+    <span class="n">create_file</span> <span class="s2">"config/initializers/initializer.rb"</span><span class="p">,</span> <span class="o">&lt;&lt;~</span><span class="no">RUBY</span><span class="sh">
+      # Añade contenido de inicialización aquí
+</span><span class="no">    RUBY</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class InitializerGenerator < Rails::Generators::Base
+  desc &quot;Este generador crea un archivo inicializador en config/initializers&quot;
+  def create_initializer_file
+    create_file &quot;config/initializers/initializer.rb&quot;, <<~RUBY
+      # Añade contenido de inicialización aquí
+    RUBY
+  end
+end
+">Copy</button>
+</div>
+<p>Ahora podemos ver la nueva descripción invocando <code>--help</code> en el nuevo generador.</p><p>La segunda forma de agregar una descripción es creando un archivo llamado <code>USAGE</code> en el mismo directorio que nuestro generador. Vamos a hacer eso en el siguiente paso.</p><h2 id="creando-generadores-con-generadores"><a class="anchorlink" href="#creando-generadores-con-generadores"><span>3</span> Creando Generadores con Generadores</a></h2><p>Los generadores en sí mismos tienen un generador. Vamos a eliminar nuestro <code>InitializerGenerator</code> y usar <code>bin/rails generate generator</code> para generar uno nuevo:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rm </span>lib/generators/initializer_generator.rb
+<span class="go">
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate generator initializer
+<span class="go">      create  lib/generators/initializer
+      create  lib/generators/initializer/initializer_generator.rb
+      create  lib/generators/initializer/USAGE
+      create  lib/generators/initializer/templates
+      invoke  test_unit
+      create    test/lib/generators/initializer_generator_test.rb
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="rm lib/generators/initializer_generator.rb
+bin/rails generate generator initializer
+">Copy</button>
+</div>
+<p>Este es el generador recién creado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InitializerGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">NamedBase</span>
+  <span class="n">source_root</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s2">"templates"</span><span class="p">,</span> <span class="n">__dir__</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class InitializerGenerator < Rails::Generators::NamedBase
+  source_root File.expand_path(&quot;templates&quot;, __dir__)
+end
+">Copy</button>
+</div>
+<p>Primero, nota que el generador hereda de <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/NamedBase.html"><code>Rails::Generators::NamedBase</code></a> en lugar de <code>Rails::Generators::Base</code>. Esto significa que nuestro generador espera al menos un argumento, que será el nombre del inicializador y estará disponible para nuestro código a través de <code>name</code>.</p><p>Podemos ver eso verificando la descripción del nuevo generador:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate initializer <span class="nt">--help</span>
+<span class="go">Usage:
+  bin/rails generate initializer NAME [options]
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate initializer --help
+">Copy</button>
+</div>
+<p>Además, nota que el generador tiene un método de clase llamado <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Base.html#method-c-source_root"><code>source_root</code></a>. Este método apunta a la ubicación de nuestras plantillas, si las hay. Por defecto, apunta al directorio <code>lib/generators/initializer/templates</code> que acaba de ser creado.</p><p>Para entender cómo funcionan las plantillas de generador, vamos a crear el archivo <code>lib/generators/initializer/templates/initializer.rb</code> con el siguiente contenido:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Añade contenido de inicialización aquí</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Añade contenido de inicialización aquí
+">Copy</button>
+</div>
+<p>Y vamos a cambiar el generador para copiar esta plantilla cuando se invoque:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InitializerGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">NamedBase</span>
+  <span class="n">source_root</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s2">"templates"</span><span class="p">,</span> <span class="n">__dir__</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">copy_initializer_file</span>
+    <span class="n">copy_file</span> <span class="s2">"initializer.rb"</span><span class="p">,</span> <span class="s2">"config/initializers/</span><span class="si">#{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">.rb"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class InitializerGenerator < Rails::Generators::NamedBase
+  source_root File.expand_path(&quot;templates&quot;, __dir__)
+
+  def copy_initializer_file
+    copy_file &quot;initializer.rb&quot;, &quot;config/initializers/#{file_name}.rb&quot;
+  end
+end
+">Copy</button>
+</div>
+<p>Ahora ejecutemos nuestro generador:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate initializer core_extensions
+<span class="go">      create  config/initializers/core_extensions.rb
+
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>config/initializers/core_extensions.rb
+<span class="gp">#</span><span class="w"> </span>Añade contenido de inicialización aquí
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate initializer core_extensions
+cat config/initializers/core_extensions.rb
+">Copy</button>
+</div>
+<p>Vemos que <a href="https://www.rubydoc.info/gems/thor/Thor/Actions#copy_file-instance_method"><code>copy_file</code></a> creó <code>config/initializers/core_extensions.rb</code> con el contenido de nuestra plantilla. (El método <code>file_name</code> usado en la ruta de destino se hereda de <code>Rails::Generators::NamedBase</code>).</p><h2 id="opciones-de-línea-de-comando-del-generador"><a class="anchorlink" href="#opciones-de-línea-de-comando-del-generador"><span>4</span> Opciones de Línea de Comando del Generador</a></h2><p>Los generadores pueden soportar opciones de línea de comando usando <a href="https://www.rubydoc.info/gems/thor/Thor/Base/ClassMethods#class_option-instance_method"><code>class_option</code></a>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">InitializerGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">NamedBase</span>
+  <span class="n">class_option</span> <span class="ss">:scope</span><span class="p">,</span> <span class="ss">type: :string</span><span class="p">,</span> <span class="ss">default: </span><span class="s2">"app"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class InitializerGenerator < Rails::Generators::NamedBase
+  class_option :scope, type: :string, default: &quot;app&quot;
+end
+">Copy</button>
+</div>
+<p>Ahora nuestro generador puede ser invocado con una opción <code>--scope</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate initializer theme <span class="nt">--scope</span> dashboard
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate initializer theme --scope dashboard
+">Copy</button>
+</div>
+<p>Los valores de opción son accesibles en los métodos del generador a través de <a href="https://www.rubydoc.info/gems/thor/Thor/Base#options-instance_method"><code>options</code></a>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">copy_initializer_file</span>
+  <span class="vi">@scope</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">"scope"</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def copy_initializer_file
+  @scope = options[&quot;scope&quot;]
+end
+">Copy</button>
+</div>
+<h2 id="resolución-del-generador"><a class="anchorlink" href="#resolución-del-generador"><span>5</span> Resolución del Generador</a></h2><p>Al resolver el nombre de un generador, Rails busca el generador usando múltiples nombres de archivo. Por ejemplo, cuando ejecutas <code>bin/rails generate initializer core_extensions</code>, Rails intenta cargar cada uno de los siguientes archivos, en orden, hasta que se encuentra uno:</p>
+<ul>
+<li><code>rails/generators/initializer/initializer_generator.rb</code></li>
+<li><code>generators/initializer/initializer_generator.rb</code></li>
+<li><code>rails/generators/initializer_generator.rb</code></li>
+<li><code>generators/initializer_generator.rb</code></li>
+</ul>
+<p>Si ninguno de estos se encuentra, se generará un error.</p><p>Colocamos nuestro generador en el directorio <code>lib/</code> de la aplicación porque ese directorio está en <code>$LOAD_PATH</code>, permitiendo así que Rails encuentre y cargue el archivo.</p><h2 id="sobrescribiendo-plantillas-de-generadores-de-rails"><a class="anchorlink" href="#sobrescribiendo-plantillas-de-generadores-de-rails"><span>6</span> Sobrescribiendo Plantillas de Generadores de Rails</a></h2><p>Rails también buscará en múltiples lugares al resolver archivos de plantilla de generador. Uno de esos lugares es el directorio <code>lib/templates/</code> de la aplicación. Este comportamiento nos permite sobrescribir las plantillas utilizadas por los generadores integrados de Rails. Por ejemplo, podríamos sobrescribir la <a href="https://github.com/rails/rails/blob/main/railties/lib/rails/generators/rails/scaffold_controller/templates/controller.rb.tt">plantilla del controlador scaffold</a> o las <a href="https://github.com/rails/rails/tree/main/railties/lib/rails/generators/erb/scaffold/templates">plantillas de vistas scaffold</a>.</p><p>Para ver esto en acción, vamos a crear un archivo <code>lib/templates/erb/scaffold/index.html.erb.tt</code> con el siguiente contenido:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%%</span> <span class="err">@</span><span class="o">&lt;</span><span class="sx">%= plural_table_name </span><span class="cp">%&gt;</span>.count %&gt; <span class="cp">&lt;%=</span><span class="sx"> human_name.pluralize </span><span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%% @<%= plural_table_name %>.count %> <%= human_name.pluralize %>
+">Copy</button>
+</div>
+<p>Nota que la plantilla es una plantilla ERB que renderiza <em>otra</em> plantilla ERB. Así que cualquier <code>&lt;%</code> que deba aparecer en la plantilla <em>resultante</em> debe escaparse como <code>&lt;%%</code> en la plantilla <em>del generador</em>.</p><p>Ahora ejecutemos el generador scaffold integrado de Rails:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold Post title:string
+<span class="c">      ...
+</span><span class="go">      create      app/views/posts/index.html.erb
+</span><span class="c">      ...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold Post title:string
+">Copy</button>
+</div>
+<p>El contenido de <code>app/views/posts/index.html.erb</code> es:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@posts</span><span class="p">.</span><span class="nf">count</span> <span class="cp">%&gt;</span> Posts
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% @posts.count %> Posts
+">Copy</button>
+</div>
+<h2 id="sobrescribiendo-generadores-de-rails"><a class="anchorlink" href="#sobrescribiendo-generadores-de-rails"><span>7</span> Sobrescribiendo Generadores de Rails</a></h2><p>Los generadores integrados de Rails se pueden configurar a través de <a href="configuring.html#configuring-generators"><code>config.generators</code></a>, incluyendo sobrescribir algunos generadores por completo.</p><p>Primero, echemos un vistazo más de cerca a cómo funciona el generador scaffold.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold User name:string
+<span class="go">      invoke  active_record
+      create    db/migrate/20230518000000_create_users.rb
+      create    app/models/user.rb
+      invoke    test_unit
+      create      test/models/user_test.rb
+      create      test/fixtures/users.yml
+      invoke  resource_route
+       route    resources :users
+      invoke  scaffold_controller
+      create    app/controllers/users_controller.rb
+      invoke    erb
+      create      app/views/users
+      create      app/views/users/index.html.erb
+      create      app/views/users/edit.html.erb
+      create      app/views/users/show.html.erb
+      create      app/views/users/new.html.erb
+      create      app/views/users/_form.html.erb
+      create      app/views/users/_user.html.erb
+      invoke    resource_route
+      invoke    test_unit
+      create      test/controllers/users_controller_test.rb
+      create      test/system/users_test.rb
+      invoke    helper
+      create      app/helpers/users_helper.rb
+      invoke      test_unit
+      invoke    jbuilder
+      create      app/views/users/index.json.jbuilder
+      create      app/views/users/show.json.jbuilder
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold User name:string
+">Copy</button>
+</div>
+<p>Del resultado, podemos ver que el generador scaffold invoca otros generadores, como el generador <code>scaffold_controller</code>. Y algunos de esos generadores invocan otros generadores también. En particular, el generador <code>scaffold_controller</code> invoca varios otros generadores, incluyendo el generador <code>helper</code>.</p><p>Vamos a sobrescribir el generador <code>helper</code> integrado con un nuevo generador. Nombraremos el generador <code>my_helper</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate generator <span class="nb">rails</span>/my_helper
+<span class="go">      create  lib/generators/rails/my_helper
+      create  lib/generators/rails/my_helper/my_helper_generator.rb
+      create  lib/generators/rails/my_helper/USAGE
+      create  lib/generators/rails/my_helper/templates
+      invoke  test_unit
+      create    test/lib/generators/rails/my_helper_generator_test.rb
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate generator rails/my_helper
+">Copy</button>
+</div>
+<p>Y en <code>lib/generators/rails/my_helper/my_helper_generator.rb</code> definiremos el generador como:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Rails::MyHelperGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">NamedBase</span>
+  <span class="k">def</span> <span class="nf">create_helper_file</span>
+    <span class="n">create_file</span> <span class="s2">"app/helpers/</span><span class="si">#{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">_helper.rb"</span><span class="p">,</span> <span class="o">&lt;&lt;~</span><span class="no">RUBY</span><span class="sh">
+      module </span><span class="si">#{</span><span class="n">class_name</span><span class="si">}</span><span class="sh">Helper
+        # ¡Estoy ayudando!
+      end
+</span><span class="no">    RUBY</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Rails::MyHelperGenerator < Rails::Generators::NamedBase
+  def create_helper_file
+    create_file &quot;app/helpers/#{file_name}_helper.rb&quot;, <<~RUBY
+      module #{class_name}Helper
+        # ¡Estoy ayudando!
+      end
+    RUBY
+  end
+end
+">Copy</button>
+</div>
+<p>Finalmente, necesitamos decirle a Rails que use el generador <code>my_helper</code> en lugar del generador <code>helper</code> integrado. Para eso usamos <code>config.generators</code>. En <code>config/application.rb</code>, agreguemos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
+  <span class="n">g</span><span class="p">.</span><span class="nf">helper</span> <span class="ss">:my_helper</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.generators do |g|
+  g.helper :my_helper
+end
+">Copy</button>
+</div>
+<p>Ahora, si ejecutamos el generador scaffold nuevamente, vemos el generador <code>my_helper</code> en acción:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold Article body:text
+<span class="c">      ...
+</span><span class="go">      invoke  scaffold_controller
+</span><span class="c">      ...
+</span><span class="go">      invoke    my_helper
+      create      app/helpers/articles_helper.rb
+</span><span class="c">      ...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold Article body:text
+">Copy</button>
+</div>
+<p>NOTA: Puedes notar que la salida para el generador <code>helper</code> integrado incluye "invoke test_unit", mientras que la salida para <code>my_helper</code> no. Aunque el generador <code>helper</code> no genera pruebas por defecto, sí proporciona un gancho para hacerlo usando <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Base.html#method-c-hook_for"><code>hook_for</code></a>. Podemos hacer lo mismo incluyendo <code>hook_for :test_framework, as: :helper</code> en la clase <code>MyHelperGenerator</code>. Consulta la documentación de <code>hook_for</code> para más información.</p><h3 id="alternativas-de-generadores"><a class="anchorlink" href="#alternativas-de-generadores"><span>7.1</span> Alternativas de Generadores</a></h3><p>Otra forma de sobrescribir generadores específicos es usando <em>alternativas</em>. Una alternativa permite que un espacio de nombres de generador delegue a otro espacio de nombres de generador.</p><p>Por ejemplo, digamos que queremos sobrescribir el generador <code>test_unit:model</code> con nuestro propio generador <code>my_test_unit:model</code>, pero no queremos reemplazar todos los demás generadores <code>test_unit:*</code> como <code>test_unit:controller</code>.</p><p>Primero, creamos el generador <code>my_test_unit:model</code> en <code>lib/generators/my_test_unit/model/model_generator.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">MyTestUnit</span>
+  <span class="k">class</span> <span class="nc">ModelGenerator</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Generators</span><span class="o">::</span><span class="no">NamedBase</span>
+    <span class="n">source_root</span> <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s2">"templates"</span><span class="p">,</span> <span class="n">__dir__</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">do_different_stuff</span>
+      <span class="n">say</span> <span class="s2">"Haciendo cosas diferentes..."</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyTestUnit
+  class ModelGenerator < Rails::Generators::NamedBase
+    source_root File.expand_path(&quot;templates&quot;, __dir__)
+
+    def do_different_stuff
+      say &quot;Haciendo cosas diferentes...&quot;
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>A continuación, usamos <code>config.generators</code> para configurar el generador <code>test_framework</code> como <code>my_test_unit</code>, pero también configuramos una alternativa para que cualquier generador <code>my_test_unit:*</code> faltante se resuelva como <code>test_unit:*</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
+  <span class="n">g</span><span class="p">.</span><span class="nf">test_framework</span> <span class="ss">:my_test_unit</span><span class="p">,</span> <span class="ss">fixture: </span><span class="kp">false</span>
+  <span class="n">g</span><span class="p">.</span><span class="nf">fallbacks</span><span class="p">[</span><span class="ss">:my_test_unit</span><span class="p">]</span> <span class="o">=</span> <span class="ss">:test_unit</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.generators do |g|
+  g.test_framework :my_test_unit, fixture: false
+  g.fallbacks[:my_test_unit] = :test_unit
+end
+">Copy</button>
+</div>
+<p>Ahora, cuando ejecutamos el generador scaffold, vemos que <code>my_test_unit</code> ha reemplazado a <code>test_unit</code>, pero solo se han afectado las pruebas del modelo:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold Comment body:text
+<span class="go">      invoke  active_record
+      create    db/migrate/20230518000000_create_comments.rb
+      create    app/models/comment.rb
+      invoke    my_test_unit
+    Haciendo cosas diferentes...
+      invoke  resource_route
+       route    resources :comments
+      invoke  scaffold_controller
+      create    app/controllers/comments_controller.rb
+      invoke    erb
+      create      app/views/comments
+      create      app/views/comments/index.html.erb
+      create      app/views/comments/edit.html.erb
+      create      app/views/comments/show.html.erb
+      create      app/views/comments/new.html.erb
+      create      app/views/comments/_form.html.erb
+      create      app/views/comments/_comment.html.erb
+      invoke    resource_route
+      invoke    my_test_unit
+      create      test/controllers/comments_controller_test.rb
+      create      test/system/comments_test.rb
+      invoke    helper
+      create      app/helpers/comments_helper.rb
+      invoke      my_test_unit
+      invoke    jbuilder
+      create      app/views/comments/index.json.jbuilder
+      create      app/views/comments/show.json.jbuilder
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold Comment body:text
+">Copy</button>
+</div>
+<h2 id="plantillas-de-aplicación"><a class="anchorlink" href="#plantillas-de-aplicación"><span>8</span> Plantillas de Aplicación</a></h2><p>Las plantillas de aplicación son un tipo especial de generador. Pueden usar todos los <a href="#métodos-auxiliares-del-generador">métodos auxiliares del generador</a>, pero están escritas como un script Ruby en lugar de una clase Ruby. Aquí hay un ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># template.rb</span>
+
+<span class="k">if</span> <span class="n">yes?</span><span class="p">(</span><span class="s2">"¿Te gustaría instalar Devise?"</span><span class="p">)</span>
+  <span class="n">gem</span> <span class="s2">"devise"</span>
+  <span class="n">devise_model</span> <span class="o">=</span> <span class="n">ask</span><span class="p">(</span><span class="s2">"¿Cómo te gustaría que se llamara el modelo de usuario?"</span><span class="p">,</span> <span class="ss">default: </span><span class="s2">"User"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">after_bundle</span> <span class="k">do</span>
+  <span class="k">if</span> <span class="n">devise_model</span>
+    <span class="n">generate</span> <span class="s2">"devise:install"</span>
+    <span class="n">generate</span> <span class="s2">"devise"</span><span class="p">,</span> <span class="n">devise_model</span>
+    <span class="n">rails_command</span> <span class="s2">"db:migrate"</span>
+  <span class="k">end</span>
+
+  <span class="n">git</span> <span class="ss">add: </span><span class="s2">"."</span><span class="p">,</span> <span class="ss">commit: </span><span class="sx">%(-m 'Commit inicial')</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# template.rb
+
+if yes?(&quot;¿Te gustaría instalar Devise?&quot;)
+  gem &quot;devise&quot;
+  devise_model = ask(&quot;¿Cómo te gustaría que se llamara el modelo de usuario?&quot;, default: &quot;User&quot;)
+end
+
+after_bundle do
+  if devise_model
+    generate &quot;devise:install&quot;
+    generate &quot;devise&quot;, devise_model
+    rails_command &quot;db:migrate&quot;
+  end
+
+  git add: &quot;.&quot;, commit: %(-m 'Commit inicial')
+end
+">Copy</button>
+</div>
+<p>Primero, la plantilla pregunta al usuario si le gustaría instalar Devise. Si el usuario responde "sí" (o "y"), la plantilla añade Devise al <code>Gemfile</code>, y pregunta al usuario por el nombre del modelo de usuario de Devise (por defecto <code>User</code>). Más tarde, después de que se haya ejecutado <code>bundle install</code>, la plantilla ejecutará los generadores de Devise y <code>rails db:migrate</code> si se especificó un modelo de Devise. Finalmente, la plantilla hará <code>git add</code> y <code>git commit</code> de todo el directorio de la aplicación.</p><p>Podemos ejecutar nuestra plantilla al generar una nueva aplicación de Rails pasando la opción <code>-m</code> al comando <code>rails new</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new my_cool_app <span class="nt">-m</span> path/to/template.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new my_cool_app -m path/to/template.rb
+">Copy</button>
+</div>
+<p>Alternativamente, podemos ejecutar nuestra plantilla dentro de una aplicación existente con <code>bin/rails app:template</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>app:template <span class="nv">LOCATION</span><span class="o">=</span>path/to/template.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails app:template LOCATION=path/to/template.rb
+">Copy</button>
+</div>
+<p>Las plantillas tampoco necesitan almacenarse localmente; puedes especificar una URL en lugar de una ruta:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new my_cool_app <span class="nt">-m</span> http://example.com/template.rb
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>app:template <span class="nv">LOCATION</span><span class="o">=</span>http://example.com/template.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new my_cool_app -m http://example.com/template.rb
+bin/rails app:template LOCATION=http://example.com/template.rb
+">Copy</button>
+</div>
+<h2 id="métodos-auxiliares-del-generador"><a class="anchorlink" href="#métodos-auxiliares-del-generador"><span>9</span> Métodos Auxiliares del Generador</a></h2><p>Thor proporciona muchos métodos auxiliares para generadores a través de <a href="https://www.rubydoc.info/gems/thor/Thor/Actions"><code>Thor::Actions</code></a>, tales como:</p>
+<ul>
+<li><a href="https://www.rubydoc.info/gems/thor/Thor/Actions#copy_file-instance_method"><code>copy_file</code></a></li>
+<li><a href="https://www.rubydoc.info/gems/thor/Thor/Actions#create_file-instance_method"><code>create_file</code></a></li>
+<li><a href="https://www.rubydoc.info/gems/thor/Thor/Actions#gsub_file-instance_method"><code>gsub_file</code></a></li>
+<li><a href="https://www.rubydoc.info/gems/thor/Thor/Actions#insert_into_file-instance_method"><code>insert_into_file</code></a></li>
+<li><a href="https://www.rubydoc.info/gems/thor/Thor/Actions#inside-instance_method"><code>inside</code></a></li>
+</ul>
+<p>Además de esos, Rails también proporciona muchos métodos auxiliares a través de <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html"><code>Rails::Generators::Actions</code></a>, tales como:</p>
+<ul>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-environment"><code>environment</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-gem"><code>gem</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-generate"><code>generate</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-git"><code>git</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-initializer"><code>initializer</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-lib"><code>lib</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-rails_command"><code>rails_command</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-rake"><code>rake</code></a></li>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Actions.html#method-i-route"><code>route</code></a></li>
+</ul>
+<h2 id="pruebas-de-generadores"><a class="anchorlink" href="#pruebas-de-generadores"><span>10</span> Pruebas de Generadores</a></h2><p>Rails proporciona métodos auxiliares para pruebas a través de <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Testing/Behavior.html"><code>Rails::Generators::Testing::Behaviour</code></a>, tales como:</p>
+<ul>
+<li><a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Testing/Behavior.html#method-i-run_generator"><code>run_generator</code></a></li>
+</ul>
+<p>Si ejecutas pruebas contra generadores, necesitarás establecer <code>RAILS_LOG_TO_STDOUT=true</code> para que las herramientas de depuración funcionen.</p><div class="interstitial code">
+<pre><code class="highlight sh"><span class="nv">RAILS_LOG_TO_STDOUT</span><span class="o">=</span><span class="nb">true</span> ./bin/test <span class="nb">test</span>/generators/actions_test.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="RAILS_LOG_TO_STDOUT=true ./bin/test test/generators/actions_test.rb
+">Copy</button>
+</div>
+<p>Además de esos, Rails también proporciona afirmaciones adicionales a través de <a href="https://edgeapi.rubyonrails.org/classes/Rails/Generators/Testing/Assertions.html"><code>Rails::Generators::Testing::Assertions</code></a>.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

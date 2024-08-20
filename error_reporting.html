@@ -1,0 +1,419 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe de Errores en Aplicaciones Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Informe de Errores en Aplicaciones Rails — Ruby on Rails Guides" />
+  <meta name="description" content="Informe de Errores en Aplicaciones RailsEsta guía introduce formas de gestionar excepciones que ocurren en aplicaciones Ruby on Rails.Después de leer esta guía, sabrás: Cómo usar el reportero de errores de Rails para capturar e informar errores. Cómo crear suscriptores personalizados para tu servicio de reporte de errores." />
+  <meta property="og:description" content="Informe de Errores en Aplicaciones RailsEsta guía introduce formas de gestionar excepciones que ocurren en aplicaciones Ruby on Rails.Después de leer esta guía, sabrás: Cómo usar el reportero de errores de Rails para capturar e informar errores. Cómo crear suscriptores personalizados para tu servicio de reporte de errores." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <h1>Informe de Errores en Aplicaciones Rails</h1><p>Esta guía introduce formas de gestionar excepciones que ocurren en aplicaciones Ruby on Rails.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Cómo usar el reportero de errores de Rails para capturar e informar errores.</li>
+<li>Cómo crear suscriptores personalizados para tu servicio de reporte de errores.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#informe-de-errores">Informe de Errores</a>
+
+<ul>
+<li><a href="#suscribirse-al-reportero">Suscribirse al Reportero</a></li>
+<li><a href="#usando-el-reportero-de-errores">Usando el Reportero de Errores</a></li>
+<li><a href="#opciones-de-reporte-de-errores">Opciones de Reporte de Errores</a></li>
+<li><a href="#filtrado-por-clases-de-errores">Filtrado por Clases de Errores</a></li>
+<li><a href="#establecer-contexto-globalmente">Establecer Contexto Globalmente</a></li>
+<li><a href="#para-bibliotecas">Para Bibliotecas</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="informe-de-errores"><a class="anchorlink" href="#informe-de-errores"><span>1</span> Informe de Errores</a></h2><p>El <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html">reportero de errores</a> de Rails proporciona una forma estándar de recopilar excepciones que ocurren en tu aplicación e informarlas a tu servicio o ubicación preferida.</p><p>El reportero de errores tiene como objetivo reemplazar el código repetitivo de manejo de errores como este:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">begin</span>
+  <span class="n">do_something</span>
+<span class="k">rescue</span> <span class="no">SomethingIsBroken</span> <span class="o">=&gt;</span> <span class="n">error</span>
+  <span class="no">MyErrorReportingService</span><span class="p">.</span><span class="nf">notify</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="begin
+  do_something
+rescue SomethingIsBroken => error
+  MyErrorReportingService.notify(error)
+end
+">Copy</button>
+</div>
+<p>con una interfaz consistente:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="no">SomethingIsBroken</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">do_something</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.handle(SomethingIsBroken) do
+  do_something
+end
+">Copy</button>
+</div>
+<p>Rails envuelve todas las ejecuciones (como solicitudes HTTP, trabajos e invocaciones de <code>rails runner</code>) en el reportero de errores, por lo que cualquier error no manejado que se genere en tu aplicación se informará automáticamente a tu servicio de reporte de errores a través de sus suscriptores.</p><p>Esto significa que las bibliotecas de reporte de errores de terceros ya no necesitan insertar un middleware de Rack o hacer ningún monkey-patching para capturar excepciones no manejadas. Las bibliotecas que usan ActiveSupport también pueden usar esto para informar de manera no intrusiva advertencias que anteriormente se habrían perdido en los registros.</p><p>No es obligatorio usar el reportero de errores de Rails. Todos los demás medios para capturar errores siguen funcionando.</p><h3 id="suscribirse-al-reportero"><a class="anchorlink" href="#suscribirse-al-reportero"><span>1.1</span> Suscribirse al Reportero</a></h3><p>Para usar el reportero de errores, necesitas un <em>suscriptor</em>. Un suscriptor es cualquier objeto con un método <code>report</code>. Cuando ocurre un error en tu aplicación o se informa manualmente, el reportero de errores de Rails llamará a este método con el objeto de error y algunas opciones.</p><p>Algunas bibliotecas de reporte de errores, como las de <a href="https://github.com/getsentry/sentry-ruby/blob/e18ce4b6dcce2ebd37778c1e96164684a1e9ebfc/sentry-rails/lib/sentry/rails/error_subscriber.rb">Sentry</a> y <a href="https://docs.honeybadger.io/lib/ruby/integration-guides/rails-exception-tracking/">Honeybadger</a>, registran automáticamente un suscriptor para ti. Consulta la documentación de tu proveedor para más detalles.</p><p>También puedes crear un suscriptor personalizado. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/error_subscriber.rb</span>
+<span class="k">class</span> <span class="nc">ErrorSubscriber</span>
+  <span class="k">def</span> <span class="nf">report</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">handled</span><span class="p">:,</span> <span class="n">severity</span><span class="p">:,</span> <span class="n">context</span><span class="p">:,</span> <span class="ss">source: </span><span class="kp">nil</span><span class="p">)</span>
+    <span class="no">MyErrorReportingService</span><span class="p">.</span><span class="nf">report_error</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="ss">context: </span><span class="n">context</span><span class="p">,</span> <span class="ss">handled: </span><span class="n">handled</span><span class="p">,</span> <span class="ss">level: </span><span class="n">severity</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ErrorSubscriber
+  def report(error, handled:, severity:, context:, source: nil)
+    MyErrorReportingService.report_error(error, context: context, handled: handled, level: severity)
+  end
+end
+">Copy</button>
+</div>
+<p>Después de definir la clase del suscriptor, regístrala llamando al método <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-subscribe"><code>Rails.error.subscribe</code></a>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="no">ErrorSubscriber</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.subscribe(ErrorSubscriber.new)
+">Copy</button>
+</div>
+<p>Puedes registrar tantos suscriptores como desees. Rails los llamará en orden, en el orden en que fueron registrados.</p><p>NOTA: El reportero de errores de Rails siempre llamará a los suscriptores registrados, independientemente de tu entorno. Sin embargo, muchos servicios de reporte de errores solo informan errores en producción por defecto. Debes configurar y probar tu configuración en todos los entornos según sea necesario.</p><h3 id="usando-el-reportero-de-errores"><a class="anchorlink" href="#usando-el-reportero-de-errores"><span>1.2</span> Usando el Reportero de Errores</a></h3><p>Hay tres formas en que puedes usar el reportero de errores:</p><h4 id="informar-y-omitir-errores"><a class="anchorlink" href="#informar-y-omitir-errores"><span>1.2.1</span> Informar y Omitir Errores</a></h4><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-handle"><code>Rails.error.handle</code></a> informará cualquier error generado dentro del bloque. Luego <strong>omitirá</strong> el error, y el resto de tu código fuera del bloque continuará como de costumbre.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">result</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span> <span class="k">do</span>
+  <span class="mi">1</span> <span class="o">+</span> <span class="s1">'1'</span> <span class="c1"># genera TypeError</span>
+<span class="k">end</span>
+<span class="n">result</span> <span class="c1"># =&gt; nil</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Esto será ejecutado</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="result = Rails.error.handle do
+  1 + '1' # genera TypeError
+end
+result # => nil
+1 + 1 # Esto será ejecutado
+">Copy</button>
+</div>
+<p>Si no se genera ningún error en el bloque, <code>Rails.error.handle</code> devolverá el resultado del bloque; de lo contrario, devolverá <code>nil</code>. Puedes anular esto proporcionando un <code>fallback</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">user</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="ss">fallback: </span><span class="o">-&gt;</span> <span class="p">{</span> <span class="no">User</span><span class="p">.</span><span class="nf">anonymous</span> <span class="p">})</span> <span class="k">do</span>
+  <span class="no">User</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="user = Rails.error.handle(fallback: -> { User.anonymous }) do
+  User.find_by(params[:id])
+end
+">Copy</button>
+</div>
+<h4 id="informar-y-volver-a-generar-errores"><a class="anchorlink" href="#informar-y-volver-a-generar-errores"><span>1.2.2</span> Informar y Volver a Generar Errores</a></h4><p><a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-record"><code>Rails.error.record</code></a> informará errores a todos los suscriptores registrados y luego volverá a generar el error, lo que significa que el resto de tu código no se ejecutará.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">record</span> <span class="k">do</span>
+  <span class="mi">1</span> <span class="o">+</span> <span class="s1">'1'</span> <span class="c1"># genera TypeError</span>
+<span class="k">end</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Esto no será ejecutado</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.record do
+  1 + '1' # genera TypeError
+end
+1 + 1 # Esto no será ejecutado
+">Copy</button>
+</div>
+<p>Si no se genera ningún error en el bloque, <code>Rails.error.record</code> devolverá el resultado del bloque.</p><h4 id="informar-errores-manualmente"><a class="anchorlink" href="#informar-errores-manualmente"><span>1.2.3</span> Informar Errores Manualmente</a></h4><p>También puedes informar errores manualmente llamando a <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-report"><code>Rails.error.report</code></a>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">begin</span>
+  <span class="c1"># código</span>
+<span class="k">rescue</span> <span class="no">StandardError</span> <span class="o">=&gt;</span> <span class="n">e</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">report</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="begin
+  # código
+rescue StandardError => e
+  Rails.error.report(e)
+end
+">Copy</button>
+</div>
+<p>Cualquier opción que pases será pasada a los suscriptores de errores.</p><h3 id="opciones-de-reporte-de-errores"><a class="anchorlink" href="#opciones-de-reporte-de-errores"><span>1.3</span> Opciones de Reporte de Errores</a></h3><p>Las 3 APIs de reporte (<code>#handle</code>, <code>#record</code> y <code>#report</code>) soportan las siguientes opciones, que luego se pasan a todos los suscriptores registrados:</p>
+<ul>
+<li><code>handled</code>: un <code>Boolean</code> para indicar si el error fue manejado. Esto se establece en <code>true</code> por defecto. <code>#record</code> lo establece en <code>false</code>.</li>
+<li><code>severity</code>: un <code>Symbol</code> que describe la severidad del error. Los valores esperados son: <code>:error</code>, <code>:warning</code>, y <code>:info</code>. <code>#handle</code> lo establece en <code>:warning</code>, mientras que <code>#record</code> lo establece en <code>:error</code>.</li>
+<li><code>context</code>: un <code>Hash</code> para proporcionar más contexto sobre el error, como detalles de la solicitud o del usuario.</li>
+<li><code>source</code>: un <code>String</code> sobre la fuente del error. La fuente predeterminada es <code>"application"</code>. Los errores informados por bibliotecas internas pueden establecer otras fuentes; la biblioteca de caché Redis puede usar <code>"redis_cache_store.active_support"</code>, por ejemplo. Tu suscriptor puede usar la fuente para ignorar errores que no te interesan.</li>
+</ul>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="ss">context: </span><span class="p">{</span> <span class="ss">user_id: </span><span class="n">user</span><span class="p">.</span><span class="nf">id</span> <span class="p">},</span> <span class="ss">severity: :info</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.handle(context: { user_id: user.id }, severity: :info) do
+  # ...
+end
+">Copy</button>
+</div>
+<h3 id="filtrado-por-clases-de-errores"><a class="anchorlink" href="#filtrado-por-clases-de-errores"><span>1.4</span> Filtrado por Clases de Errores</a></h3><p>Con <code>Rails.error.handle</code> y <code>Rails.error.record</code>, también puedes elegir informar solo errores de ciertas clases. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="no">IOError</span><span class="p">)</span> <span class="k">do</span>
+  <span class="mi">1</span> <span class="o">+</span> <span class="s1">'1'</span> <span class="c1"># genera TypeError</span>
+<span class="k">end</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># Los TypeErrors no son IOErrors, por lo que esto *no* será ejecutado</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.handle(IOError) do
+  1 + '1' # genera TypeError
+end
+1 + 1 # Los TypeErrors no son IOErrors, por lo que esto *no* será ejecutado
+">Copy</button>
+</div>
+<p>Aquí, el <code>TypeError</code> no será capturado por el reportero de errores de Rails. Solo se informarán instancias de <code>IOError</code> y sus descendientes. Cualquier otro error se generará normalmente.</p><h3 id="establecer-contexto-globalmente"><a class="anchorlink" href="#establecer-contexto-globalmente"><span>1.5</span> Establecer Contexto Globalmente</a></h3><p>Además de establecer el contexto a través de la opción <code>context</code>, puedes usar la API <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/ErrorReporter.html#method-i-set_context"><code>#set_context</code></a>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">set_context</span><span class="p">(</span><span class="ss">section: </span><span class="s2">"checkout"</span><span class="p">,</span> <span class="ss">user_id: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">id</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.set_context(section: &quot;checkout&quot;, user_id: @user.id)
+">Copy</button>
+</div>
+<p>Cualquier contexto establecido de esta manera se fusionará con la opción <code>context</code></p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">set_context</span><span class="p">(</span><span class="ss">a: </span><span class="mi">1</span><span class="p">)</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="ss">context: </span><span class="p">{</span> <span class="ss">b: </span><span class="mi">2</span> <span class="p">})</span> <span class="p">{</span> <span class="k">raise</span> <span class="p">}</span>
+<span class="c1"># El contexto informado será: {:a=&gt;1, :b=&gt;2}</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">handle</span><span class="p">(</span><span class="ss">context: </span><span class="p">{</span> <span class="ss">b: </span><span class="mi">3</span> <span class="p">})</span> <span class="p">{</span> <span class="k">raise</span> <span class="p">}</span>
+<span class="c1"># El contexto informado será: {:a=&gt;1, :b=&gt;3}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.error.set_context(a: 1)
+Rails.error.handle(context: { b: 2 }) { raise }
+# El contexto informado será: {:a=>1, :b=>2}
+Rails.error.handle(context: { b: 3 }) { raise }
+# El contexto informado será: {:a=>1, :b=>3}
+">Copy</button>
+</div>
+<h3 id="para-bibliotecas"><a class="anchorlink" href="#para-bibliotecas"><span>1.6</span> Para Bibliotecas</a></h3><p>Las bibliotecas de reporte de errores pueden registrar sus suscriptores en un <code>Railtie</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">MySdk</span>
+  <span class="k">class</span> <span class="nc">Railtie</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Railtie</span>
+    <span class="n">initializer</span> <span class="s2">"my_sdk.error_subscribe"</span> <span class="k">do</span>
+      <span class="no">Rails</span><span class="p">.</span><span class="nf">error</span><span class="p">.</span><span class="nf">subscribe</span><span class="p">(</span><span class="no">MyErrorSubscriber</span><span class="p">.</span><span class="nf">new</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MySdk
+  class Railtie < ::Rails::Railtie
+    initializer &quot;my_sdk.error_subscribe&quot; do
+      Rails.error.subscribe(MyErrorSubscriber.new)
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Si registras un suscriptor de errores, pero aún tienes otros mecanismos de errores como un middleware de Rack, podrías terminar con errores informados múltiples veces. Deberías eliminar tus otros mecanismos o ajustar tu funcionalidad de informe para que omita informar una excepción que ya ha visto antes.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

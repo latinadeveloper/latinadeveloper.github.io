@@ -1,0 +1,1456 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Actualización de Ruby on Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Actualización de Ruby on Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Actualización de Ruby on RailsEsta guía proporciona pasos a seguir cuando actualice sus aplicaciones a una versión más reciente de Ruby on Rails. Estos pasos también están disponibles en guías de lanzamiento individuales." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Actualización de Ruby on RailsEsta guía proporciona pasos a seguir cuando actualice sus aplicaciones a una versión más reciente de Ruby on Rails. Estos pasos también están disponibles en guías de lanzamiento individuales." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Actualización de Ruby on Rails</h1><p>Esta guía proporciona pasos a seguir cuando actualice sus aplicaciones a una versión más reciente de Ruby on Rails. Estos pasos también están disponibles en guías de lanzamiento individuales.</p>
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#consejos-generales">Consejos Generales</a>
+
+<ul>
+<li><a href="#cobertura-de-pruebas">Cobertura de Pruebas</a></li>
+<li><a href="#versiones-de-ruby">Versiones de Ruby</a></li>
+<li><a href="#el-proceso-de-actualización">El Proceso de Actualización</a></li>
+<li><a href="#la-tarea-de-actualización">La Tarea de Actualización</a></li>
+<li><a href="#configurar-valores-predeterminados-del-framework">Configurar Valores Predeterminados del Framework</a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-7-1-a-rails-7-2">Actualización de Rails 7.1 a Rails 7.2</a>
+
+<ul>
+<li><a href="#todas-las-pruebas-ahora-respetan-la-configuración-active-job-queue-adapter">Todas las pruebas ahora respetan la configuración <code>active_job.queue_adapter</code></a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-7-0-a-rails-7-1">Actualización de Rails 7.0 a Rails 7.1</a>
+
+<ul>
+<li><a href="#archivo-secret-key-base-cambiado-en-entornos-de-desarrollo-y-prueba">Archivo secret_key_base cambiado en entornos de desarrollo y prueba</a></li>
+<li><a href="#las-rutas-autoloaded-ya-no-están-en-$load-path">Las rutas autoloaded ya no están en $LOAD_PATH</a></li>
+<li><a href="#config-autoload-lib-y-config-autoload-lib-once">config.autoload_lib y config.autoload_lib_once</a></li>
+<li><a href="#activestorage-basecontroller-ya-no-incluye-el-concern-de-streaming"><code>ActiveStorage::BaseController</code> ya no incluye el concern de streaming</a></li>
+<li><a href="#memcachestore-y-rediscachestore-ahora-usan-agrupación-de-conexiones-por-defecto"><code>MemCacheStore</code> y <code>RedisCacheStore</code> ahora usan agrupación de conexiones por defecto</a></li>
+<li><a href="#sqlite3adapter-ahora-configurado-para-usarse-en-un-modo-estricto-de-cadenas"><code>SQLite3Adapter</code> ahora configurado para usarse en un modo estricto de cadenas</a></li>
+<li><a href="#soporte-para-múltiples-rutas-de-vista-previa-para-actionmailer-preview">Soporte para múltiples rutas de vista previa para <code>ActionMailer::Preview</code></a></li>
+<li><a href="#config-i18n-raise-on-missing-translations-true-ahora-genera-un-error-en-cualquier-traducción-faltante"><code>config.i18n.raise_on_missing_translations = true</code> ahora genera un error en cualquier traducción faltante.</a></li>
+<li><a href="#bin-rails-test-ahora-ejecuta-la-tarea-test-prepare"><code>bin/rails test</code> ahora ejecuta la tarea <code>test:prepare</code></a></li>
+<li><a href="#la-sintaxis-de-importación-de-@rails-ujs-se-ha-modificado">La sintaxis de importación de <code>@rails/ujs</code> se ha modificado</a></li>
+<li><a href="#rails-logger-ahora-devuelve-una-instancia-de-activesupport-broadcastlogger"><code>Rails.logger</code> ahora devuelve una instancia de <code>ActiveSupport::BroadcastLogger</code></a></li>
+<li><a href="#cambios-en-el-algoritmo-de-cifrado-de-active-record">Cambios en el algoritmo de cifrado de Active Record</a></li>
+<li><a href="#nuevas-formas-de-manejar-excepciones-en-pruebas-de-controladores-pruebas-de-integración-y-pruebas-de-sistema">Nuevas formas de manejar excepciones en Pruebas de Controladores, Pruebas de Integración y Pruebas de Sistema</a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-6-1-a-rails-7-0">Actualización de Rails 6.1 a Rails 7.0</a>
+
+<ul>
+<li><a href="#cambió-el-comportamiento-de-actionview-helpers-urlhelper-button-to">Cambió el comportamiento de <code>ActionView::Helpers::UrlHelper#button_to</code></a></li>
+<li><a href="#spring">Spring</a></li>
+<li><a href="#sprockets-ahora-es-una-dependencia-opcional">Sprockets ahora es una dependencia opcional</a></li>
+<li><a href="#las-aplicaciones-deben-ejecutarse-en-modo-zeitwerk">Las aplicaciones deben ejecutarse en modo <code>zeitwerk</code></a></li>
+<li><a href="#el-setter-config-autoloader-ha-sido-eliminado">El setter <code>config.autoloader=</code> ha sido eliminado</a></li>
+<li><a href="#la-api-privada-de-activesupport-dependencies-ha-sido-eliminada">La API privada de <code>ActiveSupport::Dependencies</code> ha sido eliminada</a></li>
+<li><a href="#carga-automática-durante-la-inicialización">Carga automática durante la inicialización</a></li>
+<li><a href="#capacidad-de-configurar-config-autoload-once-paths">Capacidad de configurar <code>config.autoload_once_paths</code></a></li>
+<li><a href="#actiondispatch-request-content-type-ahora-devuelve-el-encabezado-content-type-tal-como-es"><code>ActionDispatch::Request#content_type</code> ahora devuelve el encabezado Content-Type tal como es.</a></li>
+<li><a href="#el-cambio-de-clase-digest-del-generador-de-claves-requiere-un-rotador-de-cookies">El cambio de clase digest del generador de claves requiere un rotador de cookies</a></li>
+<li><a href="#cambio-de-clase-digest-para-activesupport-digest-a-sha256">Cambio de clase digest para ActiveSupport::Digest a SHA256</a></li>
+<li><a href="#nuevo-formato-de-serialización-de-caché-en-activesupport">Nuevo formato de serialización de caché en ActiveSupport</a></li>
+<li><a href="#generación-de-imágenes-de-vista-previa-de-video-en-active-storage">Generación de imágenes de vista previa de video en Active Storage</a></li>
+<li><a href="#procesador-de-variantes-predeterminado-de-active-storage-cambiado-a-vips">Procesador de variantes predeterminado de Active Storage cambiado a <code>:vips</code></a></li>
+<li><a href="#la-versión-de-rails-ahora-se-incluye-en-el-volcado-de-esquema-de-active-record">La versión de Rails ahora se incluye en el volcado de esquema de Active Record</a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-6-0-a-rails-6-1">Actualización de Rails 6.0 a Rails 6.1</a>
+
+<ul>
+<li><a href="#el-valor-de-retorno-de-rails-application-config-for-ya-no-admite-el-acceso-con-claves-de-cadena">El valor de retorno de <code>Rails.application.config_for</code> ya no admite el acceso con claves de cadena.</a></li>
+<li><a href="#tipo-de-contenido-de-la-respuesta-al-usar-respond-to-any">Tipo de contenido de la respuesta al usar <code>respond_to#any</code></a></li>
+<li><a href="#activesupport-callbacks-halted-callback-hook-ahora-recibe-un-segundo-argumento"><code>ActiveSupport::Callbacks#halted_callback_hook</code> ahora recibe un segundo argumento</a></li>
+<li><a href="#el-método-de-clase-helper-en-controladores-usa-string-constantize">El método de clase <code>helper</code> en controladores usa <code>String#constantize</code></a></li>
+<li><a href="#la-redirección-a-https-desde-http-ahora-usará-el-código-de-estado-http-308">La redirección a HTTPS desde HTTP ahora usará el código de estado HTTP 308</a></li>
+<li><a href="#active-storage-ahora-requiere-image-processing">Active Storage ahora requiere Image Processing</a></li>
+<li><a href="#nueva-clase-activemodel-error">Nueva clase <code>ActiveModel::Error</code></a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-5-2-a-rails-6-0">Actualización de Rails 5.2 a Rails 6.0</a>
+
+<ul>
+<li><a href="#uso-de-webpacker">Uso de Webpacker</a></li>
+<li><a href="#forzar-ssl">Forzar SSL</a></li>
+<li><a href="#el-propósito-y-la-expiración-de-los-metadatos-ahora-están-incrustados-dentro-de-las-cookies-firmadas-y-cifradas-para-aumentar-la-seguridad">El propósito y la expiración de los metadatos ahora están incrustados dentro de las cookies firmadas y cifradas para aumentar la seguridad</a></li>
+<li><a href="#todos-los-paquetes-npm-se-han-movido-al-alcance-@rails">Todos los paquetes npm se han movido al alcance <code>@rails</code></a></li>
+<li><a href="#cambios-en-la-api-de-javascript-de-action-cable">Cambios en la API de JavaScript de Action Cable</a></li>
+<li><a href="#actiondispatch-response-content-type-ahora-devuelve-el-encabezado-content-type-sin-modificación"><code>ActionDispatch::Response#content_type</code> ahora devuelve el encabezado Content-Type sin modificación</a></li>
+<li><a href="#nueva-configuración-config-hosts">Nueva configuración <code>config.hosts</code></a></li>
+<li><a href="#carga-automática">Carga automática</a></li>
+<li><a href="#cambio-en-el-comportamiento-de-asignación-de-active-storage">Cambio en el Comportamiento de Asignación de Active Storage</a></li>
+<li><a href="#aplicaciones-de-manejo-de-excepciones-personalizadas">Aplicaciones de Manejo de Excepciones Personalizadas</a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-5-1-a-rails-5-2">Actualización de Rails 5.1 a Rails 5.2</a>
+
+<ul>
+<li><a href="#actualización-de-rails-5-1-a-rails-5-2-bootsnap">Bootsnap</a></li>
+<li><a href="#la-expiración-en-cookies-firmadas-o-cifradas-ahora-está-incrustada-en-los-valores-de-las-cookies">La expiración en cookies firmadas o cifradas ahora está incrustada en los valores de las cookies</a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-5-0-a-rails-5-1">Actualización de Rails 5.0 a Rails 5.1</a>
+
+<ul>
+<li><a href="#hashwithindifferentaccess-de-nivel-superior-está-en-desuso"><code>HashWithIndifferentAccess</code> de nivel superior está en desuso</a></li>
+<li><a href="#application-secrets-ahora-se-carga-con-todas-las-claves-como-símbolos"><code>application.secrets</code> ahora se carga con todas las claves como símbolos</a></li>
+<li><a href="#eliminado-soporte-desaprobado-para-text-y-nothing-en-render">Eliminado soporte desaprobado para <code>:text</code> y <code>:nothing</code> en <code>render</code></a></li>
+<li><a href="#eliminado-soporte-desaprobado-de-redirect-to-back">Eliminado soporte desaprobado de <code>redirect_to :back</code></a></li>
+</ul></li>
+<li><a href="#actualización-de-rails-4-2-a-rails-5-0">Actualización de Rails 4.2 a Rails 5.0</a>
+
+<ul>
+<li><a href="#ruby-2-2-2-requerido">Ruby 2.2.2+ requerido</a></li>
+<li><a href="#los-modelos-de-active-record-ahora-heredan-de-applicationrecord-por-defecto">Los modelos de Active Record ahora heredan de ApplicationRecord por defecto</a></li>
+<li><a href="#detener-cadenas-de-devoluciones-de-llamada-a-través-de-throw-abort">Detener cadenas de devoluciones de llamada a través de <code>throw(:abort)</code></a></li>
+<li><a href="#activejob-ahora-hereda-de-applicationjob-por-defecto">ActiveJob ahora hereda de ApplicationJob por defecto</a></li>
+<li><a href="#pruebas-de-controladores-de-rails">Pruebas de Controladores de Rails</a></li>
+<li><a href="#la-carga-automática-está-deshabilitada-después-de-iniciar-en-el-entorno-de-producción">La carga automática está deshabilitada después de iniciar en el entorno de producción</a></li>
+<li><a href="#serialización-xml">Serialización XML</a></li>
+<li><a href="#eliminado-soporte-para-adaptador-de-base-de-datos-mysql-heredado">Eliminado soporte para adaptador de base de datos <code>mysql</code> heredado</a></li>
+<li><a href="#eliminado-soporte-para-debugger">Eliminado soporte para Debugger</a></li>
+<li><a href="#use-bin-rails-para-ejecutar-tareas-y-pruebas">Use <code>bin/rails</code> para ejecutar tareas y pruebas</a></li>
+<li><a href="#actioncontroller-parameters-ya-no-hereda-de-hashwithindifferentaccess"><code>ActionController::Parameters</code> ya no hereda de <code>HashWithIndifferentAccess</code></a></li>
+<li><a href="#protect-from-forgery-ahora-predetermina-prepend-false"><code>protect_from_forgery</code> ahora predetermina <code>prepend: false</code></a></li>
+<li><a href="#el-manejador-de-plantillas-predeterminado-ahora-es-raw">El manejador de plantillas predeterminado ahora es RAW</a></li>
+<li><a href="#agregado-coincidencia-de-comodines-para-dependencias-de-plantillas">Agregado coincidencia de comodines para dependencias de plantillas</a></li>
+<li><a href="#actionview-helpers-recordtaghelper-movido-a-un-gem-externo-record-tag-helper"><code>ActionView::Helpers::RecordTagHelper</code> movido a un gem externo (record_tag_helper)</a></li>
+<li><a href="#eliminado-soporte-para-el-gem-protected-attributes">Eliminado soporte para el gem <code>protected_attributes</code></a></li>
+<li><a href="#eliminado-soporte-para-el-gem-activerecord-deprecated-finders">Eliminado soporte para el gem <code>activerecord-deprecated_finders</code></a></li>
+<li><a href="#el-orden-de-prueba-predeterminado-de-activesupport-testcase-ahora-es-aleatorio">El orden de prueba predeterminado de <code>ActiveSupport::TestCase</code> ahora es aleatorio</a></li>
+<li><a href="#actioncontroller-live-se-convirtió-en-un-concern"><code>ActionController::Live</code> se convirtió en un <code>Concern</code></a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="consejos-generales"><a class="anchorlink" href="#consejos-generales"><span>1</span> Consejos Generales</a></h2><p>Antes de intentar actualizar una aplicación existente, debe asegurarse de tener una buena razón para hacerlo. Necesita equilibrar varios factores: la necesidad de nuevas funciones, la dificultad creciente de encontrar soporte para el código antiguo y su tiempo y habilidades disponibles, por nombrar algunos.</p><h3 id="cobertura-de-pruebas"><a class="anchorlink" href="#cobertura-de-pruebas"><span>1.1</span> Cobertura de Pruebas</a></h3><p>La mejor manera de asegurarse de que su aplicación aún funcione después de la actualización es tener una buena cobertura de pruebas antes de comenzar el proceso. Si no tiene pruebas automatizadas que ejerciten la mayor parte de su aplicación, necesitará dedicar tiempo a ejercitar manualmente todas las partes que hayan cambiado. En el caso de una actualización de Rails, eso significará cada pieza de funcionalidad en la aplicación. Hágase un favor y asegúrese de que su cobertura de pruebas sea buena <em>antes</em> de comenzar una actualización.</p><h3 id="versiones-de-ruby"><a class="anchorlink" href="#versiones-de-ruby"><span>1.2</span> Versiones de Ruby</a></h3><p>Rails generalmente se mantiene cerca de la última versión de Ruby lanzada cuando se publica:</p>
+<ul>
+<li>Rails 7.2 requiere Ruby 3.1.0 o más reciente.</li>
+<li>Rails 7.0 y 7.1 requieren Ruby 2.7.0 o más reciente.</li>
+<li>Rails 6 requiere Ruby 2.5.0 o más reciente.</li>
+<li>Rails 5 requiere Ruby 2.2.2 o más reciente.</li>
+</ul>
+<p>Es una buena idea actualizar Ruby y Rails por separado. Actualice primero a la última versión de Ruby que pueda, y luego actualice Rails.</p><h3 id="el-proceso-de-actualización"><a class="anchorlink" href="#el-proceso-de-actualización"><span>1.3</span> El Proceso de Actualización</a></h3><p>Al cambiar versiones de Rails, es mejor moverse lentamente, una versión menor a la vez, para hacer un buen uso de las advertencias de desaprobación. Los números de versión de Rails están en la forma Mayor.Menor.Parche. Las versiones Mayor y Menor pueden hacer cambios en la API pública, por lo que esto puede causar errores en su aplicación. Las versiones de Parche solo incluyen correcciones de errores y no cambian ninguna API pública.</p><p>El proceso debería ser el siguiente:</p>
+<ol>
+<li>Escriba pruebas y asegúrese de que pasen.</li>
+<li>Pase a la última versión de parche después de su versión actual.</li>
+<li>Corrija las pruebas y las características desaprobadas.</li>
+<li>Pase a la última versión de parche de la siguiente versión menor.</li>
+</ol>
+<p>Repita este proceso hasta alcanzar su versión objetivo de Rails.</p><h4 id="cambiando-entre-versiones"><a class="anchorlink" href="#cambiando-entre-versiones"><span>1.3.1</span> Cambiando entre versiones</a></h4><p>Para cambiar entre versiones:</p>
+<ol>
+<li>Cambie el número de versión de Rails en el <code>Gemfile</code> y ejecute <code>bundle update</code>.</li>
+<li>Cambie las versiones de los paquetes JavaScript de Rails en <code>package.json</code> y ejecute <code>bin/rails javascript:install</code> si está ejecutando jsbundling-rails.</li>
+<li>Ejecute la <a href="#la-tarea-de-actualización">tarea de actualización</a>.</li>
+<li>Ejecute sus pruebas.</li>
+</ol>
+<p>Puede encontrar una lista de todos los gems de Rails lanzados <a href="https://rubygems.org/gems/rails/versions">aquí</a>.</p><h3 id="la-tarea-de-actualización"><a class="anchorlink" href="#la-tarea-de-actualización"><span>1.4</span> La Tarea de Actualización</a></h3><p>Rails proporciona el comando <code>rails app:update</code>. Después de actualizar la versión de Rails en el <code>Gemfile</code>, ejecute este comando. Esto le ayudará con la creación de nuevos archivos y cambios de archivos antiguos en una sesión interactiva.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>app:update
+<span class="go">       exist  config
+    conflict  config/application.rb
+Overwrite /myapp/config/application.rb? (enter "h" for help) [Ynaqdh]
+       force  config/application.rb
+      create  config/initializers/new_framework_defaults_7_2.rb
+</span><span class="c">...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails app:update
+">Copy</button>
+</div>
+<p>No olvide revisar la diferencia, para ver si hubo algún cambio inesperado.</p><h3 id="configurar-valores-predeterminados-del-framework"><a class="anchorlink" href="#configurar-valores-predeterminados-del-framework"><span>1.5</span> Configurar Valores Predeterminados del Framework</a></h3><p>La nueva versión de Rails podría tener diferentes valores de configuración predeterminados que la versión anterior. Sin embargo, después de seguir los pasos descritos anteriormente, su aplicación aún se ejecutará con los valores predeterminados de configuración de la versión de Rails <em>anterior</em>. Esto se debe a que el valor de <code>config.load_defaults</code> en <code>config/application.rb</code> aún no se ha cambiado.</p><p>Para permitirle actualizar a nuevos valores predeterminados uno por uno, la tarea de actualización ha creado un archivo <code>config/initializers/new_framework_defaults_X.Y.rb</code> (con la versión deseada de Rails en el nombre del archivo). Debe habilitar los nuevos valores de configuración descomentándolos en el archivo; esto se puede hacer gradualmente en varios despliegues. Una vez que su aplicación esté lista para ejecutarse con los nuevos valores predeterminados, puede eliminar este archivo y cambiar el valor de <code>config.load_defaults</code>.</p><h2 id="actualización-de-rails-7-1-a-rails-7-2"><a class="anchorlink" href="#actualización-de-rails-7-1-a-rails-7-2"><span>2</span> Actualización de Rails 7.1 a Rails 7.2</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 7.2, consulte las <a href="7_2_release_notes.html">notas de lanzamiento</a>.</p><h3 id="todas-las-pruebas-ahora-respetan-la-configuración-active-job-queue-adapter"><a class="anchorlink" href="#todas-las-pruebas-ahora-respetan-la-configuración-active-job-queue-adapter"><span>2.1</span> Todas las pruebas ahora respetan la configuración <code>active_job.queue_adapter</code></a></h3><p>Si ha configurado <code>config.active_job.queue_adapter</code> en su archivo <code>config/application.rb</code> o <code>config/environments/test.rb</code>, el adaptador que seleccionó anteriormente no se usaba de manera consistente en todas las pruebas. En algunas pruebas se utilizaba su adaptador, pero en otras se utilizaba el <code>TestAdapter</code>.</p><p>En Rails 7.2, todas las pruebas respetarán la configuración de <code>queue_adapter</code> si se proporciona. Esto puede causar errores en las pruebas si había configurado <code>queue_adapter</code> en algo distinto de <code>:test</code>, pero había escrito pruebas de una manera que dependía del <code>TestAdapter</code>.</p><p>Si no se proporciona ninguna configuración, se seguirá utilizando el <code>TestAdapter</code>.</p><h2 id="actualización-de-rails-7-0-a-rails-7-1"><a class="anchorlink" href="#actualización-de-rails-7-0-a-rails-7-1"><span>3</span> Actualización de Rails 7.0 a Rails 7.1</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 7.1, consulte las <a href="7_1_release_notes.html">notas de lanzamiento</a>.</p><h3 id="archivo-secret-key-base-cambiado-en-entornos-de-desarrollo-y-prueba"><a class="anchorlink" href="#archivo-secret-key-base-cambiado-en-entornos-de-desarrollo-y-prueba"><span>3.1</span> Archivo secret_key_base cambiado en entornos de desarrollo y prueba</a></h3><p>En los entornos de desarrollo y prueba, el archivo del que Rails lee el <code>secret_key_base</code> se ha renombrado de <code>tmp/development_secret.txt</code> a <code>tmp/local_secret.txt</code>.</p><p>Simplemente puede renombrar el archivo anterior a <code>local_secret.txt</code> para continuar usando el mismo secreto, o copiar la clave del archivo anterior al nuevo.</p><p>No hacerlo causará que Rails genere una nueva clave secreta en el nuevo archivo <code>tmp/local_secret.txt</code> cuando se cargue la aplicación.</p><p>Esto invalidará todas las sesiones/cookies existentes en los entornos de desarrollo y prueba, y también causará que otras firmas derivadas de <code>secret_key_base</code> se rompan, como los archivos adjuntos de Active Storage/Action Text.</p><p>La producción y otros entornos no se ven afectados.</p><h3 id="las-rutas-autoloaded-ya-no-están-en-$load-path"><a class="anchorlink" href="#las-rutas-autoloaded-ya-no-están-en-$load-path"><span>3.2</span> Las rutas autoloaded ya no están en $LOAD_PATH</a></h3><p>A partir de Rails 7.1, los directorios gestionados por los autoloaders ya no se agregan a <code>$LOAD_PATH</code>. Esto significa que no será posible cargar sus archivos con una llamada manual a <code>require</code>, lo cual no debería hacerse de todos modos.</p><p>Reducir el tamaño de <code>$LOAD_PATH</code> acelera las llamadas a <code>require</code> para aplicaciones que no usan <code>bootsnap</code>, y reduce el tamaño del caché de <code>bootsnap</code> para las demás.</p><p>Si desea que estas rutas todavía estén en <code>$LOAD_PATH</code>, puede optar por incluirlas:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">add_autoload_paths_to_load_path</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.add_autoload_paths_to_load_path = true
+">Copy</button>
+</div>
+<p>pero desaconsejamos hacerlo, las clases y módulos en las rutas de carga automática están destinadas a ser cargadas automáticamente. Es decir, simplemente refiérase a ellas.</p><p>El directorio <code>lib</code> no se ve afectado por este indicador, siempre se agrega a <code>$LOAD_PATH</code>.</p><h3 id="config-autoload-lib-y-config-autoload-lib-once"><a class="anchorlink" href="#config-autoload-lib-y-config-autoload-lib-once"><span>3.3</span> config.autoload_lib y config.autoload_lib_once</a></h3><p>Si su aplicación no tiene <code>lib</code> en las rutas de carga automática o de carga automática única, por favor omita esta sección. Puede averiguarlo inspeccionando la salida de</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">#</span><span class="w"> </span>Imprimir rutas de carga automática.
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'pp Rails.autoloaders.main.dirs'</span>
+<span class="go">
+</span><span class="gp">#</span><span class="w"> </span>Imprimir rutas de carga automática única.
+<span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'pp Rails.autoloaders.once.dirs'</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails runner 'pp Rails.autoloaders.main.dirs'
+bin/rails runner 'pp Rails.autoloaders.once.dirs'
+">Copy</button>
+</div>
+<p>Si su aplicación ya tiene <code>lib</code> en las rutas de carga automática, normalmente hay una configuración en <code>config/application.rb</code> que se ve algo así</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Cargar automáticamente lib, pero no cargarla ansiosamente (quizás pasado por alto).</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">&lt;&lt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Cargar automáticamente lib, pero no cargarla ansiosamente (quizás pasado por alto).
+config.autoload_paths << config.root.join(&quot;lib&quot;)
+">Copy</button>
+</div>
+<p>o</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Cargar automáticamente y también cargar ansiosamente lib.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">&lt;&lt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">eager_load_paths</span> <span class="o">&lt;&lt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Cargar automáticamente y también cargar ansiosamente lib.
+config.autoload_paths << config.root.join(&quot;lib&quot;)
+config.eager_load_paths << config.root.join(&quot;lib&quot;)
+">Copy</button>
+</div>
+<p>o</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Lo mismo, porque todas las rutas de carga ansiosa también se convierten en rutas de carga automática.</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">eager_load_paths</span> <span class="o">&lt;&lt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Lo mismo, porque todas las rutas de carga ansiosa también se convierten en rutas de carga automática.
+config.eager_load_paths << config.root.join(&quot;lib&quot;)
+">Copy</button>
+</div>
+<p>Eso todavía funciona, pero se recomienda reemplazar esas líneas con el más conciso</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_lib</span><span class="p">(</span><span class="ss">ignore: </span><span class="sx">%w(assets tasks)</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_lib(ignore: %w(assets tasks))
+">Copy</button>
+</div>
+<p>Por favor, agregue a la lista de <code>ignore</code> cualquier otro subdirectorio de <code>lib</code> que no contenga archivos <code>.rb</code>, o que no deba ser recargado o cargado ansiosamente. Por ejemplo, si su aplicación tiene <code>lib/templates</code>, <code>lib/generators</code> o <code>lib/middleware</code>, agregaría su nombre relativo a <code>lib</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_lib</span><span class="p">(</span><span class="ss">ignore: </span><span class="sx">%w(assets tasks templates generators middleware)</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_lib(ignore: %w(assets tasks templates generators middleware))
+">Copy</button>
+</div>
+<p>Con esa línea, el código (no ignorado) en <code>lib</code> también se cargará ansiosamente si <code>config.eager_load</code> es <code>true</code> (el valor predeterminado en modo <code>production</code>). Esto es normalmente lo que desea, pero si <code>lib</code> no se agregó a las rutas de carga ansiosa antes y aún lo desea de esa manera, por favor opte por no hacerlo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">do_not_eager_load</span><span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">))</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.main.do_not_eager_load(config.root.join(&quot;lib&quot;))
+">Copy</button>
+</div>
+<p>El método <code>config.autoload_lib_once</code> es el análogo si la aplicación tenía <code>lib</code> en <code>config.autoload_once_paths</code>.</p><h3 id="activestorage-basecontroller-ya-no-incluye-el-concern-de-streaming"><a class="anchorlink" href="#activestorage-basecontroller-ya-no-incluye-el-concern-de-streaming"><span>3.4</span> <code>ActiveStorage::BaseController</code> ya no incluye el concern de streaming</a></h3><p>Los controladores de aplicaciones que heredan de <code>ActiveStorage::BaseController</code> y usan streaming para implementar lógica de servicio de archivos personalizada deben incluir explícitamente el módulo <code>ActiveStorage::Streaming</code>.</p><h3 id="memcachestore-y-rediscachestore-ahora-usan-agrupación-de-conexiones-por-defecto"><a class="anchorlink" href="#memcachestore-y-rediscachestore-ahora-usan-agrupación-de-conexiones-por-defecto"><span>3.5</span> <code>MemCacheStore</code> y <code>RedisCacheStore</code> ahora usan agrupación de conexiones por defecto</a></h3><p>El gem <code>connection_pool</code> se ha agregado como una dependencia del gem <code>activesupport</code>, y <code>MemCacheStore</code> y <code>RedisCacheStore</code> ahora usan agrupación de conexiones por defecto.</p><p>Si no desea usar agrupación de conexiones, configure la opción <code>:pool</code> en <code>false</code> al configurar su almacén de caché:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">cache_store</span> <span class="o">=</span> <span class="ss">:mem_cache_store</span><span class="p">,</span> <span class="s2">"cache.example.com"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">pool: </span><span class="kp">false</span> <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.cache_store = :mem_cache_store, &quot;cache.example.com&quot;, { pool: false }
+">Copy</button>
+</div>
+<p>Consulte la guía <a href="https://guides.rubyonrails.org/v7.1/caching_with_rails.html#connection-pool-options">caching with Rails</a> para obtener más información.</p><h3 id="sqlite3adapter-ahora-configurado-para-usarse-en-un-modo-estricto-de-cadenas"><a class="anchorlink" href="#sqlite3adapter-ahora-configurado-para-usarse-en-un-modo-estricto-de-cadenas"><span>3.6</span> <code>SQLite3Adapter</code> ahora configurado para usarse en un modo estricto de cadenas</a></h3><p>El uso de un modo estricto de cadenas deshabilita los literales de cadena entre comillas dobles.</p><p>SQLite tiene algunas peculiaridades en torno a los literales de cadena entre comillas dobles. Primero intenta considerar las cadenas entre comillas dobles como nombres de identificadores, pero si no existen, entonces las considera como literales de cadena. Debido a esto, los errores tipográficos pueden pasar desapercibidos. Por ejemplo, es posible crear un índice para una columna no existente. Consulte la <a href="https://www.sqlite.org/quirks.html#double_quoted_string_literals_are_accepted">documentación de SQLite</a> para obtener más detalles.</p><p>Si no desea usar <code>SQLite3Adapter</code> en un modo estricto, puede deshabilitar este comportamiento:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">sqlite3_adapter_strict_strings_by_default</span> <span class="o">=</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.sqlite3_adapter_strict_strings_by_default = false
+">Copy</button>
+</div>
+<h3 id="soporte-para-múltiples-rutas-de-vista-previa-para-actionmailer-preview"><a class="anchorlink" href="#soporte-para-múltiples-rutas-de-vista-previa-para-actionmailer-preview"><span>3.7</span> Soporte para múltiples rutas de vista previa para <code>ActionMailer::Preview</code></a></h3><p>La opción <code>config.action_mailer.preview_path</code> está obsoleta en favor de <code>config.action_mailer.preview_paths</code>. Agregar rutas a esta opción de configuración hará que esas rutas se utilicen en la búsqueda de vistas previas de correo.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">preview_paths</span> <span class="o">&lt;&lt;</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/lib/mailer_previews"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.action_mailer.preview_paths << &quot;#{Rails.root}/lib/mailer_previews&quot;
+">Copy</button>
+</div>
+<h3 id="config-i18n-raise-on-missing-translations-true-ahora-genera-un-error-en-cualquier-traducción-faltante"><a class="anchorlink" href="#config-i18n-raise-on-missing-translations-true-ahora-genera-un-error-en-cualquier-traducción-faltante"><span>3.8</span> <code>config.i18n.raise_on_missing_translations = true</code> ahora genera un error en cualquier traducción faltante.</a></h3><p>Anteriormente, solo generaba un error cuando se llamaba en una vista o controlador. Ahora generará un error cada vez que <code>I18n.t</code> reciba una clave no reconocida.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># con config.i18n.raise_on_missing_translations = true</span>
+
+<span class="c1"># en una vista o controlador:</span>
+<span class="n">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># genera un error en 7.0, genera un error en 7.1</span>
+<span class="no">I18n</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># no generaba un error en 7.0, genera un error en 7.1</span>
+
+<span class="c1"># en cualquier lugar:</span>
+<span class="no">I18n</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># no generaba un error en 7.0, genera un error en 7.1</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# con config.i18n.raise_on_missing_translations = true
+
+# en una vista o controlador:
+t(&quot;missing.key&quot;) # genera un error en 7.0, genera un error en 7.1
+I18n.t(&quot;missing.key&quot;) # no generaba un error en 7.0, genera un error en 7.1
+
+# en cualquier lugar:
+I18n.t(&quot;missing.key&quot;) # no generaba un error en 7.0, genera un error en 7.1
+">Copy</button>
+</div>
+<p>Si no desea este comportamiento, puede configurar <code>config.i18n.raise_on_missing_translations = false</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># con config.i18n.raise_on_missing_translations = false</span>
+
+<span class="c1"># en una vista o controlador:</span>
+<span class="n">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># no generaba un error en 7.0, no genera un error en 7.1</span>
+<span class="no">I18n</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># no generaba un error en 7.0, no genera un error en 7.1</span>
+
+<span class="c1"># en cualquier lugar:</span>
+<span class="no">I18n</span><span class="p">.</span><span class="nf">t</span><span class="p">(</span><span class="s2">"missing.key"</span><span class="p">)</span> <span class="c1"># no generaba un error en 7.0, no genera un error en 7.1</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# con config.i18n.raise_on_missing_translations = false
+
+# en una vista o controlador:
+t(&quot;missing.key&quot;) # no generaba un error en 7.0, no genera un error en 7.1
+I18n.t(&quot;missing.key&quot;) # no generaba un error en 7.0, no genera un error en 7.1
+
+# en cualquier lugar:
+I18n.t(&quot;missing.key&quot;) # no generaba un error en 7.0, no genera un error en 7.1
+">Copy</button>
+</div>
+<p>Alternativamente, puede personalizar el <code>I18n.exception_handler</code>. Consulte la <a href="https://guides.rubyonrails.org/v7.1/i18n.html#using-different-exception-handlers">guía i18n</a> para obtener más información.</p><p><code>AbstractController::Translation.raise_on_missing_translations</code> ha sido eliminado. Esta era una API privada, si dependía de ella, debería migrar a <code>config.i18n.raise_on_missing_translations</code> o a un manejador de excepciones personalizado.</p><h3 id="bin-rails-test-ahora-ejecuta-la-tarea-test-prepare"><a class="anchorlink" href="#bin-rails-test-ahora-ejecuta-la-tarea-test-prepare"><span>3.9</span> <code>bin/rails test</code> ahora ejecuta la tarea <code>test:prepare</code></a></h3><p>Al ejecutar pruebas a través de <code>bin/rails test</code>, la tarea <code>rake test:prepare</code> se ejecutará antes de que se ejecuten las pruebas. Si ha mejorado la tarea <code>test:prepare</code>, sus mejoras se ejecutarán antes de sus pruebas. <code>tailwindcss-rails</code>, <code>jsbundling-rails</code> y <code>cssbundling-rails</code> mejoran esta tarea, al igual que otros gems de terceros.</p><p>Consulte la guía <a href="https://guides.rubyonrails.org/testing.html#running-tests-in-continuous-integration-ci">Testing Rails Applications</a> para obtener más información.</p><p>Si ejecuta las pruebas de un solo archivo (<code>bin/rails test test/models/user_test.rb</code>), <code>test:prepare</code> no se ejecutará antes de ellas.</p><h3 id="la-sintaxis-de-importación-de-@rails-ujs-se-ha-modificado"><a class="anchorlink" href="#la-sintaxis-de-importación-de-@rails-ujs-se-ha-modificado"><span>3.10</span> La sintaxis de importación de <code>@rails/ujs</code> se ha modificado</a></h3><p>A partir de Rails 7.1, la sintaxis para importar módulos de <code>@rails/ujs</code> se ha modificado. Rails ya no admite la importación directa de un módulo desde <code>@rails/ujs</code>.</p><p>Por ejemplo, intentar importar una función de la biblioteca fallará:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">fileInputSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@rails/ujs</span><span class="dl">"</span>
+<span class="c1">// ERROR: export 'fileInputSelector' (importado como 'fileInputSelector') no se encontró en '@rails/ujs' (posibles exportaciones: default)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import { fileInputSelector } from &quot;@rails/ujs&quot;
+// ERROR: export 'fileInputSelector' (importado como 'fileInputSelector') no se encontró en '@rails/ujs' (posibles exportaciones: default)
+">Copy</button>
+</div>
+<p>En Rails 7.1, los usuarios deben importar primero el objeto Rails directamente desde <code>@rails/ujs</code>. Luego, los usuarios pueden importar módulos específicos desde el objeto Rails.</p><p>Un ejemplo de importaciones en Rails 7.1 se muestra a continuación:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="nx">Rails</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@rails/ujs</span><span class="dl">"</span>
+<span class="c1">// Alias del método</span>
+<span class="kd">const</span> <span class="nx">fileInputSelector</span> <span class="o">=</span> <span class="nx">Rails</span><span class="p">.</span><span class="nx">fileInputSelector</span>
+<span class="c1">// Alternativamente, referenciarlo desde el objeto Rails donde se utiliza</span>
+<span class="nx">Rails</span><span class="p">.</span><span class="nf">fileInputSelector</span><span class="p">(...)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import Rails from &quot;@rails/ujs&quot;
+// Alias del método
+const fileInputSelector = Rails.fileInputSelector
+// Alternativamente, referenciarlo desde el objeto Rails donde se utiliza
+Rails.fileInputSelector(...)
+">Copy</button>
+</div>
+<h3 id="rails-logger-ahora-devuelve-una-instancia-de-activesupport-broadcastlogger"><a class="anchorlink" href="#rails-logger-ahora-devuelve-una-instancia-de-activesupport-broadcastlogger"><span>3.11</span> <code>Rails.logger</code> ahora devuelve una instancia de <code>ActiveSupport::BroadcastLogger</code></a></h3><p>La clase <code>ActiveSupport::BroadcastLogger</code> es un nuevo logger que permite transmitir registros a diferentes destinos (STDOUT, un archivo de registro...) de manera sencilla.</p><p>La API para transmitir registros (usando el método <code>ActiveSupport::Logger.broadcast</code>) fue eliminada y anteriormente era privada. Si su aplicación o biblioteca dependía de esta API, necesita realizar los siguientes cambios:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"some_file.log"</span><span class="p">)</span>
+
+<span class="c1"># Antes</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">extend</span><span class="p">(</span><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Logger</span><span class="p">.</span><span class="nf">broadcast</span><span class="p">(</span><span class="n">logger</span><span class="p">))</span>
+
+<span class="c1"># Después</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">broadcast_to</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="logger = Logger.new(&quot;some_file.log&quot;)
+
+# Antes
+
+Rails.logger.extend(ActiveSupport::Logger.broadcast(logger))
+
+# Después
+
+Rails.logger.broadcast_to(logger)
+">Copy</button>
+</div>
+<p>Si su aplicación había configurado un logger personalizado, <code>Rails.logger</code> envolverá y hará proxy de todos los métodos a él. No se requieren cambios de su parte para que funcione.</p><p>Si necesita acceder a su instancia de logger personalizada, puede hacerlo utilizando el método <code>broadcasts</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">MyLogger</span><span class="p">.</span><span class="nf">new</span>
+
+<span class="c1"># En cualquier lugar de su aplicación</span>
+<span class="nb">puts</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">class</span> <span class="c1">#=&gt; BroadcastLogger</span>
+<span class="nb">puts</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">broadcasts</span> <span class="c1">#=&gt; [MyLogger]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.logger = MyLogger.new
+
+# En cualquier lugar de su aplicación
+puts Rails.logger.class #=> BroadcastLogger
+puts Rails.logger.broadcasts #=> [MyLogger]
+">Copy</button>
+</div>
+<h3 id="cambios-en-el-algoritmo-de-cifrado-de-active-record"><a class="anchorlink" href="#cambios-en-el-algoritmo-de-cifrado-de-active-record"><span>3.12</span> Cambios en el algoritmo de cifrado de Active Record</a></h3><p>El cifrado de Active Record ahora utiliza SHA-256 como su algoritmo de hash digest. Si tiene datos cifrados con versiones anteriores de Rails, hay dos escenarios a considerar:</p>
+<ol>
+<li><p>Si tiene <code>config.active_support.key_generator_hash_digest_class</code> configurado como SHA-1 (el valor predeterminado antes de Rails 7.0), necesita configurar SHA-1 para el cifrado de Active Record también:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">hash_digest_class</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA1
+">Copy</button>
+</div></li>
+<li><p>Si tiene <code>config.active_support.key_generator_hash_digest_class</code> configurado como SHA-256 (el nuevo valor predeterminado en 7.0), entonces necesita configurar SHA-256 para el cifrado de Active Record:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">hash_digest_class</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">Digest</span><span class="o">::</span><span class="no">SHA256</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+">Copy</button>
+</div></li>
+</ol>
+<p>Consulte la guía <a href="configuring.html#config-active-record-encryption-hash-digest-class">Configuring Rails Applications</a> para obtener más información sobre <code>config.active_record.encryption.hash_digest_class</code>.</p><p>Además, se introdujo una nueva configuración <a href="configuring.html#config-active-record-encryption-support-sha1-for-non-deterministic-encryption"><code>config.active_record.encryption.support_sha1_for_non_deterministic_encryption</code></a> para resolver <a href="https://github.com/rails/rails/issues/42922">un error</a> que causaba que algunos atributos se cifraran usando SHA-1 incluso cuando SHA-256 estaba configurado a través de la configuración mencionada anteriormente <code>hash_digest_class</code>.</p><p>Por defecto, <code>config.active_record.encryption.support_sha1_for_non_deterministic_encryption</code> está deshabilitado en Rails 7.1. Si tiene datos cifrados en una versión de Rails &lt; 7.1 que cree que puede estar afectada por el error mencionado anteriormente, esta configuración debe habilitarse:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">encryption</span><span class="p">.</span><span class="nf">support_sha1_for_non_deterministic_encryption</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.encryption.support_sha1_for_non_deterministic_encryption = true
+">Copy</button>
+</div>
+<p>Si está trabajando con datos cifrados, revise cuidadosamente lo anterior.</p><h3 id="nuevas-formas-de-manejar-excepciones-en-pruebas-de-controladores-pruebas-de-integración-y-pruebas-de-sistema"><a class="anchorlink" href="#nuevas-formas-de-manejar-excepciones-en-pruebas-de-controladores-pruebas-de-integración-y-pruebas-de-sistema"><span>3.13</span> Nuevas formas de manejar excepciones en Pruebas de Controladores, Pruebas de Integración y Pruebas de Sistema</a></h3><p>La configuración <code>config.action_dispatch.show_exceptions</code> controla cómo Action Pack maneja las excepciones generadas mientras responde a solicitudes.</p><p>Antes de Rails 7.1, configurar <code>config.action_dispatch.show_exceptions = true</code> configuraba Action Pack para rescatar excepciones y renderizar páginas de error HTML apropiadas, como renderizar <code>public/404.html</code> con un código de estado <code>404 Not found</code> en lugar de generar una excepción <code>ActiveRecord::RecordNotFound</code>. Configurar <code>config.action_dispatch.show_exceptions = false</code> configuraba Action Pack para no rescatar la excepción. Antes de Rails 7.1, las nuevas aplicaciones se generaban con una línea en <code>config/environments/test.rb</code> que configuraba <code>config.action_dispatch.show_exceptions = false</code>.</p><p>Rails 7.1 cambia los valores aceptables de <code>true</code> y <code>false</code> a <code>:all</code>, <code>:rescuable</code> y <code>:none</code>.</p>
+<ul>
+<li><code>:all</code> - renderizar páginas de error HTML para todas las excepciones (equivalente a <code>true</code>)</li>
+<li><code>:rescuable</code> - renderizar páginas de error HTML para excepciones declaradas por <a href="/configuring.html#config-action-dispatch-rescue-responses"><code>config.action_dispatch.rescue_responses</code></a></li>
+<li><code>:none</code> (equivalente a <code>false</code>) - no rescatar ninguna excepción</li>
+</ul>
+<p>Las aplicaciones generadas por Rails 7.1 o posteriores configuran <code>config.action_dispatch.show_exceptions = :rescuable</code> en su <code>config/environments/test.rb</code>. Al actualizar, las aplicaciones existentes pueden cambiar <code>config.action_dispatch.show_exceptions = :rescuable</code> para utilizar el nuevo comportamiento, o reemplazar los valores antiguos con los nuevos correspondientes (<code>true</code> reemplaza <code>:all</code>, <code>false</code> reemplaza <code>:none</code>).</p><h2 id="actualización-de-rails-6-1-a-rails-7-0"><a class="anchorlink" href="#actualización-de-rails-6-1-a-rails-7-0"><span>4</span> Actualización de Rails 6.1 a Rails 7.0</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 7.0, consulte las <a href="7_0_release_notes.html">notas de lanzamiento</a>.</p><h3 id="cambió-el-comportamiento-de-actionview-helpers-urlhelper-button-to"><a class="anchorlink" href="#cambió-el-comportamiento-de-actionview-helpers-urlhelper-button-to"><span>4.1</span> Cambió el comportamiento de <code>ActionView::Helpers::UrlHelper#button_to</code></a></h3><p>A partir de Rails 7.0, <code>button_to</code> renderiza una etiqueta <code>form</code> con el verbo HTTP <code>patch</code> si se utiliza un objeto Active Record persistente para construir la URL del botón. Para mantener el comportamiento actual, considere pasar explícitamente la opción <code>method:</code>:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)])
+</span><span class="gi">+button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)], method: :post)
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-button_to(&quot;Do a POST&quot;, [:my_custom_post_action_on_workshop, Workshop.find(1)])
++button_to(&quot;Do a POST&quot;, [:my_custom_post_action_on_workshop, Workshop.find(1)], method: :post)
+">Copy</button>
+</div>
+<p>o usar un helper para construir la URL:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-button_to("Do a POST", [:my_custom_post_action_on_workshop, Workshop.find(1)])
+</span><span class="gi">+button_to("Do a POST", my_custom_post_action_on_workshop_workshop_path(Workshop.find(1)))
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-button_to(&quot;Do a POST&quot;, [:my_custom_post_action_on_workshop, Workshop.find(1)])
++button_to(&quot;Do a POST&quot;, my_custom_post_action_on_workshop_workshop_path(Workshop.find(1)))
+">Copy</button>
+</div>
+<h3 id="spring"><a class="anchorlink" href="#spring"><span>4.2</span> Spring</a></h3><p>Si su aplicación usa Spring, necesita actualizarlo al menos a la versión 3.0.0. De lo contrario, recibirá</p><div class="interstitial code">
+<pre><code class="highlight plaintext">undefined method `mechanism=' for ActiveSupport::Dependencies:Module
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="undefined method `mechanism=' for ActiveSupport::Dependencies:Module
+">Copy</button>
+</div>
+<p>Además, asegúrese de que <a href="configuring.html#config-cache-classes"><code>config.cache_classes</code></a> esté configurado en <code>false</code> en <code>config/environments/test.rb</code>.</p><h3 id="sprockets-ahora-es-una-dependencia-opcional"><a class="anchorlink" href="#sprockets-ahora-es-una-dependencia-opcional"><span>4.3</span> Sprockets ahora es una dependencia opcional</a></h3><p>El gem <code>rails</code> ya no depende de <code>sprockets-rails</code>. Si su aplicación aún necesita usar Sprockets, asegúrese de agregar <code>sprockets-rails</code> a su Gemfile.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"sprockets-rails"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;sprockets-rails&quot;
+">Copy</button>
+</div>
+<h3 id="las-aplicaciones-deben-ejecutarse-en-modo-zeitwerk"><a class="anchorlink" href="#las-aplicaciones-deben-ejecutarse-en-modo-zeitwerk"><span>4.4</span> Las aplicaciones deben ejecutarse en modo <code>zeitwerk</code></a></h3><p>Las aplicaciones que aún se ejecutan en modo <code>classic</code> deben cambiar a modo <code>zeitwerk</code>. Consulte la guía <a href="https://guides.rubyonrails.org/v7.0/classic_to_zeitwerk_howto.html">Classic to Zeitwerk HOWTO</a> para obtener detalles.</p><h3 id="el-setter-config-autoloader-ha-sido-eliminado"><a class="anchorlink" href="#el-setter-config-autoloader-ha-sido-eliminado"><span>4.5</span> El setter <code>config.autoloader=</code> ha sido eliminado</a></h3><p>En Rails 7 no hay un punto de configuración para establecer el modo de carga automática, <code>config.autoloader=</code> ha sido eliminado. Si lo tenía configurado como <code>:zeitwerk</code> por cualquier razón, simplemente elimínelo.</p><h3 id="la-api-privada-de-activesupport-dependencies-ha-sido-eliminada"><a class="anchorlink" href="#la-api-privada-de-activesupport-dependencies-ha-sido-eliminada"><span>4.6</span> La API privada de <code>ActiveSupport::Dependencies</code> ha sido eliminada</a></h3><p>La API privada de <code>ActiveSupport::Dependencies</code> ha sido eliminada. Esto incluye métodos como <code>hook!</code>, <code>unhook!</code>, <code>depend_on</code>, <code>require_or_load</code>, <code>mechanism</code> y muchos otros.</p><p>Algunos de los aspectos destacados:</p>
+<ul>
+<li>Si usaba <code>ActiveSupport::Dependencies.constantize</code> o <code>ActiveSupport::Dependencies.safe_constantize</code>, simplemente cámbielos por <code>String#constantize</code> o <code>String#safe_constantize</code>.</li>
+</ul>
+<div class="interstitial code">
+<pre><code class="highlight ruby">  <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">constantize</span><span class="p">(</span><span class="s2">"User"</span><span class="p">)</span> <span class="c1"># YA NO ES POSIBLE</span>
+  <span class="s2">"User"</span><span class="p">.</span><span class="nf">constantize</span> <span class="c1"># 👍</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  ActiveSupport::Dependencies.constantize(&quot;User&quot;) # YA NO ES POSIBLE
+  &quot;User&quot;.constantize # 👍
+">Copy</button>
+</div>
+
+<ul>
+<li><p>Cualquier uso de <code>ActiveSupport::Dependencies.mechanism</code>, lector o escritor, debe ser reemplazado accediendo a <code>config.cache_classes</code> en consecuencia.</p></li>
+<li><p>Si desea rastrear la actividad del cargador automático, <code>ActiveSupport::Dependencies.verbose=</code> ya no está disponible, simplemente arroje <code>Rails.autoloaders.log!</code> en <code>config/application.rb</code>.</p></li>
+</ul>
+<p>Las clases o módulos internos auxiliares también se han ido, como <code>ActiveSupport::Dependencies::Reference</code>, <code>ActiveSupport::Dependencies::Blamable</code> y otros.</p><h3 id="carga-automática-durante-la-inicialización"><a class="anchorlink" href="#carga-automática-durante-la-inicialización"><span>4.7</span> Carga automática durante la inicialización</a></h3><p>Las aplicaciones que cargaron automáticamente constantes recargables durante la inicialización fuera de los bloques de <code>to_prepare</code> obtuvieron esas constantes descargadas y se emitió esta advertencia desde Rails 6.0:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">DEPRECATION WARNING: Initialization autoloaded the constant ....
+
+Being able to do this is deprecated. Autoloading during initialization is going
+to be an error condition in future versions of Rails.
+
+...
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="DEPRECATION WARNING: Initialization autoloaded the constant ....
+
+Being able to do this is deprecated. Autoloading during initialization is going
+to be an error condition in future versions of Rails.
+
+...
+">Copy</button>
+</div>
+<p>Si aún recibe esta advertencia en los registros, consulte la sección sobre carga automática cuando la aplicación se inicia en la <a href="https://guides.rubyonrails.org/v7.0/autoloading_and_reloading_constants.html#autolodar">guía de carga automática</a>. De lo contrario, obtendría un <code>NameError</code> en Rails 7.</p><p>Las constantes gestionadas por el cargador automático <code>once</code> pueden ser cargadas automáticamente durante la inicialización y pueden ser usadas normalmente, no es necesario un bloque <code>to_prepare</code>. Sin embargo, el cargador automático <code>once</code> ahora se configura antes para soportar eso. Si la aplicación tiene inflexiones personalizadas y el cargador automático <code>once</code> debe ser consciente de ellas, necesita mover el código en <code>config/initializers/inflections.rb</code> al cuerpo de la definición de la clase de la aplicación en <code>config/application.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">MyApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="c1"># ...</span>
+
+    <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Inflector</span><span class="p">.</span><span class="nf">inflections</span><span class="p">(</span><span class="ss">:en</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">inflect</span><span class="o">|</span>
+      <span class="n">inflect</span><span class="p">.</span><span class="nf">acronym</span> <span class="s2">"HTML"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyApp
+  class Application < Rails::Application
+    # ...
+
+    ActiveSupport::Inflector.inflections(:en) do |inflect|
+      inflect.acronym &quot;HTML&quot;
+    end
+  end
+end
+">Copy</button>
+</div>
+<h3 id="capacidad-de-configurar-config-autoload-once-paths"><a class="anchorlink" href="#capacidad-de-configurar-config-autoload-once-paths"><span>4.8</span> Capacidad de configurar <code>config.autoload_once_paths</code></a></h3><p><a href="configuring.html#config-autoload-once-paths"><code>config.autoload_once_paths</code></a> se puede configurar en el cuerpo de la clase de la aplicación definida en <code>config/application.rb</code> o en la configuración para entornos en <code>config/environments/*</code>.</p><p>De manera similar, los motores pueden configurar esa colección en el cuerpo de la clase del motor o en la configuración para entornos.</p><p>Después de eso, la colección se congela y puede cargar automáticamente desde esas rutas. En particular, puede cargar automáticamente desde allí durante la inicialización. Son gestionadas por el cargador automático <code>Rails.autoloaders.once</code>, que no recarga, solo carga automáticamente/carga ansiosamente.</p><p>Si configuró esta configuración después de que se haya procesado la configuración de los entornos y está obteniendo <code>FrozenError</code>, simplemente mueva el código.</p><h3 id="actiondispatch-request-content-type-ahora-devuelve-el-encabezado-content-type-tal-como-es"><a class="anchorlink" href="#actiondispatch-request-content-type-ahora-devuelve-el-encabezado-content-type-tal-como-es"><span>4.9</span> <code>ActionDispatch::Request#content_type</code> ahora devuelve el encabezado Content-Type tal como es.</a></h3><p>Anteriormente, el valor devuelto de <code>ActionDispatch::Request#content_type</code> NO contenía la parte de charset. Este comportamiento cambió para devolver el encabezado Content-Type que contiene la parte de charset tal como es.</p><p>Si solo desea el tipo MIME, use <code>ActionDispatch::Request#media_type</code> en su lugar.</p><p>Antes:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">request</span> <span class="o">=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Request</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"CONTENT_TYPE"</span> <span class="o">=&gt;</span> <span class="s2">"text/csv; header=present; charset=utf-16"</span><span class="p">,</span> <span class="s2">"REQUEST_METHOD"</span> <span class="o">=&gt;</span> <span class="s2">"GET"</span><span class="p">)</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">content_type</span> <span class="c1">#=&gt; "text/csv"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="request = ActionDispatch::Request.new(&quot;CONTENT_TYPE&quot; => &quot;text/csv; header=present; charset=utf-16&quot;, &quot;REQUEST_METHOD&quot; => &quot;GET&quot;)
+request.content_type #=> &quot;text/csv&quot;
+">Copy</button>
+</div>
+<p>Después:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">request</span> <span class="o">=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Request</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"text/csv; header=present; charset=utf-16"</span><span class="p">,</span> <span class="s2">"REQUEST_METHOD"</span> <span class="o">=&gt;</span> <span class="s2">"GET"</span><span class="p">)</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">content_type</span> <span class="c1">#=&gt; "text/csv; header=present; charset=utf-16"</span>
+<span class="n">request</span><span class="p">.</span><span class="nf">media_type</span>   <span class="c1">#=&gt; "text/csv"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="request = ActionDispatch::Request.new(&quot;Content-Type&quot; => &quot;text/csv; header=present; charset=utf-16&quot;, &quot;REQUEST_METHOD&quot; => &quot;GET&quot;)
+request.content_type #=> &quot;text/csv; header=present; charset=utf-16&quot;
+request.media_type   #=> &quot;text/csv&quot;
+">Copy</button>
+</div>
+<h3 id="el-cambio-de-clase-digest-del-generador-de-claves-requiere-un-rotador-de-cookies"><a class="anchorlink" href="#el-cambio-de-clase-digest-del-generador-de-claves-requiere-un-rotador-de-cookies"><span>4.10</span> El cambio de clase digest del generador de claves requiere un rotador de cookies</a></h3><p>La clase digest predeterminada para el generador de claves está cambiando de SHA1 a SHA256. Esto tiene consecuencias en cualquier mensaje cifrado generado por Rails, incluidas las cookies cifradas.</p><p>Para poder leer mensajes usando la clase digest antigua, es necesario registrar un rotador. No hacerlo puede resultar en que los usuarios tengan sus sesiones invalidadas durante la actualización.</p><p>El siguiente es un ejemplo de rotador para las cookies cifradas y firmadas.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/cookie_rotator.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">after_initialize</span> <span class="k">do</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">cookies_rotations</span><span class="p">.</span><span class="nf">tap</span> <span class="k">do</span> <span class="o">|</span><span class="n">cookies</span><span class="o">|</span>
+    <span class="n">authenticated_encrypted_cookie_salt</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">authenticated_encrypted_cookie_salt</span>
+    <span class="n">signed_cookie_salt</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">action_dispatch</span><span class="p">.</span><span class="nf">signed_cookie_salt</span>
+
+    <span class="n">secret_key_base</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">secret_key_base</span>
+
+    <span class="n">key_generator</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">KeyGenerator</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+      <span class="n">secret_key_base</span><span class="p">,</span> <span class="ss">iterations: </span><span class="mi">1000</span><span class="p">,</span> <span class="ss">hash_digest_class: </span><span class="no">OpenSSL</span><span class="o">::</span><span class="no">Digest</span><span class="o">::</span><span class="no">SHA1</span>
+    <span class="p">)</span>
+    <span class="n">key_len</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">MessageEncryptor</span><span class="p">.</span><span class="nf">key_len</span>
+
+    <span class="n">old_encrypted_secret</span> <span class="o">=</span> <span class="n">key_generator</span><span class="p">.</span><span class="nf">generate_key</span><span class="p">(</span><span class="n">authenticated_encrypted_cookie_salt</span><span class="p">,</span> <span class="n">key_len</span><span class="p">)</span>
+    <span class="n">old_signed_secret</span> <span class="o">=</span> <span class="n">key_generator</span><span class="p">.</span><span class="nf">generate_key</span><span class="p">(</span><span class="n">signed_cookie_salt</span><span class="p">)</span>
+
+    <span class="n">cookies</span><span class="p">.</span><span class="nf">rotate</span> <span class="ss">:encrypted</span><span class="p">,</span> <span class="n">old_encrypted_secret</span>
+    <span class="n">cookies</span><span class="p">.</span><span class="nf">rotate</span> <span class="ss">:signed</span><span class="p">,</span> <span class="n">old_signed_secret</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.after_initialize do
+  Rails.application.config.action_dispatch.cookies_rotations.tap do |cookies|
+    authenticated_encrypted_cookie_salt = Rails.application.config.action_dispatch.authenticated_encrypted_cookie_salt
+    signed_cookie_salt = Rails.application.config.action_dispatch.signed_cookie_salt
+
+    secret_key_base = Rails.application.secret_key_base
+
+    key_generator = ActiveSupport::KeyGenerator.new(
+      secret_key_base, iterations: 1000, hash_digest_class: OpenSSL::Digest::SHA1
+    )
+    key_len = ActiveSupport::MessageEncryptor.key_len
+
+    old_encrypted_secret = key_generator.generate_key(authenticated_encrypted_cookie_salt, key_len)
+    old_signed_secret = key_generator.generate_key(signed_cookie_salt)
+
+    cookies.rotate :encrypted, old_encrypted_secret
+    cookies.rotate :signed, old_signed_secret
+  end
+end
+">Copy</button>
+</div>
+<h3 id="cambio-de-clase-digest-para-activesupport-digest-a-sha256"><a class="anchorlink" href="#cambio-de-clase-digest-para-activesupport-digest-a-sha256"><span>4.11</span> Cambio de clase digest para ActiveSupport::Digest a SHA256</a></h3><p>La clase digest predeterminada para ActiveSupport::Digest está cambiando de SHA1 a SHA256. Esto tiene consecuencias para cosas como los Etags que cambiarán y las claves de caché también. Cambiar estas claves puede tener un impacto en las tasas de aciertos de caché, así que tenga cuidado y esté atento a esto al actualizar al nuevo hash.</p><h3 id="nuevo-formato-de-serialización-de-caché-en-activesupport"><a class="anchorlink" href="#nuevo-formato-de-serialización-de-caché-en-activesupport"><span>4.12</span> Nuevo formato de serialización de caché en ActiveSupport</a></h3><p>Se introdujo un formato de serialización más rápido y compacto.</p><p>Para habilitarlo, debe establecer <code>config.active_support.cache_format_version = 7.0</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.1</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_support</span><span class="p">.</span><span class="nf">cache_format_version</span> <span class="o">=</span> <span class="mf">7.0</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.load_defaults 6.1
+config.active_support.cache_format_version = 7.0
+">Copy</button>
+</div>
+<p>O simplemente:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">7.0</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.load_defaults 7.0
+">Copy</button>
+</div>
+<p>Sin embargo, las aplicaciones de Rails 6.1 no pueden leer este nuevo formato de serialización, por lo que para garantizar una actualización sin problemas, primero debe implementar su actualización de Rails 7.0 con <code>config.active_support.cache_format_version = 6.1</code>, y luego, solo una vez que todos los procesos de Rails se hayan actualizado, puede establecer <code>config.active_support.cache_format_version = 7.0</code>.</p><p>Rails 7.0 puede leer ambos formatos, por lo que la caché no se invalidará durante la actualización.</p><h3 id="generación-de-imágenes-de-vista-previa-de-video-en-active-storage"><a class="anchorlink" href="#generación-de-imágenes-de-vista-previa-de-video-en-active-storage"><span>4.13</span> Generación de imágenes de vista previa de video en Active Storage</a></h3><p>La generación de imágenes de vista previa de video ahora utiliza la detección de cambios de escena de FFmpeg para generar imágenes de vista previa más significativas. Anteriormente, se utilizaba el primer fotograma del video y eso causaba problemas si el video se desvanecía de negro. Este cambio requiere FFmpeg v3.4+.</p><h3 id="procesador-de-variantes-predeterminado-de-active-storage-cambiado-a-vips"><a class="anchorlink" href="#procesador-de-variantes-predeterminado-de-active-storage-cambiado-a-vips"><span>4.14</span> Procesador de variantes predeterminado de Active Storage cambiado a <code>:vips</code></a></h3><p>Para nuevas aplicaciones, la transformación de imágenes usará libvips en lugar de ImageMagick. Esto reducirá el tiempo necesario para generar variantes, así como el uso de CPU y memoria, mejorando los tiempos de respuesta en aplicaciones que dependen de Active Storage para servir sus imágenes.</p><p>La opción <code>:mini_magick</code> no está siendo desaprobada, por lo que está bien seguir usándola.</p><p>Para migrar una aplicación existente a libvips, configure:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">active_storage</span><span class="p">.</span><span class="nf">variant_processor</span> <span class="o">=</span> <span class="ss">:vips</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.active_storage.variant_processor = :vips
+">Copy</button>
+</div>
+<p>Luego deberá cambiar el código de transformación de imágenes existente a los macros de <code>image_processing</code> y reemplazar las opciones de ImageMagick con las opciones de libvips.</p><h4 id="reemplace-resize-con-resize-to-limit"><a class="anchorlink" href="#reemplace-resize-con-resize-to-limit"><span>4.14.1</span> Reemplace resize con resize_to_limit</a></h4><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(resize: "100x")
+</span><span class="gi">+ variant(resize_to_limit: [100, nil])
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(resize: &quot;100x&quot;)
++ variant(resize_to_limit: [100, nil])
+">Copy</button>
+</div>
+<p>Si no hace esto, cuando cambie a vips verá este error: <code>no implicit conversion to float from string</code>.</p><h4 id="use-una-matriz-al-recortar"><a class="anchorlink" href="#use-una-matriz-al-recortar"><span>4.14.2</span> Use una matriz al recortar</a></h4><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(crop: "1920x1080+0+0")
+</span><span class="gi">+ variant(crop: [0, 0, 1920, 1080])
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(crop: &quot;1920x1080+0+0&quot;)
++ variant(crop: [0, 0, 1920, 1080])
+">Copy</button>
+</div>
+<p>Si no hace esto al migrar a vips, verá el siguiente error: <code>unable to call crop: you supplied 2 arguments, but operation needs 5</code>.</p><h4 id="ajuste-los-valores-de-recorte"><a class="anchorlink" href="#ajuste-los-valores-de-recorte"><span>4.14.3</span> Ajuste los valores de recorte:</a></h4><p>Vips es más estricto que ImageMagick cuando se trata de recortar:</p>
+<ol>
+<li>No recortará si <code>x</code> y/o <code>y</code> son valores negativos. por ejemplo: <code>[-10, -10, 100, 100]</code></li>
+<li>No recortará si la posición (<code>x</code> o <code>y</code>) más la dimensión de recorte (<code>width</code>, <code>height</code>) es mayor que la imagen. por ejemplo: una imagen de 125x125 y un recorte de <code>[50, 50, 100, 100]</code></li>
+</ol>
+<p>Si no hace esto al migrar a vips, verá el siguiente error: <code>extract_area: bad extract area</code></p><h4 id="ajuste-el-color-de-fondo-utilizado-para-resize-and-pad"><a class="anchorlink" href="#ajuste-el-color-de-fondo-utilizado-para-resize-and-pad"><span>4.14.4</span> Ajuste el color de fondo utilizado para <code>resize_and_pad</code></a></h4><p>Vips usa negro como el color de fondo predeterminado para <code>resize_and_pad</code>, en lugar de blanco como ImageMagick. Solucione eso usando la opción <code>background</code>:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(resize_and_pad: [300, 300])
+</span><span class="gi">+ variant(resize_and_pad: [300, 300, background: [255]])
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(resize_and_pad: [300, 300])
++ variant(resize_and_pad: [300, 300, background: [255]])
+">Copy</button>
+</div>
+<h4 id="elimine-cualquier-rotación-basada-en-exif"><a class="anchorlink" href="#elimine-cualquier-rotación-basada-en-exif"><span>4.14.5</span> Elimine cualquier rotación basada en EXIF</a></h4><p>Vips rotará automáticamente las imágenes usando el valor EXIF al procesar variantes. Si estaba almacenando valores de rotación de fotos cargadas por el usuario para aplicar la rotación con ImageMagick, debe dejar de hacerlo:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(format: :jpg, rotate: rotation_value)
+</span><span class="gi">+ variant(format: :jpg)
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(format: :jpg, rotate: rotation_value)
++ variant(format: :jpg)
+">Copy</button>
+</div>
+<h4 id="reemplace-monochrome-con-colourspace"><a class="anchorlink" href="#reemplace-monochrome-con-colourspace"><span>4.14.6</span> Reemplace monochrome con colourspace</a></h4><p>Vips usa una opción diferente para hacer imágenes monocromáticas:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(monochrome: true)
+</span><span class="gi">+ variant(colourspace: "b-w")
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(monochrome: true)
++ variant(colourspace: &quot;b-w&quot;)
+">Copy</button>
+</div>
+<h4 id="cambie-a-opciones-de-libvips-para-comprimir-imágenes"><a class="anchorlink" href="#cambie-a-opciones-de-libvips-para-comprimir-imágenes"><span>4.14.7</span> Cambie a opciones de libvips para comprimir imágenes</a></h4><p>JPEG</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(strip: true, quality: 80, interlace: "JPEG", sampling_factor: "4:2:0", colorspace: "sRGB")
+</span><span class="gi">+ variant(saver: { strip: true, quality: 80, interlace: true })
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(strip: true, quality: 80, interlace: &quot;JPEG&quot;, sampling_factor: &quot;4:2:0&quot;, colorspace: &quot;sRGB&quot;)
++ variant(saver: { strip: true, quality: 80, interlace: true })
+">Copy</button>
+</div>
+<p>PNG</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(strip: true, quality: 75)
+</span><span class="gi">+ variant(saver: { strip: true, compression: 9 })
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(strip: true, quality: 75)
++ variant(saver: { strip: true, compression: 9 })
+">Copy</button>
+</div>
+<p>WEBP</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(strip: true, quality: 75, define: { webp: { lossless: false, alpha_quality: 85, thread_level: 1 } })
+</span><span class="gi">+ variant(saver: { strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true })
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(strip: true, quality: 75, define: { webp: { lossless: false, alpha_quality: 85, thread_level: 1 } })
++ variant(saver: { strip: true, quality: 75, lossless: false, alpha_q: 85, reduction_effort: 6, smart_subsample: true })
+">Copy</button>
+</div>
+<p>GIF</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">- variant(layers: "Optimize")
+</span><span class="gi">+ variant(saver: { optimize_gif_frames: true, optimize_gif_transparency: true })
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="- variant(layers: &quot;Optimize&quot;)
++ variant(saver: { optimize_gif_frames: true, optimize_gif_transparency: true })
+">Copy</button>
+</div>
+<h4 id="despliegue-a-producción"><a class="anchorlink" href="#despliegue-a-producción"><span>4.14.8</span> Despliegue a producción</a></h4><p>Active Storage codifica en la URL de la imagen la lista de transformaciones que deben realizarse. Si su aplicación está almacenando en caché estas URL, sus imágenes se romperán después de implementar el nuevo código en producción. Debido a esto, debe invalidar manualmente sus claves de caché afectadas.</p><p>Por ejemplo, si tiene algo como esto en una vista:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@products</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">product</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">product</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">product</span><span class="p">.</span><span class="nf">cover_photo</span><span class="p">.</span><span class="nf">variant</span><span class="p">(</span><span class="ss">resize: </span><span class="s2">"200x"</span><span class="p">)</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% @products.each do |product| %>
+  <% cache product do %>
+    <%= image_tag product.cover_photo.variant(resize: &quot;200x&quot;) %>
+  <% end %>
+<% end %>
+">Copy</button>
+</div>
+<p>Puede invalidar la caché tocando el producto o cambiando la clave de caché:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@products</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">product</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="n">cache</span> <span class="p">[</span><span class="s2">"v2"</span><span class="p">,</span> <span class="n">product</span><span class="p">]</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="n">product</span><span class="p">.</span><span class="nf">cover_photo</span><span class="p">.</span><span class="nf">variant</span><span class="p">(</span><span class="ss">resize_to_limit: </span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="kp">nil</span><span class="p">])</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% @products.each do |product| %>
+  <% cache [&quot;v2&quot;, product] do %>
+    <%= image_tag product.cover_photo.variant(resize_to_limit: [200, nil]) %>
+  <% end %>
+<% end %>
+">Copy</button>
+</div>
+<h3 id="la-versión-de-rails-ahora-se-incluye-en-el-volcado-de-esquema-de-active-record"><a class="anchorlink" href="#la-versión-de-rails-ahora-se-incluye-en-el-volcado-de-esquema-de-active-record"><span>4.15</span> La versión de Rails ahora se incluye en el volcado de esquema de Active Record</a></h3><p>Rails 7.0 cambió algunos valores predeterminados para algunos tipos de columnas. Para evitar que las aplicaciones que se actualizan de 6.1 a 7.0 carguen el esquema actual usando los nuevos valores predeterminados de 7.0, Rails ahora incluye la versión del framework en el volcado de esquema.</p><p>Antes de cargar el esquema por primera vez en Rails 7.0, asegúrese de ejecutar <code>rails app:update</code> para garantizar que la versión del esquema se incluya en el volcado de esquema.</p><p>El archivo de esquema se verá así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Este archivo se genera automáticamente a partir del estado actual de la base de datos. En lugar</span>
+<span class="c1"># de editar este archivo, utilice la función de migraciones de Active Record para</span>
+<span class="c1"># modificar su base de datos de manera incremental y luego regenere esta definición de esquema.</span>
+<span class="c1">#</span>
+<span class="c1"># Este archivo es la fuente que Rails utiliza para definir su esquema al ejecutar `bin/rails</span>
+<span class="c1"># db:schema:load`. Al crear una nueva base de datos, `bin/rails db:schema:load` tiende a</span>
+<span class="c1"># ser más rápido y es potencialmente menos propenso a errores que ejecutar todas sus</span>
+<span class="c1"># migraciones desde cero. Las migraciones antiguas pueden fallar al aplicarse correctamente si esas</span>
+<span class="c1"># migraciones utilizan dependencias externas o código de aplicación.</span>
+<span class="c1">#</span>
+<span class="c1"># Se recomienda encarecidamente que registre este archivo en su sistema de control de versiones.</span>
+
+<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Schema</span><span class="p">[</span><span class="mf">6.1</span><span class="p">].</span><span class="nf">define</span><span class="p">(</span><span class="ss">version: </span><span class="mi">2022_01_28_123512</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Este archivo se genera automáticamente a partir del estado actual de la base de datos. En lugar
+# de editar este archivo, utilice la función de migraciones de Active Record para
+# modificar su base de datos de manera incremental y luego regenere esta definición de esquema.
+#
+# Este archivo es la fuente que Rails utiliza para definir su esquema al ejecutar `bin/rails
+# db:schema:load`. Al crear una nueva base de datos, `bin/rails db:schema:load` tiende a
+# ser más rápido y es potencialmente menos propenso a errores que ejecutar todas sus
+# migraciones desde cero. Las migraciones antiguas pueden fallar al aplicarse correctamente si esas
+# migraciones utilizan dependencias externas o código de aplicación.
+#
+# Se recomienda encarecidamente que registre este archivo en su sistema de control de versiones.
+
+ActiveRecord::Schema[6.1].define(version: 2022_01_28_123512) do
+  # ...
+end
+">Copy</button>
+</div>
+<p>NOTA: La primera vez que realice un volcado del esquema con Rails 7.0, verá muchos cambios en ese archivo, incluida información de algunas columnas. Asegúrese de revisar el nuevo contenido del archivo de esquema y comprometerlo en su repositorio.</p><h2 id="actualización-de-rails-6-0-a-rails-6-1"><a class="anchorlink" href="#actualización-de-rails-6-0-a-rails-6-1"><span>5</span> Actualización de Rails 6.0 a Rails 6.1</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 6.1, consulte las <a href="6_1_release_notes.html">notas de lanzamiento</a>.</p><h3 id="el-valor-de-retorno-de-rails-application-config-for-ya-no-admite-el-acceso-con-claves-de-cadena"><a class="anchorlink" href="#el-valor-de-retorno-de-rails-application-config-for-ya-no-admite-el-acceso-con-claves-de-cadena"><span>5.1</span> El valor de retorno de <code>Rails.application.config_for</code> ya no admite el acceso con claves de cadena.</a></h3><p>Dado un archivo de configuración como este:</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="c1"># config/example.yml</span>
+<span class="na">development</span><span class="pi">:</span>
+  <span class="na">options</span><span class="pi">:</span>
+    <span class="na">key</span><span class="pi">:</span> <span class="s">value</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="development:
+  options:
+    key: value
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config_for</span><span class="p">(</span><span class="ss">:example</span><span class="p">).</span><span class="nf">options</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config_for(:example).options
+">Copy</button>
+</div>
+<p>Esto solía devolver un hash en el que podía acceder a los valores con claves de cadena. Eso estaba desaprobado en 6.0 y ahora ya no funciona.</p><p>Puede llamar a <code>with_indifferent_access</code> en el valor de retorno de <code>config_for</code> si aún desea acceder a los valores con claves de cadena, por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config_for</span><span class="p">(</span><span class="ss">:example</span><span class="p">).</span><span class="nf">with_indifferent_access</span><span class="p">.</span><span class="nf">dig</span><span class="p">(</span><span class="s1">'options'</span><span class="p">,</span> <span class="s1">'key'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config_for(:example).with_indifferent_access.dig('options', 'key')
+">Copy</button>
+</div>
+<h3 id="tipo-de-contenido-de-la-respuesta-al-usar-respond-to-any"><a class="anchorlink" href="#tipo-de-contenido-de-la-respuesta-al-usar-respond-to-any"><span>5.2</span> Tipo de contenido de la respuesta al usar <code>respond_to#any</code></a></h3><p>El encabezado Content-Type devuelto en la respuesta puede diferir de lo que Rails 6.0 devolvía, más específicamente si su aplicación usa <code>respond_to { |format| format.any }</code>. El Content-Type ahora se basará en el bloque dado en lugar del formato de la solicitud.</p><p>Ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">my_action</span>
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">any</span> <span class="p">{</span> <span class="n">render</span><span class="p">(</span><span class="ss">json: </span><span class="p">{</span> <span class="ss">foo: </span><span class="s1">'bar'</span> <span class="p">})</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def my_action
+  respond_to do |format|
+    format.any { render(json: { foo: 'bar' }) }
+  end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">get</span><span class="p">(</span><span class="s1">'my_action.csv'</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="get('my_action.csv')
+">Copy</button>
+</div>
+<p>El comportamiento anterior devolvía un Content-Type de respuesta <code>text/csv</code>, lo cual es inexacto ya que se está renderizando una respuesta JSON. El comportamiento actual devuelve correctamente un Content-Type de respuesta <code>application/json</code>.</p><p>Si su aplicación depende del comportamiento incorrecto anterior, se le recomienda especificar qué formatos acepta su acción, es decir:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">format</span><span class="p">.</span><span class="nf">any</span><span class="p">(</span><span class="ss">:xml</span><span class="p">,</span> <span class="ss">:json</span><span class="p">)</span> <span class="p">{</span> <span class="n">render</span> <span class="n">request</span><span class="p">.</span><span class="nf">format</span><span class="p">.</span><span class="nf">to_sym</span> <span class="o">=&gt;</span> <span class="vi">@people</span> <span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="format.any(:xml, :json) { render request.format.to_sym => @people }
+">Copy</button>
+</div>
+<h3 id="activesupport-callbacks-halted-callback-hook-ahora-recibe-un-segundo-argumento"><a class="anchorlink" href="#activesupport-callbacks-halted-callback-hook-ahora-recibe-un-segundo-argumento"><span>5.3</span> <code>ActiveSupport::Callbacks#halted_callback_hook</code> ahora recibe un segundo argumento</a></h3><p>Active Support permite anular el <code>halted_callback_hook</code> cuando una devolución de llamada detiene la cadena. Este método ahora recibe un segundo argumento que es el nombre de la devolución de llamada que se detiene. Si tiene clases que anulan este método, asegúrese de que acepte dos argumentos. Tenga en cuenta que este es un cambio que rompe la compatibilidad sin un ciclo de desaprobación previo (por razones de rendimiento).</p><p>Ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Book</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">before_save</span> <span class="p">{</span> <span class="kp">throw</span><span class="p">(</span><span class="ss">:abort</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">before_create</span> <span class="p">{</span> <span class="kp">throw</span><span class="p">(</span><span class="ss">:abort</span><span class="p">)</span> <span class="p">}</span>
+
+  <span class="k">def</span> <span class="nf">halted_callback_hook</span><span class="p">(</span><span class="n">filter</span><span class="p">,</span> <span class="n">callback_name</span><span class="p">)</span> <span class="c1"># =&gt; Este método ahora acepta 2 argumentos en lugar de 1</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="s2">"Book couldn't be </span><span class="si">#{</span><span class="n">callback_name</span><span class="si">}</span><span class="s2">d"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Book < ApplicationRecord
+  before_save { throw(:abort) }
+  before_create { throw(:abort) }
+
+  def halted_callback_hook(filter, callback_name) # => Este método ahora acepta 2 argumentos en lugar de 1
+    Rails.logger.info(&quot;Book couldn't be #{callback_name}d&quot;)
+  end
+end
+">Copy</button>
+</div>
+<h3 id="el-método-de-clase-helper-en-controladores-usa-string-constantize"><a class="anchorlink" href="#el-método-de-clase-helper-en-controladores-usa-string-constantize"><span>5.4</span> El método de clase <code>helper</code> en controladores usa <code>String#constantize</code></a></h3><p>Conceptualmente, antes de Rails 6.1</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">helper</span> <span class="s2">"foo/bar"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="helper &quot;foo/bar&quot;
+">Copy</button>
+</div>
+<p>resultaba en</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">require_dependency</span> <span class="s2">"foo/bar_helper"</span>
+<span class="n">module_name</span> <span class="o">=</span> <span class="s2">"foo/bar_helper"</span><span class="p">.</span><span class="nf">camelize</span>
+<span class="n">module_name</span><span class="p">.</span><span class="nf">constantize</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="require_dependency &quot;foo/bar_helper&quot;
+module_name = &quot;foo/bar_helper&quot;.camelize
+module_name.constantize
+">Copy</button>
+</div>
+<p>Ahora hace esto en su lugar:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">prefix</span> <span class="o">=</span> <span class="s2">"foo/bar"</span><span class="p">.</span><span class="nf">camelize</span>
+<span class="s2">"</span><span class="si">#{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">Helper"</span><span class="p">.</span><span class="nf">constantize</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="prefix = &quot;foo/bar&quot;.camelize
+&quot;#{prefix}Helper&quot;.constantize
+">Copy</button>
+</div>
+<p>Este cambio es compatible con versiones anteriores para la mayoría de las aplicaciones, en cuyo caso no necesita hacer nada.</p><p>Técnicamente, sin embargo, los controladores podrían configurar <code>helpers_path</code> para apuntar a un directorio en <code>$LOAD_PATH</code> que no estaba en las rutas de carga automática. Ese caso de uso ya no es compatible de forma predeterminada. Si el módulo de ayuda no se puede cargar automáticamente, la aplicación es responsable de cargarlo antes de llamar a <code>helper</code>.</p><h3 id="la-redirección-a-https-desde-http-ahora-usará-el-código-de-estado-http-308"><a class="anchorlink" href="#la-redirección-a-https-desde-http-ahora-usará-el-código-de-estado-http-308"><span>5.5</span> La redirección a HTTPS desde HTTP ahora usará el código de estado HTTP 308</a></h3><p>El código de estado HTTP predeterminado utilizado en <code>ActionDispatch::SSL</code> al redirigir solicitudes no GET/HEAD de HTTP a HTTPS ha cambiado a <code>308</code> como se define en <a href="https://tools.ietf.org/html/rfc7538">https://tools.ietf.org/html/rfc7538</a>.</p><h3 id="active-storage-ahora-requiere-image-processing"><a class="anchorlink" href="#active-storage-ahora-requiere-image-processing"><span>5.6</span> Active Storage ahora requiere Image Processing</a></h3><p>Al procesar variantes en Active Storage, ahora es necesario tener el <a href="https://github.com/janko/image_processing">gem image_processing</a> incluido en lugar de usar directamente <code>mini_magick</code>. Image Processing está configurado de manera predeterminada para usar <code>mini_magick</code> detrás de escena, por lo que la forma más fácil de actualizar es reemplazar el gem <code>mini_magick</code> por el gem <code>image_processing</code> y asegurarse de eliminar el uso explícito de <code>combine_options</code> ya que ya no es necesario.</p><p>Para mayor legibilidad, puede desear cambiar las llamadas <code>resize</code> sin procesar a macros de <code>image_processing</code>. Por ejemplo, en lugar de:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize: </span><span class="s2">"100x100"</span><span class="p">)</span>
+<span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize: </span><span class="s2">"100x100&gt;"</span><span class="p">)</span>
+<span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize: </span><span class="s2">"100x100^"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="video.preview(resize: &quot;100x100&quot;)
+video.preview(resize: &quot;100x100>&quot;)
+video.preview(resize: &quot;100x100^&quot;)
+">Copy</button>
+</div>
+<p>puede hacer respectivamente:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize_to_fit: </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize_to_limit: </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">video</span><span class="p">.</span><span class="nf">preview</span><span class="p">(</span><span class="ss">resize_to_fill: </span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="video.preview(resize_to_fit: [100, 100])
+video.preview(resize_to_limit: [100, 100])
+video.preview(resize_to_fill: [100, 100])
+">Copy</button>
+</div>
+<h3 id="nueva-clase-activemodel-error"><a class="anchorlink" href="#nueva-clase-activemodel-error"><span>5.7</span> Nueva clase <code>ActiveModel::Error</code></a></h3><p>Los errores ahora son instancias de una nueva clase <code>ActiveModel::Error</code>, con cambios en la API. Algunos de estos cambios pueden generar errores dependiendo de cómo manipule los errores, mientras que otros imprimirán advertencias de desaprobación para ser corregidos en Rails 7.0.</p><p>Puede encontrar más información sobre este cambio y detalles sobre los cambios en la API <a href="https://github.com/rails/rails/pull/32313">en este PR</a>.</p><h2 id="actualización-de-rails-5-2-a-rails-6-0"><a class="anchorlink" href="#actualización-de-rails-5-2-a-rails-6-0"><span>6</span> Actualización de Rails 5.2 a Rails 6.0</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 6.0, consulte las <a href="6_0_release_notes.html">notas de lanzamiento</a>.</p><h3 id="uso-de-webpacker"><a class="anchorlink" href="#uso-de-webpacker"><span>6.1</span> Uso de Webpacker</a></h3><p><a href="https://github.com/rails/webpacker">Webpacker</a> es el compilador de JavaScript predeterminado para Rails 6. Pero si está actualizando la aplicación, no se activa de manera predeterminada. Si desea usar Webpacker, inclúyalo en su Gemfile e instálelo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"webpacker"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;webpacker&quot;
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>webpacker:install
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails webpacker:install
+">Copy</button>
+</div>
+<h3 id="forzar-ssl"><a class="anchorlink" href="#forzar-ssl"><span>6.2</span> Forzar SSL</a></h3><p>El método <code>force_ssl</code> en los controladores ha sido desaprobado y se eliminará en Rails 6.1. Se le recomienda habilitar <a href="configuring.html#config-force-ssl"><code>config.force_ssl</code></a> para forzar conexiones HTTPS en toda su aplicación. Si necesita eximir ciertos puntos finales de la redirección, puede usar <a href="configuring.html#config-ssl-options"><code>config.ssl_options</code></a> para configurar ese comportamiento.</p><h3 id="el-propósito-y-la-expiración-de-los-metadatos-ahora-están-incrustados-dentro-de-las-cookies-firmadas-y-cifradas-para-aumentar-la-seguridad"><a class="anchorlink" href="#el-propósito-y-la-expiración-de-los-metadatos-ahora-están-incrustados-dentro-de-las-cookies-firmadas-y-cifradas-para-aumentar-la-seguridad"><span>6.3</span> El propósito y la expiración de los metadatos ahora están incrustados dentro de las cookies firmadas y cifradas para aumentar la seguridad</a></h3><p>Para mejorar la seguridad, Rails incrusta el propósito y la expiración de los metadatos dentro del valor de las cookies cifradas o firmadas.</p><p>Rails puede frustrar los ataques que intentan copiar el valor firmado/cifrado de una cookie y usarlo como el valor de otra cookie.</p><p>Esta nueva incrustación de metadatos hace que esas cookies sean incompatibles con versiones de Rails anteriores a 6.0.</p><p>Si necesita que sus cookies sean leídas por Rails 5.2 y versiones anteriores, o aún está validando su implementación de 6.0 y desea poder revertir, establezca <code>Rails.application.config.action_dispatch.use_cookies_with_metadata</code> en <code>false</code>.</p><h3 id="todos-los-paquetes-npm-se-han-movido-al-alcance-@rails"><a class="anchorlink" href="#todos-los-paquetes-npm-se-han-movido-al-alcance-@rails"><span>6.4</span> Todos los paquetes npm se han movido al alcance <code>@rails</code></a></h3><p>Si anteriormente estaba cargando alguno de los paquetes <code>actioncable</code>, <code>activestorage</code> o <code>rails-ujs</code> a través de npm/yarn, debe actualizar los nombres de estas dependencias antes de poder actualizarlas a <code>6.0.0</code>:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">actioncable   → @rails/actioncable
+activestorage → @rails/activestorage
+rails-ujs     → @rails/ujs
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="actioncable   → @rails/actioncable
+activestorage → @rails/activestorage
+rails-ujs     → @rails/ujs
+">Copy</button>
+</div>
+<h3 id="cambios-en-la-api-de-javascript-de-action-cable"><a class="anchorlink" href="#cambios-en-la-api-de-javascript-de-action-cable"><span>6.5</span> Cambios en la API de JavaScript de Action Cable</a></h3><p>El paquete de JavaScript de Action Cable se ha convertido de CoffeeScript a ES2015, y ahora publicamos el código fuente en la distribución npm.</p><p>Esta versión incluye algunos cambios importantes en las partes opcionales de la API de JavaScript de Action Cable:</p>
+<ul>
+<li><p>La configuración del adaptador WebSocket y del adaptador logger se ha movido de propiedades de <code>ActionCable</code> a propiedades de <code>ActionCable.adapters</code>. Si está configurando estos adaptadores, deberá realizar estos cambios:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-    ActionCable.WebSocket = MyWebSocket
+</span><span class="gi">+    ActionCable.adapters.WebSocket = MyWebSocket
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-    ActionCable.WebSocket = MyWebSocket
++    ActionCable.adapters.WebSocket = MyWebSocket
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-    ActionCable.logger = myLogger
+</span><span class="gi">+    ActionCable.adapters.logger = myLogger
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-    ActionCable.logger = myLogger
++    ActionCable.adapters.logger = myLogger
+">Copy</button>
+</div></li>
+<li><p>Los métodos <code>ActionCable.startDebugging()</code> y <code>ActionCable.stopDebugging()</code> se han eliminado y se han reemplazado con la propiedad <code>ActionCable.logger.enabled</code>. Si está utilizando estos métodos, deberá realizar estos cambios:</p><div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-    ActionCable.startDebugging()
+</span><span class="gi">+    ActionCable.logger.enabled = true
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-    ActionCable.startDebugging()
++    ActionCable.logger.enabled = true
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight diff"><span class="gd">-    ActionCable.stopDebugging()
+</span><span class="gi">+    ActionCable.logger.enabled = false
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="-    ActionCable.stopDebugging()
++    ActionCable.logger.enabled = false
+">Copy</button>
+</div></li>
+</ul>
+<h3 id="actiondispatch-response-content-type-ahora-devuelve-el-encabezado-content-type-sin-modificación"><a class="anchorlink" href="#actiondispatch-response-content-type-ahora-devuelve-el-encabezado-content-type-sin-modificación"><span>6.6</span> <code>ActionDispatch::Response#content_type</code> ahora devuelve el encabezado Content-Type sin modificación</a></h3><p>Anteriormente, el valor devuelto de <code>ActionDispatch::Response#content_type</code> NO contenía la parte de charset. Este comportamiento ha cambiado para incluir la parte de charset previamente omitida también.</p><p>Si solo desea el tipo MIME, use <code>ActionDispatch::Response#media_type</code> en su lugar.</p><p>Antes:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">resp</span> <span class="o">=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Response</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"text/csv; header=present; charset=utf-16"</span><span class="p">)</span>
+<span class="n">resp</span><span class="p">.</span><span class="nf">content_type</span> <span class="c1">#=&gt; "text/csv; header=present"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resp = ActionDispatch::Response.new(200, &quot;Content-Type&quot; => &quot;text/csv; header=present; charset=utf-16&quot;)
+resp.content_type #=> &quot;text/csv; header=present&quot;
+">Copy</button>
+</div>
+<p>Después:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">resp</span> <span class="o">=</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Response</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s2">"Content-Type"</span> <span class="o">=&gt;</span> <span class="s2">"text/csv; header=present; charset=utf-16"</span><span class="p">)</span>
+<span class="n">resp</span><span class="p">.</span><span class="nf">content_type</span> <span class="c1">#=&gt; "text/csv; header=present; charset=utf-16"</span>
+<span class="n">resp</span><span class="p">.</span><span class="nf">media_type</span>   <span class="c1">#=&gt; "text/csv"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resp = ActionDispatch::Response.new(200, &quot;Content-Type&quot; => &quot;text/csv; header=present; charset=utf-16&quot;)
+resp.content_type #=> &quot;text/csv; header=present; charset=utf-16&quot;
+resp.media_type   #=> &quot;text/csv&quot;
+">Copy</button>
+</div>
+<h3 id="nueva-configuración-config-hosts"><a class="anchorlink" href="#nueva-configuración-config-hosts"><span>6.7</span> Nueva configuración <code>config.hosts</code></a></h3><p>Rails ahora tiene una nueva configuración <code>config.hosts</code> por razones de seguridad. Esta configuración predetermina <code>localhost</code> en desarrollo. Si usa otros dominios en desarrollo, necesita permitirlos así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/environments/development.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">hosts</span> <span class="o">&lt;&lt;</span> <span class="s1">'dev.myapp.com'</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">hosts</span> <span class="o">&lt;&lt;</span> <span class="sr">/[a-z0-9-]+\.myapp\.com/</span> <span class="c1"># Opcionalmente, también se permite una expresión regular</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.hosts << 'dev.myapp.com'
+config.hosts << /[a-z0-9-]+\.myapp\.com/ # Opcionalmente, también se permite una expresión regular
+">Copy</button>
+</div>
+<p>Para otros entornos, <code>config.hosts</code> está vacío por defecto, lo que significa que Rails no validará el host en absoluto. Puede agregarlos opcionalmente si desea validarlo en producción.</p><h3 id="carga-automática"><a class="anchorlink" href="#carga-automática"><span>6.8</span> Carga automática</a></h3><p>La configuración predeterminada para Rails 6</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.0</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.load_defaults 6.0
+">Copy</button>
+</div>
+<p>habilita el modo de carga automática <code>zeitwerk</code> en CRuby. En ese modo, la carga automática, la recarga y la carga ansiosa son gestionadas por <a href="https://github.com/fxn/zeitwerk">Zeitwerk</a>.</p><p>Si está utilizando los valores predeterminados de una versión anterior de Rails, puede habilitar zeitwerk así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">autoloader</span> <span class="o">=</span> <span class="ss">:zeitwerk</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.autoloader = :zeitwerk
+">Copy</button>
+</div>
+<h4 id="api-pública"><a class="anchorlink" href="#api-pública"><span>6.8.1</span> API Pública</a></h4><p>En general, las aplicaciones no necesitan usar la API de Zeitwerk directamente. Rails configura las cosas de acuerdo con el contrato existente: <code>config.autoload_paths</code>, <code>config.cache_classes</code>, etc.</p><p>Aunque las aplicaciones deben ceñirse a esa interfaz, el objeto del cargador automático Zeitwerk real se puede acceder como</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.main
+">Copy</button>
+</div>
+<p>Eso puede ser útil si necesita precargar clases de Herencia de Tabla Única (STI) o configurar un inflector personalizado, por ejemplo.</p><h4 id="estructura-del-proyecto"><a class="anchorlink" href="#estructura-del-proyecto"><span>6.8.2</span> Estructura del Proyecto</a></h4><p>Si la aplicación que se está actualizando carga automáticamente correctamente, la estructura del proyecto debería ser ya mayormente compatible.</p><p>Sin embargo, el modo <code>classic</code> infiere nombres de archivos a partir de nombres de constantes faltantes (<code>underscore</code>), mientras que el modo <code>zeitwerk</code> infiere nombres de constantes a partir de nombres de archivos (<code>camelize</code>). Estos ayudantes no siempre son inversos entre sí, en particular si están involucrados acrónimos. Por ejemplo, <code>"FOO".underscore</code> es <code>"foo"</code>, pero <code>"foo".camelize</code> es <code>"Foo"</code>, no <code>"FOO"</code>.</p><p>La compatibilidad se puede verificar con la tarea <code>zeitwerk:check</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>zeitwerk:check
+<span class="go">Hold on, I am eager loading the application.
+All is good!
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails zeitwerk:check
+">Copy</button>
+</div>
+<h4 id="require-dependency"><a class="anchorlink" href="#require-dependency"><span>6.8.3</span> require_dependency</a></h4><p>Todos los casos de uso conocidos de <code>require_dependency</code> han sido eliminados, debe buscar en el proyecto y eliminarlos.</p><p>Si su aplicación utiliza Herencia de Tabla Única, consulte la <a href="autoloading_and_reloading_constants.html#single-table-inheritance">sección de Herencia de Tabla Única</a> de la guía de Carga Automática y Recarga de Constantes (Modo Zeitwerk).</p><h4 id="nombres-calificados-en-definiciones-de-clases-y-módulos"><a class="anchorlink" href="#nombres-calificados-en-definiciones-de-clases-y-módulos"><span>6.8.4</span> Nombres calificados en definiciones de clases y módulos</a></h4><p>Ahora puede usar de manera robusta rutas constantes en definiciones de clases y módulos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># La carga automática en el cuerpo de esta clase ahora coincide con la semántica de Ruby.</span>
+<span class="k">class</span> <span class="nc">Admin::UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# La carga automática en el cuerpo de esta clase ahora coincide con la semántica de Ruby.
+class Admin::UsersController < ApplicationController
+  # ...
+end
+">Copy</button>
+</div>
+<p>Un inconveniente a tener en cuenta es que, dependiendo del orden de ejecución, el cargador automático clásico a veces podría ser capaz de cargar automáticamente <code>Foo::Wadus</code> en</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Foo::Bar</span>
+  <span class="nc">Wadus</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Foo::Bar
+  Wadus
+end
+">Copy</button>
+</div>
+<p>Eso no coincide con la semántica de Ruby porque <code>Foo</code> no está en el anidamiento, y no funcionará en absoluto en el modo <code>zeitwerk</code>. Si encuentra tal caso, puede usar el nombre calificado <code>Foo::Wadus</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Foo::Bar</span>
+  <span class="nc">Foo::Wadus</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Foo::Bar
+  Foo::Wadus
+end
+">Copy</button>
+</div>
+<p>o agregar <code>Foo</code> al anidamiento:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Foo</span>
+  <span class="k">class</span> <span class="nc">Bar</span>
+    <span class="no">Wadus</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Foo
+  class Bar
+    Wadus
+  end
+end
+">Copy</button>
+</div>
+<h4 id="concerns"><a class="anchorlink" href="#concerns"><span>6.8.5</span> Concerns</a></h4><p>Puede cargar automáticamente y cargar ansiosamente desde una estructura estándar como</p><div class="interstitial code">
+<pre><code class="highlight plaintext">app/models
+app/models/concerns
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="app/models
+app/models/concerns
+">Copy</button>
+</div>
+<p>En ese caso, se asume que <code>app/models/concerns</code> es un directorio raíz (porque pertenece a las rutas de carga automática) y se ignora como espacio de nombres. Entonces, <code>app/models/concerns/foo.rb</code> debería definir <code>Foo</code>, no <code>Concerns::Foo</code>.</p><p>El espacio de nombres <code>Concerns::</code> funcionó con el cargador automático clásico como un efecto secundario de la implementación, pero realmente no era un comportamiento intencionado. Una aplicación que usa <code>Concerns::</code> necesita renombrar esas clases y módulos para poder ejecutarse en modo <code>zeitwerk</code>.</p><h4 id="tener-app-en-las-rutas-de-carga-automática"><a class="anchorlink" href="#tener-app-en-las-rutas-de-carga-automática"><span>6.8.6</span> Tener <code>app</code> en las rutas de carga automática</a></h4><p>Algunos proyectos quieren algo como <code>app/api/base.rb</code> para definir <code>API::Base</code>, y agregan <code>app</code> a las rutas de carga automática para lograr eso en modo <code>classic</code>. Dado que Rails agrega automáticamente todos los subdirectorios de <code>app</code> a las rutas de carga automática, tenemos otra situación en la que hay directorios raíz anidados, por lo que esa configuración ya no funciona. Principio similar que explicamos anteriormente con <code>concerns</code>.</p><p>Si desea mantener esa estructura, deberá eliminar el subdirectorio de las rutas de carga automática en un inicializador:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">autoload_paths</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/api"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveSupport::Dependencies.autoload_paths.delete(&quot;#{Rails.root}/app/api&quot;)
+">Copy</button>
+</div>
+<h4 id="constantes-cargadas-automáticamente-y-espacios-de-nombres-explícitos"><a class="anchorlink" href="#constantes-cargadas-automáticamente-y-espacios-de-nombres-explícitos"><span>6.8.7</span> Constantes Cargadas Automáticamente y Espacios de Nombres Explícitos</a></h4><p>Si un espacio de nombres se define en un archivo, como <code>Hotel</code> aquí:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">app/models/hotel.rb         # Define Hotel.
+app/models/hotel/pricing.rb # Define Hotel::Pricing.
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="app/models/hotel.rb         # Define Hotel.
+app/models/hotel/pricing.rb # Define Hotel::Pricing.
+">Copy</button>
+</div>
+<p>la constante <code>Hotel</code> debe establecerse usando las palabras clave <code>class</code> o <code>module</code>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Hotel</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Hotel
+end
+">Copy</button>
+</div>
+<p>es bueno.</p><p>Alternativas como</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Hotel</span> <span class="o">=</span> <span class="no">Class</span><span class="p">.</span><span class="nf">new</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Hotel = Class.new
+">Copy</button>
+</div>
+<p>o</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Hotel</span> <span class="o">=</span> <span class="no">Struct</span><span class="p">.</span><span class="nf">new</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Hotel = Struct.new
+">Copy</button>
+</div>
+<p>no funcionarán, los objetos secundarios como <code>Hotel::Pricing</code> no se encontrarán.</p><p>Esta restricción solo se aplica a espacios de nombres explícitos. Las clases y módulos que no definen un espacio de nombres se pueden definir usando esos idioms.</p><h4 id="un-archivo-una-constante-en-el-mismo-nivel-superior"><a class="anchorlink" href="#un-archivo-una-constante-en-el-mismo-nivel-superior"><span>6.8.8</span> Un archivo, una constante (en el mismo nivel superior)</a></h4><p>En el modo <code>classic</code> técnicamente podría definir varias constantes en el mismo nivel superior y hacer que todas se recargaran. Por ejemplo, dado</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># app/models/foo.rb</span>
+
+<span class="k">class</span> <span class="nc">Foo</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Bar</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+class Foo
+end
+
+class Bar
+end
+">Copy</button>
+</div>
+<p>mientras que <code>Bar</code> no podría ser cargado automáticamente, cargar automáticamente <code>Foo</code> marcaría <code>Bar</code> como cargado automáticamente también. Este no es el caso en modo <code>zeitwerk</code>, necesita mover <code>Bar</code> a su propio archivo <code>bar.rb</code>. Un archivo, una constante.</p><p>Esto solo se aplica a las constantes en el mismo nivel superior como en el ejemplo anterior. Las clases y módulos internos están bien. Por ejemplo, considere</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># app/models/foo.rb</span>
+
+<span class="k">class</span> <span class="nc">Foo</span>
+  <span class="k">class</span> <span class="nc">InnerClass</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+class Foo
+  class InnerClass
+  end
+end
+">Copy</button>
+</div>
+<p>Si la aplicación recarga <code>Foo</code>, también recargará <code>Foo::InnerClass</code>.</p><h4 id="spring-y-el-entorno-test"><a class="anchorlink" href="#spring-y-el-entorno-test"><span>6.8.9</span> Spring y el Entorno <code>test</code></a></h4><p>Spring recarga el código de la aplicación si algo cambia. En el entorno <code>test</code>, necesita habilitar la recarga para que eso funcione:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/environments/test.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">cache_classes</span> <span class="o">=</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.cache_classes = false
+">Copy</button>
+</div>
+<p>De lo contrario, obtendrá este error:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">reloading is disabled because config.cache_classes is true
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="reloading is disabled because config.cache_classes is true
+">Copy</button>
+</div>
+<h4 id="carga-automática-bootsnap"><a class="anchorlink" href="#carga-automática-bootsnap"><span>6.8.10</span> Bootsnap</a></h4><p>Bootsnap debe ser al menos la versión 1.4.2.</p><p>Además de eso, Bootsnap necesita deshabilitar la caché iseq debido a un error en el intérprete si se ejecuta Ruby 2.5. Asegúrese de depender al menos de Bootsnap 1.4.4 en ese caso.</p><h4 id="config-add-autoload-paths-to-load-path"><a class="anchorlink" href="#config-add-autoload-paths-to-load-path"><span>6.8.11</span> <code>config.add_autoload_paths_to_load_path</code></a></h4><p>El nuevo punto de configuración <a href="configuring.html#config-add-autoload-paths-to-load-path"><code>config.add_autoload_paths_to_load_path</code></a> es <code>true</code> de manera predeterminada para la compatibilidad con versiones anteriores, pero le permite optar por no agregar las rutas de carga automática a <code>$LOAD_PATH</code>.</p><p>Esto tiene sentido en la mayoría de las aplicaciones, ya que nunca debería requerir un archivo en <code>app/models</code>, por ejemplo, y Zeitwerk solo usa nombres de archivos absolutos internamente.</p><p>Al optar por no hacerlo, optimiza las búsquedas de <code>$LOAD_PATH</code> (menos directorios para verificar) y ahorra trabajo y consumo de memoria de Bootsnap, ya que no necesita construir un índice para estos directorios.</p><h4 id="seguridad-de-hilos"><a class="anchorlink" href="#seguridad-de-hilos"><span>6.8.12</span> Seguridad de Hilos</a></h4><p>En modo clásico, la carga automática de constantes no es segura para hilos, aunque Rails tiene bloqueos en su lugar, por ejemplo, para hacer que las solicitudes web sean seguras para hilos cuando la carga automática está habilitada, como es común en el entorno de desarrollo.</p><p>La carga automática de constantes es segura para hilos en modo <code>zeitwerk</code>. Por ejemplo, ahora puede cargar automáticamente en scripts multihilo ejecutados por el comando <code>runner</code>.</p><h4 id="globos-en-config-autoload-paths"><a class="anchorlink" href="#globos-en-config-autoload-paths"><span>6.8.13</span> Globos en config.autoload_paths</a></h4><p>Tenga cuidado con configuraciones como</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">+=</span> <span class="no">Dir</span><span class="p">[</span><span class="s2">"</span><span class="si">#{</span><span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/lib/**/"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_paths += Dir[&quot;#{config.root}/lib/**/&quot;]
+">Copy</button>
+</div>
+<p>Cada elemento de <code>config.autoload_paths</code> debe representar el espacio de nombres de nivel superior (<code>Object</code>) y no pueden estar anidados en consecuencia (con la excepción de los directorios <code>concerns</code> explicados anteriormente).</p><p>Para solucionar esto, simplemente elimine los comodines:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">&lt;&lt;</span> <span class="s2">"</span><span class="si">#{</span><span class="n">config</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/lib"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_paths << &quot;#{config.root}/lib&quot;
+">Copy</button>
+</div>
+<h4 id="la-carga-ansiosa-y-la-carga-automática-son-consistentes"><a class="anchorlink" href="#la-carga-ansiosa-y-la-carga-automática-son-consistentes"><span>6.8.14</span> La carga ansiosa y la carga automática son consistentes</a></h4><p>En modo <code>classic</code>, si <code>app/models/foo.rb</code> define <code>Bar</code>, no podrá cargar automáticamente ese archivo, pero la carga ansiosa funcionará porque carga archivos de manera recursiva a ciegas. Esto puede ser una fuente de errores si prueba cosas primero cargando ansiosamente, la ejecución puede fallar más tarde cargando automáticamente.</p><p>En modo <code>zeitwerk</code>, ambos modos de carga son consistentes, fallan y erran en los mismos archivos.</p><h4 id="cómo-usar-el-cargador-automático-clásico-en-rails-6"><a class="anchorlink" href="#cómo-usar-el-cargador-automático-clásico-en-rails-6"><span>6.8.15</span> Cómo Usar el Cargador Automático Clásico en Rails 6</a></h4><p>Las aplicaciones pueden cargar los valores predeterminados de Rails 6 y aún usar el cargador automático clásico configurando <code>config.autoloader</code> de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+
+<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.0</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">autoloader</span> <span class="o">=</span> <span class="ss">:classic</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+config.load_defaults 6.0
+config.autoloader = :classic
+">Copy</button>
+</div>
+<p>Al usar el Cargador Automático Clásico en la aplicación Rails 6, se recomienda establecer el nivel de concurrencia en 1 en el entorno de desarrollo, para los servidores web y procesadores en segundo plano, debido a las preocupaciones de seguridad de hilos.</p><h3 id="cambio-en-el-comportamiento-de-asignación-de-active-storage"><a class="anchorlink" href="#cambio-en-el-comportamiento-de-asignación-de-active-storage"><span>6.9</span> Cambio en el Comportamiento de Asignación de Active Storage</a></h3><p>Con los valores de configuración predeterminados para Rails 5.2, asignar a una colección de archivos adjuntos declarados con <code>has_many_attached</code> agrega nuevos archivos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many_attached</span> <span class="ss">:highlights</span>
+<span class="k">end</span>
+
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="ss">filename: </span><span class="s2">"funky.jpg"</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">count</span> <span class="c1"># =&gt; 1</span>
+
+<span class="n">blob</span> <span class="o">=</span> <span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Blob</span><span class="p">.</span><span class="nf">create_after_upload!</span><span class="p">(</span><span class="ss">filename: </span><span class="s2">"town.jpg"</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">highlights: </span><span class="p">[</span> <span class="n">blob</span> <span class="p">])</span>
+
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">count</span> <span class="c1"># =&gt; 2</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">filename</span> <span class="c1"># =&gt; "funky.jpg"</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">second</span><span class="p">.</span><span class="nf">filename</span> <span class="c1"># =&gt; "town.jpg"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class User < ApplicationRecord
+  has_many_attached :highlights
+end
+
+user.highlights.attach(filename: &quot;funky.jpg&quot;)
+user.highlights.count # => 1
+
+blob = ActiveStorage::Blob.create_after_upload!(filename: &quot;town.jpg&quot;)
+user.update!(highlights: [ blob ])
+
+user.highlights.count # => 2
+user.highlights.first.filename # => &quot;funky.jpg&quot;
+user.highlights.second.filename # => &quot;town.jpg&quot;
+">Copy</button>
+</div>
+<p>Con los valores de configuración predeterminados para Rails 6.0, asignar a una colección de archivos adjuntos reemplaza los archivos existentes en lugar de agregarlos. Esto coincide con el comportamiento de Active Record al asignar a una asociación de colección:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="ss">filename: </span><span class="s2">"funky.jpg"</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">count</span> <span class="c1"># =&gt; 1</span>
+
+<span class="n">blob</span> <span class="o">=</span> <span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Blob</span><span class="p">.</span><span class="nf">create_after_upload!</span><span class="p">(</span><span class="ss">filename: </span><span class="s2">"town.jpg"</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">update!</span><span class="p">(</span><span class="ss">highlights: </span><span class="p">[</span> <span class="n">blob</span> <span class="p">])</span>
+
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">count</span> <span class="c1"># =&gt; 1</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">filename</span> <span class="c1"># =&gt; "town.jpg"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="user.highlights.attach(filename: &quot;funky.jpg&quot;)
+user.highlights.count # => 1
+
+blob = ActiveStorage::Blob.create_after_upload!(filename: &quot;town.jpg&quot;)
+user.update!(highlights: [ blob ])
+
+user.highlights.count # => 1
+user.highlights.first.filename # => &quot;town.jpg&quot;
+">Copy</button>
+</div>
+<p><code>#attach</code> se puede usar para agregar nuevos archivos adjuntos sin eliminar los existentes:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">blob</span> <span class="o">=</span> <span class="no">ActiveStorage</span><span class="o">::</span><span class="no">Blob</span><span class="p">.</span><span class="nf">create_after_upload!</span><span class="p">(</span><span class="ss">filename: </span><span class="s2">"town.jpg"</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">attach</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">count</span> <span class="c1"># =&gt; 2</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">filename</span> <span class="c1"># =&gt; "funky.jpg"</span>
+<span class="n">user</span><span class="p">.</span><span class="nf">highlights</span><span class="p">.</span><span class="nf">second</span><span class="p">.</span><span class="nf">filename</span> <span class="c1"># =&gt; "town.jpg"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="blob = ActiveStorage::Blob.create_after_upload!(filename: &quot;town.jpg&quot;)
+user.highlights.attach(blob)
+
+user.highlights.count # => 2
+user.highlights.first.filename # => &quot;funky.jpg&quot;
+user.highlights.second.filename # => &quot;town.jpg&quot;
+">Copy</button>
+</div>
+<p>Las aplicaciones existentes pueden optar por este nuevo comportamiento configurando <a href="configuring.html#config-active-storage-replace-on-assign-to-many"><code>config.active_storage.replace_on_assign_to_many</code></a> en <code>true</code>. El comportamiento anterior será desaprobado en Rails 7.0 y eliminado en Rails 7.1.</p><h3 id="aplicaciones-de-manejo-de-excepciones-personalizadas"><a class="anchorlink" href="#aplicaciones-de-manejo-de-excepciones-personalizadas"><span>6.10</span> Aplicaciones de Manejo de Excepciones Personalizadas</a></h3><p>Las cabeceras de solicitud <code>Accept</code> o <code>Content-Type</code> inválidas ahora generarán una excepción. La aplicación de excepciones predeterminada <a href="configuring.html#config-exceptions-app"><code>config.exceptions_app</code></a> maneja específicamente ese error y lo compensa. Las aplicaciones de excepciones personalizadas deberán manejar ese error también, o tales solicitudes harán que Rails use la aplicación de excepciones de respaldo, que devuelve un <code>500 Internal Server Error</code>.</p><h2 id="actualización-de-rails-5-1-a-rails-5-2"><a class="anchorlink" href="#actualización-de-rails-5-1-a-rails-5-2"><span>7</span> Actualización de Rails 5.1 a Rails 5.2</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 5.2, consulte las <a href="5_2_release_notes.html">notas de lanzamiento</a>.</p><h3 id="actualización-de-rails-5-1-a-rails-5-2-bootsnap"><a class="anchorlink" href="#actualización-de-rails-5-1-a-rails-5-2-bootsnap"><span>7.1</span> Bootsnap</a></h3><p>Rails 5.2 agrega el gem bootsnap en el <a href="https://github.com/rails/rails/pull/29313">Gemfile de la nueva aplicación generada</a>. El comando <code>app:update</code> lo configura en <code>boot.rb</code>. Si desea usarlo, agréguelo en el Gemfile:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Reduce los tiempos de arranque mediante el almacenamiento en caché; requerido en config/boot.rb</span>
+<span class="n">gem</span> <span class="s2">"bootsnap"</span><span class="p">,</span> <span class="ss">require: </span><span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Reduce los tiempos de arranque mediante el almacenamiento en caché; requerido en config/boot.rb
+gem &quot;bootsnap&quot;, require: false
+">Copy</button>
+</div>
+<p>De lo contrario, cambie el <code>boot.rb</code> para no usar bootsnap.</p><h3 id="la-expiración-en-cookies-firmadas-o-cifradas-ahora-está-incrustada-en-los-valores-de-las-cookies"><a class="anchorlink" href="#la-expiración-en-cookies-firmadas-o-cifradas-ahora-está-incrustada-en-los-valores-de-las-cookies"><span>7.2</span> La expiración en cookies firmadas o cifradas ahora está incrustada en los valores de las cookies</a></h3><p>Para mejorar la seguridad, Rails ahora incrusta la información de expiración también en el valor de las cookies cifradas o firmadas.</p><p>Esta nueva información incrustada hace que esas cookies sean incompatibles con versiones de Rails anteriores a 5.2.</p><p>Si necesita que sus cookies sean leídas por 5.1 y versiones anteriores, o aún está validando su implementación de 5.2 y desea permitir que pueda revertir, establezca <code>Rails.application.config.action_dispatch.use_authenticated_cookie_encryption</code> en <code>false</code>.</p><h2 id="actualización-de-rails-5-0-a-rails-5-1"><a class="anchorlink" href="#actualización-de-rails-5-0-a-rails-5-1"><span>8</span> Actualización de Rails 5.0 a Rails 5.1</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 5.1, consulte las <a href="5_1_release_notes.html">notas de lanzamiento</a>.</p><h3 id="hashwithindifferentaccess-de-nivel-superior-está-en-desuso"><a class="anchorlink" href="#hashwithindifferentaccess-de-nivel-superior-está-en-desuso"><span>8.1</span> <code>HashWithIndifferentAccess</code> de nivel superior está en desuso</a></h3><p>Si su aplicación utiliza la clase <code>HashWithIndifferentAccess</code> de nivel superior, debe mover su código lentamente para usar <code>ActiveSupport::HashWithIndifferentAccess</code>.</p><p>Solo está en desuso suavemente, lo que significa que su código no se romperá en este momento y no se mostrará ninguna advertencia de desaprobación, pero esta constante se eliminará en el futuro.</p><p>Además, si tiene documentos YAML bastante antiguos que contienen volcados de tales objetos, es posible que necesite cargarlos y volcarlos nuevamente para asegurarse de que hagan referencia a la constante correcta y que cargarlos no se rompa en el futuro.</p><h3 id="application-secrets-ahora-se-carga-con-todas-las-claves-como-símbolos"><a class="anchorlink" href="#application-secrets-ahora-se-carga-con-todas-las-claves-como-símbolos"><span>8.2</span> <code>application.secrets</code> ahora se carga con todas las claves como símbolos</a></h3><p>Si su aplicación almacena configuración anidada en <code>config/secrets.yml</code>, todas las claves ahora se cargan como símbolos, por lo que el acceso usando cadenas debe cambiarse.</p><p>De:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">secrets</span><span class="p">[</span><span class="ss">:smtp_settings</span><span class="p">][</span><span class="s2">"address"</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.secrets[:smtp_settings][&quot;address&quot;]
+">Copy</button>
+</div>
+<p>A:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">secrets</span><span class="p">[</span><span class="ss">:smtp_settings</span><span class="p">][</span><span class="ss">:address</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.secrets[:smtp_settings][:address]
+">Copy</button>
+</div>
+<h3 id="eliminado-soporte-desaprobado-para-text-y-nothing-en-render"><a class="anchorlink" href="#eliminado-soporte-desaprobado-para-text-y-nothing-en-render"><span>8.3</span> Eliminado soporte desaprobado para <code>:text</code> y <code>:nothing</code> en <code>render</code></a></h3><p>Si sus controladores están usando <code>render :text</code>, ya no funcionarán. El nuevo método de renderizar texto con tipo MIME de <code>text/plain</code> es usar <code>render :plain</code>.</p><p>Del mismo modo, <code>render :nothing</code> también se ha eliminado y debe usar el método <code>head</code> para enviar respuestas que solo contengan encabezados. Por ejemplo, <code>head :ok</code> envía una respuesta 200 sin cuerpo para renderizar.</p><h3 id="eliminado-soporte-desaprobado-de-redirect-to-back"><a class="anchorlink" href="#eliminado-soporte-desaprobado-de-redirect-to-back"><span>8.4</span> Eliminado soporte desaprobado de <code>redirect_to :back</code></a></h3><p>En Rails 5.0, <code>redirect_to :back</code> fue desaprobado. En Rails 5.1, se eliminó por completo.</p><p>Como alternativa, use <code>redirect_back</code>. Es importante tener en cuenta que <code>redirect_back</code> también toma una opción <code>fallback_location</code> que se utilizará en caso de que falte el <code>HTTP_REFERER</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">redirect_back</span><span class="p">(</span><span class="ss">fallback_location: </span><span class="n">root_path</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="redirect_back(fallback_location: root_path)
+">Copy</button>
+</div>
+<h2 id="actualización-de-rails-4-2-a-rails-5-0"><a class="anchorlink" href="#actualización-de-rails-4-2-a-rails-5-0"><span>9</span> Actualización de Rails 4.2 a Rails 5.0</a></h2><p>Para obtener más información sobre los cambios realizados en Rails 5.0, consulte las <a href="5_0_release_notes.html">notas de lanzamiento</a>.</p><h3 id="ruby-2-2-2-requerido"><a class="anchorlink" href="#ruby-2-2-2-requerido"><span>9.1</span> Ruby 2.2.2+ requerido</a></h3><p>A partir de Ruby on Rails 5.0 en adelante, Ruby 2.2.2+ es la única versión de Ruby compatible. Asegúrese de estar en la versión Ruby 2.2.2 o superior antes de continuar.</p><h3 id="los-modelos-de-active-record-ahora-heredan-de-applicationrecord-por-defecto"><a class="anchorlink" href="#los-modelos-de-active-record-ahora-heredan-de-applicationrecord-por-defecto"><span>9.2</span> Los modelos de Active Record ahora heredan de ApplicationRecord por defecto</a></h3><p>En Rails 4.2, un modelo de Active Record hereda de <code>ActiveRecord::Base</code>. En Rails 5.0, todos los modelos heredan de <code>ApplicationRecord</code>.</p><p><code>ApplicationRecord</code> es una nueva superclase para todos los modelos de la aplicación, análoga a los controladores de la aplicación que subclasan <code>ApplicationController</code> en lugar de <code>ActionController::Base</code>. Esto le da a las aplicaciones un único lugar para configurar el comportamiento del modelo en toda la aplicación.</p><p>Al actualizar de Rails 4.2 a Rails 5.0, necesita crear un archivo <code>application_record.rb</code> en <code>app/models/</code> y agregar el siguiente contenido:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationRecord</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">abstract_class</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
+end
+">Copy</button>
+</div>
+<p>Luego asegúrese de que todos sus modelos hereden de él.</p><h3 id="detener-cadenas-de-devoluciones-de-llamada-a-través-de-throw-abort"><a class="anchorlink" href="#detener-cadenas-de-devoluciones-de-llamada-a-través-de-throw-abort"><span>9.3</span> Detener cadenas de devoluciones de llamada a través de <code>throw(:abort)</code></a></h3><p>En Rails 4.2, cuando una devolución de llamada 'before' devuelve <code>false</code> en Active Record y Active Model, entonces se detiene toda la cadena de devoluciones de llamada. En otras palabras, las devoluciones de llamada 'before' sucesivas no se ejecutan, ni tampoco la acción envuelta en devoluciones de llamada.</p><p>En Rails 5.0, devolver <code>false</code> en una devolución de llamada de Active Record o Active Model no tendrá este efecto secundario de detener la cadena de devoluciones de llamada. En su lugar, las cadenas de devoluciones de llamada deben detenerse explícitamente llamando a <code>throw(:abort)</code>.</p><p>Cuando actualice de Rails 4.2 a Rails 5.0, devolver <code>false</code> en ese tipo de devoluciones de llamada aún detendrá la cadena de devoluciones de llamada, pero recibirá una advertencia de desaprobación sobre este cambio próximo.</p><p>Cuando esté listo, puede optar por el nuevo comportamiento y eliminar la advertencia de desaprobación agregando la siguiente configuración a su <code>config/application.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">halt_callback_chains_on_return_false</span> <span class="o">=</span> <span class="kp">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveSupport.halt_callback_chains_on_return_false = false
+">Copy</button>
+</div>
+<p>Tenga en cuenta que esta opción no afectará a las devoluciones de llamada de Active Support, ya que nunca detuvieron la cadena cuando se devolvía cualquier valor.</p><p>Consulte <a href="https://github.com/rails/rails/pull/17227">#17227</a> para obtener más detalles.</p><h3 id="activejob-ahora-hereda-de-applicationjob-por-defecto"><a class="anchorlink" href="#activejob-ahora-hereda-de-applicationjob-por-defecto"><span>9.4</span> ActiveJob ahora hereda de ApplicationJob por defecto</a></h3><p>En Rails 4.2, un Active Job hereda de <code>ActiveJob::Base</code>. En Rails 5.0, este comportamiento ha cambiado para heredar ahora de <code>ApplicationJob</code>.</p><p>Al actualizar de Rails 4.2 a Rails 5.0, necesita crear un archivo <code>application_job.rb</code> en <code>app/jobs/</code> y agregar el siguiente contenido:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationJob</span> <span class="o">&lt;</span> <span class="no">ActiveJob</span><span class="o">::</span><span class="no">Base</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationJob < ActiveJob::Base
+end
+">Copy</button>
+</div>
+<p>Luego asegúrese de que todas sus clases de trabajo hereden de él.</p><p>Consulte <a href="https://github.com/rails/rails/pull/19034">#19034</a> para obtener más detalles.</p><h3 id="pruebas-de-controladores-de-rails"><a class="anchorlink" href="#pruebas-de-controladores-de-rails"><span>9.5</span> Pruebas de Controladores de Rails</a></h3><h4 id="extracción-de-algunos-métodos-auxiliares-a-rails-controller-testing"><a class="anchorlink" href="#extracción-de-algunos-métodos-auxiliares-a-rails-controller-testing"><span>9.5.1</span> Extracción de algunos métodos auxiliares a <code>rails-controller-testing</code></a></h4><p><code>assigns</code> y <code>assert_template</code> se han extraído al gem <code>rails-controller-testing</code>. Para continuar usando estos métodos en sus pruebas de controlador, agregue <code>gem "rails-controller-testing"</code> a su <code>Gemfile</code>.</p><p>Si está usando RSpec para las pruebas, consulte la configuración adicional requerida en la documentación del gem.</p><h4 id="nuevo-comportamiento-al-subir-archivos"><a class="anchorlink" href="#nuevo-comportamiento-al-subir-archivos"><span>9.5.2</span> Nuevo comportamiento al subir archivos</a></h4><p>Si está utilizando <code>ActionDispatch::Http::UploadedFile</code> en sus pruebas para subir archivos, necesitará cambiar para usar la clase similar <code>Rack::Test::UploadedFile</code> en su lugar.</p><p>Consulte <a href="https://github.com/rails/rails/issues/26404">#26404</a> para obtener más detalles.</p><h3 id="la-carga-automática-está-deshabilitada-después-de-iniciar-en-el-entorno-de-producción"><a class="anchorlink" href="#la-carga-automática-está-deshabilitada-después-de-iniciar-en-el-entorno-de-producción"><span>9.6</span> La carga automática está deshabilitada después de iniciar en el entorno de producción</a></h3><p>La carga automática ahora está deshabilitada después de iniciar en el entorno de producción de manera predeterminada.</p><p>La carga ansiosa de la aplicación es parte del proceso de inicio, por lo que las constantes de nivel superior están bien y aún se cargan automáticamente, no es necesario requerir sus archivos.</p><p>Las constantes en lugares más profundos que solo se ejecutan en tiempo de ejecución, como los cuerpos de métodos regulares, también están bien porque el archivo que los define se habrá cargado ansiosamente durante el inicio.</p><p>Para la gran mayoría de las aplicaciones, este cambio no necesita ninguna acción. Pero en el caso muy raro de que su aplicación necesite carga automática mientras se ejecuta en producción, configure <code>Rails.application.config.enable_dependency_loading</code> en true.</p><h3 id="serialización-xml"><a class="anchorlink" href="#serialización-xml"><span>9.7</span> Serialización XML</a></h3><p><code>ActiveModel::Serializers::Xml</code> se ha extraído de Rails al gem <code>activemodel-serializers-xml</code>. Para continuar usando la serialización XML en su aplicación, agregue <code>gem "activemodel-serializers-xml"</code> a su <code>Gemfile</code>.</p><h3 id="eliminado-soporte-para-adaptador-de-base-de-datos-mysql-heredado"><a class="anchorlink" href="#eliminado-soporte-para-adaptador-de-base-de-datos-mysql-heredado"><span>9.8</span> Eliminado soporte para adaptador de base de datos <code>mysql</code> heredado</a></h3><p>Rails 5 elimina el soporte para el adaptador de base de datos <code>mysql</code> heredado. La mayoría de los usuarios deberían poder usar <code>mysql2</code> en su lugar. Se convertirá en un gem separado cuando encontremos a alguien que lo mantenga.</p><h3 id="eliminado-soporte-para-debugger"><a class="anchorlink" href="#eliminado-soporte-para-debugger"><span>9.9</span> Eliminado soporte para Debugger</a></h3><p><code>debugger</code> no es compatible con Ruby 2.2, que es requerido por Rails 5. Use <code>byebug</code> en su lugar.</p><h3 id="use-bin-rails-para-ejecutar-tareas-y-pruebas"><a class="anchorlink" href="#use-bin-rails-para-ejecutar-tareas-y-pruebas"><span>9.10</span> Use <code>bin/rails</code> para ejecutar tareas y pruebas</a></h3><p>Rails 5 agrega la capacidad de ejecutar tareas y pruebas a través de <code>bin/rails</code> en lugar de rake. Generalmente, estos cambios están en paralelo con rake, pero algunos se portaron por completo.</p><p>Para usar el nuevo ejecutor de pruebas, simplemente escriba <code>bin/rails test</code>.</p><p><code>rake dev:cache</code> ahora es <code>bin/rails dev:cache</code>.</p><p>Ejecute <code>bin/rails</code> dentro del directorio raíz de su aplicación para ver la lista de comandos disponibles.</p><h3 id="actioncontroller-parameters-ya-no-hereda-de-hashwithindifferentaccess"><a class="anchorlink" href="#actioncontroller-parameters-ya-no-hereda-de-hashwithindifferentaccess"><span>9.11</span> <code>ActionController::Parameters</code> ya no hereda de <code>HashWithIndifferentAccess</code></a></h3><p>Llamar a <code>params</code> en su aplicación ahora devolverá un objeto en lugar de un hash. Si sus parámetros ya están permitidos, entonces no necesitará hacer ningún cambio. Si está utilizando <code>map</code> y otros métodos que dependen de poder leer el hash independientemente de <code>permitted?</code>, necesitará actualizar su aplicación para primero permitir y luego convertir a un hash.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">params</span><span class="p">.</span><span class="nf">permit</span><span class="p">([</span><span class="ss">:proceed_to</span><span class="p">,</span> <span class="ss">:return_to</span><span class="p">]).</span><span class="nf">to_h</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="params.permit([:proceed_to, :return_to]).to_h
+">Copy</button>
+</div>
+<h3 id="protect-from-forgery-ahora-predetermina-prepend-false"><a class="anchorlink" href="#protect-from-forgery-ahora-predetermina-prepend-false"><span>9.12</span> <code>protect_from_forgery</code> ahora predetermina <code>prepend: false</code></a></h3><p><code>protect_from_forgery</code> predetermina <code>prepend: false</code>, lo que significa que se insertará en la cadena de devoluciones de llamada en el punto en que lo llame en su aplicación. Si desea que <code>protect_from_forgery</code> siempre se ejecute primero, debe cambiar su aplicación para usar <code>protect_from_forgery prepend: true</code>.</p><h3 id="el-manejador-de-plantillas-predeterminado-ahora-es-raw"><a class="anchorlink" href="#el-manejador-de-plantillas-predeterminado-ahora-es-raw"><span>9.13</span> El manejador de plantillas predeterminado ahora es RAW</a></h3><p>Los archivos sin un manejador de plantillas en su extensión se renderizarán usando el manejador raw. Anteriormente, Rails renderizaba archivos usando el manejador de plantillas ERB.</p><p>Si no desea que su archivo sea manejado a través del manejador raw, debe agregar una extensión a su archivo que pueda ser analizada por el manejador de plantillas apropiado.</p><h3 id="agregado-coincidencia-de-comodines-para-dependencias-de-plantillas"><a class="anchorlink" href="#agregado-coincidencia-de-comodines-para-dependencias-de-plantillas"><span>9.14</span> Agregado coincidencia de comodines para dependencias de plantillas</a></h3><p>Ahora puede usar coincidencia de comodines para sus dependencias de plantillas. Por ejemplo, si estaba definiendo sus plantillas de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="c1"># Template Dependency: recordings/threads/events/subscribers_changed </span><span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="c1"># Template Dependency: recordings/threads/events/completed </span><span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="c1"># Template Dependency: recordings/threads/events/uncompleted </span><span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% # Template Dependency: recordings/threads/events/subscribers_changed %>
+<% # Template Dependency: recordings/threads/events/completed %>
+<% # Template Dependency: recordings/threads/events/uncompleted %>
+">Copy</button>
+</div>
+<p>Ahora puede simplemente llamar a la dependencia una vez con un comodín.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="c1"># Template Dependency: recordings/threads/events/* </span><span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% # Template Dependency: recordings/threads/events/* %>
+">Copy</button>
+</div>
+<h3 id="actionview-helpers-recordtaghelper-movido-a-un-gem-externo-record-tag-helper"><a class="anchorlink" href="#actionview-helpers-recordtaghelper-movido-a-un-gem-externo-record-tag-helper"><span>9.15</span> <code>ActionView::Helpers::RecordTagHelper</code> movido a un gem externo (record_tag_helper)</a></h3><p><code>content_tag_for</code> y <code>div_for</code> se han eliminado en favor de simplemente usar <code>content_tag</code>. Para continuar usando los métodos anteriores, agregue el gem <code>record_tag_helper</code> a su <code>Gemfile</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"record_tag_helper"</span><span class="p">,</span> <span class="s2">"~&gt; 1.0"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;record_tag_helper&quot;, &quot;~> 1.0&quot;
+">Copy</button>
+</div>
+<p>Consulte <a href="https://github.com/rails/rails/pull/18411">#18411</a> para obtener más detalles.</p><h3 id="eliminado-soporte-para-el-gem-protected-attributes"><a class="anchorlink" href="#eliminado-soporte-para-el-gem-protected-attributes"><span>9.16</span> Eliminado soporte para el gem <code>protected_attributes</code></a></h3><p>El gem <code>protected_attributes</code> ya no es compatible en Rails 5.</p><h3 id="eliminado-soporte-para-el-gem-activerecord-deprecated-finders"><a class="anchorlink" href="#eliminado-soporte-para-el-gem-activerecord-deprecated-finders"><span>9.17</span> Eliminado soporte para el gem <code>activerecord-deprecated_finders</code></a></h3><p>El gem <code>activerecord-deprecated_finders</code> ya no es compatible en Rails 5.</p><h3 id="el-orden-de-prueba-predeterminado-de-activesupport-testcase-ahora-es-aleatorio"><a class="anchorlink" href="#el-orden-de-prueba-predeterminado-de-activesupport-testcase-ahora-es-aleatorio"><span>9.18</span> El orden de prueba predeterminado de <code>ActiveSupport::TestCase</code> ahora es aleatorio</a></h3><p>Cuando se ejecutan pruebas en su aplicación, el orden predeterminado ahora es <code>:random</code> en lugar de <code>:sorted</code>. Use la siguiente opción de configuración para establecerlo de nuevo en <code>:sorted</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/environments/test.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_support</span><span class="p">.</span><span class="nf">test_order</span> <span class="o">=</span> <span class="ss">:sorted</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.configure do
+  config.active_support.test_order = :sorted
+end
+">Copy</button>
+</div>
+<h3 id="actioncontroller-live-se-convirtió-en-un-concern"><a class="anchorlink" href="#actioncontroller-live-se-convirtió-en-un-concern"><span>9.19</span> <code>ActionController::Live</code> se convirtió en un <code>Concern</code></a></h3><p>Si incluye <code>ActionController::Live</code> en otro módulo que se incluye en su controlador, entonces también debe extender el módulo con <code>ActiveSupport::Concern</code>. Alternativamente, puede usar el gancho <code>self.included</code> para incluir <code>ActionController::Live</code> directamente en el controlador una vez que se incluya <code>StreamingSupport</code>.</p><p>Esto significa que si su aplicación solía tener su propio módulo de transmisión, el siguiente código se rompería en producción:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Esta es una solución para controladores transmitidos que realizan autenticación con Warden/Devise.</span>
+<span class="c1"># Consulte https://github.com/plataformatec/devise/issues/2332</span>
+<span class="c1"># La autenticación en el enrutador es otra solución como se sugi</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Esta es una solución para controladores transmitidos que realizan autenticación con Warden/Devise.
+# Consulte https://github.com/plataformatec/devise/issues/2332
+# La autenticación en el enrutador es otra solución como se sugi
+">Copy</button>
+</div>
+
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

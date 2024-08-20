@@ -1,0 +1,1226 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Empezando con Motores — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Empezando con Motores — Ruby on Rails Guides" />
+  <meta name="description" content="Empezando con MotoresEn esta guía aprenderás sobre motores y cómo pueden ser utilizados para proporcionar funcionalidad adicional a sus aplicaciones anfitrionas a través de una interfaz limpia y muy fácil de usar.Después de leer esta guía, sabrás: Qué hace a un motor. Cómo generar un motor. Cómo construir características para el motor. Cómo conectar el motor a una aplicación. Cómo sobrescribir la funcionalidad del motor en la aplicación. Cómo evitar cargar frameworks de Rails con Hooks de Carga y Configuración." />
+  <meta property="og:description" content="Empezando con MotoresEn esta guía aprenderás sobre motores y cómo pueden ser utilizados para proporcionar funcionalidad adicional a sus aplicaciones anfitrionas a través de una interfaz limpia y muy fácil de usar.Después de leer esta guía, sabrás: Qué hace a un motor. Cómo generar un motor. Cómo construir características para el motor. Cómo conectar el motor a una aplicación. Cómo sobrescribir la funcionalidad del motor en la aplicación. Cómo evitar cargar frameworks de Rails con Hooks de Carga y Configuración." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <h1>Empezando con Motores</h1><p>En esta guía aprenderás sobre motores y cómo pueden ser utilizados para proporcionar funcionalidad adicional a sus aplicaciones anfitrionas a través de una interfaz limpia y muy fácil de usar.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Qué hace a un motor.</li>
+<li>Cómo generar un motor.</li>
+<li>Cómo construir características para el motor.</li>
+<li>Cómo conectar el motor a una aplicación.</li>
+<li>Cómo sobrescribir la funcionalidad del motor en la aplicación.</li>
+<li>Cómo evitar cargar frameworks de Rails con Hooks de Carga y Configuración.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#¿qué-son-los-motores-questionmark">¿Qué son los Motores?</a></li>
+<li><a href="#generando-un-motor">Generando un Motor</a>
+
+<ul>
+<li><a href="#dentro-de-un-motor">Dentro de un Motor</a></li>
+</ul></li>
+<li><a href="#proporcionando-funcionalidad-de-motor">Proporcionando Funcionalidad de Motor</a>
+
+<ul>
+<li><a href="#generando-un-recurso-de-artículo">Generando un Recurso de Artículo</a></li>
+<li><a href="#generando-un-recurso-de-comentarios">Generando un Recurso de Comentarios</a></li>
+</ul></li>
+<li><a href="#conectando-a-una-aplicación">Conectando a una Aplicación</a>
+
+<ul>
+<li><a href="#montando-el-motor">Montando el Motor</a></li>
+<li><a href="#configuración-del-motor">Configuración del Motor</a></li>
+<li><a href="#usando-una-clase-proporcionada-por-la-aplicación">Usando una Clase Proporcionada por la Aplicación</a></li>
+<li><a href="#configurando-un-motor">Configurando un Motor</a></li>
+</ul></li>
+<li><a href="#probando-un-motor">Probando un Motor</a>
+
+<ul>
+<li><a href="#pruebas-funcionales">Pruebas Funcionales</a></li>
+</ul></li>
+<li><a href="#mejorando-la-funcionalidad-del-motor">Mejorando la Funcionalidad del Motor</a>
+
+<ul>
+<li><a href="#sobrescribiendo-modelos-y-controladores">Sobrescribiendo Modelos y Controladores</a></li>
+<li><a href="#carga-automática-y-motores">Carga Automática y Motores</a></li>
+<li><a href="#sobrescribiendo-vistas">Sobrescribiendo Vistas</a></li>
+<li><a href="#rutas">Rutas</a></li>
+<li><a href="#activos">Activos</a></li>
+<li><a href="#activos-separados-y-precompilación">Activos Separados y Precompilación</a></li>
+<li><a href="#otras-dependencias-de-gemas">Otras Dependencias de Gemas</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="¿qué-son-los-motores-questionmark"><a class="anchorlink" href="#¿qué-son-los-motores-questionmark"><span>1</span> ¿Qué son los Motores?</a></h2><p>Los motores pueden considerarse aplicaciones en miniatura que proporcionan funcionalidad a sus aplicaciones anfitrionas. Una aplicación de Rails es en realidad solo un motor "supercargado", con la clase <code>Rails::Application</code> heredando mucho de su comportamiento de <code>Rails::Engine</code>.</p><p>Por lo tanto, los motores y las aplicaciones pueden considerarse casi lo mismo, solo con diferencias sutiles, como verás a lo largo de esta guía. Los motores y las aplicaciones también comparten una estructura común.</p><p>Los motores también están estrechamente relacionados con los plugins. Ambos comparten una estructura de directorio <code>lib</code> común y se generan utilizando el generador <code>rails plugin new</code>. La diferencia es que un motor se considera un "plugin completo" por Rails (como lo indica la opción <code>--full</code> que se pasa al comando generador). En realidad, usaremos la opción <code>--mountable</code> aquí, que incluye todas las características de <code>--full</code>, y algo más. Esta guía se referirá a estos "plugins completos" simplemente como "motores" a lo largo de la guía. Un motor <strong>puede</strong> ser un plugin, y un plugin <strong>puede</strong> ser un motor.</p><p>El motor que se creará en esta guía se llamará "blorgh". Este motor proporcionará funcionalidad de blogging a sus aplicaciones anfitrionas, permitiendo que se creen nuevos artículos y comentarios. Al comienzo de esta guía, trabajarás únicamente dentro del propio motor, pero en secciones posteriores verás cómo conectarlo a una aplicación.</p><p>Los motores también pueden estar aislados de sus aplicaciones anfitrionas. Esto significa que una aplicación puede tener una ruta proporcionada por un helper de enrutamiento como <code>articles_path</code> y usar un motor que también proporciona una ruta llamada <code>articles_path</code>, y los dos no entrarían en conflicto. Junto con esto, los controladores, modelos y nombres de tablas también están en un espacio de nombres. Verás cómo hacer esto más adelante en esta guía.</p><p>Es importante tener en cuenta en todo momento que la aplicación debe <strong>siempre</strong> tener prioridad sobre sus motores. Una aplicación es el objeto que tiene la última palabra en lo que sucede en su entorno. El motor solo debe estar mejorándolo, en lugar de cambiarlo drásticamente.</p><p>Para ver demostraciones de otros motores, revisa <a href="https://github.com/plataformatec/devise">Devise</a>, un motor que proporciona autenticación para sus aplicaciones principales, o <a href="https://github.com/thredded/thredded">Thredded</a>, un motor que proporciona funcionalidad de foro. También está <a href="https://github.com/spree/spree">Spree</a> que proporciona una plataforma de comercio electrónico, y <a href="https://github.com/refinery/refinerycms">Refinery CMS</a>, un motor CMS.</p><p>Finalmente, los motores no habrían sido posibles sin el trabajo de James Adam, Piotr Sarnacki, el Equipo Central de Rails y varias otras personas. Si alguna vez los encuentras, ¡no olvides decir gracias!</p><h2 id="generando-un-motor"><a class="anchorlink" href="#generando-un-motor"><span>2</span> Generando un Motor</a></h2><p>Para generar un motor, necesitarás ejecutar el generador de plugins y pasarle opciones según sea apropiado para la necesidad. Para el ejemplo "blorgh", necesitarás crear un motor "montable", ejecutando este comando en una terminal:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>plugin new blorgh <span class="nt">--mountable</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails plugin new blorgh --mountable
+">Copy</button>
+</div>
+<p>La lista completa de opciones para el generador de plugins puede verse escribiendo:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>plugin <span class="nt">--help</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails plugin --help
+">Copy</button>
+</div>
+<p>La opción <code>--mountable</code> le dice al generador que deseas crear un motor "montable" y aislado por espacio de nombres. Este generador proporcionará la misma estructura esqueleto que lo haría la opción <code>--full</code>. La opción <code>--full</code> le dice al generador que deseas crear un motor, incluyendo una estructura esqueleto que proporciona lo siguiente:</p>
+<ul>
+<li>Un árbol de directorios <code>app</code></li>
+<li><p>Un archivo <code>config/routes.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
+end
+">Copy</button>
+</div></li>
+<li><p>Un archivo en <code>lib/blorgh/engine.rb</code>, que es idéntico en función a un archivo <code>config/application.rb</code> estándar de Rails:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Engine</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Engine</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class Engine < ::Rails::Engine
+  end
+end
+">Copy</button>
+</div></li>
+</ul>
+<p>La opción <code>--mountable</code> añadirá a la opción <code>--full</code>:</p>
+<ul>
+<li>Archivos de manifiesto de activos (<code>blorgh_manifest.js</code> y <code>application.css</code>)</li>
+<li>Un stub de <code>ApplicationController</code> con espacio de nombres</li>
+<li>Un stub de <code>ApplicationHelper</code> con espacio de nombres</li>
+<li>Una plantilla de vista de diseño para el motor</li>
+<li><p>Aislamiento de espacio de nombres a <code>config/routes.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Blorgh::Engine.routes.draw do
+end
+">Copy</button>
+</div></li>
+<li><p>Aislamiento de espacio de nombres a <code>lib/blorgh/engine.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Engine</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Engine</span>
+    <span class="n">isolate_namespace</span> <span class="no">Blorgh</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class Engine < ::Rails::Engine
+    isolate_namespace Blorgh
+  end
+end
+">Copy</button>
+</div></li>
+</ul>
+<p>Además, la opción <code>--mountable</code> le indica al generador que monte el motor dentro de la aplicación de prueba dummy ubicada en <code>test/dummy</code> añadiendo lo siguiente al archivo de rutas de la aplicación dummy en <code>test/dummy/config/routes.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">mount</span> <span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span> <span class="o">=&gt;</span> <span class="s2">"/blorgh"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="mount Blorgh::Engine => &quot;/blorgh&quot;
+">Copy</button>
+</div>
+<h3 id="dentro-de-un-motor"><a class="anchorlink" href="#dentro-de-un-motor"><span>2.1</span> Dentro de un Motor</a></h3><h4 id="archivos-críticos"><a class="anchorlink" href="#archivos-críticos"><span>2.1.1</span> Archivos Críticos</a></h4><p>En la raíz del directorio de este nuevo motor vive un archivo <code>blorgh.gemspec</code>. Cuando incluyas el motor en una aplicación más adelante, lo harás con esta línea en el <code>Gemfile</code> de la aplicación de Rails:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"blorgh"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"engines/blorgh"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;blorgh&quot;, path: &quot;engines/blorgh&quot;
+">Copy</button>
+</div>
+<p>No olvides ejecutar <code>bundle install</code> como de costumbre. Al especificarlo como un gem dentro del <code>Gemfile</code>, Bundler lo cargará como tal, analizando este archivo <code>blorgh.gemspec</code> y requiriendo un archivo dentro del directorio <code>lib</code> llamado <code>lib/blorgh.rb</code>. Este archivo requiere el archivo <code>blorgh/engine.rb</code> (ubicado en <code>lib/blorgh/engine.rb</code>) y define un módulo base llamado <code>Blorgh</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"blorgh/engine"</span>
+
+<span class="k">module</span> <span class="nn">Blorgh</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="require &quot;blorgh/engine&quot;
+
+module Blorgh
+end
+">Copy</button>
+</div>
+<p>CONSEJO: Algunos motores eligen usar este archivo para poner opciones de configuración globales para su motor. Es una idea relativamente buena, así que si deseas ofrecer opciones de configuración, el archivo donde se define el <code>module</code> de tu motor es perfecto para eso. Coloca los métodos dentro del módulo y estarás listo.</p><p>Dentro de <code>lib/blorgh/engine.rb</code> está la clase base para el motor:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Engine</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Engine</span>
+    <span class="n">isolate_namespace</span> <span class="no">Blorgh</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class Engine < ::Rails::Engine
+    isolate_namespace Blorgh
+  end
+end
+">Copy</button>
+</div>
+<p>Al heredar de la clase <code>Rails::Engine</code>, este gem notifica a Rails que hay un motor en la ruta especificada, y montará correctamente el motor dentro de la aplicación, realizando tareas como agregar el directorio <code>app</code> del motor a la ruta de carga para modelos, mailers, controladores y vistas.</p><p>El método <code>isolate_namespace</code> aquí merece una mención especial. Esta llamada es responsable de aislar los controladores, modelos, rutas y otras cosas en su propio espacio de nombres, lejos de componentes similares dentro de la aplicación. Sin esto, existe la posibilidad de que los componentes del motor puedan "filtrarse" en la aplicación, causando interrupciones no deseadas, o que componentes importantes del motor puedan ser sobrescritos por cosas con nombres similares dentro de la aplicación. Uno de los ejemplos de tales conflictos son los helpers. Sin llamar a <code>isolate_namespace</code>, los helpers del motor se incluirían en los controladores de una aplicación.</p><p>NOTA: Se recomienda <strong>altamente</strong> que la línea <code>isolate_namespace</code> se deje dentro de la definición de la clase <code>Engine</code>. Sin ella, las clases generadas en un motor <strong>pueden</strong> entrar en conflicto con una aplicación.</p><p>Lo que significa este aislamiento del espacio de nombres es que un modelo generado por una llamada a <code>bin/rails generate model</code>, como <code>bin/rails generate model article</code>, no se llamará <code>Article</code>, sino que estará en un espacio de nombres y se llamará <code>Blorgh::Article</code>. Además, la tabla para el modelo está en un espacio de nombres, convirtiéndose en <code>blorgh_articles</code>, en lugar de simplemente <code>articles</code>. Similar al espacio de nombres del modelo, un controlador llamado <code>ArticlesController</code> se convierte en <code>Blorgh::ArticlesController</code> y las vistas para ese controlador no estarán en <code>app/views/articles</code>, sino en <code>app/views/blorgh/articles</code>. Los mailers, trabajos y helpers también están en un espacio de nombres.</p><p>Finalmente, las rutas también estarán aisladas dentro del motor. Esta es una de las partes más importantes sobre el espacio de nombres, y se discute más adelante en la sección <a href="#routes">Rutas</a> de esta guía.</p><h4 id="directorio-app"><a class="anchorlink" href="#directorio-app"><span>2.1.2</span> Directorio <code>app</code></a></h4><p>Dentro del directorio <code>app</code> están los directorios estándar <code>assets</code>, <code>controllers</code>, <code>helpers</code>, <code>jobs</code>, <code>mailers</code>, <code>models</code> y <code>views</code> con los que deberías estar familiarizado por una aplicación. Veremos más sobre modelos en una sección futura, cuando estemos escribiendo el motor.</p><p>Dentro del directorio <code>app/assets</code>, están los directorios <code>images</code> y <code>stylesheets</code> que, nuevamente, deberías estar familiarizado debido a su similitud con una aplicación. Una diferencia aquí, sin embargo, es que cada directorio contiene un subdirectorio con el nombre del motor. Debido a que este motor va a estar en un espacio de nombres, sus activos también deberían estarlo.</p><p>Dentro del directorio <code>app/controllers</code> hay un directorio <code>blorgh</code> que contiene un archivo llamado <code>application_controller.rb</code>. Este archivo proporcionará cualquier funcionalidad común para los controladores del motor. El directorio <code>blorgh</code> es donde irán los otros controladores para el motor. Al colocarlos dentro de este directorio con espacio de nombres, evitas que entren en conflicto con controladores con nombres idénticos dentro de otros motores o incluso dentro de la aplicación.</p><p>NOTA: La clase <code>ApplicationController</code> dentro de un motor se nombra igual que una aplicación de Rails para facilitar la conversión de tus aplicaciones en motores.</p><p>Al igual que para <code>app/controllers</code>, encontrarás un subdirectorio <code>blorgh</code> bajo los directorios <code>app/helpers</code>, <code>app/jobs</code>, <code>app/mailers</code> y <code>app/models</code> que contiene el archivo <code>application_*.rb</code> asociado para reunir funcionalidades comunes. Al colocar tus archivos bajo este subdirectorio y poner tus objetos en un espacio de nombres, evitas que entren en conflicto con elementos con nombres idénticos dentro de otros motores o incluso dentro de la aplicación.</p><p>Por último, el directorio <code>app/views</code> contiene una carpeta <code>layouts</code>, que contiene un archivo en <code>blorgh/application.html.erb</code>. Este archivo te permite especificar un diseño para el motor. Si este motor se va a usar como un motor independiente, entonces agregarías cualquier personalización a su diseño en este archivo, en lugar del archivo <code>app/views/layouts/application.html.erb</code> de la aplicación.</p><p>Si no deseas imponer un diseño a los usuarios del motor, entonces puedes eliminar este archivo y hacer referencia a un diseño diferente en los controladores de tu motor.</p><h4 id="directorio-bin"><a class="anchorlink" href="#directorio-bin"><span>2.1.3</span> Directorio <code>bin</code></a></h4><p>Este directorio contiene un archivo, <code>bin/rails</code>, que te permite usar los subcomandos y generadores de <code>rails</code> tal como lo harías dentro de una aplicación. Esto significa que podrás generar nuevos controladores y modelos para este motor muy fácilmente ejecutando comandos como este:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model
+">Copy</button>
+</div>
+<p>Ten en cuenta, por supuesto, que cualquier cosa generada con estos comandos dentro de un motor que tenga <code>isolate_namespace</code> en la clase <code>Engine</code> estará en un espacio de nombres.</p><h4 id="directorio-test"><a class="anchorlink" href="#directorio-test"><span>2.1.4</span> Directorio <code>test</code></a></h4><p>El directorio <code>test</code> es donde irán las pruebas para el motor. Para probar el motor, hay una versión reducida de una aplicación de Rails incrustada dentro de él en <code>test/dummy</code>. Esta aplicación montará el motor en el archivo <code>test/dummy/config/routes.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">mount</span> <span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span> <span class="o">=&gt;</span> <span class="s2">"/blorgh"</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.routes.draw do
+  mount Blorgh::Engine => &quot;/blorgh&quot;
+end
+">Copy</button>
+</div>
+<p>Esta línea monta el motor en la ruta <code>/blorgh</code>, lo que lo hará accesible a través de la aplicación solo en esa ruta.</p><p>Dentro del directorio de prueba está el directorio <code>test/integration</code>, donde deben colocarse las pruebas de integración para el motor. También se pueden crear otros directorios en el directorio <code>test</code>. Por ejemplo, es posible que desees crear un directorio <code>test/models</code> para tus pruebas de modelo.</p><h2 id="proporcionando-funcionalidad-de-motor"><a class="anchorlink" href="#proporcionando-funcionalidad-de-motor"><span>3</span> Proporcionando Funcionalidad de Motor</a></h2><p>El motor que cubre esta guía proporciona funcionalidad para enviar artículos y comentar, y sigue un hilo similar a la <a href="getting_started.html">Guía de Inicio Rápido</a>, con algunos giros nuevos.</p><p>NOTA: Para esta sección, asegúrate de ejecutar los comandos en la raíz del directorio del motor <code>blorgh</code>.</p><h3 id="generando-un-recurso-de-artículo"><a class="anchorlink" href="#generando-un-recurso-de-artículo"><span>3.1</span> Generando un Recurso de Artículo</a></h3><p>Lo primero que se debe generar para un motor de blog es el modelo <code>Article</code> y el controlador relacionado. Para generar esto rápidamente, puedes usar el generador de scaffold de Rails.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold article title:string text:text
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold article title:string text:text
+">Copy</button>
+</div>
+<p>Este comando mostrará esta información:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">invoke  active_record
+create    db/migrate/[timestamp]_create_blorgh_articles.rb
+create    app/models/blorgh/article.rb
+invoke    test_unit
+create      test/models/blorgh/article_test.rb
+create      test/fixtures/blorgh/articles.yml
+invoke  resource_route
+ route    resources :articles
+invoke  scaffold_controller
+create    app/controllers/blorgh/articles_controller.rb
+invoke    erb
+create      app/views/blorgh/articles
+create      app/views/blorgh/articles/index.html.erb
+create      app/views/blorgh/articles/edit.html.erb
+create      app/views/blorgh/articles/show.html.erb
+create      app/views/blorgh/articles/new.html.erb
+create      app/views/blorgh/articles/_form.html.erb
+create      app/views/blorgh/articles/_article.html.erb
+invoke    resource_route
+invoke    test_unit
+create      test/controllers/blorgh/articles_controller_test.rb
+create      test/system/blorgh/articles_test.rb
+invoke    helper
+create      app/helpers/blorgh/articles_helper.rb
+invoke      test_unit
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="invoke  active_record
+create    db/migrate/[timestamp]_create_blorgh_articles.rb
+create    app/models/blorgh/article.rb
+invoke    test_unit
+create      test/models/blorgh/article_test.rb
+create      test/fixtures/blorgh/articles.yml
+invoke  resource_route
+ route    resources :articles
+invoke  scaffold_controller
+create    app/controllers/blorgh/articles_controller.rb
+invoke    erb
+create      app/views/blorgh/articles
+create      app/views/blorgh/articles/index.html.erb
+create      app/views/blorgh/articles/edit.html.erb
+create      app/views/blorgh/articles/show.html.erb
+create      app/views/blorgh/articles/new.html.erb
+create      app/views/blorgh/articles/_form.html.erb
+create      app/views/blorgh/articles/_article.html.erb
+invoke    resource_route
+invoke    test_unit
+create      test/controllers/blorgh/articles_controller_test.rb
+create      test/system/blorgh/articles_test.rb
+invoke    helper
+create      app/helpers/blorgh/articles_helper.rb
+invoke      test_unit
+">Copy</button>
+</div>
+<p>Lo primero que hace el generador de scaffold es invocar el generador <code>active_record</code>, que genera una migración y un modelo para el recurso. Observa aquí, sin embargo, que la migración se llama <code>create_blorgh_articles</code> en lugar del habitual <code>create_articles</code>. Esto se debe al método <code>isolate_namespace</code> llamado en la definición de la clase <code>Blorgh::Engine</code>. El modelo aquí también está en un espacio de nombres, colocándose en <code>app/models/blorgh/article.rb</code> en lugar de <code>app/models/article.rb</code> debido a la llamada a <code>isolate_namespace</code> dentro de la clase <code>Engine</code>.</p><p>A continuación, el generador <code>test_unit</code> se invoca para este modelo, generando una prueba de modelo en <code>test/models/blorgh/article_test.rb</code> (en lugar de <code>test/models/article_test.rb</code>) y un fixture en <code>test/fixtures/blorgh/articles.yml</code> (en lugar de <code>test/fixtures/articles.yml</code>).</p><p>Después de eso, se inserta una línea para el recurso en el archivo <code>config/routes.rb</code> del motor. Esta línea es simplemente <code>resources :articles</code>, convirtiendo el archivo <code>config/routes.rb</code> del motor en esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Blorgh::Engine.routes.draw do
+  resources :articles
+end
+">Copy</button>
+</div>
+<p>Observa aquí que las rutas se dibujan sobre el objeto <code>Blorgh::Engine</code> en lugar de la clase <code>YourApp::Application</code>. Esto es para que las rutas del motor estén confinadas al propio motor y puedan montarse en un punto específico como se muestra en la sección <a href="#test-directory">Directorio de Prueba</a>. También hace que las rutas del motor estén aisladas de aquellas rutas que están dentro de la aplicación. La sección <a href="#routes">Rutas</a> de esta guía lo describe en detalle.</p><p>A continuación, el generador <code>scaffold_controller</code> se invoca, generando un controlador llamado <code>Blorgh::ArticlesController</code> (en <code>app/controllers/blorgh/articles_controller.rb</code>) y sus vistas relacionadas en <code>app/views/blorgh/articles</code>. Este generador también genera pruebas para el controlador (<code>test/controllers/blorgh/articles_controller_test.rb</code> y <code>test/system/blorgh/articles_test.rb</code>) y un helper (<code>app/helpers/blorgh/articles_helper.rb</code>).</p><p>Todo lo que este generador ha creado está ordenadamente en un espacio de nombres. La clase del controlador está definida dentro del módulo <code>Blorgh</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">ArticlesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class ArticlesController < ApplicationController
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<p>NOTA: La clase <code>ArticlesController</code> hereda de <code>Blorgh::ApplicationController</code>, no del <code>ApplicationController</code> de la aplicación.</p><p>El helper dentro de <code>app/helpers/blorgh/articles_helper.rb</code> también está en un espacio de nombres:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">module</span> <span class="nn">ArticlesHelper</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  module ArticlesHelper
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<p>Esto ayuda a prevenir conflictos con cualquier otro motor o aplicación que pueda tener un recurso de artículo también.</p><p>Puedes ver lo que el motor tiene hasta ahora ejecutando <code>bin/rails db:migrate</code> en la raíz de nuestro motor para ejecutar la migración generada por el generador de scaffold, y luego ejecutando <code>bin/rails server</code> en <code>test/dummy</code>. Cuando abras <code>http://localhost:3000/blorgh/articles</code> verás el scaffold predeterminado que se ha generado. ¡Haz clic! Acabas de generar las primeras funciones de tu primer motor.</p><p>Si prefieres jugar en la consola, <code>bin/rails console</code> también funcionará igual que una aplicación de Rails. Recuerda: el modelo <code>Article</code> está en un espacio de nombres, así que para referenciarlo debes llamarlo como <code>Blorgh::Article</code>.</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="no">Blorgh</span><span class="o">::</span><span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">=&gt;</span> <span class="kt">#&lt;</span><span class="no">Blorgh</span><span class="o">::</span><span class="no">Article</span> <span class="ss">id: </span><span class="mi">1</span> <span class="o">...</span><span class="kt">&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Blorgh::Article.find(1)
+">Copy</button>
+</div>
+<p>Una última cosa es que el recurso <code>articles</code> para este motor debería ser la raíz del motor. Siempre que alguien vaya a la ruta raíz donde se monta el motor, deberían ver una lista de artículos. Esto se puede hacer si se inserta esta línea en el archivo <code>config/routes.rb</code> dentro del motor:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">root</span> <span class="ss">to: </span><span class="s2">"articles#index"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="root to: &quot;articles#index&quot;
+">Copy</button>
+</div>
+<p>Ahora la gente solo necesitará ir a la raíz del motor para ver todos los artículos, en lugar de visitar <code>/articles</code>. Esto significa que en lugar de <code>http://localhost:3000/blorgh/articles</code>, solo necesitas ir a <code>http://localhost:3000/blorgh</code> ahora.</p><h3 id="generando-un-recurso-de-comentarios"><a class="anchorlink" href="#generando-un-recurso-de-comentarios"><span>3.2</span> Generando un Recurso de Comentarios</a></h3><p>Ahora que el motor puede crear nuevos artículos, solo tiene sentido agregar funcionalidad de comentarios también. Para hacer esto, necesitarás generar un modelo de comentario, un controlador de comentario y luego modificar el scaffold de artículos para mostrar comentarios y permitir que la gente cree nuevos.</p><p>Desde la raíz del motor, ejecuta el generador de modelos. Dile que genere un modelo <code>Comment</code>, con la tabla relacionada teniendo dos columnas: una columna de <code>article_id</code> integer y una columna de <code>text</code> text.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model Comment article_id:integer text:text
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model Comment article_id:integer text:text
+">Copy</button>
+</div>
+<p>Esto mostrará lo siguiente:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">invoke  active_record
+create    db/migrate/[timestamp]_create_blorgh_comments.rb
+create    app/models/blorgh/comment.rb
+invoke    test_unit
+create      test/models/blorgh/comment_test.rb
+create      test/fixtures/blorgh/comments.yml
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="invoke  active_record
+create    db/migrate/[timestamp]_create_blorgh_comments.rb
+create    app/models/blorgh/comment.rb
+invoke    test_unit
+create      test/models/blorgh/comment_test.rb
+create      test/fixtures/blorgh/comments.yml
+">Copy</button>
+</div>
+<p>Esta llamada al generador generará solo los archivos de modelo necesarios, poniendo los archivos bajo un directorio <code>blorgh</code> y creando una clase de modelo llamada <code>Blorgh::Comment</code>. Ahora ejecuta la migración para crear nuestra tabla blorgh_comments:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate
+">Copy</button>
+</div>
+<p>Para mostrar los comentarios en un artículo, edita <code>app/views/blorgh/articles/show.html.erb</code> y agrega esta línea antes del enlace "Edit":</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;h3&gt;</span>Comments<span class="nt">&lt;/h3&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">render</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<h3>Comments</h3>
+<%= render @article.comments %>
+">Copy</button>
+</div>
+<p>Esta línea requerirá que haya una asociación <code>has_many</code> para comentarios definida en el modelo <code>Blorgh::Article</code>, que no existe en este momento. Para definir una, abre <code>app/models/blorgh/article.rb</code> y agrega esta línea en el modelo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">has_many</span> <span class="ss">:comments</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="has_many :comments
+">Copy</button>
+</div>
+<p>Convirtiendo el modelo en esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+    <span class="n">has_many</span> <span class="ss">:comments</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class Article < ApplicationRecord
+    has_many :comments
+  end
+end
+">Copy</button>
+</div>
+<p>NOTA: Debido a que el <code>has_many</code> está definido dentro de una clase que está dentro del módulo <code>Blorgh</code>, Rails sabrá que deseas usar el modelo <code>Blorgh::Comment</code> para estos objetos, por lo que no hay necesidad de especificar eso usando la opción <code>:class_name</code> aquí.</p><p>A continuación, debe haber un formulario para que se puedan crear comentarios en un artículo. Para agregar esto, pon esta línea debajo de la llamada a <code>render @article.comments</code> en <code>app/views/blorgh/articles/show.html.erb</code>:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">"blorgh/comments/form"</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= render &quot;blorgh/comments/form&quot; %>
+">Copy</button>
+</div>
+<p>A continuación, el parcial que esta línea renderizará necesita existir. Crea un nuevo directorio en <code>app/views/blorgh/comments</code> y en él un nuevo archivo llamado <code>_form.html.erb</code> que tenga este contenido para crear el parcial requerido:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;h3&gt;</span>New comment<span class="nt">&lt;/h3&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_with</span> <span class="ss">model: </span><span class="p">[</span><span class="vi">@article</span><span class="p">,</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">build</span><span class="p">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">form</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:text</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_area</span> <span class="ss">:text</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">submit</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<h3>New comment</h3>
+<%= form_with model: [@article, @article.comments.build] do |form| %>
+  <p>
+    <%= form.label :text %><br>
+    <%= form.text_area :text %>
+  </p>
+  <%= form.submit %>
+<% end %>
+">Copy</button>
+</div>
+<p>Cuando se envíe este formulario, intentará realizar una solicitud <code>POST</code> a una ruta de <code>/articles/:article_id/comments</code> dentro del motor. Esta ruta no existe en este momento, pero se puede crear cambiando la línea <code>resources :articles</code> dentro de <code>config/routes.rb</code> en estas líneas:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">resources</span> <span class="ss">:articles</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:comments</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles do
+  resources :comments
+end
+">Copy</button>
+</div>
+<p>Esto crea una ruta anidada para los comentarios, que es lo que requiere el formulario.</p><p>La ruta ahora existe, pero el controlador al que va esta ruta no. Para crearlo, ejecuta este comando desde la raíz del motor:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate controller comments
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate controller comments
+">Copy</button>
+</div>
+<p>Esto generará las siguientes cosas:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">create  app/controllers/blorgh/comments_controller.rb
+invoke  erb
+ exist    app/views/blorgh/comments
+invoke  test_unit
+create    test/controllers/blorgh/comments_controller_test.rb
+invoke  helper
+create    app/helpers/blorgh/comments_helper.rb
+invoke    test_unit
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="create  app/controllers/blorgh/comments_controller.rb
+invoke  erb
+ exist    app/views/blorgh/comments
+invoke  test_unit
+create    test/controllers/blorgh/comments_controller_test.rb
+invoke  helper
+create    app/helpers/blorgh/comments_helper.rb
+invoke    test_unit
+">Copy</button>
+</div>
+<p>El formulario estará haciendo una solicitud <code>POST</code> a <code>/articles/:article_id/comments</code>, que corresponderá con la acción <code>create</code> en <code>Blorgh::CommentsController</code>. Esta acción necesita ser creada, lo que se puede hacer poniendo las siguientes líneas dentro de la definición de clase en <code>app/controllers/blorgh/comments_controller.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:article_id</span><span class="p">])</span>
+  <span class="vi">@comment</span> <span class="o">=</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">comments</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">comment_params</span><span class="p">)</span>
+  <span class="n">flash</span><span class="p">[</span><span class="ss">:notice</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Comment has been created!"</span>
+  <span class="n">redirect_to</span> <span class="n">articles_path</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">comment_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:comment</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:text</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
+  @article = Article.find(params[:article_id])
+  @comment = @article.comments.create(comment_params)
+  flash[:notice] = &quot;Comment has been created!&quot;
+  redirect_to articles_path
+end
+
+private
+  def comment_params
+    params.require(:comment).permit(:text)
+  end
+">Copy</button>
+</div>
+<p>Este es el paso final requerido para que el nuevo formulario de comentarios funcione. Sin embargo, mostrar los comentarios no está del todo correcto todavía. Si fueras a crear un comentario ahora mismo, verías este error:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">Missing partial blorgh/comments/_comment with {:handlers=&gt;[:erb, :builder],
+:formats=&gt;[:html], :locale=&gt;[:en, :en]}. Searched in:   *
+"/Users/ryan/Sites/side_projects/blorgh/test/dummy/app/views"   *
+"/Users/ryan/Sites/side_projects/blorgh/app/views"
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Missing partial blorgh/comments/_comment with {:handlers=>[:erb, :builder],
+:formats=>[:html], :locale=>[:en, :en]}. Searched in:   *
+&quot;/Users/ryan/Sites/side_projects/blorgh/test/dummy/app/views&quot;   *
+&quot;/Users/ryan/Sites/side_projects/blorgh/app/views&quot;
+">Copy</button>
+</div>
+<p>El motor no puede encontrar el parcial requerido para renderizar los comentarios. Rails busca primero en el directorio <code>app/views</code> de la aplicación (<code>test/dummy</code>) y luego en el directorio <code>app/views</code> del motor. Cuando no puede encontrarlo, lanzará este error. El motor sabe buscar <code>blorgh/comments/_comment</code> porque el objeto de modelo que está recibiendo es de la clase <code>Blorgh::Comment</code>.</p><p>Este parcial será responsable de renderizar solo el texto del comentario, por ahora. Crea un nuevo archivo en <code>app/views/blorgh/comments/_comment.html.erb</code> y pon esta línea dentro:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">comment_counter</span> <span class="o">+</span> <span class="mi">1</span> <span class="cp">%&gt;</span>. <span class="cp">&lt;%=</span> <span class="n">comment</span><span class="p">.</span><span class="nf">text</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= comment_counter + 1 %>. <%= comment.text %>
+">Copy</button>
+</div>
+<p>La variable local <code>comment_counter</code> nos la proporciona la llamada <code>&lt;%= render @article.comments %&gt;</code>, que la definirá automáticamente e incrementará el contador a medida que itera a través de cada comentario. Se usa en este ejemplo para mostrar un pequeño número junto a cada comentario cuando se crea.</p><p>Eso completa la función de comentarios del motor de blogging. Ahora es el momento de usarlo dentro de una aplicación.</p><h2 id="conectando-a-una-aplicación"><a class="anchorlink" href="#conectando-a-una-aplicación"><span>4</span> Conectando a una Aplicación</a></h2><p>Usar un motor dentro de una aplicación es muy fácil. Esta sección cubre cómo montar el motor en una aplicación y la configuración inicial requerida, así como vincular el motor a una clase <code>User</code> proporcionada por la aplicación para proporcionar propiedad para artículos y comentarios dentro del motor.</p><h3 id="montando-el-motor"><a class="anchorlink" href="#montando-el-motor"><span>4.1</span> Montando el Motor</a></h3><p>Primero, el motor necesita ser especificado dentro del <code>Gemfile</code> de la aplicación. Si no hay una aplicación a mano para probar esto, genera una usando el comando <code>rails new</code> fuera del directorio del motor así:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new unicorn
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new unicorn
+">Copy</button>
+</div>
+<p>Por lo general, especificarías el motor dentro del <code>Gemfile</code> como un gem normal y corriente.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"devise"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;devise&quot;
+">Copy</button>
+</div>
+<p>Sin embargo, debido a que estás desarrollando el motor <code>blorgh</code> en tu máquina local, necesitarás especificar la opción <code>:path</code> en tu <code>Gemfile</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s2">"blorgh"</span><span class="p">,</span> <span class="ss">path: </span><span class="s2">"engines/blorgh"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="gem &quot;blorgh&quot;, path: &quot;engines/blorgh&quot;
+">Copy</button>
+</div>
+<p>Luego ejecuta <code>bundle</code> para instalar el gem.</p><p>Como se describió anteriormente, al colocar el gem en el <code>Gemfile</code> se cargará cuando Rails se cargue. Primero requerirá <code>lib/blorgh.rb</code> del motor, luego <code>lib/blorgh/engine.rb</code>, que es el archivo que define las piezas principales de funcionalidad para el motor.</p><p>Para hacer que la funcionalidad del motor sea accesible desde dentro de una aplicación, necesita ser montado en el archivo <code>config/routes.rb</code> de esa aplicación:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">mount</span> <span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span><span class="p">,</span> <span class="ss">at: </span><span class="s2">"/blog"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="mount Blorgh::Engine, at: &quot;/blog&quot;
+">Copy</button>
+</div>
+<p>Esta línea montará el motor en <code>/blog</code> en la aplicación. Haciéndolo accesible en <code>http://localhost:3000/blog</code> cuando la aplicación se ejecuta con <code>bin/rails server</code>.</p><p>NOTA: Otros motores, como Devise, manejan esto de manera un poco diferente al hacerte especificar helpers personalizados (como <code>devise_for</code>) en las rutas. Estos helpers hacen exactamente lo mismo, montando piezas de la funcionalidad del motor en una ruta predefinida que puede ser personalizable.</p><h3 id="configuración-del-motor"><a class="anchorlink" href="#configuración-del-motor"><span>4.2</span> Configuración del Motor</a></h3><p>El motor contiene migraciones para las tablas <code>blorgh_articles</code> y <code>blorgh_comments</code> que necesitan ser creadas en la base de datos de la aplicación para que los modelos del motor puedan consultarlas correctamente. Para copiar estas migraciones en la aplicación ejecuta el siguiente comando desde la raíz de la aplicación:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>blorgh:install:migrations
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails blorgh:install:migrations
+">Copy</button>
+</div>
+<p>Si tienes múltiples motores que necesitan migraciones copiadas, usa <code>railties:install:migrations</code> en su lugar:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>railties:install:migrations
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails railties:install:migrations
+">Copy</button>
+</div>
+<p>Puedes especificar una ruta personalizada en el motor de origen para las migraciones especificando MIGRATIONS_PATH.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>railties:install:migrations <span class="nv">MIGRATIONS_PATH</span><span class="o">=</span>db_blourgh
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails railties:install:migrations MIGRATIONS_PATH=db_blourgh
+">Copy</button>
+</div>
+<p>Si tienes múltiples bases de datos también puedes especificar la base de datos de destino especificando DATABASE.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>railties:install:migrations <span class="nv">DATABASE</span><span class="o">=</span>animals
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails railties:install:migrations DATABASE=animals
+">Copy</button>
+</div>
+<p>Este comando, cuando se ejecuta por primera vez, copiará todas las migraciones del motor. Cuando se ejecute la próxima vez, solo copiará las migraciones que no se hayan copiado ya. La primera ejecución de este comando mostrará algo como esto:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">Copied migration [timestamp_1]_create_blorgh_articles.blorgh.rb from blorgh
+Copied migration [timestamp_2]_create_blorgh_comments.blorgh.rb from blorgh
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Copied migration [timestamp_1]_create_blorgh_articles.blorgh.rb from blorgh
+Copied migration [timestamp_2]_create_blorgh_comments.blorgh.rb from blorgh
+">Copy</button>
+</div>
+<p>La primera marca de tiempo (<code>[timestamp_1]</code>) será la hora actual, y la segunda marca de tiempo (<code>[timestamp_2]</code>) será la hora actual más un segundo. La razón de esto es para que las migraciones para el motor se ejecuten después de cualquier migración existente en la aplicación.</p><p>Para ejecutar estas migraciones dentro del contexto de la aplicación, simplemente ejecuta <code>bin/rails db:migrate</code>. Al acceder al motor a través de <code>http://localhost:3000/blog</code>, los artículos estarán vacíos. Esto se debe a que la tabla creada dentro de la aplicación es diferente de la creada dentro del motor. Adelante, juega con el motor recién montado. Encontrarás que es lo mismo que cuando era solo un motor.</p><p>Si deseas ejecutar migraciones solo desde un motor, puedes hacerlo especificando <code>SCOPE</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate <span class="nv">SCOPE</span><span class="o">=</span>blorgh
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate SCOPE=blorgh
+">Copy</button>
+</div>
+<p>Esto puede ser útil si deseas revertir las migraciones del motor antes de eliminarlo. Para revertir todas las migraciones del motor blorgh puedes ejecutar un código como:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate <span class="nv">SCOPE</span><span class="o">=</span>blorgh <span class="nv">VERSION</span><span class="o">=</span>0
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate SCOPE=blorgh VERSION=0
+">Copy</button>
+</div>
+<h3 id="usando-una-clase-proporcionada-por-la-aplicación"><a class="anchorlink" href="#usando-una-clase-proporcionada-por-la-aplicación"><span>4.3</span> Usando una Clase Proporcionada por la Aplicación</a></h3><h4 id="usando-un-modelo-proporcionado-por-la-aplicación"><a class="anchorlink" href="#usando-un-modelo-proporcionado-por-la-aplicación"><span>4.3.1</span> Usando un Modelo Proporcionado por la Aplicación</a></h4><p>Cuando se crea un motor, puede querer usar clases específicas de una aplicación para proporcionar enlaces entre las piezas del motor y las piezas de la aplicación. En el caso del motor <code>blorgh</code>, hacer que los artículos y los comentarios tengan autores tendría mucho sentido.</p><p>Una aplicación típica podría tener una clase <code>User</code> que se usaría para representar autores para un artículo o un comentario. Pero podría haber un caso en el que la aplicación llame a esta clase algo diferente, como <code>Person</code>. Por esta razón, el motor no debería codificar específicamente las asociaciones para una clase <code>User</code>.</p><p>Para mantenerlo simple en este caso, la aplicación tendrá una clase llamada <code>User</code> que representa a los usuarios de la aplicación (entraremos en hacer esto configurable más adelante). Puede generarse usando este comando dentro de la aplicación:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate model user name:string
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate model user name:string
+">Copy</button>
+</div>
+<p>El comando <code>bin/rails db:migrate</code> necesita ejecutarse aquí para asegurar que nuestra aplicación tenga la tabla <code>users</code> para uso futuro.</p><p>Además, para mantenerlo simple, el formulario de artículos tendrá un nuevo campo de texto llamado <code>author_name</code>, donde los usuarios pueden elegir poner su nombre. El motor luego tomará este nombre y creará un nuevo objeto <code>User</code> a partir de él o encontrará uno que ya tenga ese nombre. Luego, el motor asociará el artículo con el objeto <code>User</code> encontrado o creado.</p><p>Primero, el campo de texto <code>author_name</code> necesita ser agregado al parcial <code>app/views/blorgh/articles/_form.html.erb</code> dentro del motor. Esto se puede agregar sobre el campo <code>title</code> con este código:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"field"</span><span class="nt">&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:author_name</span> <span class="cp">%&gt;</span><span class="nt">&lt;br&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:author_name</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<div class=&quot;field&quot;>
+  <%= form.label :author_name %><br>
+  <%= form.text_field :author_name %>
+</div>
+">Copy</button>
+</div>
+<p>A continuación, necesitamos actualizar nuestro método <code>Blorgh::ArticlesController#article_params</code> para permitir el nuevo parámetro del formulario:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">article_params</span>
+  <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:text</span><span class="p">,</span> <span class="ss">:author_name</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def article_params
+  params.require(:article).permit(:title, :text, :author_name)
+end
+">Copy</button>
+</div>
+<p>El modelo <code>Blorgh::Article</code> debería tener entonces algún código para convertir el campo <code>author_name</code> en un objeto <code>User</code> real y asociarlo como el <code>author</code> de ese artículo antes de que el artículo se guarde. También necesitará tener un <code>attr_accessor</code> configurado para este campo, para que los métodos setter y getter estén definidos para él.</p><p>Para hacer todo esto, deberás agregar el <code>attr_accessor</code> para <code>author_name</code>, la asociación para el autor y la llamada <code>before_validation</code> en <code>app/models/blorgh/article.rb</code>. La asociación <code>author</code> se codificará para la clase <code>User</code> por el momento.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">attr_accessor</span> <span class="ss">:author_name</span>
+<span class="n">belongs_to</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">class_name: </span><span class="s2">"User"</span>
+
+<span class="n">before_validation</span> <span class="ss">:set_author</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">set_author</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">author</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_create_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">author_name</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="attr_accessor :author_name
+belongs_to :author, class_name: &quot;User&quot;
+
+before_validation :set_author
+
+private
+  def set_author
+    self.author = User.find_or_create_by(name: author_name)
+  end
+">Copy</button>
+</div>
+<p>Al representar el objeto de la asociación <code>author</code> con la clase <code>User</code>, se establece un enlace entre el motor y la aplicación. Debe haber una forma de asociar los registros en la tabla <code>blorgh_articles</code> con los registros en la tabla <code>users</code>. Debido a que la asociación se llama <code>author</code>, debería añadirse una columna <code>author_id</code> a la tabla <code>blorgh_articles</code>.</p><p>Para generar esta nueva columna, ejecuta este comando dentro del motor:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration add_author_id_to_blorgh_articles author_id:integer
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration add_author_id_to_blorgh_articles author_id:integer
+">Copy</button>
+</div>
+<p>NOTA: Debido al nombre de la migración y la especificación de la columna después de ella, Rails sabrá automáticamente que deseas agregar una columna a una tabla específica y escribirá eso en la migración por ti. No necesitas decirle más que esto.</p><p>Esta migración necesitará ejecutarse en la aplicación. Para hacerlo, primero debe copiarse usando este comando:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>blorgh:install:migrations
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails blorgh:install:migrations
+">Copy</button>
+</div>
+<p>Observa que solo <em>una</em> migración se copió aquí. Esto se debe a que las dos primeras migraciones se copiaron la primera vez que se ejecutó este comando.</p><div class="interstitial code">
+<pre><code class="highlight plaintext">NOTE Migration [timestamp]_create_blorgh_articles.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+NOTE Migration [timestamp]_create_blorgh_comments.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+Copied migration [timestamp]_add_author_id_to_blorgh_articles.blorgh.rb from blorgh
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="NOTE Migration [timestamp]_create_blorgh_articles.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+NOTE Migration [timestamp]_create_blorgh_comments.blorgh.rb from blorgh has been skipped. Migration with the same name already exists.
+Copied migration [timestamp]_add_author_id_to_blorgh_articles.blorgh.rb from blorgh
+">Copy</button>
+</div>
+<p>Ejecuta la migración usando:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>db:migrate
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails db:migrate
+">Copy</button>
+</div>
+<p>Ahora con todas las piezas en su lugar, se llevará a cabo una acción que asociará un autor - representado por un registro en la tabla <code>users</code> - con un artículo, representado por la tabla <code>blorgh_articles</code> del motor.</p><p>Finalmente, el nombre del autor debería mostrarse en la página del artículo. Agrega este código sobre la salida "Title" dentro de <code>app/views/blorgh/articles/_article.html.erb</code>:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Author:<span class="nt">&lt;/strong&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">author</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<p>
+  <strong>Author:</strong>
+  <%= article.author.name %>
+</p>
+">Copy</button>
+</div>
+<h4 id="usando-un-controlador-proporcionado-por-la-aplicación"><a class="anchorlink" href="#usando-un-controlador-proporcionado-por-la-aplicación"><span>4.3.2</span> Usando un Controlador Proporcionado por la Aplicación</a></h4><p>Debido a que los controladores de Rails generalmente comparten código para cosas como autenticación y acceso a variables de sesión, heredan de <code>ApplicationController</code> por defecto. Sin embargo, los motores de Rails están diseñados para ejecutarse independientemente de la aplicación principal, por lo que cada motor obtiene un <code>ApplicationController</code> con espacio de nombres. Este espacio de nombres previene colisiones de código, pero a menudo los controladores del motor necesitan acceder a métodos en el <code>ApplicationController</code> de la aplicación principal. Una forma fácil de proporcionar este acceso es cambiar el <code>ApplicationController</code> con espacio de nombres del motor para heredar del <code>ApplicationController</code> de la aplicación principal. Para nuestro motor Blorgh esto se haría cambiando <code>app/controllers/blorgh/application_controller.rb</code> para que luzca así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">ApplicationController</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class ApplicationController < ::ApplicationController
+  end
+end
+">Copy</button>
+</div>
+<p>Por defecto, los controladores del motor heredan de <code>Blorgh::ApplicationController</code>. Así que, después de hacer este cambio, tendrán acceso al <code>ApplicationController</code> de la aplicación principal, como si fueran parte de la aplicación principal.</p><p>Este cambio requiere que el motor se ejecute desde una aplicación de Rails que tenga un <code>ApplicationController</code>.</p><h3 id="configurando-un-motor"><a class="anchorlink" href="#configurando-un-motor"><span>4.4</span> Configurando un Motor</a></h3><p>Esta sección cubre cómo hacer que la clase <code>User</code> sea configurable, seguida de consejos generales de configuración para el motor.</p><h4 id="estableciendo-configuraciones-en-la-aplicación"><a class="anchorlink" href="#estableciendo-configuraciones-en-la-aplicación"><span>4.4.1</span> Estableciendo Configuraciones en la Aplicación</a></h4><p>El siguiente paso es hacer que la clase que representa a un <code>User</code> en la aplicación sea personalizable para el motor. Esto se debe a que esa clase no siempre puede ser <code>User</code>, como se explicó anteriormente. Para hacer que esta configuración sea personalizable, el motor tendrá una configuración llamada <code>author_class</code> que se usará para especificar qué clase representa a los usuarios dentro de la aplicación.</p><p>Para definir esta configuración, debes usar un <code>mattr_accessor</code> dentro del módulo <code>Blorgh</code> para el motor. Agrega esta línea a <code>lib/blorgh.rb</code> dentro del motor:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">mattr_accessor</span> <span class="ss">:author_class</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="mattr_accessor :author_class
+">Copy</button>
+</div>
+<p>Este método funciona como sus hermanos, <code>attr_accessor</code> y <code>cattr_accessor</code>, pero proporciona un método setter y getter en el módulo con el nombre especificado. Para usarlo, debe referenciarse usando <code>Blorgh.author_class</code>.</p><p>El siguiente paso es cambiar el modelo <code>Blorgh::Article</code> a esta nueva configuración. Cambia la asociación <code>belongs_to</code> dentro de este modelo (<code>app/models/blorgh/article.rb</code>) a esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">belongs_to</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">class_name: </span><span class="no">Blorgh</span><span class="p">.</span><span class="nf">author_class</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="belongs_to :author, class_name: Blorgh.author_class
+">Copy</button>
+</div>
+<p>El método <code>set_author</code> en el modelo <code>Blorgh::Article</code> también debería usar esta clase:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">self</span><span class="p">.</span><span class="nf">author</span> <span class="o">=</span> <span class="no">Blorgh</span><span class="p">.</span><span class="nf">author_class</span><span class="p">.</span><span class="nf">constantize</span><span class="p">.</span><span class="nf">find_or_create_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">author_name</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="self.author = Blorgh.author_class.constantize.find_or_create_by(name: author_name)
+">Copy</button>
+</div>
+<p>Para ahorrar tener que llamar a <code>constantize</code> en el resultado de <code>author_class</code> todo el tiempo, podrías simplemente sobrescribir el método getter <code>author_class</code> dentro del módulo <code>Blorgh</code> en el archivo <code>lib/blorgh.rb</code> para siempre llamar a <code>constantize</code> en el valor guardado antes de devolver el resultado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">author_class</span>
+  <span class="vc">@@author_class</span><span class="p">.</span><span class="nf">constantize</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def self.author_class
+  @@author_class.constantize
+end
+">Copy</button>
+</div>
+<p>Esto luego convertiría el código anterior para <code>set_author</code> en esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">self</span><span class="p">.</span><span class="nf">author</span> <span class="o">=</span> <span class="no">Blorgh</span><span class="p">.</span><span class="nf">author_class</span><span class="p">.</span><span class="nf">find_or_create_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">author_name</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="self.author = Blorgh.author_class.find_or_create_by(name: author_name)
+">Copy</button>
+</div>
+<p>Resultando en algo un poco más corto y más implícito en su comportamiento. El método <code>author_class</code> siempre debería devolver un objeto <code>Class</code>.</p><p>Dado que cambiamos el método <code>author_class</code> para devolver una <code>Class</code> en lugar de una <code>String</code>, también debemos modificar nuestra definición <code>belongs_to</code> en el modelo <code>Blorgh::Article</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">belongs_to</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">class_name: </span><span class="no">Blorgh</span><span class="p">.</span><span class="nf">author_class</span><span class="p">.</span><span class="nf">to_s</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="belongs_to :author, class_name: Blorgh.author_class.to_s
+">Copy</button>
+</div>
+<p>Para establecer esta configuración dentro de la aplicación, se debe usar un inicializador. Al usar un inicializador, la configuración se establecerá antes de que la aplicación comience y llame a los modelos del motor, que pueden depender de que esta configuración exista.</p><p>Crea un nuevo inicializador en <code>config/initializers/blorgh.rb</code> dentro de la aplicación donde está instalado el motor <code>blorgh</code> y pon este contenido en él:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Blorgh</span><span class="p">.</span><span class="nf">author_class</span> <span class="o">=</span> <span class="s2">"User"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Blorgh.author_class = &quot;User&quot;
+">Copy</button>
+</div>
+<p>ADVERTENCIA: Es muy importante aquí usar la versión <code>String</code> de la clase, en lugar de la clase en sí. Si usaras la clase, Rails intentaría cargar esa clase y luego referenciar la tabla relacionada. Esto podría llevar a problemas si la tabla no existiera ya. Por lo tanto, se debe usar una <code>String</code> y luego convertirla en una clase usando <code>constantize</code> en el motor más adelante.</p><p>Adelante, intenta crear un nuevo artículo. Verás que funciona exactamente de la misma manera que antes, excepto que esta vez el motor está usando la configuración en <code>config/initializers/blorgh.rb</code> para saber qué clase es.</p><p>Ahora no hay dependencias estrictas sobre qué clase es, solo sobre cuál debe ser la API para la clase. El motor simplemente requiere que esta clase defina un método <code>find_or_create_by</code> que devuelva un objeto de esa clase, para ser asociado con un artículo cuando se crea. Este objeto, por supuesto, debería tener algún tipo de identificador por el cual pueda ser referenciado.</p><h4 id="configuración-general-del-motor"><a class="anchorlink" href="#configuración-general-del-motor"><span>4.4.2</span> Configuración General del Motor</a></h4><p>Dentro de un motor, puede llegar un momento en el que desees usar cosas como inicializadores, internacionalización u otras opciones de configuración. La buena noticia es que estas cosas son completamente posibles, porque un motor de Rails comparte gran parte de la funcionalidad de una aplicación de Rails. De hecho, la funcionalidad de una aplicación de Rails es en realidad un superconjunto de lo que proporcionan los motores.</p><p>Si deseas usar un inicializador - código que debería ejecutarse antes de que se cargue el motor - el lugar para ello es la carpeta <code>config/initializers</code>. La funcionalidad de este directorio se explica en la <a href="configuring.html#initializers">sección de Inicializadores</a> de la guía de Configuración, y funciona exactamente de la misma manera que el directorio <code>config/initializers</code> dentro de una aplicación. Lo mismo ocurre si deseas usar un inicializador estándar.</p><p>Para locales, simplemente coloca los archivos de locales en el directorio <code>config/locales</code>, tal como lo harías en una aplicación.</p><h2 id="probando-un-motor"><a class="anchorlink" href="#probando-un-motor"><span>5</span> Probando un Motor</a></h2><p>Cuando se genera un motor, se crea una aplicación dummy más pequeña dentro de él en <code>test/dummy</code>. Esta aplicación se usa como un punto de montaje para el motor, para hacer que probar el motor sea extremadamente simple. Puedes extender esta aplicación generando controladores, modelos o vistas desde dentro del directorio y luego usarlos para probar tu motor.</p><p>El directorio <code>test</code> debe tratarse como un entorno de prueba típico de Rails, permitiendo pruebas unitarias, funcionales y de integración.</p><h3 id="pruebas-funcionales"><a class="anchorlink" href="#pruebas-funcionales"><span>5.1</span> Pruebas Funcionales</a></h3><p>Un asunto que vale la pena considerar al escribir pruebas funcionales es que las pruebas se ejecutarán en una aplicación - la aplicación <code>test/dummy</code> - en lugar de tu motor. Esto se debe a la configuración del entorno de prueba; un motor necesita una aplicación como anfitrión para probar su funcionalidad principal, especialmente los controladores. Esto significa que si fueras a hacer un <code>GET</code> típico a un controlador en una prueba funcional de un controlador como esta:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">FooControllerTest</span> <span class="o">&lt;</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">IntegrationTest</span>
+    <span class="kp">include</span> <span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">url_helpers</span>
+
+    <span class="k">def</span> <span class="nf">test_index</span>
+      <span class="n">get</span> <span class="n">foos_url</span>
+      <span class="c1"># ...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class FooControllerTest < ActionDispatch::IntegrationTest
+    include Engine.routes.url_helpers
+
+    def test_index
+      get foos_url
+      # ...
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Puede que no funcione correctamente. Esto se debe a que la aplicación no sabe cómo enrutar estas solicitudes al motor a menos que le digas explícitamente <strong>cómo</strong>. Para hacer esto, debes establecer la variable de instancia <code>@routes</code> en el conjunto de rutas del motor en tu código de configuración:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">FooControllerTest</span> <span class="o">&lt;</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">IntegrationTest</span>
+    <span class="kp">include</span> <span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">url_helpers</span>
+
+    <span class="n">setup</span> <span class="k">do</span>
+      <span class="vi">@routes</span> <span class="o">=</span> <span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">test_index</span>
+      <span class="n">get</span> <span class="n">foos_url</span>
+      <span class="c1"># ...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module Blorgh
+  class FooControllerTest < ActionDispatch::IntegrationTest
+    include Engine.routes.url_helpers
+
+    setup do
+      @routes = Engine.routes
+    end
+
+    def test_index
+      get foos_url
+      # ...
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Esto le dice a la aplicación que aún deseas realizar una solicitud <code>GET</code> a la acción <code>index</code> de este controlador, pero deseas usar la ruta del motor para llegar allí, en lugar de la de la aplicación.</p><p>Esto también asegura que los métodos helpers de URL del motor funcionen como se espera en tus pruebas.</p><h2 id="mejorando-la-funcionalidad-del-motor"><a class="anchorlink" href="#mejorando-la-funcionalidad-del-motor"><span>6</span> Mejorando la Funcionalidad del Motor</a></h2><p>Esta sección explica cómo agregar y/o sobrescribir la funcionalidad MVC del motor en la aplicación principal de Rails.</p><h3 id="sobrescribiendo-modelos-y-controladores"><a class="anchorlink" href="#sobrescribiendo-modelos-y-controladores"><span>6.1</span> Sobrescribiendo Modelos y Controladores</a></h3><p>Los modelos y controladores del motor pueden ser reabiertos por la aplicación principal para extenderlos o decorarlos.</p><p>Las sobrescrituras pueden organizarse en un directorio dedicado <code>app/overrides</code>, ignorado por el autoloader, y precargado en un callback <code>to_prepare</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">MyApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="c1"># ...</span>
+
+    <span class="n">overrides</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/overrides"</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">ignore</span><span class="p">(</span><span class="n">overrides</span><span class="p">)</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">to_prepare</span> <span class="k">do</span>
+      <span class="no">Dir</span><span class="p">.</span><span class="nf">glob</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">overrides</span><span class="si">}</span><span class="s2">/**/*_override.rb"</span><span class="p">).</span><span class="nf">sort</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">override</span><span class="o">|</span>
+        <span class="nb">load</span> <span class="n">override</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyApp
+  class Application < Rails::Application
+    # ...
+
+    overrides = &quot;#{Rails.root}/app/overrides&quot;
+    Rails.autoloaders.main.ignore(overrides)
+
+    config.to_prepare do
+      Dir.glob(&quot;#{overrides}/**/*_override.rb&quot;).sort.each do |override|
+        load override
+      end
+    end
+  end
+end
+">Copy</button>
+</div>
+<h4 id="reabriendo-clases-existentes-usando-class-eval"><a class="anchorlink" href="#reabriendo-clases-existentes-usando-class-eval"><span>6.1.1</span> Reabriendo Clases Existentes Usando <code>class_eval</code></a></h4><p>Por ejemplo, para sobrescribir el modelo del motor</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Blorgh/app/models/blorgh/article.rb</span>
+<span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Blorgh/app/models/blorgh/article.rb
+module Blorgh
+  class Article < ApplicationRecord
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<p>simplemente crea un archivo que <em>reabra</em> esa clase:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># MyApp/app/overrides/models/blorgh/article_override.rb</span>
+<span class="no">Blorgh</span><span class="o">::</span><span class="no">Article</span><span class="p">.</span><span class="nf">class_eval</span> <span class="k">do</span>
+  <span class="c1"># ...</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# MyApp/app/overrides/models/blorgh/article_override.rb
+Blorgh::Article.class_eval do
+  # ...
+end
+">Copy</button>
+</div>
+<p>Es muy importante que la sobrescritura <em>reabra</em> la clase o el módulo. Usar las palabras clave <code>class</code> o <code>module</code> las definiría si no estuvieran ya en memoria, lo cual sería incorrecto porque la definición vive en el motor. Usar <code>class_eval</code> como se muestra arriba asegura que estás reabriendo.</p><h4 id="reabriendo-clases-existentes-usando-activesupport-concern"><a class="anchorlink" href="#reabriendo-clases-existentes-usando-activesupport-concern"><span>6.1.2</span> Reabriendo Clases Existentes Usando ActiveSupport::Concern</a></h4><p>Usar <code>Class#class_eval</code> es genial para ajustes simples, pero para modificaciones de clase más complejas, podrías querer considerar usar <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Concern.html"><code>ActiveSupport::Concern</code></a>. ActiveSupport::Concern gestiona el orden de carga de módulos y clases dependientes interrelacionados en tiempo de ejecución, permitiéndote modularizar significativamente tu código.</p><p><strong>Agregando</strong> <code>Article#time_since_created</code> y <strong>Sobrescribiendo</strong> <code>Article#summary</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># MyApp/app/models/blorgh/article.rb</span>
+
+<span class="k">class</span> <span class="nc">Blorgh::Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="kp">include</span> <span class="no">Blorgh</span><span class="o">::</span><span class="no">Concerns</span><span class="o">::</span><span class="no">Models</span><span class="o">::</span><span class="no">Article</span>
+
+  <span class="k">def</span> <span class="nf">time_since_created</span>
+    <span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="o">-</span> <span class="n">created_at</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">summary</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2"> - </span><span class="si">#{</span><span class="n">truncate</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# MyApp/app/models/blorgh/article.rb
+
+class Blorgh::Article < ApplicationRecord
+  include Blorgh::Concerns::Models::Article
+
+  def time_since_created
+    Time.current - created_at
+  end
+
+  def summary
+    &quot;#{title} - #{truncate(text)}&quot;
+  end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Blorgh/app/models/blorgh/article.rb</span>
+<span class="k">module</span> <span class="nn">Blorgh</span>
+  <span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+    <span class="kp">include</span> <span class="no">Blorgh</span><span class="o">::</span><span class="no">Concerns</span><span class="o">::</span><span class="no">Models</span><span class="o">::</span><span class="no">Article</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Blorgh/app/models/blorgh/article.rb
+module Blorgh
+  class Article < ApplicationRecord
+    include Blorgh::Concerns::Models::Article
+  end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Blorgh/lib/concerns/models/article.rb</span>
+
+<span class="k">module</span> <span class="nn">Blorgh::Concerns::Models::Article</span>
+  <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+  <span class="c1"># `included do` hace que el bloque se evalúe en el contexto</span>
+  <span class="c1"># en el que se incluye el módulo (es decir, Blorgh::Article),</span>
+  <span class="c1"># en lugar de en el módulo mismo.</span>
+  <span class="n">included</span> <span class="k">do</span>
+    <span class="nb">attr_accessor</span> <span class="ss">:author_name</span>
+    <span class="n">belongs_to</span> <span class="ss">:author</span><span class="p">,</span> <span class="ss">class_name: </span><span class="s2">"User"</span>
+
+    <span class="n">before_validation</span> <span class="ss">:set_author</span>
+
+    <span class="kp">private</span>
+      <span class="k">def</span> <span class="nf">set_author</span>
+        <span class="nb">self</span><span class="p">.</span><span class="nf">author</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_or_create_by</span><span class="p">(</span><span class="ss">name: </span><span class="n">author_name</span><span class="p">)</span>
+      <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">summary</span>
+    <span class="s2">"</span><span class="si">#{</span><span class="n">title</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+    <span class="k">def</span> <span class="nf">some_class_method</span>
+      <span class="s1">'some class method string'</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Blorgh/lib/concerns/models/article.rb
+
+module Blorgh::Concerns::Models::Article
+  extend ActiveSupport::Concern
+
+  # `included do` hace que el bloque se evalúe en el contexto
+  # en el que se incluye el módulo (es decir, Blorgh::Article),
+  # en lugar de en el módulo mismo.
+  included do
+    attr_accessor :author_name
+    belongs_to :author, class_name: &quot;User&quot;
+
+    before_validation :set_author
+
+    private
+      def set_author
+        self.author = User.find_or_create_by(name: author_name)
+      end
+  end
+
+  def summary
+    &quot;#{title}&quot;
+  end
+
+  module ClassMethods
+    def some_class_method
+      'some class method string'
+    end
+  end
+end
+">Copy</button>
+</div>
+<h3 id="carga-automática-y-motores"><a class="anchorlink" href="#carga-automática-y-motores"><span>6.2</span> Carga Automática y Motores</a></h3><p>Por favor, consulta la guía <a href="autoloading_and_reloading_constants.html#autoloading-and-engines">Carga Automática y Recarga de Constantes</a> para obtener más información sobre la carga automática y los motores.</p><h3 id="sobrescribiendo-vistas"><a class="anchorlink" href="#sobrescribiendo-vistas"><span>6.3</span> Sobrescribiendo Vistas</a></h3><p>Cuando Rails busca una vista para renderizar, primero buscará en el directorio <code>app/views</code> de la aplicación. Si no puede encontrar la vista allí, verificará en los directorios <code>app/views</code> de todos los motores que tengan este directorio.</p><p>Cuando se le pide a la aplicación que renderice la vista para la acción index de <code>Blorgh::ArticlesController</code>, primero buscará en la ruta <code>app/views/blorgh/articles/index.html.erb</code> dentro de la aplicación. Si no puede encontrarla, buscará dentro del motor.</p><p>Puedes sobrescribir esta vista en la aplicación simplemente creando un nuevo archivo en <code>app/views/blorgh/articles/index.html.erb</code>. Luego puedes cambiar completamente lo que esta vista normalmente mostraría.</p><p>Prueba esto ahora creando un nuevo archivo en <code>app/views/blorgh/articles/index.html.erb</code> y pon este contenido en él:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;h1&gt;</span>Articles<span class="nt">&lt;/h1&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"New Article"</span><span class="p">,</span> <span class="n">new_article_path</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;h2&gt;</span><span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">title</span> <span class="cp">%&gt;</span><span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;small&gt;</span>By <span class="cp">&lt;%=</span> <span class="n">article</span><span class="p">.</span><span class="nf">author</span> <span class="cp">%&gt;</span><span class="nt">&lt;/small&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">simple_format</span><span class="p">(</span><span class="n">article</span><span class="p">.</span><span class="nf">text</span><span class="p">)</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;hr&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<h1>Articles</h1>
+<%= link_to &quot;New Article&quot;, new_article_path %>
+<% @articles.each do |article| %>
+  <h2><%= article.title %></h2>
+  <small>By <%= article.author %></small>
+  <%= simple_format(article.text) %>
+  <hr>
+<% end %>
+">Copy</button>
+</div>
+<h3 id="rutas"><a class="anchorlink" href="#rutas"><span>6.4</span> Rutas</a></h3><p>Las rutas dentro de un motor están aisladas de la aplicación por defecto. Esto se hace mediante la llamada <code>isolate_namespace</code> dentro de la clase <code>Engine</code>. Esto esencialmente significa que la aplicación y sus motores pueden tener rutas con nombres idénticos y no entrarán en conflicto.</p><p>Las rutas dentro de un motor se dibujan en la clase <code>Engine</code> dentro de <code>config/routes.rb</code>, así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Blorgh</span><span class="o">::</span><span class="no">Engine</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:articles</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Blorgh::Engine.routes.draw do
+  resources :articles
+end
+">Copy</button>
+</div>
+<p>Al tener rutas aisladas como esta, si deseas enlazar a un área de un motor desde dentro de una aplicación, necesitarás usar el método proxy de enrutamiento del motor. Las llamadas a métodos de enrutamiento normales como <code>articles_path</code> pueden terminar yendo a ubicaciones no deseadas si tanto la aplicación como el motor tienen tal helper definido.</p><p>Por ejemplo, el siguiente ejemplo iría a <code>articles_path</code> de la aplicación si esa plantilla se renderiza desde la aplicación, o a <code>articles_path</code> del motor si se renderiza desde el motor:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Blog articles"</span><span class="p">,</span> <span class="n">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to &quot;Blog articles&quot;, articles_path %>
+">Copy</button>
+</div>
+<p>Para hacer que esta ruta use siempre el método helper de enrutamiento <code>articles_path</code> del motor, debemos llamar al método en el método proxy de enrutamiento que comparte el mismo nombre que el motor.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Blog articles"</span><span class="p">,</span> <span class="n">blorgh</span><span class="p">.</span><span class="nf">articles_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to &quot;Blog articles&quot;, blorgh.articles_path %>
+">Copy</button>
+</div>
+<p>Si deseas referenciar la aplicación dentro del motor de manera similar, usa el helper <code>main_app</code>:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Home"</span><span class="p">,</span> <span class="n">main_app</span><span class="p">.</span><span class="nf">root_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to &quot;Home&quot;, main_app.root_path %>
+">Copy</button>
+</div>
+<p>Si usaras esto dentro de un motor, <strong>siempre</strong> iría a la raíz de la aplicación. Si dejaras fuera el método "proxy de enrutamiento" <code>main_app</code>, podría potencialmente ir a la raíz del motor o de la aplicación, dependiendo de dónde se llame.</p><p>Si una plantilla renderizada desde dentro de un motor intenta usar uno de los métodos helpers de enrutamiento de la aplicación, puede resultar en una llamada a un método indefinido. Si encuentras tal problema, asegúrate de que no estás intentando llamar a los métodos de enrutamiento de la aplicación sin el prefijo <code>main_app</code> desde dentro del motor.</p><h3 id="activos"><a class="anchorlink" href="#activos"><span>6.5</span> Activos</a></h3><p>Los activos dentro de un motor funcionan de manera idéntica a una aplicación completa. Debido a que la clase del motor hereda de <code>Rails::Engine</code>, la aplicación sabrá buscar activos en los directorios <code>app/assets</code> y <code>lib/assets</code> del motor.</p><p>Como todos los demás componentes de un motor, los activos deben estar en un espacio de nombres. Esto significa que si tienes un activo llamado <code>style.css</code>, debería colocarse en <code>app/assets/stylesheets/[engine name]/style.css</code>, en lugar de <code>app/assets/stylesheets/style.css</code>. Si este activo no está en un espacio de nombres, existe la posibilidad de que la aplicación anfitriona pueda tener un activo llamado de manera idéntica, en cuyo caso el activo de la aplicación tendría prioridad y el del motor sería ignorado.</p><p>Imagina que tenías un activo ubicado en <code>app/assets/stylesheets/blorgh/style.css</code>. Para incluir este activo dentro de una aplicación, solo usa <code>stylesheet_link_tag</code> y referencia el activo como si estuviera dentro del motor:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"blorgh/style.css"</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= stylesheet_link_tag &quot;blorgh/style.css&quot; %>
+">Copy</button>
+</div>
+<p>También puedes especificar estos activos como dependencias de otros activos usando declaraciones de requerimiento de Pipeline de Activos en archivos procesados:</p><div class="interstitial code">
+<pre><code class="highlight css"><span class="c">/*
+ *= require blorgh/style
+ */</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="/*
+ *= require blorgh/style
+ */
+">Copy</button>
+</div>
+<div class="interstitial info"><p>Recuerda que para usar lenguajes como Sass o CoffeeScript, deberías agregar la biblioteca relevante al <code>.gemspec</code> de tu motor.</p></div><h3 id="activos-separados-y-precompilación"><a class="anchorlink" href="#activos-separados-y-precompilación"><span>6.6</span> Activos Separados y Precompilación</a></h3><p>Hay algunas situaciones en las que los activos de tu motor no son necesarios para la aplicación anfitriona. Por ejemplo, supongamos que has creado una funcionalidad de administración que solo existe para tu motor. En este caso, la aplicación anfitriona no necesita requerir <code>admin.css</code> o <code>admin.js</code>. Solo el diseño de administración del gem necesita estos activos. No tiene sentido que la aplicación anfitriona incluya <code>"blorgh/admin.css"</code> en sus hojas de estilo. En esta situación, deberías definir explícitamente estos activos para la precompilación. Esto le dice a Sprockets que agregue tus activos del motor cuando se active <code>bin/rails assets:precompile</code>.</p><p>Puedes definir activos para la precompilación en <code>engine.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">initializer</span> <span class="s2">"blorgh.assets.precompile"</span> <span class="k">do</span> <span class="o">|</span><span class="n">app</span><span class="o">|</span>
+  <span class="n">app</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">precompile</span> <span class="o">+=</span> <span class="sx">%w( admin.js admin.css )</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="initializer &quot;blorgh.assets.precompile&quot; do |app|
+  app.config.assets.precompile += %w( admin.js admin.css )
+end
+">Copy</button>
+</div>
+<p>Para obtener más información, lee la <a href="asset_pipeline.html">guía del Pipeline de Activos</a>.</p><h3 id="otras-dependencias-de-gemas"><a class="anchorlink" href="#otras-dependencias-de-gemas"><span>6.7</span> Otras Dependencias de Gemas</a></h3><p>Las dependencias de gemas dentro de un motor deben especificarse dentro del archivo <code>.gemspec</code> en la raíz del motor. La razón es que el motor puede instalarse como un gem. Si las dependencias se especificaran dentro del <code>Gemfile</code>, no serían reconocidas por una instalación de gem tradicional y, por lo tanto, no se instalarían, causando que el motor no funcione correctamente.</p><p>Para especificar una dependencia que debería instalarse con el motor durante una instalación de gem tradicional, especifícala dentro del bloque <code>Gem::Specification</code> dentro del archivo <code>.gemspec</code> en el motor:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">s</span><span class="p">.</span><span class="nf">add_dependency</span> <span class="s2">"moo"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="s.add_dependency &quot;moo&quot;
+">Copy</button>
+</div>
+<p>Para especificar una dependencia que solo debería instalarse como una dependencia de desarrollo de la aplicación, especifícala así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">s</span><span class="p">.</span><span class="nf">add_development_dependency</span> <span class="s2">"moo"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="s.add_development_dependency &quot;moo&quot;
+">Copy</button>
+</div>
+<p>Ambos tipos de dependencias se instalarán cuando se ejecute <code>bundle install</code> dentro de la aplicación. Las dependencias de desarrollo para el gem solo se usarán cuando se ejecuten el desarrollo y las pruebas para el motor.</p><p>Ten en cuenta que si deseas requerir inmediatamente dependencias cuando se requiera el motor, debes requerirlas antes de la inicialización del motor. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"other_engine/engine"</span>
+<span class="nb">require</span> <span class="s2">"yet_another_engine/engine"</span>
+
+<span class="k">module</span> <span class="nn">MyEngine</span>
+  <span class="k">class</span> <span class="nc">Engine</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Engine</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="require &quot;other_engine/engine&quot;
+require &quot;yet_another_engine/engine&quot;
+
+module MyEngine
+  class Engine < ::Rails::Engine
+  end
+end
+">Copy</button>
+</div>
+
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

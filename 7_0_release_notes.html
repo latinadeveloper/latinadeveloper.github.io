@@ -1,0 +1,507 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notas de la versión de Ruby on Rails 7.0 — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Notas de la versión de Ruby on Rails 7.0 — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Notas de la versión de Ruby on Rails 7.0Aspectos destacados en Rails 7.0: Ruby 2.7.0+ requerido, Ruby 3.0+ preferido" />
+  <meta property="og:description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Notas de la versión de Ruby on Rails 7.0Aspectos destacados en Rails 7.0: Ruby 2.7.0+ requerido, Ruby 3.0+ preferido" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Notas de la versión de Ruby on Rails 7.0</h1><p>Aspectos destacados en Rails 7.0:</p>
+<ul>
+<li>Ruby 2.7.0+ requerido, Ruby 3.0+ preferido</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#actualización-a-rails-7-0">Actualización a Rails 7.0</a></li>
+<li><a href="#características-principales">Características principales</a></li>
+<li><a href="#railties">Railties</a>
+
+<ul>
+<li><a href="#railties-eliminaciones">Eliminaciones</a></li>
+<li><a href="#railties-deprecaciones">Deprecaciones</a></li>
+<li><a href="#railties-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-cable">Action Cable</a>
+
+<ul>
+<li><a href="#action-cable-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-cable-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-cable-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-pack">Action Pack</a>
+
+<ul>
+<li><a href="#action-pack-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-pack-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-pack-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-view">Action View</a>
+
+<ul>
+<li><a href="#action-view-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-view-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-view-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-mailer">Action Mailer</a>
+
+<ul>
+<li><a href="#action-mailer-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-mailer-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-mailer-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#active-record">Active Record</a>
+
+<ul>
+<li><a href="#active-record-eliminaciones">Eliminaciones</a></li>
+<li><a href="#active-record-deprecaciones">Deprecaciones</a></li>
+<li><a href="#active-record-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#active-storage">Active Storage</a>
+
+<ul>
+<li><a href="#active-storage-eliminaciones">Eliminaciones</a></li>
+<li><a href="#active-storage-deprecaciones">Deprecaciones</a></li>
+<li><a href="#active-storage-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#active-model">Active Model</a>
+
+<ul>
+<li><a href="#active-model-eliminaciones">Eliminaciones</a></li>
+<li><a href="#active-model-deprecaciones">Deprecaciones</a></li>
+<li><a href="#active-model-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#active-support">Active Support</a>
+
+<ul>
+<li><a href="#active-support-eliminaciones">Eliminaciones</a></li>
+<li><a href="#active-support-deprecaciones">Deprecaciones</a></li>
+<li><a href="#active-support-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#active-job">Active Job</a>
+
+<ul>
+<li><a href="#active-job-eliminaciones">Eliminaciones</a></li>
+<li><a href="#active-job-deprecaciones">Deprecaciones</a></li>
+<li><a href="#active-job-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-text">Action Text</a>
+
+<ul>
+<li><a href="#action-text-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-text-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-text-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#action-mailbox">Action Mailbox</a>
+
+<ul>
+<li><a href="#action-mailbox-eliminaciones">Eliminaciones</a></li>
+<li><a href="#action-mailbox-deprecaciones">Deprecaciones</a></li>
+<li><a href="#action-mailbox-cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#guías-de-ruby-on-rails">Guías de Ruby on Rails</a>
+
+<ul>
+<li><a href="#cambios-notables">Cambios notables</a></li>
+</ul></li>
+<li><a href="#créditos">Créditos</a></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="actualización-a-rails-7-0"><a class="anchorlink" href="#actualización-a-rails-7-0"><span>1</span> Actualización a Rails 7.0</a></h2><p>Si estás actualizando una aplicación existente, es una gran idea tener una buena cobertura de pruebas antes de comenzar. También deberías primero actualizar a Rails 6.1 en caso de que no lo hayas hecho y asegurarte de que tu aplicación aún funcione como se espera antes de intentar una actualización a Rails 7.0. Una lista de cosas a tener en cuenta al actualizar está disponible en la guía <a href="upgrading_ruby_on_rails.html#upgrading-from-rails-6-1-to-rails-7-0">Actualización de Ruby on Rails</a>.</p><h2 id="características-principales"><a class="anchorlink" href="#características-principales"><span>2</span> Características principales</a></h2><h2 id="railties"><a class="anchorlink" href="#railties"><span>3</span> Railties</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/railties/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="railties-eliminaciones"><a class="anchorlink" href="#railties-eliminaciones"><span>3.1</span> Eliminaciones</a></h3>
+<ul>
+<li>Eliminar <code>config</code> obsoleto en <code>dbconsole</code>.</li>
+</ul>
+<h3 id="railties-deprecaciones"><a class="anchorlink" href="#railties-deprecaciones"><span>3.2</span> Deprecaciones</a></h3><h3 id="railties-cambios-notables"><a class="anchorlink" href="#railties-cambios-notables"><span>3.3</span> Cambios notables</a></h3>
+<ul>
+<li>Sprockets ahora es una dependencia opcional</li>
+</ul>
+<p>  La gema <code>rails</code> ya no depende de <code>sprockets-rails</code>. Si tu aplicación aún necesita usar Sprockets, asegúrate de agregar <code>sprockets-rails</code> a tu Gemfile.</p><div class="interstitial code">
+<pre><code class="highlight plaintext">  gem "sprockets-rails"
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  gem &quot;sprockets-rails&quot;
+">Copy</button>
+</div>
+<h2 id="action-cable"><a class="anchorlink" href="#action-cable"><span>4</span> Action Cable</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actioncable/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-cable-eliminaciones"><a class="anchorlink" href="#action-cable-eliminaciones"><span>4.1</span> Eliminaciones</a></h3><h3 id="action-cable-deprecaciones"><a class="anchorlink" href="#action-cable-deprecaciones"><span>4.2</span> Deprecaciones</a></h3><h3 id="action-cable-cambios-notables"><a class="anchorlink" href="#action-cable-cambios-notables"><span>4.3</span> Cambios notables</a></h3><h2 id="action-pack"><a class="anchorlink" href="#action-pack"><span>5</span> Action Pack</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actionpack/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-pack-eliminaciones"><a class="anchorlink" href="#action-pack-eliminaciones"><span>5.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminar <code>ActionDispatch::Response.return_only_media_type_on_content_type</code> obsoleto.</p></li>
+<li><p>Eliminar <code>Rails.config.action_dispatch.hosts_response_app</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActionDispatch::SystemTestCase#host!</code> obsoleto.</p></li>
+<li><p>Eliminar soporte obsoleto para pasar una ruta a <code>fixture_file_upload</code> relativa a <code>fixture_path</code>.</p></li>
+</ul>
+<h3 id="action-pack-deprecaciones"><a class="anchorlink" href="#action-pack-deprecaciones"><span>5.2</span> Deprecaciones</a></h3><h3 id="action-pack-cambios-notables"><a class="anchorlink" href="#action-pack-cambios-notables"><span>5.3</span> Cambios notables</a></h3><h2 id="action-view"><a class="anchorlink" href="#action-view"><span>6</span> Action View</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actionview/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-view-eliminaciones"><a class="anchorlink" href="#action-view-eliminaciones"><span>6.1</span> Eliminaciones</a></h3>
+<ul>
+<li>Eliminar <code>Rails.config.action_view.raise_on_missing_translations</code> obsoleto.</li>
+</ul>
+<h3 id="action-view-deprecaciones"><a class="anchorlink" href="#action-view-deprecaciones"><span>6.2</span> Deprecaciones</a></h3><h3 id="action-view-cambios-notables"><a class="anchorlink" href="#action-view-cambios-notables"><span>6.3</span> Cambios notables</a></h3>
+<ul>
+<li><code>button_to</code> infiere el verbo HTTP [método] de un objeto Active Record si el objeto se usa para construir la URL.</li>
+</ul>
+<div class="interstitial code">
+<pre><code class="highlight ruby">  <span class="n">button_to</span><span class="p">(</span><span class="s2">"Do a POST"</span><span class="p">,</span> <span class="p">[</span><span class="ss">:do_post_action</span><span class="p">,</span> <span class="no">Workshop</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+  <span class="c1"># Antes</span>
+  <span class="c1">#=&gt;   &lt;input type="hidden" name="_method" value="post" autocomplete="off" /&gt;</span>
+  <span class="c1"># Después</span>
+  <span class="c1">#=&gt;   &lt;input type="hidden" name="_method" value="patch" autocomplete="off" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  button_to(&quot;Do a POST&quot;, [:do_post_action, Workshop.find(1)])
+  # Antes
+  #=>   <input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;post&quot; autocomplete=&quot;off&quot; />
+  # Después
+  #=>   <input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;patch&quot; autocomplete=&quot;off&quot; />
+">Copy</button>
+</div>
+<h2 id="action-mailer"><a class="anchorlink" href="#action-mailer"><span>7</span> Action Mailer</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actionmailer/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-mailer-eliminaciones"><a class="anchorlink" href="#action-mailer-eliminaciones"><span>7.1</span> Eliminaciones</a></h3>
+<ul>
+<li>Eliminar <code>ActionMailer::DeliveryJob</code> y <code>ActionMailer::Parameterized::DeliveryJob</code> obsoletos en favor de <code>ActionMailer::MailDeliveryJob</code>.</li>
+</ul>
+<h3 id="action-mailer-deprecaciones"><a class="anchorlink" href="#action-mailer-deprecaciones"><span>7.2</span> Deprecaciones</a></h3><h3 id="action-mailer-cambios-notables"><a class="anchorlink" href="#action-mailer-cambios-notables"><span>7.3</span> Cambios notables</a></h3><h2 id="active-record"><a class="anchorlink" href="#active-record"><span>8</span> Active Record</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/activerecord/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="active-record-eliminaciones"><a class="anchorlink" href="#active-record-eliminaciones"><span>8.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminar argumento <code>database</code> obsoleto de <code>connected_to</code>.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base.allow_unsafe_raw_sql</code> obsoleto.</p></li>
+<li><p>Eliminar opción <code>:spec_name</code> obsoleta en el método <code>configs_for</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para cargar YAML <code>ActiveRecord::Base</code> en los formatos de Rails 4.2 y 4.1.</p></li>
+<li><p>Eliminar advertencia de deprecación cuando se utiliza la columna <code>:interval</code> en la base de datos PostgreSQL.</p></li>
+</ul>
+<p>  Ahora, las columnas de intervalo devolverán objetos <code>ActiveSupport::Duration</code> en lugar de cadenas.</p><p>  Para mantener el comportamiento anterior, puedes agregar esta línea a tu modelo:</p><div class="interstitial code">
+<pre><code class="highlight ruby">  <span class="n">attribute</span> <span class="ss">:column</span><span class="p">,</span> <span class="ss">:string</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  attribute :column, :string
+">Copy</button>
+</div>
+
+<ul>
+<li><p>Eliminar soporte obsoleto para resolver la conexión usando <code>"primary"</code> como nombre de especificación de conexión.</p></li>
+<li><p>Eliminar soporte obsoleto para citar objetos <code>ActiveRecord::Base</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para convertir a valores de base de datos objetos <code>ActiveRecord::Base</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para pasar una columna a <code>type_cast</code>.</p></li>
+<li><p>Eliminar método <code>DatabaseConfig#config</code> obsoleto.</p></li>
+<li><p>Eliminar tareas rake obsoletas:</p>
+<ul>
+<li><code>db:schema:load_if_ruby</code></li>
+<li><code>db:structure:dump</code></li>
+<li><code>db:structure:load</code></li>
+<li><code>db:structure:load_if_sql</code></li>
+<li><code>db:structure:dump:#{name}</code></li>
+<li><code>db:structure:load:#{name}</code></li>
+<li><code>db:test:load_structure</code></li>
+<li><code>db:test:load_structure:#{name}</code></li>
+</ul></li>
+<li><p>Eliminar soporte obsoleto para <code>Model.reorder(nil).first</code> para buscar usando orden no determinista.</p></li>
+<li><p>Eliminar argumentos <code>environment</code> y <code>name</code> obsoletos de <code>Tasks::DatabaseTasks.schema_up_to_date?</code>.</p></li>
+<li><p>Eliminar <code>Tasks::DatabaseTasks.dump_filename</code> obsoleto.</p></li>
+<li><p>Eliminar <code>Tasks::DatabaseTasks.schema_file</code> obsoleto.</p></li>
+<li><p>Eliminar <code>Tasks::DatabaseTasks.spec</code> obsoleto.</p></li>
+<li><p>Eliminar <code>Tasks::DatabaseTasks.current_config</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Connection#allowed_index_name_length</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Connection#in_clause_length</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::DatabaseConfigurations::DatabaseConfig#spec_name</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base.connection_config</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base.arel_attribute</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base.configurations.default_hash</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base.configurations.to_h</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Result#map!</code> y <code>ActiveRecord::Result#collect!</code> obsoletos.</p></li>
+<li><p>Eliminar <code>ActiveRecord::Base#remove_connection</code> obsoleto.</p></li>
+</ul>
+<h3 id="active-record-deprecaciones"><a class="anchorlink" href="#active-record-deprecaciones"><span>8.2</span> Deprecaciones</a></h3>
+<ul>
+<li>Deprecado <code>Tasks::DatabaseTasks.schema_file_type</code>.</li>
+</ul>
+<h3 id="active-record-cambios-notables"><a class="anchorlink" href="#active-record-cambios-notables"><span>8.3</span> Cambios notables</a></h3>
+<ul>
+<li>Revertir transacciones cuando el bloque regresa antes de lo esperado.</li>
+</ul>
+<p>  Antes de este cambio, cuando un bloque de transacción regresaba temprano, la transacción se comprometía.</p><p>  El problema es que los tiempos de espera activados dentro del bloque de transacción también hacían que la transacción incompleta se comprometiera, por lo que para evitar este error, el bloque de transacción se revierte.</p>
+<ul>
+<li>Fusionar condiciones en la misma columna ya no mantiene ambas condiciones, y serán reemplazadas consistentemente por la última condición.</li>
+</ul>
+<div class="interstitial code">
+<pre><code class="highlight ruby">  <span class="c1"># Rails 6.1 (la cláusula IN es reemplazada por la condición de igualdad del lado de la fusión)</span>
+  <span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="p">[</span><span class="n">david</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="n">mary</span><span class="p">.</span><span class="nf">id</span><span class="p">]).</span><span class="nf">merge</span><span class="p">(</span><span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">bob</span><span class="p">))</span> <span class="c1"># =&gt; [bob]</span>
+  <span class="c1"># Rails 6.1 (ambas condiciones conflictivas existen, obsoleto)</span>
+  <span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">david</span><span class="p">.</span><span class="nf">id</span><span class="o">..</span><span class="n">mary</span><span class="p">.</span><span class="nf">id</span><span class="p">).</span><span class="nf">merge</span><span class="p">(</span><span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">bob</span><span class="p">))</span> <span class="c1"># =&gt; []</span>
+  <span class="c1"># Rails 6.1 con rewhere para migrar al comportamiento de Rails 7.0</span>
+  <span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">david</span><span class="p">.</span><span class="nf">id</span><span class="o">..</span><span class="n">mary</span><span class="p">.</span><span class="nf">id</span><span class="p">).</span><span class="nf">merge</span><span class="p">(</span><span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">bob</span><span class="p">),</span> <span class="ss">rewhere: </span><span class="kp">true</span><span class="p">)</span> <span class="c1"># =&gt; [bob]</span>
+  <span class="c1"># Rails 7.0 (mismo comportamiento con cláusula IN, la condición del lado de la fusión es reemplazada consistentemente)</span>
+  <span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="p">[</span><span class="n">david</span><span class="p">.</span><span class="nf">id</span><span class="p">,</span> <span class="n">mary</span><span class="p">.</span><span class="nf">id</span><span class="p">]).</span><span class="nf">merge</span><span class="p">(</span><span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">bob</span><span class="p">))</span> <span class="c1"># =&gt; [bob]</span>
+  <span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">david</span><span class="p">.</span><span class="nf">id</span><span class="o">..</span><span class="n">mary</span><span class="p">.</span><span class="nf">id</span><span class="p">).</span><span class="nf">merge</span><span class="p">(</span><span class="no">Author</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">id: </span><span class="n">bob</span><span class="p">))</span> <span class="c1"># =&gt; [bob]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="  # Rails 6.1 (la cláusula IN es reemplazada por la condición de igualdad del lado de la fusión)
+  Author.where(id: [david.id, mary.id]).merge(Author.where(id: bob)) # => [bob]
+  # Rails 6.1 (ambas condiciones conflictivas existen, obsoleto)
+  Author.where(id: david.id..mary.id).merge(Author.where(id: bob)) # => []
+  # Rails 6.1 con rewhere para migrar al comportamiento de Rails 7.0
+  Author.where(id: david.id..mary.id).merge(Author.where(id: bob), rewhere: true) # => [bob]
+  # Rails 7.0 (mismo comportamiento con cláusula IN, la condición del lado de la fusión es reemplazada consistentemente)
+  Author.where(id: [david.id, mary.id]).merge(Author.where(id: bob)) # => [bob]
+  Author.where(id: david.id..mary.id).merge(Author.where(id: bob)) # => [bob]
+">Copy</button>
+</div>
+<h2 id="active-storage"><a class="anchorlink" href="#active-storage"><span>9</span> Active Storage</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/activestorage/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="active-storage-eliminaciones"><a class="anchorlink" href="#active-storage-eliminaciones"><span>9.1</span> Eliminaciones</a></h3><h3 id="active-storage-deprecaciones"><a class="anchorlink" href="#active-storage-deprecaciones"><span>9.2</span> Deprecaciones</a></h3><h3 id="active-storage-cambios-notables"><a class="anchorlink" href="#active-storage-cambios-notables"><span>9.3</span> Cambios notables</a></h3><h2 id="active-model"><a class="anchorlink" href="#active-model"><span>10</span> Active Model</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/activemodel/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="active-model-eliminaciones"><a class="anchorlink" href="#active-model-eliminaciones"><span>10.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminar enumeración obsoleta de instancias de <code>ActiveModel::Errors</code> como un Hash.</p></li>
+<li><p>Eliminar <code>ActiveModel::Errors#to_h</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveModel::Errors#slice!</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveModel::Errors#values</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveModel::Errors#keys</code> obsoleto.</p></li>
+<li><p>Eliminar <code>ActiveModel::Errors#to_xml</code> obsoleto.</p></li>
+<li><p>Eliminar soporte obsoleto para concatenar errores a <code>ActiveModel::Errors#messages</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para <code>clear</code> errores de <code>ActiveModel::Errors#messages</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para <code>delete</code> errores de <code>ActiveModel::Errors#messages</code>.</p></li>
+<li><p>Eliminar soporte obsoleto para usar <code>[]=</code> en <code>ActiveModel::Errors#messages</code>.</p></li>
+<li><p>Eliminar soporte para cargar con Marshal y YAML el formato de errores de Rails 5.x.</p></li>
+<li><p>Eliminar soporte para cargar con Marshal el formato de <code>ActiveModel::AttributeSet</code> de Rails 5.x.</p></li>
+</ul>
+<h3 id="active-model-deprecaciones"><a class="anchorlink" href="#active-model-deprecaciones"><span>10.2</span> Deprecaciones</a></h3><h3 id="active-model-cambios-notables"><a class="anchorlink" href="#active-model-cambios-notables"><span>10.3</span> Cambios notables</a></h3><h2 id="active-support"><a class="anchorlink" href="#active-support"><span>11</span> Active Support</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/activesupport/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="active-support-eliminaciones"><a class="anchorlink" href="#active-support-eliminaciones"><span>11.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminar <code>config.active_support.use_sha1_digests</code> obsoleto.</p></li>
+<li><p>Eliminar <code>URI.parser</code> obsoleto.</p></li>
+<li><p>Eliminar soporte obsoleto para usar <code>Range#include?</code> para verificar la inclusión de un valor en un rango de fecha y hora.</p></li>
+<li><p>Eliminar <code>ActiveSupport::Multibyte::Unicode.default_normalization_form</code> obsoleto.</p></li>
+</ul>
+<h3 id="active-support-deprecaciones"><a class="anchorlink" href="#active-support-deprecaciones"><span>11.2</span> Deprecaciones</a></h3>
+<ul>
+<li>Deprecado pasar un formato a <code>#to_s</code> en favor de <code>#to_fs</code> en <code>Array</code>, <code>Range</code>, <code>Date</code>, <code>DateTime</code>, <code>Time</code>, <code>BigDecimal</code>, <code>Float</code> e <code>Integer</code>.</li>
+</ul>
+<p>  Esta deprecación es para permitir que las aplicaciones Rails aprovechen una <a href="https://github.com/ruby/ruby/commit/b08dacfea39ad8da3f1fd7fdd0e4538cc892ec44">optimización</a> de Ruby 3.1 que hace que la interpolación de algunos tipos de objetos sea más rápida.</p><p>  Las nuevas aplicaciones no tendrán el método <code>#to_s</code> sobrescrito en esas clases, las aplicaciones existentes pueden usar <code>config.active_support.disable_to_s_conversion</code>.</p><h3 id="active-support-cambios-notables"><a class="anchorlink" href="#active-support-cambios-notables"><span>11.3</span> Cambios notables</a></h3><h2 id="active-job"><a class="anchorlink" href="#active-job"><span>12</span> Active Job</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/activejob/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="active-job-eliminaciones"><a class="anchorlink" href="#active-job-eliminaciones"><span>12.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminado comportamiento obsoleto que no detenía las devoluciones de llamada <code>after_enqueue</code>/<code>after_perform</code> cuando una devolución de llamada anterior se detenía con <code>throw :abort</code>.</p></li>
+<li><p>Eliminar opción <code>:return_false_on_aborted_enqueue</code> obsoleta.</p></li>
+</ul>
+<h3 id="active-job-deprecaciones"><a class="anchorlink" href="#active-job-deprecaciones"><span>12.2</span> Deprecaciones</a></h3>
+<ul>
+<li>Deprecado <code>Rails.config.active_job.skip_after_callbacks_if_terminated</code>.</li>
+</ul>
+<h3 id="active-job-cambios-notables"><a class="anchorlink" href="#active-job-cambios-notables"><span>12.3</span> Cambios notables</a></h3><h2 id="action-text"><a class="anchorlink" href="#action-text"><span>13</span> Action Text</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actiontext/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-text-eliminaciones"><a class="anchorlink" href="#action-text-eliminaciones"><span>13.1</span> Eliminaciones</a></h3><h3 id="action-text-deprecaciones"><a class="anchorlink" href="#action-text-deprecaciones"><span>13.2</span> Deprecaciones</a></h3><h3 id="action-text-cambios-notables"><a class="anchorlink" href="#action-text-cambios-notables"><span>13.3</span> Cambios notables</a></h3><h2 id="action-mailbox"><a class="anchorlink" href="#action-mailbox"><span>14</span> Action Mailbox</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/actionmailbox/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="action-mailbox-eliminaciones"><a class="anchorlink" href="#action-mailbox-eliminaciones"><span>14.1</span> Eliminaciones</a></h3>
+<ul>
+<li><p>Eliminado <code>Rails.application.credentials.action_mailbox.mailgun_api_key</code> obsoleto.</p></li>
+<li><p>Eliminada variable de entorno <code>MAILGUN_INGRESS_API_KEY</code> obsoleta.</p></li>
+</ul>
+<h3 id="action-mailbox-deprecaciones"><a class="anchorlink" href="#action-mailbox-deprecaciones"><span>14.2</span> Deprecaciones</a></h3><h3 id="action-mailbox-cambios-notables"><a class="anchorlink" href="#action-mailbox-cambios-notables"><span>14.3</span> Cambios notables</a></h3><h2 id="guías-de-ruby-on-rails"><a class="anchorlink" href="#guías-de-ruby-on-rails"><span>15</span> Guías de Ruby on Rails</a></h2><p>Por favor, consulta el <a href="https://github.com/rails/rails/blob/7-0-stable/guides/CHANGELOG.md">Changelog</a> para obtener cambios detallados.</p><h3 id="cambios-notables"><a class="anchorlink" href="#cambios-notables"><span>15.1</span> Cambios notables</a></h3><h2 id="créditos"><a class="anchorlink" href="#créditos"><span>16</span> Créditos</a></h2><p>Consulta la <a href="https://contributors.rubyonrails.org/">lista completa de contribuyentes a Rails</a> para conocer a las muchas personas que dedicaron muchas horas a hacer de Rails el marco estable y robusto que es. Kudos a todos ellos.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

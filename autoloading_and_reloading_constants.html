@@ -1,203 +1,260 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Constantes de autocarga y recarga (Zeitwerk Mode) — Ruby on Rails Guides</title>
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
-  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
-  <meta property="og:title" content="Constantes de autocarga y recarga (Zeitwerk Mode) — Ruby on Rails Guides" />
-  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de autocarga y recarga (Zeitwerk Mode)" />
-  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de autocarga y recarga (Zeitwerk Mode)" />
+  <title>Autocarga y Recarga de Constantes — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Autocarga y Recarga de Constantes — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Autocarga y Recarga de ConstantesEsta guía documenta cómo funciona la autocarga y recarga en modo zeitwerk.Después de leer esta guía, sabrás: Configuración relacionada de Rails Estructura del proyecto Autocarga, recarga y carga anticipada Herencia de Tabla Única Y más" />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Autocarga y Recarga de ConstantesEsta guía documenta cómo funciona la autocarga y recarga en modo zeitwerk.Después de leer esta guía, sabrás: Configuración relacionada de Rails Estructura del proyecto Autocarga, recarga y carga anticipada Herencia de Tabla Única Y más" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Ruby on Rails Guides" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
   <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
 </head>
+
 <body class="guide">
-  <div>
-<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
-  </div>
-  <div id="topNav">
+  <nav id="topNav" aria-label="Secondary">
     <div class="wrapper">
       <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
       <span class="red-button more-info-button">
         Más Ruby on Rails
       </span>
       <ul class="more-info-links s-hidden">
-        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
         <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
         <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
-        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
-        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
       </ul>
     </div>
-  </div>
-  <div id="header">
+  </nav>
+  <header id="page_header">
     <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
-      <ul class="nav">
-        <li><a class="nav-item" href="index.html">Inicio</a></li>
-        <li class="guides-index guides-index-large">
-          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
-          <div id="guides" class="clearfix" style="display: none;">
-            <hr />
-            <dl class="guides-section-container">
-                <div class="guides-section">
-                  <dt>Empieza Aqui</dt>
-                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Modelos</dt>
-                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
-                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
-                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
-                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
-                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
-                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Vistas</dt>
-                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
-                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Controladores</dt>
-                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
-                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Otros Componentes</dt>
-                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
-                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
-                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
-                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
-                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Temas Avanzados</dt>
-                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
-                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
-                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
-                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
-                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
-                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
-                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
-                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
-                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
-                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
-                </div>
-            </dl>
-          </div>
-        </li>
-        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
-        <li class="guides-index guides-index-small">
-          <select class="guides-index-item nav-item">
-            <option value="index.html">Guides Index</option>
-              <optgroup label="Empieza Aqui">
-                  <option value="getting_started.html">Introducción a Rails</option>
-              </optgroup>
-              <optgroup label="Modelos">
-                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
-                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
-                  <option value="active_record_validations.html">Validaciones de Active Record</option>
-                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
-                  <option value="association_basics.html">Asociaciones de Active Record</option>
-                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
-              </optgroup>
-              <optgroup label="Vistas">
-                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
-                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
-              </optgroup>
-              <optgroup label="Controladores">
-                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
-                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
-              </optgroup>
-              <optgroup label="Otros Componentes">
-                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
-                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
-                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
-                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
-                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
-              </optgroup>
-              <optgroup label="Temas Avanzados">
-                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
-                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
-                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
-                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
-                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
-                  <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos</option>
-                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
-                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
-                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
-                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
-              </optgroup>
-              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
-                  <option value="rails_on_rack.html">Rails on Rack</option>
-                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
-              </optgroup>
-          </select>
-        </li>
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
       </ul>
+      </nav>
     </div>
-  </div>
+  </header>
   <hr class="hide" />
 
-  <div id="feature">
+  <section id="feature">
     <div class="wrapper">
-      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>Constantes de autocarga y recarga (Zeitwerk Mode)</h2>
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Autocarga y Recarga de Constantes</h1><p>Esta guía documenta cómo funciona la autocarga y recarga en modo <code>zeitwerk</code>.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Configuración relacionada de Rails</li>
+<li>Estructura del proyecto</li>
+<li>Autocarga, recarga y carga anticipada</li>
+<li>Herencia de Tabla Única</li>
+<li>Y más</li>
+</ul>
 
-                <div id="subCol">
-            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
             <ol class="chapters">
-<li><a href="#introduction">Introduction</a></li>
-<li><a href="#enabling-zeitwerk-mode">Enabling Zeitwerk Mode</a></li>
-<li><a href="#project-structure">Project Structure</a></li>
-<li><a href="#autoload-paths">Autoload paths</a></li>
-<li><a href="#%24load-path">$LOAD_PATH</a></li>
-<li>
-<a href="#reloading">Reloading</a>
+<li><a href="#introducción">Introducción</a></li>
+<li><a href="#estructura-del-proyecto">Estructura del Proyecto</a></li>
+<li><a href="#config-autoload-paths">config.autoload_paths</a></li>
+<li><a href="#config-autoload-lib-ignore">config.autoload_lib(ignore:)</a></li>
+<li><a href="#config-autoload-once-paths">config.autoload_once_paths</a></li>
+<li><a href="#config-autoload-lib-once-ignore">config.autoload_lib_once(ignore:)</a></li>
+<li><a href="#recarga">Recarga</a>
 
 <ul>
-<li><a href="#reloading-and-stale-objects">Reloading and Stale Objects</a></li>
-<li><a href="#autoloading-when-the-application-boots">Autoloading when the application boots</a></li>
-</ul>
-</li>
-<li><a href="#eager-loading">Eager Loading</a></li>
-<li><a href="#single-table-inheritance">Single Table Inheritance</a></li>
-<li><a href="#customizing-inflections">Customizing Inflections</a></li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#recarga-y-objetos-obsoletos">Recarga y Objetos Obsoletos</a></li>
+</ul></li>
+<li><a href="#autocarga-cuando-la-aplicación-se-inicia">Autocarga Cuando la Aplicación se Inicia</a>
+
+<ul>
+<li><a href="#caso-de-uso-1-durante-el-inicio-cargar-código-recargable">Caso de Uso 1: Durante el Inicio, Cargar Código Recargable</a></li>
+<li><a href="#caso-de-uso-2-durante-el-inicio-cargar-código-que-permanece-en-caché">Caso de Uso 2: Durante el Inicio, Cargar Código que Permanece en Caché</a></li>
+<li><a href="#caso-de-uso-3-configurar-clases-de-aplicación-para-motores">Caso de Uso 3: Configurar Clases de Aplicación para Motores</a></li>
+</ul></li>
+<li><a href="#carga-anticipada">Carga Anticipada</a></li>
+<li><a href="#herencia-de-tabla-única">Herencia de Tabla Única</a>
+
+<ul>
+<li><a href="#opción-1-habilitar-carga-anticipada">Opción 1: Habilitar Carga Anticipada</a></li>
+<li><a href="#opción-2-precargar-un-directorio-colapsado">Opción 2: Precargar un Directorio Colapsado</a></li>
+<li><a href="#opción-3-precargar-un-directorio-regular">Opción 3: Precargar un Directorio Regular</a></li>
+<li><a href="#opción-4-precargar-tipos-desde-la-base-de-datos">Opción 4: Precargar Tipos desde la Base de Datos</a></li>
+</ul></li>
+<li><a href="#personalización-de-inflexiones">Personalización de Inflexiones</a>
+
+<ul>
+<li><a href="#¿dónde-debería-ir-la-personalización-de-inflexiones-questionmark">¿Dónde Debería Ir la Personalización de Inflexiones?</a></li>
+</ul></li>
+<li><a href="#espacios-de-nombres-personalizados">Espacios de Nombres Personalizados</a></li>
+<li><a href="#autocarga-y-motores">Autocarga y Motores</a></li>
+<li><a href="#pruebas">Pruebas</a>
+
+<ul>
+<li><a href="#pruebas-manuales">Pruebas Manuales</a></li>
+<li><a href="#pruebas-automatizadas">Pruebas Automatizadas</a></li>
+</ul></li>
+<li><a href="#solución-de-problemas">Solución de Problemas</a></li>
 <li><a href="#rails-autoloaders">Rails.autoloaders</a></li>
-<li><a href="#opting-out">Opting Out</a></li>
 </ol>
 
-          </div>
+          </nav>
 
+
+      <hr>
     </div>
-  </div>
+  </section>
 
-  <div id="container">
+  <main id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="introduction"><a class="anchorlink" href="#introduction">1 Introduction</a></h3><div class="info"><p>Esta guía documenta la carga automática en el modo <code>zeitwerk</code>, que es nuevo en Rails 6. Si en su lugar desea leer sobre el modo <code>clásico</code>, consulte <a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de carga y recarga automática (modo clásico)</a>.</p></div><p>En un programa de Ruby normal, las dependencias deben cargarse a mano. Por ejemplo, el siguiente controlador usa las clases <code>ApplicationController</code> y <code>Post</code>, y normalmente necesitarías poner llamadas <code>require</code> para ellas:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># DO NOT DO THIS.</span>
+        <h2 id="introducción"><a class="anchorlink" href="#introducción"><span>1</span> Introducción</a></h2><div class="interstitial info"><p>Esta guía documenta la autocarga, recarga y carga anticipada en aplicaciones Rails.</p></div><p>En un programa Ruby ordinario, cargas explícitamente los archivos que definen las clases y módulos que deseas usar. Por ejemplo, el siguiente controlador se refiere a <code>ApplicationController</code> y <code>Post</code>, y normalmente emitirías llamadas <code>require</code> para ellos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># NO HAGAS ESTO.</span>
 <span class="nb">require</span> <span class="s2">"application_controller"</span>
 <span class="nb">require</span> <span class="s2">"post"</span>
-<span class="c1"># DO NOT DO THIS.</span>
+<span class="c1"># NO HAGAS ESTO.</span>
 
 <span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="k">def</span> <span class="nf">index</span>
@@ -205,264 +262,421 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# DO NOT DO THIS.
-require "application_controller"
-require "post"
-# DO NOT DO THIS.
+<button class="clipboard-button" data-clipboard-text="# NO HAGAS ESTO.
+require &quot;application_controller&quot;
+require &quot;post&quot;
+# NO HAGAS ESTO.
 
-class PostsController &lt; ApplicationController
+class PostsController < ApplicationController
   def index
     @posts = Post.all
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Este no es el caso de las aplicaciones Rails, donde las clases de aplicaciones y los módulos están disponibles en todas partes:</p><div class="code_container">
+<p>Este no es el caso en las aplicaciones Rails, donde las clases y módulos de la aplicación están disponibles en todas partes sin llamadas <code>require</code>:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PostsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@posts</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">all</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="class PostsController &lt; ApplicationController
+<button class="clipboard-button" data-clipboard-text="class PostsController < ApplicationController
   def index
     @posts = Post.all
   end
 end
 ">Copy</button>
 </div>
-<p>Las aplicaciones de Idiomatic Rails solo emiten llamadas <code>require</code> para cargar cosas desde su directorio <code>lib</code>, la biblioteca estándar de Ruby, gemas Ruby, etc. Es decir, cualquier cosa que no pertenezca a sus rutas de carga automática, explicadas a continuación.</p><h3 id="enabling-zeitwerk-mode"><a class="anchorlink" href="#enabling-zeitwerk-mode">2 Enabling Zeitwerk Mode</a></h3><p>El modo de carga automática <code>zeitwerk</code> está habilitado de forma predeterminada en las aplicaciones de Rails 6 que se ejecutan en CRuby:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
-<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.0</span> <span class="c1"># enables zeitwerk mode in CRuby</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="# config/application.rb
-config.load_defaults 6.0 # enables zeitwerk mode in CRuby
-">Copy</button>
-</div>
-<p>En el modo <code>zeitwerk</code>, Rails usa <a href="https://github.com/fxn/zeitwerk">Zeitwerk</a> internamente para autocargar, recargar y cargar ansioso. Rails crea una instancia y configura una instancia dedicada de Zeitwerk que administra el proyecto.</p><div class="info"><p>No se configura Zeitwerk manualmente en una aplicación Rails. En su lugar, configura la aplicación utilizando los puntos de configuración portátiles que se explican en esta guía, y Rails lo traduce a Zeitwerk en su nombre.</p></div><h3 id="project-structure"><a class="anchorlink" href="#project-structure">3 Project Structure</a></h3><p>En una aplicación Rails, los nombres de los archivos deben coincidir con las constantes que definen, y los directorios actúan como espacios de nombres.</p><p>Por ejemplo, el archivo <code>app/helpers/users_helper.rb</code> debe definir <code>UsersHelper</code> y el archivo <code>app/controllers/admin/payments_controller.rb</code> debe definir <code>Admin::PaymentsController</code>.</p><p>De forma predeterminada, Rails configura Zeitwerk para declinar los nombres de los archivos con <code>String#camelize</code>. Por ejemplo, espera que <code>app/controllers/users_controller.rb</code> defina el constante <code>UsersController</code> porque</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="s2">"users_controller"</span><span class="p">.</span><span class="nf">camelize</span> <span class="c1"># =&gt; UsersController</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='"users_controller".camelize # =&gt; UsersController
-'>Copy</button>
-</div>
-<p>La sección <em>Personalización de inflexiones</em> a continuación documenta las formas de anular este valor predeterminado.</p><p>Por favor, consulte la <a href="https://github.com/fxn/zeitwerk#file-structure">documentación de Zeitwerk</a> para obtener más detalles.</p><h3 id="autoload-paths"><a class="anchorlink" href="#autoload-paths">4 Autoload paths</a></h3><p>Nos referimos a la lista de directorios de aplicaciones cuyo contenido se va a cargar automáticamente como <em>rutas de carga automática</em>. Por ejemplo, <code>app/models</code>. Dichos directorios representan el espacio de nombres raíz: <code>Object</code>.</p><div class="info"><p>Las rutas de carga automática se denominan <em>directorios raíz</em> en la documentación de Zeitwerk, pero nos quedaremos con la "ruta de carga automática" en esta guía.</p></div><p>Dentro de una ruta de carga automática, los nombres de los archivos deben coincidir con las constantes que definen como se documenta <a href="https://github.com/fxn/zeitwerk#file-structure">aquí</a>.</p><p>De forma predeterminada, las rutas de carga automática de una aplicación constan de todos los subdirectorios de <code>app</code> que existen cuando la aplicación arranca --- excepto para <code>assets</code>, <code>javascript</code>, <code>views</code>, --- más las rutas de carga automática de los motores podría depender.</p><p>Por ejemplo, si <code>UsersHelper</code> está implementado en <code>app/helpers/users_helper.rb</code>, el módulo se puede autocargar, no necesitas (y no debes escribir) una llamada <code>require</code> para ello:</p><div class="code_container">
+<p>Rails los <em>autocarga</em> en tu nombre si es necesario. Esto es posible gracias a un par de cargadores <a href="https://github.com/fxn/zeitwerk">Zeitwerk</a> que Rails configura en tu nombre, los cuales proporcionan autocarga, recarga y carga anticipada.</p><p>Por otro lado, esos cargadores no gestionan nada más. En particular, no gestionan la biblioteca estándar de Ruby, las dependencias de gemas, los componentes de Rails, ni siquiera (por defecto) el directorio <code>lib</code> de la aplicación. Ese código debe cargarse como de costumbre.</p><h2 id="estructura-del-proyecto"><a class="anchorlink" href="#estructura-del-proyecto"><span>2</span> Estructura del Proyecto</a></h2><p>En una aplicación Rails, los nombres de archivo deben coincidir con las constantes que definen, con los directorios actuando como espacios de nombres.</p><p>Por ejemplo, el archivo <code>app/helpers/users_helper.rb</code> debería definir <code>UsersHelper</code> y el archivo <code>app/controllers/admin/payments_controller.rb</code> debería definir <code>Admin::PaymentsController</code>.</p><p>Por defecto, Rails configura Zeitwerk para inflexionar los nombres de archivo con <code>String#camelize</code>. Por ejemplo, espera que <code>app/controllers/users_controller.rb</code> defina la constante <code>UsersController</code> porque eso es lo que <code>"users_controller".camelize</code> devuelve.</p><p>La sección <em>Personalización de Inflexiones</em> a continuación documenta formas de anular este comportamiento predeterminado.</p><p>Por favor, consulta la <a href="https://github.com/fxn/zeitwerk#file-structure">documentación de Zeitwerk</a> para más detalles.</p><h2 id="config-autoload-paths"><a class="anchorlink" href="#config-autoload-paths"><span>3</span> config.autoload_paths</a></h2><p>Nos referimos a la lista de directorios de la aplicación cuyo contenido debe ser autocargado y (opcionalmente) recargado como <em>rutas de autocarga</em>. Por ejemplo, <code>app/models</code>. Dichos directorios representan el espacio de nombres raíz: <code>Object</code>.</p><div class="interstitial info"><p>Las rutas de autocarga se llaman <em>directorios raíz</em> en la documentación de Zeitwerk, pero usaremos "ruta de autocarga" en esta guía.</p></div><p>Dentro de una ruta de autocarga, los nombres de archivo deben coincidir con las constantes que definen como se documenta <a href="https://github.com/fxn/zeitwerk#file-structure">aquí</a>.</p><p>Por defecto, las rutas de autocarga de una aplicación consisten en todos los subdirectorios de <code>app</code> que existen cuando la aplicación se inicia ---excepto <code>assets</code>, <code>javascript</code> y <code>views</code>--- además de las rutas de autocarga de los motores de los que pueda depender.</p><p>Por ejemplo, si <code>UsersHelper</code> se implementa en <code>app/helpers/users_helper.rb</code>, el módulo es autocargable, no necesitas (y no deberías escribir) una llamada <code>require</code> para él:</p><div class="interstitial code">
 <pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'p UsersHelper'</span>
 <span class="go">UsersHelper
 </span></code></pre>
 <button class="clipboard-button" data-clipboard-text="bin/rails runner 'p UsersHelper'
 ">Copy</button>
 </div>
-<p>Las rutas de carga automática eligen automáticamente cualquier directorio personalizado en la <code>app</code>. Por ejemplo, si su aplicación tiene <code>aplicación/presentadores</code>, o <code>aplicación/servicios</code>, etc., se agregan a las rutas de carga automática.</p><p>La matriz de rutas de carga automática se puede ampliar mutando <code>config.autoload_paths</code>, en <code>config/application.rb</code>, pero hoy en día esto no se recomienda.</p><div class="warning"><p>Por favor, no mute <code>ActiveSupport::Dependencies.autoload_paths</code>, la interfaz pública para cambiar las rutas de carga automática es <code>config.autoload_paths</code>.</p></div><h3 id="$load-path"><a class="anchorlink" href="#%24load-path">5 $LOAD_PATH</a></h3><p>Las rutas de carga automática se agregan a <code>$LOAD_PATH</code> de forma predeterminada. Sin embargo, Zeitwerk usa nombres de archivo absolutos internamente, y su aplicación no debería emitir llamadas <code>require</code> para archivos autocargables, por lo que esos directorios en realidad no son necesarios allí. Puede optar por no participar con esta bandera:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">add_autoload_paths_to_load_path</span> <span class="o">=</span> <span class="kp">false</span>
+<p>Rails agrega directorios personalizados bajo <code>app</code> a las rutas de autocarga automáticamente. Por ejemplo, si tu aplicación tiene <code>app/presenters</code>, no necesitas configurar nada para autocargar presentadores; funciona automáticamente.</p><p>El array de rutas de autocarga predeterminadas puede extenderse agregando a <code>config.autoload_paths</code>, en <code>config/application.rb</code> o <code>config/environments/*.rb</code>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">MyApplication</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">&lt;&lt;</span> <span class="s2">"</span><span class="si">#{</span><span class="n">root</span><span class="si">}</span><span class="s2">/extras"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="config.add_autoload_paths_to_load_path = false
+<button class="clipboard-button" data-clipboard-text="module MyApplication
+  class Application < Rails::Application
+    config.autoload_paths << &quot;#{root}/extras&quot;
+  end
+end
 ">Copy</button>
 </div>
-<p>Eso puede acelerar un poco las llamadas legítimas <code>require</code>, ya que hay menos búsquedas. Además, si su aplicación usa <a href="https://github.com/Shopify/bootsnap">Bootsnap</a>, eso evita que la biblioteca cree índices innecesarios y guarda la RAM que necesitarían.</p><h3 id="reloading"><a class="anchorlink" href="#reloading">6 Reloading</a></h3><p>Rails recarga automáticamente clases y módulos si cambian los archivos de la aplicación.</p><p>Más precisamente, si el servidor web se está ejecutando y los archivos de la aplicación se han modificado, Rails descarga todas las constantes cargadas automáticamente justo antes de que se procese la siguiente solicitud. De esa manera, las clases de aplicación o los módulos utilizados durante esa solicitud se cargarán automáticamente, recogiendo así su implementación actual en el sistema de archivos.</p><p>La recarga se puede habilitar o deshabilitar. La configuración que controla este comportamiento es <code>config.cache_classes</code>, que es falsa de forma predeterminada en el modo de<code>develop</code> (recarga habilitada) y verdadera de forma predeterminada en el modo de <code>production</code> (recarga deshabilitada).</p><p>Rails detecta que los archivos han cambiado usando un monitor de archivos de eventos (predeterminado) o recorriendo las rutas de carga automática, dependiendo de <code>config.file_watcher</code>.</p><p>En una consola Rails no hay ningún observador de archivos activo independientemente del valor de <code>config.cache_classes</code>. Esto se debe a que, normalmente, sería confuso tener el código recargado en medio de una sesión de consola, de la misma manera que generalmente desea que una solicitud individual sea atendida por un conjunto consistente y sin cambios de clases y módulos de aplicación.</p><p>Sin embargo, puede forzar una recarga en la consola ejecutando <code>reload!</code>:</p><div class="code_container">
-<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>c
-<span class="go">Loading development environment (Rails 6.0.0)
-</span><span class="gp">irb(main):001:0&gt;</span><span class="w"> </span>User.object_id
-<span class="gp">=&gt;</span><span class="w"> </span>70136277390120
-<span class="gp">irb(main):002:0&gt;</span><span class="w"> </span>reload!
+<p>Además, los motores pueden agregar en el cuerpo de la clase del motor y en sus propios <code>config/environments/*.rb</code>.</p><p>ADVERTENCIA. Por favor, no muten <code>ActiveSupport::Dependencies.autoload_paths</code>; la interfaz pública para cambiar las rutas de autocarga es <code>config.autoload_paths</code>.</p><p>ADVERTENCIA: No puedes autocargar código en las rutas de autocarga mientras la aplicación se inicia. En particular, directamente en <code>config/initializers/*.rb</code>. Por favor, consulta <a href="#autocarga-cuando-la-aplicación-se-inicia"><em>Autoloading when the application boots</em></a> más abajo para formas válidas de hacerlo.</p><p>Las rutas de autocarga son gestionadas por el autocargador <code>Rails.autoloaders.main</code>.</p><h2 id="config-autoload-lib-ignore"><a class="anchorlink" href="#config-autoload-lib-ignore"><span>4</span> config.autoload_lib(ignore:)</a></h2><p>Por defecto, el directorio <code>lib</code> no pertenece a las rutas de autocarga de aplicaciones o motores.</p><p>El método de configuración <code>config.autoload_lib</code> agrega el directorio <code>lib</code> a <code>config.autoload_paths</code> y <code>config.eager_load_paths</code>. Debe invocarse desde <code>config/application.rb</code> o <code>config/environments/*.rb</code>, y no está disponible para motores.</p><p>Normalmente, <code>lib</code> tiene subdirectorios que no deberían ser gestionados por los autocargadores. Por favor, pasa su nombre relativo a <code>lib</code> en el argumento requerido <code>ignore</code>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_lib</span><span class="p">(</span><span class="ss">ignore: </span><span class="sx">%w(assets tasks)</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_lib(ignore: %w(assets tasks))
+">Copy</button>
+</div>
+<p>¿Por qué? Mientras que <code>assets</code> y <code>tasks</code> comparten el directorio <code>lib</code> con código Ruby regular, su contenido no está destinado a ser recargado o cargado anticipadamente.</p><p>La lista <code>ignore</code> debe tener todos los subdirectorios de <code>lib</code> que no contienen archivos con extensión <code>.rb</code>, o que no deberían ser recargados o cargados anticipadamente. Por ejemplo,</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">autoload_lib</span><span class="p">(</span><span class="ss">ignore: </span><span class="sx">%w(assets tasks templates generators middleware)</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_lib(ignore: %w(assets tasks templates generators middleware))
+">Copy</button>
+</div>
+<p><code>config.autoload_lib</code> no está disponible antes de la versión 7.1, pero aún puedes emularlo siempre que la aplicación use Zeitwerk:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">MyApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">autoload_paths</span> <span class="o">&lt;&lt;</span> <span class="n">lib</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">eager_load_paths</span> <span class="o">&lt;&lt;</span> <span class="n">lib</span>
+
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">ignore</span><span class="p">(</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"assets"</span><span class="p">),</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"tasks"</span><span class="p">),</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"generators"</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyApp
+  class Application < Rails::Application
+    lib = root.join(&quot;lib&quot;)
+
+    config.autoload_paths << lib
+    config.eager_load_paths << lib
+
+    Rails.autoloaders.main.ignore(
+      lib.join(&quot;assets&quot;),
+      lib.join(&quot;tasks&quot;),
+      lib.join(&quot;generators&quot;)
+    )
+
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<h2 id="config-autoload-once-paths"><a class="anchorlink" href="#config-autoload-once-paths"><span>5</span> config.autoload_once_paths</a></h2><p>Puede que desees poder autocargar clases y módulos sin recargarlos. La configuración <code>autoload_once_paths</code> almacena código que puede ser autocargado, pero no será recargado.</p><p>Por defecto, esta colección está vacía, pero puedes extenderla agregando a <code>config.autoload_once_paths</code>. Puedes hacerlo en <code>config/application.rb</code> o <code>config/environments/*.rb</code>. Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">MyApplication</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">autoload_once_paths</span> <span class="o">&lt;&lt;</span> <span class="s2">"</span><span class="si">#{</span><span class="n">root</span><span class="si">}</span><span class="s2">/app/serializers"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyApplication
+  class Application < Rails::Application
+    config.autoload_once_paths << &quot;#{root}/app/serializers&quot;
+  end
+end
+">Copy</button>
+</div>
+<p>Además, los motores pueden agregar en el cuerpo de la clase del motor y en sus propios <code>config/environments/*.rb</code>.</p><div class="interstitial info"><p>Si <code>app/serializers</code> se agrega a <code>config.autoload_once_paths</code>, Rails ya no considera esto como una ruta de autocarga, a pesar de ser un directorio personalizado bajo <code>app</code>. Esta configuración anula esa regla.</p></div><p>Esto es clave para clases y módulos que están en caché en lugares que sobreviven a las recargas, como el propio marco de Rails.</p><p>Por ejemplo, los serializadores de Active Job se almacenan dentro de Active Job:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/custom_serializers.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">custom_serializers</span> <span class="o">&lt;&lt;</span> <span class="no">MoneySerializer</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.active_job.custom_serializers << MoneySerializer
+">Copy</button>
+</div>
+<p>y Active Job en sí no se recarga cuando hay una recarga, solo el código de la aplicación y motores en las rutas de autocarga lo es.</p><p>Hacer que <code>MoneySerializer</code> sea recargable sería confuso, porque recargar una versión editada no tendría efecto en ese objeto de clase almacenado en Active Job. De hecho, si <code>MoneySerializer</code> fuera recargable, a partir de Rails 7 dicho inicializador lanzaría un <code>NameError</code>.</p><p>Otro caso de uso es cuando los motores decoran clases del marco:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">initializer</span> <span class="s2">"decorate ActionController::Base"</span> <span class="k">do</span>
+  <span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">on_load</span><span class="p">(</span><span class="ss">:action_controller_base</span><span class="p">)</span> <span class="k">do</span>
+    <span class="kp">include</span> <span class="no">MyDecoration</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="initializer &quot;decorate ActionController::Base&quot; do
+  ActiveSupport.on_load(:action_controller_base) do
+    include MyDecoration
+  end
+end
+">Copy</button>
+</div>
+<p>Allí, el objeto del módulo almacenado en <code>MyDecoration</code> en el momento en que se ejecuta el inicializador se convierte en un ancestro de <code>ActionController::Base</code>, y recargar <code>MyDecoration</code> es inútil, no afectará esa cadena de ancestros.</p><p>Las clases y módulos de las rutas de autocarga única pueden ser autocargados en <code>config/initializers</code>. Así que, con esa configuración esto funciona:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/custom_serializers.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">custom_serializers</span> <span class="o">&lt;&lt;</span> <span class="no">MoneySerializer</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.active_job.custom_serializers << MoneySerializer
+">Copy</button>
+</div>
+<div class="interstitial info"><p>Técnicamente, puedes autocargar clases y módulos gestionados por el autocargador <code>once</code> en cualquier inicializador que se ejecute después de <code>:bootstrap_hook</code>.</p></div><p>Las rutas de autocarga única son gestionadas por <code>Rails.autoloaders.once</code>.</p><h2 id="config-autoload-lib-once-ignore"><a class="anchorlink" href="#config-autoload-lib-once-ignore"><span>6</span> config.autoload_lib_once(ignore:)</a></h2><p>El método <code>config.autoload_lib_once</code> es similar a <code>config.autoload_lib</code>, excepto que agrega <code>lib</code> a <code>config.autoload_once_paths</code> en su lugar. Debe invocarse desde <code>config/application.rb</code> o <code>config/environments/*.rb</code>, y no está disponible para motores.</p><p>Al llamar a <code>config.autoload_lib_once</code>, las clases y módulos en <code>lib</code> pueden ser autocargados, incluso desde inicializadores de la aplicación, pero no serán recargados.</p><p><code>config.autoload_lib_once</code> no está disponible antes de la versión 7.1, pero aún puedes emularlo siempre que la aplicación use Zeitwerk:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">module</span> <span class="nn">MyApp</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">)</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">autoload_once_paths</span> <span class="o">&lt;&lt;</span> <span class="n">lib</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">eager_load_paths</span> <span class="o">&lt;&lt;</span> <span class="n">lib</span>
+
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">once</span><span class="p">.</span><span class="nf">ignore</span><span class="p">(</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"assets"</span><span class="p">),</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"tasks"</span><span class="p">),</span>
+      <span class="n">lib</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"generators"</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module MyApp
+  class Application < Rails::Application
+    lib = root.join(&quot;lib&quot;)
+
+    config.autoload_once_paths << lib
+    config.eager_load_paths << lib
+
+    Rails.autoloaders.once.ignore(
+      lib.join(&quot;assets&quot;),
+      lib.join(&quot;tasks&quot;),
+      lib.join(&quot;generators&quot;)
+    )
+
+    # ...
+  end
+end
+">Copy</button>
+</div>
+<h2 id="recarga"><a class="anchorlink" href="#recarga"><span>7</span> Recarga</a></h2><p>Rails recarga automáticamente las clases y módulos si cambian los archivos de la aplicación en las rutas de autocarga.</p><p>Más precisamente, si el servidor web está ejecutándose y los archivos de la aplicación han sido modificados, Rails descarga todas las constantes autocargadas gestionadas por el autocargador <code>main</code> justo antes de que se procese la siguiente solicitud. De esa manera, las clases o módulos de la aplicación utilizados durante esa solicitud serán autocargados nuevamente, recogiendo así su implementación actual en el sistema de archivos.</p><p>La recarga puede habilitarse o deshabilitarse. La configuración que controla este comportamiento es <a href="configuring.html#config-enable-reloading"><code>config.enable_reloading</code></a>, que es <code>true</code> por defecto en modo <code>development</code>, y <code>false</code> por defecto en modo <code>production</code>. Por compatibilidad con versiones anteriores, Rails también admite <code>config.cache_classes</code>, que es equivalente a <code>!config.enable_reloading</code>.</p><p>Rails utiliza un monitor de archivos basado en eventos para detectar cambios en los archivos por defecto. Puede configurarse en su lugar para detectar cambios de archivos recorriendo las rutas de autocarga. Esto se controla mediante la configuración <a href="configuring.html#config-file-watcher"><code>config.file_watcher</code></a>.</p><p>En una consola de Rails no hay un monitor de archivos activo independientemente del valor de <code>config.enable_reloading</code>. Esto se debe a que, normalmente, sería confuso tener código recargado en medio de una sesión de consola. Similar a una solicitud individual, generalmente deseas que una sesión de consola sea atendida por un conjunto consistente y no cambiante de clases y módulos de la aplicación.</p><p>Sin embargo, puedes forzar una recarga en la consola ejecutando <code>reload!</code>:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb(main):001:0&gt;</span><span class="w"> </span><span class="no">User</span><span class="p">.</span><span class="nf">object_id</span>
+<span class="p">=&gt;</span> <span class="mi">70136277390120</span>
+<span class="gp">irb(main):002:0&gt;</span><span class="w"> </span><span class="n">reload!</span>
 <span class="go">Reloading...
-</span><span class="gp">=&gt;</span><span class="w"> </span><span class="nb">true</span>
-<span class="gp">irb(main):003:0&gt;</span><span class="w"> </span>User.object_id
-<span class="gp">=&gt;</span><span class="w"> </span>70136284426020
+</span><span class="p">=&gt;</span> <span class="kp">true</span>
+<span class="gp">irb(main):003:0&gt;</span><span class="w"> </span><span class="no">User</span><span class="p">.</span><span class="nf">object_id</span>
+<span class="p">=&gt;</span> <span class="mi">70136284426020</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="bin/rails c
+<button class="clipboard-button" data-clipboard-text="User.object_id
+reload!
+User.object_id
 ">Copy</button>
 </div>
-<p>como puede ver, el objeto de clase almacenado en la constante <code>User</code> es diferente después de la recarga.</p><h4 id="reloading-and-stale-objects"><a class="anchorlink" href="#reloading-and-stale-objects">6.1 Reloading and Stale Objects</a></h4><p>Es muy importante entender que Ruby no tiene una forma de recargar realmente clases y módulos en la memoria, y eso se refleja en todos los lugares donde ya se usan. Técnicamente, "descargar" la clase <code>User</code> significa eliminar la constante <code>User</code> a través de <code>Object.send(:remove_const, "User")</code>.</p><p>Por lo tanto, el código que hace referencia a una clase o módulo recargable, pero que no se ejecuta de nuevo al recargar, se vuelve obsoleto. Veamos un ejemplo a continuación.</p><p>Consideremos este inicializador:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config/initializers/configure_payment_gateway.rb</span>
-<span class="c1"># DO NOT DO THIS.</span>
-<span class="vg">$PAYMENT_GATEWAY</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">production?</span> <span class="p">?</span> <span class="no">RealGateway</span> <span class="p">:</span> <span class="no">MockedGateway</span>
-<span class="c1"># DO NOT DO THIS.</span>
+<p>Como puedes ver, el objeto de clase almacenado en la constante <code>User</code> es diferente después de recargar.</p><h3 id="recarga-y-objetos-obsoletos"><a class="anchorlink" href="#recarga-y-objetos-obsoletos"><span>7.1</span> Recarga y Objetos Obsoletos</a></h3><p>Es muy importante entender que Ruby no tiene una forma de recargar verdaderamente clases y módulos en memoria, y que eso se refleje en todas partes donde ya se usan. Técnicamente, "descargar" la clase <code>User</code> significa eliminar la constante <code>User</code> mediante <code>Object.send(:remove_const, "User")</code>.</p><p>Por ejemplo, revisa esta sesión de consola de Rails:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="gp">irb&gt;</span><span class="w"> </span><span class="n">joe</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">reload!</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">alice</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span>
+<span class="gp">irb&gt;</span><span class="w"> </span><span class="n">joe</span><span class="p">.</span><span class="nf">class</span> <span class="o">==</span> <span class="n">alice</span><span class="p">.</span><span class="nf">class</span>
+<span class="p">=&gt;</span> <span class="kp">false</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="# config/initializers/configure_payment_gateway.rb
-# DO NOT DO THIS.
-$PAYMENT_GATEWAY = Rails.env.production? ? RealGateway : MockedGateway
-# DO NOT DO THIS.
+<button class="clipboard-button" data-clipboard-text="joe = User.new
+reload!
+alice = User.new
+joe.class == alice.class
 ">Copy</button>
 </div>
-<p>La idea sería usar <code>$PAYMENT_GATEWAY</code> en el código, y dejar que el inicializador lo establezca en la implementación real que depende del entorno.</p><p>En la recarga, <code>MockedGateway</code> se vuelve a cargar, pero <code>$PAYMENT_GATEWAY</code> no se actualiza porque los inicializadores solo se ejecutan al arrancar. Por lo tanto, no reflejará los cambios.</p><p>Hay varias formas de hacer esto de forma segura. Por ejemplo, la aplicación podría definir un método de clase <code>PaymentGateway.impl</code> cuya definición depende del entorno; o podría definir "PaymentGateway" para tener una clase principal o mixin que depende del entorno; o use el mismo truco de variable global, pero en una devolución de llamada del recargador, como se explica a continuación.</p><p>Veamos otras situaciones que involucran objetos obsoletos de clase o módulo.</p><p>Consulta esta sesión de la consola de Rails:</p><div class="code_container">
-<pre><code class="highlight plaintext">&gt; joe = User.new
-&gt; reload!
-&gt; alice = User.new
-&gt; joe.class == alice.class
-false
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="&gt; joe = User.new
-&gt; reload!
-&gt; alice = User.new
-&gt; joe.class == alice.class
-false
-">Copy</button>
-</div>
-<p><code>joe</code> es una instancia de la clase <code>User</code> original. Cuando hay una recarga, la constante <code>User</code> se evalúa como una clase recargada diferente. <code>alice</code> es una instancia del actual, pero <code>joe</code> no lo es, su clase está obsoleta. Puede definir <code>joe</code> nuevamente, iniciar una subsesión de IRB o simplemente iniciar una nueva consola en lugar de llamar a <code>reload!</code>.</p><p>Otra situación en la que puede encontrar este problema es subclasificar clases recargables en un lugar que no se recarga:</p><div class="code_container">
+<p><code>joe</code> es una instancia de la clase <code>User</code> original. Cuando hay una recarga, la constante <code>User</code> entonces evalúa a una clase recargada diferente. <code>alice</code> es una instancia de la recién cargada <code>User</code>, pero <code>joe</code> no lo es — su clase está obsoleta. Puedes definir <code>joe</code> nuevamente, iniciar una subsesión de IRB, o simplemente lanzar una nueva consola en lugar de llamar a <code>reload!</code>.</p><p>Otra situación en la que puedes encontrar este inconveniente es al subclasificar clases recargables en un lugar que no se recarga:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="c1"># lib/vip_user.rb</span>
 <span class="k">class</span> <span class="nc">VipUser</span> <span class="o">&lt;</span> <span class="no">User</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="# lib/vip_user.rb
-class VipUser &lt; User
+<button class="clipboard-button" data-clipboard-text="class VipUser < User
 end
 ">Copy</button>
 </div>
-<p>si se vuelve a cargar <code>User</code>, ya que <code>VipUser</code> no lo es, la superclase de <code>VipUser</code> es el objeto de clase obsoleto original.</p><p>En pocas palabras: <strong>no guarde en caché clases o módulos recargables</strong>.</p><h4 id="autoloading-when-the-application-boots"><a class="anchorlink" href="#autoloading-when-the-application-boots">6.2 Autoloading when the application boots</a></h4><p>Las aplicaciones pueden cargar automáticamente constantes durante el arranque mediante una devolución de llamada del cargador:</p><div class="code_container">
-<pre><code class="highlight plaintext">Rails.application.reloader.to_prepare do
-  $PAYMENT_GATEWAY = Rails.env.production? ? RealGateway : MockedGateway
-end
+<p>si <code>User</code> se recarga, dado que <code>VipUser</code> no lo es, la superclase de <code>VipUser</code> es el objeto de clase original obsoleto.</p><p>Conclusión: <strong>no caches clases o módulos recargables</strong>.</p><h2 id="autocarga-cuando-la-aplicación-se-inicia"><a class="anchorlink" href="#autocarga-cuando-la-aplicación-se-inicia"><span>8</span> Autocarga Cuando la Aplicación se Inicia</a></h2><p>Mientras se inicia, las aplicaciones pueden autocargar desde las rutas de autocarga única, que son gestionadas por el autocargador <code>once</code>. Por favor, consulta la sección <a href="#config-autoload-once-paths"><code>config.autoload_once_paths</code></a> arriba.</p><p>Sin embargo, no puedes autocargar desde las rutas de autocarga, que son gestionadas por el autocargador <code>main</code>. Esto se aplica al código en <code>config/initializers</code> así como a los inicializadores de la aplicación o motores.</p><p>¿Por qué? Los inicializadores solo se ejecutan una vez, cuando la aplicación se inicia. No se ejecutan nuevamente en las recargas. Si un inicializador usara una clase o módulo recargable, las ediciones de ellos no se reflejarían en ese código inicial, volviéndose obsoletas. Por lo tanto, referirse a constantes recargables durante la inicialización no está permitido.</p><p>Veamos qué hacer en su lugar.</p><h3 id="caso-de-uso-1-durante-el-inicio-cargar-código-recargable"><a class="anchorlink" href="#caso-de-uso-1-durante-el-inicio-cargar-código-recargable"><span>8.1</span> Caso de Uso 1: Durante el Inicio, Cargar Código Recargable</a></h3><h4 id="autocargar-al-inicio-y-en-cada-recarga"><a class="anchorlink" href="#autocargar-al-inicio-y-en-cada-recarga"><span>8.1.1</span> Autocargar al Inicio y en Cada Recarga</a></h4><p>Imaginemos que <code>ApiGateway</code> es una clase recargable y necesitas configurar su endpoint mientras la aplicación se inicia:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/api_gateway_setup.rb</span>
+<span class="no">ApiGateway</span><span class="p">.</span><span class="nf">endpoint</span> <span class="o">=</span> <span class="s2">"https://example.com"</span> <span class="c1"># NameError</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="Rails.application.reloader.to_prepare do
-  $PAYMENT_GATEWAY = Rails.env.production? ? RealGateway : MockedGateway
+<button class="clipboard-button" data-clipboard-text="ApiGateway.endpoint = &quot;https://example.com&quot; # NameError
+">Copy</button>
+</div>
+<p>Los inicializadores no pueden referirse a constantes recargables, necesitas envolver eso en un bloque <code>to_prepare</code>, que se ejecuta al inicio y después de cada recarga:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/api_gateway_setup.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">to_prepare</span> <span class="k">do</span>
+  <span class="no">ApiGateway</span><span class="p">.</span><span class="nf">endpoint</span> <span class="o">=</span> <span class="s2">"https://example.com"</span> <span class="c1"># CORRECTO</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.to_prepare do
+  ApiGateway.endpoint = &quot;https://example.com&quot; # CORRECTO
 end
 ">Copy</button>
 </div>
-<p>Ese bloque se ejecuta cuando se inicia la aplicación y cada vez que se vuelve a cargar el código.</p><div class="note"><p>Por razones históricas, esta devolución de llamada puede ejecutarse dos veces. El código que ejecuta debe ser idempotente.</p></div><h3 id="eager-loading"><a class="anchorlink" href="#eager-loading">7 Eager Loading</a></h3><p>En entornos de producción, generalmente es mejor cargar todo el código de la aplicación cuando se inicia la aplicación. La carga ansiosa pone todo en la memoria listo para atender solicitudes de inmediato, y también es compatible con <a href="https://en.wikipedia.org/wiki/Copy-on-write">CoW</a>.</p><p>La carga ansiosa está controlada por la bandera <code>config.eager_load</code>, que está habilitada por defecto en el modo <code>producción</code>.</p><p>El orden en el que se cargan los archivos no está definido.</p><p>si la constante <code>Zeitwerk</code> está definida, Rails invoca <code>Zeitwerk::Loader.eager_load_all</code> independientemente del modo de carga automática de la aplicación. Eso asegura que las dependencias administradas por Zeitwerk estén cargadas con entusiasmo.</p><h3 id="single-table-inheritance"><a class="anchorlink" href="#single-table-inheritance">8 Single Table Inheritance</a></h3><p>La herencia de tabla única es una función que no funciona bien con la carga diferida. La razón es que su API generalmente necesita poder enumerar la jerarquía STI para que funcione correctamente, mientras que la carga diferida difiere la carga de clases hasta que se hace referencia a ellas. No puede enumerar lo que aún no ha hecho referencia.</p><p>En cierto sentido, las aplicaciones necesitan ansiosamente cargar las jerarquías de STI independientemente del modo de carga.</p><p>Por supuesto, si la aplicación se carga ansiosamente al arrancar, eso ya está logrado. Cuando no es así, en la práctica es suficiente instanciar los tipos existentes en la base de datos, lo que en los modos de desarrollo o prueba suele estar bien. Una forma de hacerlo es lanzar este módulo al directorio <code>lib</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">StiPreload</span>
-  <span class="k">unless</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">eager_load</span>
-    <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
-
-    <span class="n">included</span> <span class="k">do</span>
-      <span class="n">cattr_accessor</span> <span class="ss">:preloaded</span><span class="p">,</span> <span class="ss">instance_accessor: </span><span class="kp">false</span>
-    <span class="k">end</span>
-
-    <span class="n">class_methods</span> <span class="k">do</span>
-      <span class="k">def</span> <span class="nf">descendants</span>
-        <span class="n">preload_sti</span> <span class="k">unless</span> <span class="n">preloaded</span>
-        <span class="k">super</span>
-      <span class="k">end</span>
-
-      <span class="c1"># Constantizes all types present in the database. There might be more on</span>
-      <span class="c1"># disk, but that does not matter in practice as far as the STI API is</span>
-      <span class="c1"># concerned.</span>
-      <span class="c1">#</span>
-      <span class="c1"># Assumes store_full_sti_class is true, the default.</span>
-      <span class="k">def</span> <span class="nf">preload_sti</span>
-        <span class="n">types_in_db</span> <span class="o">=</span> <span class="p">\</span>
-          <span class="n">base_class</span><span class="p">.</span>
-            <span class="nf">unscoped</span><span class="p">.</span>
-            <span class="nf">select</span><span class="p">(</span><span class="n">inheritance_column</span><span class="p">).</span>
-            <span class="nf">distinct</span><span class="p">.</span>
-            <span class="nf">pluck</span><span class="p">(</span><span class="n">inheritance_column</span><span class="p">).</span>
-            <span class="nf">compact</span>
-
-        <span class="n">types_in_db</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">type</span><span class="o">|</span>
-          <span class="n">logger</span><span class="p">.</span><span class="nf">debug</span><span class="p">(</span><span class="s2">"Preloading STI type </span><span class="si">#{</span><span class="n">type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-          <span class="n">type</span><span class="p">.</span><span class="nf">constantize</span>
-        <span class="k">end</span>
-
-        <span class="nb">self</span><span class="p">.</span><span class="nf">preloaded</span> <span class="o">=</span> <span class="kp">true</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
+<p>NOTA: Por razones históricas, este callback puede ejecutarse dos veces. El código que ejecuta debe ser idempotente.</p><h4 id="autocargar-solo-al-inicio"><a class="anchorlink" href="#autocargar-solo-al-inicio"><span>8.1.2</span> Autocargar Solo al Inicio</a></h4><p>Las clases y módulos recargables también pueden ser autocargados en bloques <code>after_initialize</code>. Estos se ejecutan al inicio, pero no se ejecutan nuevamente en la recarga. En algunos casos excepcionales esto puede ser lo que deseas.</p><p>Las verificaciones previas son un caso de uso para esto:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/check_admin_presence.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">after_initialize</span> <span class="k">do</span>
+  <span class="k">unless</span> <span class="no">Role</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"admin"</span><span class="p">).</span><span class="nf">exists?</span>
+    <span class="nb">abort</span> <span class="s2">"El rol de administrador no está presente, por favor siembra la base de datos."</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module StiPreload
-  unless Rails.application.config.eager_load
-    extend ActiveSupport::Concern
-
-    included do
-      cattr_accessor :preloaded, instance_accessor: false
-    end
-
-    class_methods do
-      def descendants
-        preload_sti unless preloaded
-        super
-      end
-
-      # Constantizes all types present in the database. There might be more on
-      # disk, but that does not matter in practice as far as the STI API is
-      # concerned.
-      #
-      # Assumes store_full_sti_class is true, the default.
-      def preload_sti
-        types_in_db = \
-          base_class.
-            unscoped.
-            select(inheritance_column).
-            distinct.
-            pluck(inheritance_column).
-            compact
-
-        types_in_db.each do |type|
-          logger.debug("Preloading STI type #{type}")
-          type.constantize
-        end
-
-        self.preloaded = true
-      end
-    end
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.after_initialize do
+  unless Role.where(name: &quot;admin&quot;).exists?
+    abort &quot;El rol de administrador no está presente, por favor siembra la base de datos.&quot;
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>y luego inclúyalo en las clases raíz STI de su proyecto:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># app/models/shape.rb</span>
-<span class="nb">require</span> <span class="s2">"sti_preload"</span>
-
-<span class="k">class</span> <span class="nc">Shape</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
-  <span class="kp">include</span> <span class="no">StiPreload</span> <span class="c1"># Only in the root class.</span>
-<span class="k">end</span>
-
-<span class="c1"># app/models/polygon.rb</span>
-<span class="k">class</span> <span class="nc">Polygon</span> <span class="o">&lt;</span> <span class="no">Shape</span>
-<span class="k">end</span>
-
-<span class="c1"># app/models/triangle.rb</span>
-<span class="k">class</span> <span class="nc">Triangle</span> <span class="o">&lt;</span> <span class="no">Polygon</span>
+<h3 id="caso-de-uso-2-durante-el-inicio-cargar-código-que-permanece-en-caché"><a class="anchorlink" href="#caso-de-uso-2-durante-el-inicio-cargar-código-que-permanece-en-caché"><span>8.2</span> Caso de Uso 2: Durante el Inicio, Cargar Código que Permanece en Caché</a></h3><p>Algunas configuraciones toman un objeto de clase o módulo, y lo almacenan en un lugar que no se recarga. Es importante que estos no sean recargables, porque las ediciones no se reflejarían en esos objetos obsoletos almacenados en caché.</p><p>Un ejemplo es el middleware:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="no">MyApp</span><span class="o">::</span><span class="no">Middleware</span><span class="o">::</span><span class="no">Foo</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.middleware.use MyApp::Middleware::Foo
+">Copy</button>
+</div>
+<p>Cuando recargas, la pila de middleware no se ve afectada, por lo que sería confuso que <code>MyApp::Middleware::Foo</code> sea recargable. Los cambios en su implementación no tendrían efecto.</p><p>Otro ejemplo son los serializadores de Active Job:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/custom_serializers.rb</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">active_job</span><span class="p">.</span><span class="nf">custom_serializers</span> <span class="o">&lt;&lt;</span> <span class="no">MoneySerializer</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.config.active_job.custom_serializers << MoneySerializer
+">Copy</button>
+</div>
+<p>Cualquiera que sea el objeto que <code>MoneySerializer</code> evalúe durante la inicialización se agrega a los serializadores personalizados, y ese objeto permanece allí en las recargas.</p><p>Otro ejemplo más son las railties o motores que decoran clases del marco incluyendo módulos. Por ejemplo, <a href="https://github.com/hotwired/turbo-rails"><code>turbo-rails</code></a> decora <code>ActiveRecord::Base</code> de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">initializer</span> <span class="s2">"turbo.broadcastable"</span> <span class="k">do</span>
+  <span class="no">ActiveSupport</span><span class="p">.</span><span class="nf">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
+    <span class="kp">include</span> <span class="no">Turbo</span><span class="o">::</span><span class="no">Broadcastable</span>
+  <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# app/models/shape.rb
-require "sti_preload"
-
-class Shape &lt; ApplicationRecord
-  include StiPreload # Only in the root class.
+<button class="clipboard-button" data-clipboard-text="initializer &quot;turbo.broadcastable&quot; do
+  ActiveSupport.on_load(:active_record) do
+    include Turbo::Broadcastable
+  end
 end
-
-# app/models/polygon.rb
-class Polygon &lt; Shape
-end
-
-# app/models/triangle.rb
-class Triangle &lt; Polygon
-end
-'>Copy</button>
+">Copy</button>
 </div>
-<h3 id="customizing-inflections"><a class="anchorlink" href="#customizing-inflections">9 Customizing Inflections</a></h3><p>Por defecto, Rails usa <code>String#camelize</code> para saber qué constante debe definir un archivo o nombre de directorio dado. Por ejemplo, <code>posts_controller.rb</code> debería definir <code>PostsController</code> porque eso es lo que devuelve <code>"posts_controller".camelize</code>.</p><p>Podría darse el caso de que algún nombre de directorio o archivo en particular no se flexione como desea. Por ejemplo, se espera que <code>html_parser.rb</code> defina <code>HtmlParser</code> de forma predeterminada. ¿Qué pasa si prefiere que la clase sea <code>HTMLParser</code>? Hay algunas formas de personalizar esto.</p><p>La forma más sencilla es definir acrónimos en <code>config/initializers/inflections.rb</code>:</p><div class="code_container">
+<p>Eso agrega un objeto de módulo a la cadena de ancestros de <code>ActiveRecord::Base</code>. Los cambios en <code>Turbo::Broadcastable</code> no tendrían efecto si se recargan, la cadena de ancestros aún tendría el original.</p><p>Corolario: Esas clases o módulos <strong>no pueden ser recargables</strong>.</p><p>Una forma idiomática de organizar estos archivos es colocarlos en el directorio <code>lib</code> y cargarlos con <code>require</code> donde sea necesario. Por ejemplo, si la aplicación tiene middleware personalizado en <code>lib/middleware</code>, emite una llamada <code>require</code> regular antes de configurarlo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="nb">require</span> <span class="s2">"middleware/my_middleware"</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">use</span> <span class="no">MyMiddleware</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="require &quot;middleware/my_middleware&quot;
+config.middleware.use MyMiddleware
+">Copy</button>
+</div>
+<p>Además, si <code>lib</code> está en las rutas de autocarga, configura el autocargador para ignorar ese subdirectorio:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">autoload_lib</span><span class="p">(</span><span class="ss">ignore: </span><span class="sx">%w(assets tasks ... middleware)</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.autoload_lib(ignore: %w(assets tasks ... middleware))
+">Copy</button>
+</div>
+<p>ya que estás cargando esos archivos tú mismo.</p><p>Como se mencionó anteriormente, otra opción es tener el directorio que los define en las rutas de autocarga única y autocargar. Por favor, consulta la <a href="#config-autoload-once-paths">sección sobre config.autoload_once_paths</a> para más detalles.</p><h3 id="caso-de-uso-3-configurar-clases-de-aplicación-para-motores"><a class="anchorlink" href="#caso-de-uso-3-configurar-clases-de-aplicación-para-motores"><span>8.3</span> Caso de Uso 3: Configurar Clases de Aplicación para Motores</a></h3><p>Supongamos que un motor trabaja con la clase de aplicación recargable que modela los usuarios, y tiene un punto de configuración para ella:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/my_engine.rb</span>
+<span class="no">MyEngine</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">user_model</span> <span class="o">=</span> <span class="no">User</span> <span class="c1"># NameError</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="MyEngine.configure do |config|
+  config.user_model = User # NameError
+end
+">Copy</button>
+</div>
+<p>Para jugar bien con el código de la aplicación recargable, el motor en su lugar necesita que las aplicaciones configuren el <em>nombre</em> de esa clase:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/my_engine.rb</span>
+<span class="no">MyEngine</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">user_model</span> <span class="o">=</span> <span class="s2">"User"</span> <span class="c1"># OK</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="MyEngine.configure do |config|
+  config.user_model = &quot;User&quot; # OK
+end
+">Copy</button>
+</div>
+<p>Entonces, en tiempo de ejecución, <code>config.user_model.constantize</code> te da el objeto de clase actual.</p><h2 id="carga-anticipada"><a class="anchorlink" href="#carga-anticipada"><span>9</span> Carga Anticipada</a></h2><p>En entornos de producción o similares, generalmente es mejor cargar todo el código de la aplicación cuando la aplicación se inicia. La carga anticipada pone todo en memoria listo para atender solicitudes de inmediato, y también es amigable con <a href="https://en.wikipedia.org/wiki/Copy-on-write">CoW</a>.</p><p>La carga anticipada se controla mediante la bandera <a href="configuring.html#config-eager-load"><code>config.eager_load</code></a>, que está deshabilitada por defecto en todos los entornos excepto <code>production</code>. Cuando se ejecuta una tarea de Rake, <code>config.eager_load</code> se anula mediante <a href="configuring.html#config-rake-eager-load"><code>config.rake_eager_load</code></a>, que es <code>false</code> por defecto. Por lo tanto, por defecto, en entornos de producción las tareas de Rake no cargan anticipadamente la aplicación.</p><p>El orden en el que se cargan anticipadamente los archivos es indefinido.</p><p>Durante la carga anticipada, Rails invoca <code>Zeitwerk::Loader.eager_load_all</code>. Eso asegura que todas las dependencias de gemas gestionadas por Zeitwerk también se carguen anticipadamente.</p><h2 id="herencia-de-tabla-única"><a class="anchorlink" href="#herencia-de-tabla-única"><span>10</span> Herencia de Tabla Única</a></h2><p>La Herencia de Tabla Única no se lleva bien con la carga diferida: Active Record tiene que estar al tanto de las jerarquías de STI para funcionar correctamente, pero cuando se carga diferida, las clases se cargan precisamente solo bajo demanda.</p><p>Para abordar esta incompatibilidad fundamental, necesitamos precargar los STIs. Hay algunas opciones para lograr esto, con diferentes compensaciones. Veámoslas.</p><h3 id="opción-1-habilitar-carga-anticipada"><a class="anchorlink" href="#opción-1-habilitar-carga-anticipada"><span>10.1</span> Opción 1: Habilitar Carga Anticipada</a></h3><p>La forma más fácil de precargar los STIs es habilitar la carga anticipada configurando:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">eager_load</span> <span class="o">=</span> <span class="kp">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.eager_load = true
+">Copy</button>
+</div>
+<p>en <code>config/environments/development.rb</code> y <code>config/environments/test.rb</code>.</p><p>Esto es simple, pero puede ser costoso porque carga anticipadamente toda la aplicación al inicio y en cada recarga. Sin embargo, la compensación puede valer la pena para aplicaciones pequeñas.</p><h3 id="opción-2-precargar-un-directorio-colapsado"><a class="anchorlink" href="#opción-2-precargar-un-directorio-colapsado"><span>10.2</span> Opción 2: Precargar un Directorio Colapsado</a></h3><p>Almacena los archivos que definen la jerarquía en un directorio dedicado, lo que también tiene sentido conceptualmente. El directorio no está destinado a representar un espacio de nombres, su único propósito es agrupar el STI:</p><div class="interstitial code">
+<pre><code class="highlight plaintext">app/models/shapes/shape.rb
+app/models/shapes/circle.rb
+app/models/shapes/square.rb
+app/models/shapes/triangle.rb
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="app/models/shapes/shape.rb
+app/models/shapes/circle.rb
+app/models/shapes/square.rb
+app/models/shapes/triangle.rb
+">Copy</button>
+</div>
+<p>En este ejemplo, aún queremos que <code>app/models/shapes/circle.rb</code> defina <code>Circle</code>, no <code>Shapes::Circle</code>. Esto puede ser tu preferencia personal para mantener las cosas simples, y también evita refactorizaciones en bases de código existentes. La característica de <a href="https://github.com/fxn/zeitwerk#collapsing-directories">colapsar</a> de Zeitwerk nos permite hacer eso:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/preload_stis.rb</span>
+
+<span class="n">shapes</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/models/shapes"</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">collapse</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span> <span class="c1"># No es un espacio de nombres.</span>
+
+<span class="k">unless</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">eager_load</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">to_prepare</span> <span class="k">do</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">eager_load_dir</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+shapes = &quot;#{Rails.root}/app/models/shapes&quot;
+Rails.autoloaders.main.collapse(shapes) # No es un espacio de nombres.
+
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    Rails.autoloaders.main.eager_load_dir(shapes)
+  end
+end
+">Copy</button>
+</div>
+<p>En esta opción, cargamos anticipadamente estos pocos archivos al inicio y recarga incluso si el STI no se usa. Sin embargo, a menos que tu aplicación tenga muchos STIs, esto no tendrá ningún impacto medible.</p><div class="interstitial info"><p>El método <code>Zeitwerk::Loader#eager_load_dir</code> fue agregado en Zeitwerk 2.6.2. Para versiones anteriores, aún puedes listar el directorio <code>app/models/shapes</code> e invocar <code>require_dependency</code> en sus contenidos.</p></div><p>ADVERTENCIA: Si se agregan, modifican o eliminan modelos del STI, la recarga funciona como se espera. Sin embargo, si se agrega una nueva jerarquía STI separada a la aplicación, necesitarás editar el inicializador y reiniciar el servidor.</p><h3 id="opción-3-precargar-un-directorio-regular"><a class="anchorlink" href="#opción-3-precargar-un-directorio-regular"><span>10.3</span> Opción 3: Precargar un Directorio Regular</a></h3><p>Similar a la anterior, pero el directorio está destinado a ser un espacio de nombres. Es decir, se espera que <code>app/models/shapes/circle.rb</code> defina <code>Shapes::Circle</code>.</p><p>Para este, el inicializador es el mismo excepto que no se configura colapsar:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/preload_stis.rb</span>
+
+<span class="k">unless</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">eager_load</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">to_prepare</span> <span class="k">do</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">eager_load_dir</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/models/shapes"</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    Rails.autoloaders.main.eager_load_dir(&quot;#{Rails.root}/app/models/shapes&quot;)
+  end
+end
+">Copy</button>
+</div>
+<p>Mismas compensaciones.</p><h3 id="opción-4-precargar-tipos-desde-la-base-de-datos"><a class="anchorlink" href="#opción-4-precargar-tipos-desde-la-base-de-datos"><span>10.4</span> Opción 4: Precargar Tipos desde la Base de Datos</a></h3><p>En esta opción no necesitamos organizar los archivos de ninguna manera, pero accedemos a la base de datos:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/preload_stis.rb</span>
+
+<span class="k">unless</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">eager_load</span>
+  <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">to_prepare</span> <span class="k">do</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="no">Shape</span><span class="p">.</span><span class="nf">unscoped</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="ss">:type</span><span class="p">).</span><span class="nf">distinct</span><span class="p">.</span><span class="nf">pluck</span><span class="p">(</span><span class="ss">:type</span><span class="p">)</span>
+    <span class="n">types</span><span class="p">.</span><span class="nf">compact</span><span class="p">.</span><span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:constantize</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+unless Rails.application.config.eager_load
+  Rails.application.config.to_prepare do
+    types = Shape.unscoped.select(:type).distinct.pluck(:type)
+    types.compact.each(&amp;:constantize)
+  end
+end
+">Copy</button>
+</div>
+<p>ADVERTENCIA: El STI funcionará correctamente incluso si la tabla no tiene todos los tipos, pero métodos como <code>subclasses</code> o <code>descendants</code> no devolverán los tipos que faltan.</p><p>ADVERTENCIA: Si se agregan, modifican o eliminan modelos del STI, la recarga funciona como se espera. Sin embargo, si se agrega una nueva jerarquía STI separada a la aplicación, necesitarás editar el inicializador y reiniciar el servidor.</p><h2 id="personalización-de-inflexiones"><a class="anchorlink" href="#personalización-de-inflexiones"><span>11</span> Personalización de Inflexiones</a></h2><p>Por defecto, Rails utiliza <code>String#camelize</code> para saber qué constante debería definir un nombre de archivo o directorio dado. Por ejemplo, <code>posts_controller.rb</code> debería definir <code>PostsController</code> porque eso es lo que <code>"posts_controller".camelize</code> devuelve.</p><p>Podría ser el caso de que algún nombre de archivo o directorio particular no se inflexione como deseas. Por ejemplo, <code>html_parser.rb</code> se espera que defina <code>HtmlParser</code> por defecto. ¿Qué pasa si prefieres que la clase sea <code>HTMLParser</code>? Hay algunas formas de personalizar esto.</p><p>La forma más fácil es definir acrónimos:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Inflector</span><span class="p">.</span><span class="nf">inflections</span><span class="p">(</span><span class="ss">:en</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">inflect</span><span class="o">|</span>
   <span class="n">inflect</span><span class="p">.</span><span class="nf">acronym</span> <span class="s2">"HTML"</span>
   <span class="n">inflect</span><span class="p">.</span><span class="nf">acronym</span> <span class="s2">"SSL"</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.acronym "HTML"
-  inflect.acronym "SSL"
+<button class="clipboard-button" data-clipboard-text="ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym &quot;HTML&quot;
+  inflect.acronym &quot;SSL&quot;
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Si lo hace, afectará a la forma en que Active Support se flexiona globalmente. Eso puede estar bien en algunas aplicaciones, pero también puede personalizar cómo camelizar nombres de base individuales independientemente de Active Support pasando una colección de anulaciones a los inflectores predeterminados:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config/initializers/zeitwerk.rb</span>
-<span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">autoloader</span><span class="o">|</span>
+<p>Hacer esto afecta cómo Active Support inflexiona globalmente. Eso puede estar bien en algunas aplicaciones, pero también puedes personalizar cómo camelizar nombres de base individuales independientemente de Active Support pasando una colección de sobrescrituras a los inflectores predeterminados:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">autoloader</span><span class="o">|</span>
   <span class="n">autoloader</span><span class="p">.</span><span class="nf">inflector</span><span class="p">.</span><span class="nf">inflect</span><span class="p">(</span>
     <span class="s2">"html_parser"</span> <span class="o">=&gt;</span> <span class="s2">"HTMLParser"</span><span class="p">,</span>
     <span class="s2">"ssl_error"</span>   <span class="o">=&gt;</span> <span class="s2">"SSLError"</span>
   <span class="p">)</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# config/initializers/zeitwerk.rb
-Rails.autoloaders.each do |autoloader|
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.each do |autoloader|
   autoloader.inflector.inflect(
-    "html_parser" =&gt; "HTMLParser",
-    "ssl_error"   =&gt; "SSLError"
+    &quot;html_parser&quot; => &quot;HTMLParser&quot;,
+    &quot;ssl_error&quot;   => &quot;SSLError&quot;
   )
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Sin embargo, esa técnica todavía depende de <code>String#camelize</code>, porque eso es lo que los inflectores predeterminados usan como respaldo. Si en cambio prefiere no depender de las inflexiones de Active Support y tener un control absoluto sobre las inflexiones, configure los inflectores para que sean instancias de <code>Zeitwerk::Inflector</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config/initializers/zeitwerk.rb</span>
-<span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">autoloader</span><span class="o">|</span>
+<p>Esa técnica aún depende de <code>String#camelize</code>, sin embargo, porque eso es lo que los inflectores predeterminados usan como respaldo. Si en su lugar prefieres no depender de las inflexiones de Active Support en absoluto y tener control absoluto sobre las inflexiones, configura los inflectores para que sean instancias de <code>Zeitwerk::Inflector</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">autoloader</span><span class="o">|</span>
   <span class="n">autoloader</span><span class="p">.</span><span class="nf">inflector</span> <span class="o">=</span> <span class="no">Zeitwerk</span><span class="o">::</span><span class="no">Inflector</span><span class="p">.</span><span class="nf">new</span>
   <span class="n">autoloader</span><span class="p">.</span><span class="nf">inflector</span><span class="p">.</span><span class="nf">inflect</span><span class="p">(</span>
     <span class="s2">"html_parser"</span> <span class="o">=&gt;</span> <span class="s2">"HTMLParser"</span><span class="p">,</span>
@@ -470,37 +684,98 @@ end
   <span class="p">)</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='# config/initializers/zeitwerk.rb
-Rails.autoloaders.each do |autoloader|
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.each do |autoloader|
   autoloader.inflector = Zeitwerk::Inflector.new
   autoloader.inflector.inflect(
-    "html_parser" =&gt; "HTMLParser",
-    "ssl_error"   =&gt; "SSLError"
+    &quot;html_parser&quot; => &quot;HTMLParser&quot;,
+    &quot;ssl_error&quot;   => &quot;SSLError&quot;
   )
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>No existe una configuración global que pueda afectar a dichas instancias, son deterministas.</p><p>Incluso puede definir un inflector personalizado para una flexibilidad total. Por favor, consulte la <a href="https://github.com/fxn/zeitwerk#custom-inflector">documentación de Zeitwerk</a> para obtener más detalles.</p><h3 id="troubleshooting"><a class="anchorlink" href="#troubleshooting">10 Troubleshooting</a></h3><p>La mejor forma de seguir lo que están haciendo los cargadores es inspeccionar su actividad.</p><p>La forma más sencilla de hacerlo es lanzar</p><div class="code_container">
+<p>No hay configuración global que pueda afectar dichas instancias; son deterministas.</p><p>Incluso puedes definir un inflector personalizado para una flexibilidad total. Por favor, consulta la <a href="https://github.com/fxn/zeitwerk#custom-inflector">documentación de Zeitwerk</a> para más detalles.</p><h3 id="¿dónde-debería-ir-la-personalización-de-inflexiones-questionmark"><a class="anchorlink" href="#¿dónde-debería-ir-la-personalización-de-inflexiones-questionmark"><span>11.1</span> ¿Dónde Debería Ir la Personalización de Inflexiones?</a></h3><p>Si una aplicación no usa el autocargador <code>once</code>, los fragmentos de código anteriores pueden ir en <code>config/initializers</code>. Por ejemplo, <code>config/initializers/inflections.rb</code> para el caso de uso de Active Support, o <code>config/initializers/zeitwerk.rb</code> para los otros.</p><p>Las aplicaciones que usan el autocargador <code>once</code> tienen que mover o cargar esta configuración desde el cuerpo de la clase de la aplicación en <code>config/application.rb</code>, porque el autocargador <code>once</code> usa el inflector temprano en el proceso de inicio.</p><h2 id="espacios-de-nombres-personalizados"><a class="anchorlink" href="#espacios-de-nombres-personalizados"><span>12</span> Espacios de Nombres Personalizados</a></h2><p>Como vimos anteriormente, las rutas de autocarga representan el espacio de nombres de nivel superior: <code>Object</code>.</p><p>Consideremos <code>app/services</code>, por ejemplo. Este directorio no se genera por defecto, pero si existe, Rails lo agrega automáticamente a las rutas de autocarga.</p><p>Por defecto, se espera que el archivo <code>app/services/users/signup.rb</code> defina <code>Users::Signup</code>, pero ¿qué pasa si prefieres que todo ese subárbol esté bajo un espacio de nombres <code>Services</code>? Bueno, con la configuración predeterminada, eso se puede lograr creando un subdirectorio: <code>app/services/services</code>.</p><p>Sin embargo, dependiendo de tu gusto, eso podría no parecerte correcto. Podrías preferir que <code>app/services/users/signup.rb</code> simplemente defina <code>Services::Users::Signup</code>.</p><p>Zeitwerk admite <a href="https://github.com/fxn/zeitwerk#custom-root-namespaces">espacios de nombres raíz personalizados</a> para abordar este caso de uso, y puedes personalizar el autocargador <code>main</code> para lograrlo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/initializers/autoloading.rb</span>
+
+<span class="c1"># El espacio de nombres tiene que existir.</span>
+<span class="c1">#</span>
+<span class="c1"># En este ejemplo, definimos el módulo en el lugar. También podría crearse</span>
+<span class="c1"># en otro lugar y su definición cargarse aquí con un `require` ordinario. En</span>
+<span class="c1"># cualquier caso, `push_dir` espera un objeto de clase o módulo.</span>
+<span class="k">module</span> <span class="nn">Services</span><span class="p">;</span> <span class="k">end</span>
+
+<span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span><span class="p">.</span><span class="nf">push_dir</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/services"</span><span class="p">,</span> <span class="ss">namespace: </span><span class="no">Services</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="
+# El espacio de nombres tiene que existir.
+#
+# En este ejemplo, definimos el módulo en el lugar. También podría crearse
+# en otro lugar y su definición cargarse aquí con un `require` ordinario. En
+# cualquier caso, `push_dir` espera un objeto de clase o módulo.
+module Services; end
+
+Rails.autoloaders.main.push_dir(&quot;#{Rails.root}/app/services&quot;, namespace: Services)
+">Copy</button>
+</div>
+<p>Rails &lt; 7.1 no admitía esta característica, pero aún puedes agregar este código adicional en el mismo archivo y hacerlo funcionar:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># Código adicional para aplicaciones que se ejecutan en Rails &lt; 7.1.</span>
+<span class="n">app_services_dir</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/app/services"</span> <span class="c1"># tiene que ser una cadena</span>
+<span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Dependencies</span><span class="p">.</span><span class="nf">autoload_paths</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">app_services_dir</span><span class="p">)</span>
+<span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">watchable_dirs</span><span class="p">[</span><span class="n">app_services_dir</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:rb</span><span class="p">]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# Código adicional para aplicaciones que se ejecutan en Rails < 7.1.
+app_services_dir = &quot;#{Rails.root}/app/services&quot; # tiene que ser una cadena
+ActiveSupport::Dependencies.autoload_paths.delete(app_services_dir)
+Rails.application.config.watchable_dirs[app_services_dir] = [:rb]
+">Copy</button>
+</div>
+<p>Los espacios de nombres personalizados también son compatibles con el autocargador <code>once</code>. Sin embargo, dado que ese se configura más temprano en el proceso de inicio, la configuración no se puede hacer en un inicializador de aplicación. En su lugar, colócalo en <code>config/application.rb</code>, por ejemplo.</p><h2 id="autocarga-y-motores"><a class="anchorlink" href="#autocarga-y-motores"><span>13</span> Autocarga y Motores</a></h2><p>Los motores se ejecutan en el contexto de una aplicación principal, y su código es autocargado, recargado y cargado anticipadamente por la aplicación principal. Si la aplicación se ejecuta en modo <code>zeitwerk</code>, el código del motor se carga en modo <code>zeitwerk</code>. Si la aplicación se ejecuta en modo <code>classic</code>, el código del motor se carga en modo <code>classic</code>.</p><p>Cuando Rails se inicia, los directorios de los motores se agregan a las rutas de autocarga, y desde el punto de vista del autocargador, no hay diferencia. Las entradas principales de los autocargadores son las rutas de autocarga, y si pertenecen al árbol de código fuente de la aplicación o al árbol de código fuente de algún motor es irrelevante.</p><p>Por ejemplo, esta aplicación usa <a href="https://github.com/heartcombo/devise">Devise</a>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>runner <span class="s1">'pp ActiveSupport::Dependencies.autoload_paths'</span>
+<span class="go">[".../app/controllers",
+ ".../app/controllers/concerns",
+ ".../app/helpers",
+ ".../app/models",
+ ".../app/models/concerns",
+ ".../gems/devise-4.8.0/app/controllers",
+ ".../gems/devise-4.8.0/app/helpers",
+ ".../gems/devise-4.8.0/app/mailers"]
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails runner 'pp ActiveSupport::Dependencies.autoload_paths'
+">Copy</button>
+</div>
+<p>Si el motor controla el modo de autocarga de su aplicación principal, el motor puede escribirse como de costumbre.</p><p>Sin embargo, si un motor admite Rails 6 o Rails 6.1 y no controla sus aplicaciones principales, tiene que estar listo para ejecutarse en modo <code>classic</code> o <code>zeitwerk</code>. Cosas a tener en cuenta:</p>
+<ol>
+<li><p>Si el modo <code>classic</code> necesitaría una llamada <code>require_dependency</code> para asegurar que alguna constante se cargue en algún momento, escríbela. Aunque <code>zeitwerk</code> no lo necesitaría, no hará daño, funcionará en modo <code>zeitwerk</code> también.</p></li>
+<li><p>El modo <code>classic</code> subraya los nombres de las constantes ("User" -&gt; "user.rb"), y el modo <code>zeitwerk</code> cameliza los nombres de archivo ("user.rb" -&gt; "User"). Coinciden en la mayoría de los casos, pero no lo hacen si hay series de letras mayúsculas consecutivas como en "HTMLParser". La forma más fácil de ser compatible es evitar tales nombres. En este caso, elige "HtmlParser".</p></li>
+<li><p>En modo <code>classic</code>, el archivo <code>app/model/concerns/foo.rb</code> tiene permitido definir tanto <code>Foo</code> como <code>Concerns::Foo</code>. En modo <code>zeitwerk</code>, solo hay una opción: tiene que definir <code>Foo</code>. Para ser compatible, define <code>Foo</code>.</p></li>
+</ol>
+<h2 id="pruebas"><a class="anchorlink" href="#pruebas"><span>14</span> Pruebas</a></h2><h3 id="pruebas-manuales"><a class="anchorlink" href="#pruebas-manuales"><span>14.1</span> Pruebas Manuales</a></h3><p>La tarea <code>zeitwerk:check</code> verifica si el árbol del proyecto sigue las convenciones de nomenclatura esperadas y es útil para verificaciones manuales. Por ejemplo, si estás migrando de modo <code>classic</code> a <code>zeitwerk</code>, o si estás corrigiendo algo:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>zeitwerk:check
+<span class="go">Hold on, I am eager loading the application.
+All is good!
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails zeitwerk:check
+">Copy</button>
+</div>
+<p>Puede haber salida adicional dependiendo de la configuración de la aplicación, pero el último "All is good!" es lo que estás buscando.</p><h3 id="pruebas-automatizadas"><a class="anchorlink" href="#pruebas-automatizadas"><span>14.2</span> Pruebas Automatizadas</a></h3><p>Es una buena práctica verificar en el conjunto de pruebas que el proyecto se carga anticipadamente correctamente.</p><p>Eso cubre el cumplimiento de la nomenclatura de Zeitwerk y otras posibles condiciones de error. Por favor, consulta la <a href="testing.html#testing-eager-loading">sección sobre pruebas de carga anticipada</a> en la guía <a href="testing.html"><em>Testing Rails Applications</em></a>.</p><h2 id="solución-de-problemas"><a class="anchorlink" href="#solución-de-problemas"><span>15</span> Solución de Problemas</a></h2><p>La mejor manera de seguir lo que están haciendo los cargadores es inspeccionar su actividad.</p><p>La forma más fácil de hacer eso es incluir</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">log!</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="Rails.autoloaders.log!
 ">Copy</button>
 </div>
-<p>a <code>config/application.rb</code> después de cargar los valores predeterminados del marco. Eso imprimirá trazas en la salida estándar.</p><p>Si prefiere iniciar sesión en un archivo, configure esto en su lugar:</p><div class="code_container">
+<p>en <code>config/application.rb</code> después de cargar los valores predeterminados del marco. Eso imprimirá trazas en la salida estándar.</p><p>Si prefieres registrar en un archivo, configura esto en su lugar:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Logger</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="si">}</span><span class="s2">/log/autoloading.log"</span><span class="p">)</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='Rails.autoloaders.logger = Logger.new("#{Rails.root}/log/autoloading.log")
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.logger = Logger.new(&quot;#{Rails.root}/log/autoloading.log&quot;)
+">Copy</button>
 </div>
-<p>El registrador Rails todavía no está listo en <code>config/application.rb</code>, pero está en inicializadores:</p><div class="code_container">
+<p>El registrador de Rails aún no está disponible cuando se ejecuta <code>config/application.rb</code>. Si prefieres usar el registrador de Rails, configura esta opción en un inicializador en su lugar:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="c1"># config/initializers/log_autoloaders.rb</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">logger</span> <span class="o">=</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="# config/initializers/log_autoloaders.rb
-Rails.autoloaders.logger = Rails.logger
+<button class="clipboard-button" data-clipboard-text="Rails.autoloaders.logger = Rails.logger
 ">Copy</button>
 </div>
-<h3 id="rails-autoloaders"><a class="anchorlink" href="#rails-autoloaders">11 Rails.autoloaders</a></h3><p>Las instancias de Zeitwerk que administran su aplicación están disponibles en</p><div class="code_container">
+<h2 id="rails-autoloaders"><a class="anchorlink" href="#rails-autoloaders"><span>16</span> Rails.autoloaders</a></h2><p>Las instancias de Zeitwerk que gestionan tu aplicación están disponibles en</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">main</span>
 <span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">once</span>
 </code></pre>
@@ -508,46 +783,49 @@ Rails.autoloaders.logger = Rails.logger
 Rails.autoloaders.once
 ">Copy</button>
 </div>
-<p>El primero es el principal. Este último está allí principalmente por razones de compatibilidad con versiones anteriores, en caso de que la aplicación tenga algo en <code>config.autoload_once_paths</code> (esto no se recomienda hoy en día).</p><p>Puede comprobar si el modo <code>zeitwerk</code> está habilitado con</p><div class="code_container">
+<p>El predicado</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">autoloaders</span><span class="p">.</span><span class="nf">zeitwerk_enabled?</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="Rails.autoloaders.zeitwerk_enabled?
 ">Copy</button>
 </div>
-<h3 id="opting-out"><a class="anchorlink" href="#opting-out">12 Opting Out</a></h3><p>Las aplicaciones pueden cargar los valores predeterminados de Rails 6 y seguir usando el cargador automático clásico de esta manera:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
-<span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">6.0</span>
-<span class="n">config</span><span class="p">.</span><span class="nf">autoloader</span> <span class="o">=</span> <span class="ss">:classic</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="# config/application.rb
-config.load_defaults 6.0
-config.autoloader = :classic
-">Copy</button>
-</div>
-<p>Eso puede ser útil si se actualiza a Rails 6 en diferentes fases, pero se desaconseja el modo clásico para nuevas aplicaciones.</p><p>El modo <code>zeitwerk</code> no está disponible en versiones de Rails anteriores a 6.0.</p>
-
-        <h3>Comentarios Sobre el Contenido</h3>
+<p>aún está disponible en aplicaciones Rails 7, y devuelve <code>true</code>.</p>
+        <hr>
+        <h3>Comentarios</h3>
         <p>
-          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+          Se te anima a ayudar a mejorar la calidad de esta guía.
         </p>
         <p>
-          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
-
-          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
-          Please contribute if you see any typos or factual errors.
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
         </p>
-
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
       </div>
     </div>
-  </div>
+  </main>
 
   <hr class="hide" />
-  <div id="footer">
+  <footer id="page_footer">
     <div class="wrapper">
-      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
-<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
 
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
     </div>
-  </div>
+  </footer>
 </body>
 </html>

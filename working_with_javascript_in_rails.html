@@ -1,0 +1,483 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trabajando con JavaScript en Rails — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Trabajando con JavaScript en Rails — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Trabajando con JavaScript en RailsEsta guía cubre las opciones para integrar funcionalidad de JavaScript en tu aplicación Rails, incluyendo las opciones que tienes para usar paquetes de JavaScript externos y cómo usar Turbo con Rails.Después de leer esta guía, sabrás: Cómo usar Rails sin la necesidad de Node.js, Yarn, o un empaquetador de JavaScript. Cómo crear una nueva aplicación Rails usando mapas de importación, Bun, esbuild, Rollup, o Webpack para empaquetar tu JavaScript. Qué es Turbo y cómo usarlo. Cómo usar los ayudantes HTML de Turbo proporcionados por Rails." />
+  <meta property="og:description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Trabajando con JavaScript en RailsEsta guía cubre las opciones para integrar funcionalidad de JavaScript en tu aplicación Rails, incluyendo las opciones que tienes para usar paquetes de JavaScript externos y cómo usar Turbo con Rails.Después de leer esta guía, sabrás: Cómo usar Rails sin la necesidad de Node.js, Yarn, o un empaquetador de JavaScript. Cómo crear una nueva aplicación Rails usando mapas de importación, Bun, esbuild, Rollup, o Webpack para empaquetar tu JavaScript. Qué es Turbo y cómo usarlo. Cómo usar los ayudantes HTML de Turbo proporcionados por Rails." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Trabajando con JavaScript en Rails</h1><p>Esta guía cubre las opciones para integrar funcionalidad de JavaScript en tu aplicación Rails, incluyendo las opciones que tienes para usar paquetes de JavaScript externos y cómo usar Turbo con Rails.</p><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Cómo usar Rails sin la necesidad de Node.js, Yarn, o un empaquetador de JavaScript.</li>
+<li>Cómo crear una nueva aplicación Rails usando mapas de importación, Bun, esbuild, Rollup, o Webpack para empaquetar tu JavaScript.</li>
+<li>Qué es Turbo y cómo usarlo.</li>
+<li>Cómo usar los ayudantes HTML de Turbo proporcionados por Rails.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#mapas-de-importación">Mapas de Importación</a>
+
+<ul>
+<li><a href="#instalando-importmap-rails">Instalando importmap-rails</a></li>
+<li><a href="#añadiendo-paquetes-npm-con-importmap-rails">Añadiendo Paquetes npm con importmap-rails</a></li>
+</ul></li>
+<li><a href="#añadiendo-paquetes-npm-con-empaquetadores-de-javascript">Añadiendo Paquetes npm con Empaquetadores de JavaScript</a>
+
+<ul>
+<li><a href="#instalando-un-entorno-de-ejecución-de-javascript">Instalando un Entorno de Ejecución de JavaScript</a></li>
+</ul></li>
+<li><a href="#elegir-entre-mapas-de-importación-y-un-empaquetador-de-javascript">Elegir Entre Mapas de Importación y un Empaquetador de JavaScript</a></li>
+<li><a href="#turbo">Turbo</a>
+
+<ul>
+<li><a href="#turbo-drive">Turbo Drive</a></li>
+<li><a href="#turbo-frames">Turbo Frames</a></li>
+<li><a href="#turbo-streams">Turbo Streams</a></li>
+</ul></li>
+<li><a href="#reemplazos-para-la-funcionalidad-de-rails-ujs">Reemplazos para la Funcionalidad de Rails/UJS</a>
+
+<ul>
+<li><a href="#método">Método</a></li>
+<li><a href="#confirmaciones">Confirmaciones</a></li>
+<li><a href="#solicitudes-ajax">Solicitudes Ajax</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <h2 id="mapas-de-importación"><a class="anchorlink" href="#mapas-de-importación"><span>1</span> Mapas de Importación</a></h2><p><a href="https://github.com/rails/importmap-rails">Los mapas de importación</a> te permiten importar módulos de JavaScript usando nombres lógicos que se mapean a archivos versionados directamente desde el navegador. Los mapas de importación son el valor predeterminado desde Rails 7, permitiendo a cualquiera construir aplicaciones de JavaScript modernas usando la mayoría de los paquetes npm sin necesidad de transpilar o empaquetar.</p><p>Las aplicaciones que usan mapas de importación no necesitan <a href="https://nodejs.org/en/">Node.js</a> ni <a href="https://yarnpkg.com/">Yarn</a> para funcionar. Si planeas usar Rails con <code>importmap-rails</code> para gestionar tus dependencias de JavaScript, no hay necesidad de instalar Node.js o Yarn.</p><p>Cuando usas mapas de importación, no se requiere un proceso de construcción separado, solo inicia tu servidor con <code>bin/rails server</code> y listo.</p><h3 id="instalando-importmap-rails"><a class="anchorlink" href="#instalando-importmap-rails"><span>1.1</span> Instalando importmap-rails</a></h3><p>Importmap para Rails se incluye automáticamente en Rails 7+ para nuevas aplicaciones, pero también puedes instalarlo manualmente en aplicaciones existentes:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/bundle add importmap-rails
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/bundle add importmap-rails
+">Copy</button>
+</div>
+<p>Ejecuta la tarea de instalación:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>importmap:install
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails importmap:install
+">Copy</button>
+</div>
+<h3 id="añadiendo-paquetes-npm-con-importmap-rails"><a class="anchorlink" href="#añadiendo-paquetes-npm-con-importmap-rails"><span>1.2</span> Añadiendo Paquetes npm con importmap-rails</a></h3><p>Para agregar nuevos paquetes a tu aplicación con mapas de importación, ejecuta el comando <code>bin/importmap pin</code> desde tu terminal:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap pin react react-dom
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap pin react react-dom
+">Copy</button>
+</div>
+<p>Luego, importa el paquete en <code>application.js</code> como de costumbre:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import React from &quot;react&quot;
+import ReactDOM from &quot;react-dom&quot;
+">Copy</button>
+</div>
+<h2 id="añadiendo-paquetes-npm-con-empaquetadores-de-javascript"><a class="anchorlink" href="#añadiendo-paquetes-npm-con-empaquetadores-de-javascript"><span>2</span> Añadiendo Paquetes npm con Empaquetadores de JavaScript</a></h2><p>Los mapas de importación son el valor predeterminado para nuevas aplicaciones Rails, pero si prefieres el empaquetado tradicional de JavaScript, puedes crear nuevas aplicaciones Rails con tu elección de <a href="https://bun.sh">Bun</a>, <a href="https://esbuild.github.io/">esbuild</a>, <a href="https://webpack.js.org/">Webpack</a>, o <a href="https://rollupjs.org/guide/en/">Rollup.js</a>.</p><p>Para usar un empaquetador en lugar de mapas de importación en una nueva aplicación Rails, pasa la opción <code>--javascript</code> o <code>-j</code> a <code>rails new</code>:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new my_new_app <span class="nt">--javascript</span><span class="o">=</span>bun
+<span class="go">O
+</span><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new my_new_app <span class="nt">-j</span> bun
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="rails new my_new_app --javascript=bun
+rails new my_new_app -j bun
+">Copy</button>
+</div>
+<p>Estas opciones de empaquetado vienen con una configuración simple e integración con el pipeline de activos a través de la gema <a href="https://github.com/rails/jsbundling-rails">jsbundling-rails</a>.</p><p>Cuando uses una opción de empaquetado, usa <code>bin/dev</code> para iniciar el servidor Rails y construir JavaScript para desarrollo.</p><h3 id="instalando-un-entorno-de-ejecución-de-javascript"><a class="anchorlink" href="#instalando-un-entorno-de-ejecución-de-javascript"><span>2.1</span> Instalando un Entorno de Ejecución de JavaScript</a></h3><p>Si estás usando esbuild, Rollup.js, o Webpack para empaquetar tu JavaScript en tu aplicación Rails, Node.js y Yarn deben estar instalados. Si estás usando Bun, solo necesitas instalar Bun ya que es tanto un entorno de ejecución de JavaScript como un empaquetador.</p><h4 id="instalando-bun"><a class="anchorlink" href="#instalando-bun"><span>2.1.1</span> Instalando Bun</a></h4><p>Encuentra las instrucciones de instalación en el <a href="https://bun.sh">sitio web de Bun</a> y verifica que esté instalado correctamente y en tu ruta con el siguiente comando:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bun <span class="nt">--version</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bun --version
+">Copy</button>
+</div>
+<p>La versión de tu entorno de ejecución Bun debería imprimirse. Si dice algo como <code>1.0.0</code>, Bun se ha instalado correctamente.</p><p>Si no, es posible que necesites reinstalar Bun en el directorio actual o reiniciar tu terminal.</p><h4 id="instalando-node-js-y-yarn"><a class="anchorlink" href="#instalando-node-js-y-yarn"><span>2.1.2</span> Instalando Node.js y Yarn</a></h4><p>Si estás usando esbuild, Rollup.js, o Webpack necesitarás Node.js y Yarn.</p><p>Encuentra las instrucciones de instalación en el <a href="https://nodejs.org/en/download/">sitio web de Node.js</a> y verifica que esté instalado correctamente con el siguiente comando:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">node</span> <span class="nt">--version</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="node --version
+">Copy</button>
+</div>
+<p>La versión de tu entorno de ejecución Node.js debería imprimirse. Asegúrate de que sea mayor que <code>8.16.0</code>.</p><p>Para instalar Yarn, sigue las instrucciones de instalación en el <a href="https://classic.yarnpkg.com/en/docs/install">sitio web de Yarn</a>. Ejecutar este comando debería imprimir la versión de Yarn:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">yarn</span> <span class="nt">--version</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="yarn --version
+">Copy</button>
+</div>
+<p>Si dice algo como <code>1.22.0</code>, Yarn se ha instalado correctamente.</p><h2 id="elegir-entre-mapas-de-importación-y-un-empaquetador-de-javascript"><a class="anchorlink" href="#elegir-entre-mapas-de-importación-y-un-empaquetador-de-javascript"><span>3</span> Elegir Entre Mapas de Importación y un Empaquetador de JavaScript</a></h2><p>Cuando creas una nueva aplicación Rails, necesitarás elegir entre mapas de importación y una solución de empaquetado de JavaScript. Cada aplicación tiene diferentes requisitos, y deberías considerar tus requisitos cuidadosamente antes de elegir una opción de JavaScript, ya que migrar de una opción a otra puede llevar mucho tiempo para aplicaciones grandes y complejas.</p><p>Los mapas de importación son la opción predeterminada porque el equipo de Rails cree en el potencial de los mapas de importación para reducir la complejidad, mejorar la experiencia del desarrollador y ofrecer ganancias de rendimiento.</p><p>Para muchas aplicaciones, especialmente aquellas que dependen principalmente de la pila <a href="https://hotwired.dev/">Hotwire</a> para sus necesidades de JavaScript, los mapas de importación serán la opción correcta a largo plazo. Puedes leer más sobre el razonamiento detrás de hacer de los mapas de importación el valor predeterminado en Rails 7 <a href="https://world.hey.com/dhh/rails-7-will-have-three-great-answers-to-javascript-in-2021-8d68191b">aquí</a>.</p><p>Otras aplicaciones pueden necesitar aún un empaquetador de JavaScript tradicional. Los requisitos que indican que deberías elegir un empaquetador tradicional incluyen:</p>
+<ul>
+<li>Si tu código requiere un paso de transpilación, como JSX o TypeScript.</li>
+<li>Si necesitas usar bibliotecas de JavaScript que incluyen CSS o de otro modo dependen de <a href="https://webpack.js.org/loaders/">cargadores de Webpack</a>.</li>
+<li>Si estás absolutamente seguro de que necesitas <a href="https://webpack.js.org/guides/tree-shaking/">tree-shaking</a>.</li>
+<li>Si vas a instalar Bootstrap, Bulma, PostCSS, o Dart CSS a través de la gema <a href="https://github.com/rails/cssbundling-rails">cssbundling-rails</a>. Todas las opciones proporcionadas por esta gema excepto Tailwind y Sass instalarán automáticamente <code>esbuild</code> para ti si no especificas una opción diferente en <code>rails new</code>.</li>
+</ul>
+<h2 id="turbo"><a class="anchorlink" href="#turbo"><span>4</span> Turbo</a></h2><p>Ya sea que elijas mapas de importación o un empaquetador tradicional, Rails viene con <a href="https://turbo.hotwired.dev/">Turbo</a> para acelerar tu aplicación mientras reduce drásticamente la cantidad de JavaScript que necesitarás escribir.</p><p>Turbo permite que tu servidor entregue HTML directamente como una alternativa a los marcos de trabajo front-end predominantes que reducen el lado del servidor de tu aplicación Rails a poco más que una API JSON.</p><h3 id="turbo-drive"><a class="anchorlink" href="#turbo-drive"><span>4.1</span> Turbo Drive</a></h3><p><a href="https://turbo.hotwired.dev/handbook/drive">Turbo Drive</a> acelera las cargas de página al evitar desmantelamientos y reconstrucciones de página completa en cada solicitud de navegación. Turbo Drive es una mejora y reemplazo para Turbolinks.</p><h3 id="turbo-frames"><a class="anchorlink" href="#turbo-frames"><span>4.2</span> Turbo Frames</a></h3><p><a href="https://turbo.hotwired.dev/handbook/frames">Turbo Frames</a> permiten que partes predefinidas de una página se actualicen bajo demanda, sin afectar el resto del contenido de la página.</p><p>Puedes usar Turbo Frames para construir edición en el lugar sin ningún JavaScript personalizado, cargar contenido de forma perezosa y crear interfaces con pestañas renderizadas en el servidor con facilidad.</p><p>Rails proporciona ayudantes HTML para simplificar el uso de Turbo Frames a través de la gema <a href="https://github.com/hotwired/turbo-rails">turbo-rails</a>.</p><p>Usando esta gema, puedes agregar un Turbo Frame a tu aplicación con el ayudante <code>turbo_frame_tag</code> así:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">turbo_frame_tag</span> <span class="n">dom_id</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+     <span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="n">post</span><span class="p">.</span><span class="nf">title</span><span class="p">,</span> <span class="n">post_path</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= turbo_frame_tag dom_id(post) do %>
+  <div>
+     <%= link_to post.title, post_path(post) %>
+  </div>
+<% end %>
+">Copy</button>
+</div>
+<h3 id="turbo-streams"><a class="anchorlink" href="#turbo-streams"><span>4.3</span> Turbo Streams</a></h3><p><a href="https://turbo.hotwired.dev/handbook/streams">Turbo Streams</a> entregan cambios de página como fragmentos de HTML envueltos en elementos <code>&lt;turbo-stream&gt;</code> autoejecutables. Turbo Streams te permiten transmitir cambios realizados por otros usuarios a través de WebSockets y actualizar partes de una página después de enviar un formulario sin requerir una carga de página completa.</p><p>Rails proporciona ayudantes HTML y del lado del servidor para simplificar el uso de Turbo Streams a través de la gema <a href="https://github.com/hotwired/turbo-rails">turbo-rails</a>.</p><p>Usando esta gema, puedes renderizar Turbo Streams desde una acción del controlador:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">post_params</span><span class="p">)</span>
+
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="k">if</span> <span class="vi">@post</span><span class="p">.</span><span class="nf">save</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">turbo_stream</span>
+    <span class="k">else</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
+  @post = Post.new(post_params)
+
+  respond_to do |format|
+    if @post.save
+      format.turbo_stream
+    else
+      format.html { render :new, status: :unprocessable_entity }
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Rails buscará automáticamente un archivo de vista <code>.turbo_stream.erb</code> y renderizará esa vista cuando se encuentre.</p><p>Las respuestas de Turbo Stream también pueden renderizarse en línea en la acción del controlador:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">post_params</span><span class="p">)</span>
+
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="k">if</span> <span class="vi">@post</span><span class="p">.</span><span class="nf">save</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">turbo_stream</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">turbo_stream: </span><span class="n">turbo_stream</span><span class="p">.</span><span class="nf">prepend</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">,</span> <span class="ss">partial: </span><span class="s1">'post'</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">else</span>
+      <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">:new</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def create
+  @post = Post.new(post_params)
+
+  respond_to do |format|
+    if @post.save
+      format.turbo_stream { render turbo_stream: turbo_stream.prepend('posts', partial: 'post') }
+    else
+      format.html { render :new, status: :unprocessable_entity }
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Finalmente, los Turbo Streams pueden iniciarse desde un modelo o un trabajo en segundo plano usando ayudantes integrados. Estas transmisiones pueden usarse para actualizar contenido a través de una conexión WebSocket a todos los usuarios, manteniendo el contenido de la página actualizado y dando vida a tu aplicación.</p><p>Para transmitir un Turbo Stream desde un modelo combina un callback de modelo así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">after_create_commit</span> <span class="p">{</span> <span class="n">broadcast_append_to</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Post < ApplicationRecord
+  after_create_commit { broadcast_append_to('posts') }
+end
+">Copy</button>
+</div>
+<p>Con una conexión WebSocket configurada en la página que debería recibir las actualizaciones así:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">turbo_stream_from</span> <span class="s2">"posts"</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= turbo_stream_from &quot;posts&quot; %>
+">Copy</button>
+</div>
+<h2 id="reemplazos-para-la-funcionalidad-de-rails-ujs"><a class="anchorlink" href="#reemplazos-para-la-funcionalidad-de-rails-ujs"><span>5</span> Reemplazos para la Funcionalidad de Rails/UJS</a></h2><p>Rails 6 se envió con una herramienta llamada UJS (JavaScript No Intrusivo). UJS permite a los desarrolladores anular el método de solicitud HTTP de las etiquetas <code>&lt;a&gt;</code>, agregar cuadros de diálogo de confirmación antes de ejecutar una acción y más. UJS era el predeterminado antes de Rails 7, pero ahora se recomienda usar Turbo en su lugar.</p><h3 id="método"><a class="anchorlink" href="#método"><span>5.1</span> Método</a></h3><p>Hacer clic en enlaces siempre resulta en una solicitud HTTP GET. Si tu aplicación es <a href="https://en.wikipedia.org/wiki/Representational_State_Transfer">RESTful</a>, algunos enlaces son de hecho acciones que cambian datos en el servidor, y deberían realizarse con solicitudes no GET. El atributo <code>data-turbo-method</code> permite marcar tales enlaces con un método explícito como "post", "put", o "delete".</p><p>Turbo escaneará las etiquetas <code>&lt;a&gt;</code> en tu aplicación para el atributo de datos <code>turbo-method</code> y usará el método especificado cuando esté presente, anulando la acción GET predeterminada.</p><p>Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Eliminar publicación"</span><span class="p">,</span> <span class="n">post_path</span><span class="p">(</span><span class="n">post</span><span class="p">),</span> <span class="ss">data: </span><span class="p">{</span> <span class="ss">turbo_method: </span><span class="s2">"delete"</span> <span class="p">}</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to &quot;Eliminar publicación&quot;, post_path(post), data: { turbo_method: &quot;delete&quot; } %>
+">Copy</button>
+</div>
+<p>Esto genera:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;a</span> <span class="na">data-turbo-method=</span><span class="s">"delete"</span> <span class="na">href=</span><span class="s">"..."</span><span class="nt">&gt;</span>Eliminar publicación<span class="nt">&lt;/a&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<a data-turbo-method=&quot;delete&quot; href=&quot;...&quot;>Eliminar publicación</a>
+">Copy</button>
+</div>
+<p>Una alternativa a cambiar el método de un enlace con <code>data-turbo-method</code> es usar el ayudante <code>button_to</code> de Rails. Por razones de accesibilidad, los botones y formularios reales son preferibles para cualquier acción no GET.</p><h3 id="confirmaciones"><a class="anchorlink" href="#confirmaciones"><span>5.2</span> Confirmaciones</a></h3><p>Puedes pedir una confirmación adicional al usuario agregando un atributo <code>data-turbo-confirm</code> en enlaces y formularios. Al hacer clic en el enlace o enviar el formulario, se le presentará al usuario un cuadro de diálogo <code>confirm()</code> de JavaScript que contiene el texto del atributo. Si el usuario elige cancelar, la acción no se lleva a cabo.</p><p>Por ejemplo, con el ayudante <code>link_to</code>:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="s2">"Eliminar publicación"</span><span class="p">,</span> <span class="n">post_path</span><span class="p">(</span><span class="n">post</span><span class="p">),</span> <span class="ss">data: </span><span class="p">{</span> <span class="ss">turbo_method: </span><span class="s2">"delete"</span><span class="p">,</span> <span class="ss">turbo_confirm: </span><span class="s2">"¿Estás seguro?"</span> <span class="p">}</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to &quot;Eliminar publicación&quot;, post_path(post), data: { turbo_method: &quot;delete&quot;, turbo_confirm: &quot;¿Estás seguro?&quot; } %>
+">Copy</button>
+</div>
+<p>Lo que genera:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"..."</span> <span class="na">data-turbo-confirm=</span><span class="s">"¿Estás seguro?"</span> <span class="na">data-turbo-method=</span><span class="s">"delete"</span><span class="nt">&gt;</span>Eliminar publicación<span class="nt">&lt;/a&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<a href=&quot;...&quot; data-turbo-confirm=&quot;¿Estás seguro?&quot; data-turbo-method=&quot;delete&quot;>Eliminar publicación</a>
+">Copy</button>
+</div>
+<p>Cuando el usuario hace clic en el enlace "Eliminar publicación", se le presentará un cuadro de diálogo de confirmación "¿Estás seguro?".</p><p>El atributo también puede usarse con el ayudante <code>button_to</code>, sin embargo, debe agregarse al formulario que el ayudante <code>button_to</code> renderiza internamente:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">button_to</span> <span class="s2">"Eliminar publicación"</span><span class="p">,</span> <span class="n">post</span><span class="p">,</span> <span class="ss">method: :delete</span><span class="p">,</span> <span class="ss">form: </span><span class="p">{</span> <span class="ss">data: </span><span class="p">{</span> <span class="ss">turbo_confirm: </span><span class="s2">"¿Estás seguro?"</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= button_to &quot;Eliminar publicación&quot;, post, method: :delete, form: { data: { turbo_confirm: &quot;¿Estás seguro?&quot; } } %>
+">Copy</button>
+</div>
+<h3 id="solicitudes-ajax"><a class="anchorlink" href="#solicitudes-ajax"><span>5.3</span> Solicitudes Ajax</a></h3><p>Al hacer solicitudes no GET desde JavaScript, se requiere el encabezado <code>X-CSRF-Token</code>. Sin este encabezado, las solicitudes no serán aceptadas por Rails.</p><p>NOTA: Este token es requerido por Rails para prevenir ataques de Cross-Site Request Forgery (CSRF). Lee más en la <a href="security.html#cross-site-request-forgery-csrf">guía de seguridad</a>.</p><p><a href="https://github.com/rails/request.js">Rails Request.JS</a> encapsula la lógica de agregar los encabezados de solicitud que son requeridos por Rails. Solo importa la clase <code>FetchRequest</code> del paquete e instánciala pasando el método de solicitud, url, opciones, luego llama a <code>await request.perform()</code> y haz lo que necesites con la respuesta.</p><p>Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="p">{</span> <span class="nx">FetchRequest</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@rails/request.js</span><span class="dl">'</span>
+
+<span class="p">....</span>
+
+<span class="k">async</span> <span class="nf">myMethod </span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">request</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FetchRequest</span><span class="p">(</span><span class="dl">'</span><span class="s1">post</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">localhost:3000/posts</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">({</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Request.JS</span><span class="dl">'</span> <span class="p">})</span>
+  <span class="p">})</span>
+  <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">request</span><span class="p">.</span><span class="nf">perform</span><span class="p">()</span>
+  <span class="k">if </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">response</span><span class="p">.</span><span class="nx">text</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import { FetchRequest } from '@rails/request.js'
+
+....
+
+async myMethod () {
+  const request = new FetchRequest('post', 'localhost:3000/posts', {
+    body: JSON.stringify({ name: 'Request.JS' })
+  })
+  const response = await request.perform()
+  if (response.ok) {
+    const body = await response.text
+  }
+}
+">Copy</button>
+</div>
+<p>Cuando uses otra biblioteca para hacer llamadas Ajax, es necesario agregar el token de seguridad como un encabezado predeterminado tú mismo. Para obtener el token, echa un vistazo a la etiqueta <code>&lt;meta name='csrf-token' content='EL-TOKEN'&gt;</code> impresa por <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/CsrfHelper.html#method-i-csrf_meta_tags"><code>csrf_meta_tags</code></a> en la vista de tu aplicación. Podrías hacer algo como:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="nb">document</span><span class="p">.</span><span class="nx">head</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">meta[name=csrf-token]</span><span class="dl">"</span><span class="p">)?.</span><span class="nx">content</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="document.head.querySelector(&quot;meta[name=csrf-token]&quot;)?.content
+">Copy</button>
+</div>
+
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

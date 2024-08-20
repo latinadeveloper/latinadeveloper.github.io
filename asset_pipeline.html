@@ -1,840 +1,568 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html dir="ltr" lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Constantes de Autocarga y Recarga (modo clásico) — Ruby on Rails Guides</title>
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/default.css" data-turbolinks-track="reload">
-  <link rel="stylesheet" type="text/css" href="stylesheets/prism/rails-guides.css" data-turbolinks-track="reload">
-  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-  <script src="javascripts/prism.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/turbolinks.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/guides.js" data-turbolinks-track="reload"></script>
-  <script src="javascripts/responsive-tables.js" data-turbolinks-track="reload"></script>
-  <meta property="og:title" content="Constantes de Autocarga y Recarga (modo clásico) — Ruby on Rails Guides" />
-  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo clásico)Esta guía cubre la canalización de activos.Después de leer esta guía, sabrá: Qué es la tubería de activos y para qué sirve. Cómo organizar correctamente los activos de su aplicación. Los beneficios de la cartera de activos. Cómo agregar un preprocesador a la tubería. Cómo empaquetar activos con una gema." />
-  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://railsguides.es/Constantes de Autocarga y Recarga (modo clásico)Esta guía cubre la canalización de activos.Después de leer esta guía, sabrá: Qué es la tubería de activos y para qué sirve. Cómo organizar correctamente los activos de su aplicación. Los beneficios de la cartera de activos. Cómo agregar un preprocesador a la tubería. Cómo empaquetar activos con una gema." />
+  <title>El Pipeline de Activos — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="El Pipeline de Activos — Ruby on Rails Guides" />
+  <meta name="description" content="El Pipeline de ActivosEsta guía cubre el pipeline de activos.Después de leer esta guía, sabrás: Qué es el pipeline de activos y qué hace. Cómo organizar adecuadamente los activos de tu aplicación. Los beneficios del pipeline de activos. Cómo agregar un preprocesador al pipeline. Cómo empaquetar activos con una gema." />
+  <meta property="og:description" content="El Pipeline de ActivosEsta guía cubre el pipeline de activos.Después de leer esta guía, sabrás: Qué es el pipeline de activos y qué hace. Cómo organizar adecuadamente los activos de tu aplicación. Los beneficios del pipeline de activos. Cómo agregar un preprocesador al pipeline. Cómo empaquetar activos con una gema." />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Ruby on Rails Guides" />
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
   <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
 </head>
+
 <body class="guide">
-  <div>
-<!--    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />-->
-  </div>
-  <div id="topNav">
+  <nav id="topNav" aria-label="Secondary">
     <div class="wrapper">
       <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
       <span class="red-button more-info-button">
         Más Ruby on Rails
       </span>
       <ul class="more-info-links s-hidden">
-        <li class="more-info"><a href="https://weblog.rubyonrails.org/">Blog</a></li>
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
         <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
         <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
-        <li class="more-info"><a href="https://stackoverflow.com/questions/tagged/ruby-on-rails">Pedir Ayuda</a></li>
-        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir on GitHub</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
       </ul>
     </div>
-  </div>
-  <div id="header">
+  </nav>
+  <header id="page_header">
     <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Guías de Ruby on Rails">Guías de Ruby on Rails </a></h1>
-      <ul class="nav">
-        <li><a class="nav-item" href="index.html">Inicio</a></li>
-        <li class="guides-index guides-index-large">
-          <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Index de Guías </a>
-          <div id="guides" class="clearfix" style="display: none;">
-            <hr />
-            <dl class="guides-section-container">
-                <div class="guides-section">
-                  <dt>Empieza Aqui</dt>
-                  <dd><a href="getting_started.html">Introducción a Rails</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Modelos</dt>
-                  <dd><a href="active_record_basics.html">Conceptos básicos de Active Record</a></dd>
-                  <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
-                  <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
-                  <dd><a href="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</a></dd>
-                  <dd><a href="association_basics.html">Asociaciones de Active Record</a></dd>
-                  <dd><a href="active_record_querying.html">Interfaz de Consulta de Active Record</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Vistas</dt>
-                  <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
-                  <dd><a href="form_helpers.html">Ayudantes de Formulario de Action</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Controladores</dt>
-                  <dd><a href="action_controller_overview.html">Descripción General de Action Controller</a></dd>
-                  <dd><a href="routing.html">Rails Routing Desde el Exterior Hacia Adentro</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Otros Componentes</dt>
-                  <dd><a href="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</a></dd>
-                  <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
-                  <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
-                  <dd><a href="active_storage_overview.html">Descripción General de Active Storage</a></dd>
-                  <dd><a href="action_cable_overview.html">Descripción General de Action Cable</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Temas Avanzados</dt>
-                  <dd><a href="i18n.html">Rails API de Internacionalización (I18n)</a></dd>
-                  <dd><a href="testing.html">Prueba de Aplicaciones de Rails</a></dd>
-                  <dd><a href="security.html">Seguridad de Aplicaciones Rails</a></dd>
-                  <dd><a href="debugging_rails_applications.html">Depuración de Applications Rails</a></dd>
-                  <dd><a href="configuring.html">Configuración de Aplicaciones de Rails</a></dd>
-                  <dd><a href="command_line.html">La Línea de Comandos de Rails</a></dd>
-                  <dd><a href="asset_pipeline.html">La Canalización de Activos</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</a></dd>
-                  <dd><a href="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</a></dd>
-                  <dd><a href="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</a></dd>
-                  <dd><a href="api_app.html">Uso de Rails para Aplicaciones Solo API</a></dd>
-                </div>
-                <div class="guides-section">
-                  <dt>Extending Rails  (toda la sección necesita traducción)</dt>
-                  <dd><a href="rails_on_rack.html">Rails on Rack</a></dd>
-                  <dd><a href="generators.html">Creating and Customizing Rails Generators &amp; Templates</a></dd>
-                </div>
-            </dl>
-          </div>
-        </li>
-        <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
-        <li class="guides-index guides-index-small">
-          <select class="guides-index-item nav-item">
-            <option value="index.html">Guides Index</option>
-              <optgroup label="Empieza Aqui">
-                  <option value="getting_started.html">Introducción a Rails</option>
-              </optgroup>
-              <optgroup label="Modelos">
-                  <option value="active_record_basics.html">Conceptos básicos de Active Record</option>
-                  <option value="active_record_migrations.html">Migraciones de Active Record</option>
-                  <option value="active_record_validations.html">Validaciones de Active Record</option>
-                  <option value="active_record_callbacks.html">Devolución (callbacks) de Llamadas de Active Record</option>
-                  <option value="association_basics.html">Asociaciones de Active Record</option>
-                  <option value="active_record_querying.html">Interfaz de Consulta de Active Record</option>
-              </optgroup>
-              <optgroup label="Vistas">
-                  <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
-                  <option value="form_helpers.html">Ayudantes de Formulario de Action</option>
-              </optgroup>
-              <optgroup label="Controladores">
-                  <option value="action_controller_overview.html">Descripción General de Action Controller</option>
-                  <option value="routing.html">Rails Routing Desde el Exterior Hacia Adentro</option>
-              </optgroup>
-              <optgroup label="Otros Componentes">
-                  <option value="active_support_core_extensions.html">Extensiones de Núcleo de Active Support</option>
-                  <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
-                  <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
-                  <option value="active_storage_overview.html">Descripción General de Active Storage</option>
-                  <option value="action_cable_overview.html">Descripción General de Action Cable</option>
-              </optgroup>
-              <optgroup label="Temas Avanzados">
-                  <option value="i18n.html">Rails API de Internacionalización (I18n)</option>
-                  <option value="testing.html">Prueba de Aplicaciones de Rails</option>
-                  <option value="security.html">Seguridad de Aplicaciones Rails</option>
-                  <option value="debugging_rails_applications.html">Depuración de Applications Rails</option>
-                  <option value="configuring.html">Configuración de Aplicaciones de Rails</option>
-                  <option value="command_line.html">La Línea de Comandos de Rails</option>
-                  <option value="asset_pipeline.html">La Canalización de Activos</option>
-                  <option value="autoloading_and_reloading_constants.html">Constantes de Autocarga y Recarga (Zeitwerk Mode)</option>
-                  <option value="autoloading_and_reloading_constants_classic_mode.html">Constantes de Autocarga y Recarga (modo clásico)</option>
-                  <option value="caching_with_rails.html">Almacenamiento en Caché con Rails Descripción General</option>
-                  <option value="api_app.html">Uso de Rails para Aplicaciones Solo API</option>
-              </optgroup>
-              <optgroup label="Extending Rails  (toda la sección necesita traducción)">
-                  <option value="rails_on_rack.html">Rails on Rack</option>
-                  <option value="generators.html">Creating and Customizing Rails Generators &amp; Templates</option>
-              </optgroup>
-          </select>
-        </li>
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
       </ul>
+      </nav>
     </div>
-  </div>
+  </header>
   <hr class="hide" />
 
-  <div id="feature">
+  <section id="feature">
     <div class="wrapper">
-      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://railsguides.es/">https://railsguides.es/</a></strong></p><h2>Constantes de Autocarga y Recarga (modo clásico)</h2><p>Esta guía cubre la canalización de activos.</p><p>Después de leer esta guía, sabrá:</p>
+      <h1>El Pipeline de Activos</h1><p>Esta guía cubre el pipeline de activos.</p><p>Después de leer esta guía, sabrás:</p>
 <ul>
-<li>Qué es la tubería de activos y para qué sirve.</li>
-<li>Cómo organizar correctamente los activos de su aplicación.</li>
-<li>Los beneficios de la cartera de activos.</li>
-<li>Cómo agregar un preprocesador a la tubería.</li>
+<li>Qué es el pipeline de activos y qué hace.</li>
+<li>Cómo organizar adecuadamente los activos de tu aplicación.</li>
+<li>Los beneficios del pipeline de activos.</li>
+<li>Cómo agregar un preprocesador al pipeline.</li>
 <li>Cómo empaquetar activos con una gema.</li>
 </ul>
 
 
-                <div id="subCol">
-            <h3 class="chapter"><img src="images/chapters_icon.gif" alt="" />Chapters</h3>
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
             <ol class="chapters">
-<li>
-<a href="#what-is-the-asset-pipeline-questionmark">What is the Asset Pipeline?</a>
+<li><a href="#¿qué-es-el-pipeline-de-activos-questionmark">¿Qué es el Pipeline de Activos?</a></li>
+<li><a href="#características-principales">Características Principales</a>
 
 <ul>
-<li><a href="#main-features">Main Features</a></li>
-<li><a href="#what-is-fingerprinting-and-why-should-i-care-questionmark">What is Fingerprinting and Why Should I Care?</a></li>
-</ul>
-</li>
-<li>
-<a href="#how-to-use-the-asset-pipeline">How to Use the Asset Pipeline</a>
+<li><a href="#¿qué-es-la-huella-digital-y-por-qué-debería-importarme-questionmark">¿Qué es la Huella Digital y Por Qué Debería Importarme?</a></li>
+<li><a href="#¿qué-son-los-import-maps-y-por-qué-debería-importarme-questionmark">¿Qué son los Import Maps y Por Qué Debería Importarme?</a></li>
+</ul></li>
+<li><a href="#cómo-usar-import-maps-como-pipeline-de-activos-de-javascript">Cómo usar Import Maps como Pipeline de Activos de JavaScript</a>
 
 <ul>
-<li><a href="#controller-specific-assets">Controller Specific Assets</a></li>
-<li><a href="#asset-organization">Asset Organization</a></li>
-<li><a href="#coding-links-to-assets">Coding Links to Assets</a></li>
-<li><a href="#manifest-files-and-directives">Manifest Files and Directives</a></li>
-<li><a href="#preprocessing">Preprocessing</a></li>
-</ul>
-</li>
-<li>
-<a href="#in-development">In Development</a>
+<li><a href="#cómo-funciona">Cómo funciona</a></li>
+<li><a href="#uso">Uso</a></li>
+<li><a href="#usar-paquetes-npm-a-través-de-cdns-de-javascript">Usar paquetes npm a través de CDNs de JavaScript</a></li>
+<li><a href="#pre-carga-de-módulos-fijados">Pre-carga de módulos fijados</a></li>
+</ul></li>
+<li><a href="#cómo-usar-sprockets">Cómo Usar Sprockets</a>
 
 <ul>
-<li><a href="#raise-an-error-when-an-asset-is-not-found">Raise an Error When an Asset is Not Found</a></li>
-<li><a href="#turning-digests-off">Turning Digests Off</a></li>
-<li><a href="#turning-debugging-off">Turning Debugging Off</a></li>
-</ul>
-</li>
-<li>
-<a href="#in-production">In Production</a>
+<li><a href="#archivos-de-manifiesto-y-directivas">Archivos de Manifiesto y Directivas</a></li>
+<li><a href="#activos-específicos-del-controlador">Activos Específicos del Controlador</a></li>
+<li><a href="#organización-de-activos">Organización de Activos</a></li>
+<li><a href="#codificación-de-enlaces-a-activos">Codificación de Enlaces a Activos</a></li>
+<li><a href="#generar-un-error-cuando-un-activo-no-se-encuentra">Generar un Error Cuando un Activo No se Encuentra</a></li>
+<li><a href="#desactivar-huellas-digitales">Desactivar Huellas Digitales</a></li>
+<li><a href="#activar-mapas-de-fuentes">Activar Mapas de Fuentes</a></li>
+</ul></li>
+<li><a href="#en-producción">En Producción</a>
 
 <ul>
-<li><a href="#precompiling-assets">Precompiling Assets</a></li>
-<li><a href="#local-precompilation">Local Precompilation</a></li>
-<li><a href="#live-compilation">Live Compilation</a></li>
+<li><a href="#precompilación-de-activos">Precompilación de Activos</a></li>
+<li><a href="#precompilación-local">Precompilación Local</a></li>
+<li><a href="#compilación-en-vivo">Compilación en Vivo</a></li>
 <li><a href="#cdns">CDNs</a></li>
-</ul>
-</li>
-<li>
-<a href="#customizing-the-pipeline">Customizing the Pipeline</a>
+</ul></li>
+<li><a href="#personalizando-el-pipeline">Personalizando el Pipeline</a>
 
 <ul>
-<li><a href="#css-compression">CSS Compression</a></li>
-<li><a href="#javascript-compression">JavaScript Compression</a></li>
-<li><a href="#gzipping-your-assets">GZipping your assets</a></li>
-<li><a href="#using-your-own-compressor">Using Your Own Compressor</a></li>
-<li><a href="#changing-the-assets-path">Changing the <em>assets</em> Path</a></li>
-<li><a href="#x-sendfile-headers">X-Sendfile Headers</a></li>
-</ul>
-</li>
-<li><a href="#assets-cache-store">Assets Cache Store</a></li>
-<li><a href="#adding-assets-to-your-gems">Adding Assets to Your Gems</a></li>
-<li><a href="#making-your-library-or-gem-a-pre-processor">Making Your Library or Gem a Pre-Processor</a></li>
+<li><a href="#compresión-de-css">Compresión de CSS</a></li>
+<li><a href="#compresión-de-javascript">Compresión de JavaScript</a></li>
+<li><a href="#comprimir-tus-activos-con-gzip">Comprimir tus activos con GZIP</a></li>
+<li><a href="#usar-tu-propio-compresor">Usar tu Propio Compresor</a></li>
+<li><a href="#cambiar-la-ruta-de-assets">Cambiar la Ruta de <em>assets</em></a></li>
+<li><a href="#encabezados-x-sendfile">Encabezados X-Sendfile</a></li>
+</ul></li>
+<li><a href="#almacenamiento-en-caché-de-activos">Almacenamiento en Caché de Activos</a></li>
+<li><a href="#agregar-activos-a-tus-gemas">Agregar Activos a tus Gemas</a></li>
+<li><a href="#hacer-que-tu-biblioteca-o-gema-sea-un-preprocesador">Hacer que tu Biblioteca o Gema sea un Preprocesador</a></li>
+<li><a href="#bibliotecas-alternativas">Bibliotecas Alternativas</a>
+
+<ul>
+<li><a href="#jsbundling-rails">jsbundling-rails</a></li>
+<li><a href="#webpacker-shakapacker">Webpacker/Shakapacker</a></li>
+<li><a href="#cssbundling-rails">cssbundling-rails</a></li>
+<li><a href="#dartsass-rails">dartsass-rails</a></li>
+<li><a href="#tailwindcss-rails">tailwindcss-rails</a></li>
+</ul></li>
 </ol>
 
-          </div>
+          </nav>
 
+
+      <hr>
     </div>
-  </div>
+  </section>
 
-  <div id="container">
+  <main id="container">
     <div class="wrapper">
       <div id="mainCol">
-        <h3 id="what-is-the-asset-pipeline-questionmark"><a class="anchorlink" href="#what-is-the-asset-pipeline-questionmark">1 What is the Asset Pipeline?</a></h3><p>La canalización de activos proporciona un marco para concatenar y minificar o comprimir
-Activos de JavaScript y CSS. También agrega la capacidad de escribir estos activos en
-otros lenguajes y preprocesadores como CoffeeScript, Sass y ERB.
-Permite que los activos de su aplicación se combinen automáticamente con los activos.
-de otras gemas.</p><p>La canalización de activos es implementada por la gema
-<a href="https://github.com/rails/sprockets-rails">sprockets-rails</a>
-y está habilitado de forma predeterminada. Puede deshabilitarlo mientras crea una nueva aplicación al
-pasando la opción <code>--skip-sprockets</code>.</p><div class="code_container">
-<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new appname <span class="nt">--skip-sprockets</span>
+        <h2 id="¿qué-es-el-pipeline-de-activos-questionmark"><a class="anchorlink" href="#¿qué-es-el-pipeline-de-activos-questionmark"><span>1</span> ¿Qué es el Pipeline de Activos?</a></h2><p>El pipeline de activos proporciona un marco para manejar la entrega de activos JavaScript y CSS. Esto se hace aprovechando tecnologías como HTTP/2 y técnicas como concatenación y minificación. Finalmente, permite que tu aplicación se combine automáticamente con activos de otras gemas.</p><p>El pipeline de activos está implementado por las gemas <a href="https://github.com/rails/importmap-rails">importmap-rails</a>, <a href="https://github.com/rails/sprockets">sprockets</a> y <a href="https://github.com/rails/sprockets-rails">sprockets-rails</a>, y está habilitado por defecto. Puedes desactivarlo al crear una nueva aplicación pasando la opción <code>--skip-asset-pipeline</code>.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">rails </span>new appname <span class="nt">--skip-asset-pipeline</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="rails new appname --skip-sprockets
+<button class="clipboard-button" data-clipboard-text="rails new appname --skip-asset-pipeline
 ">Copy</button>
 </div>
-<p>Rails agrega automáticamente los <a href="https://github.com/rails/sass-rails"><code>sass-rails</code></a>
-gem a su <code>Gemfile</code>, que es utilizado por Sprockets para
-Recopilación de <a href="https://sass-lang.com">Sass</a>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">gem</span> <span class="s1">'sass-rails'</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="gem 'sass-rails'
-">Copy</button>
-</div>
-<p>El uso de la opción <code>--skip-sprockets</code> evitará que Rails agregue
-esta gema, por lo que si luego desea habilitar la canalización de activos
-tendrá que agregarlo a su <code>Gemfile</code> manualmente. También,
-crear una aplicación con la opción <code>--skip-sprockets</code> generará
-un archivo <code>config/application.rb</code> ligeramente diferente, con una declaración (require)
-para los Sprockets railtie que se comenta. Tendrás que eliminar
-el operador de comentarios en esa línea para luego habilitar la canalización de activos:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># require "sprockets/railtie"</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='# require "sprockets/railtie"
-'>Copy</button>
-</div>
-<p>Para establecer métodos de compresión de activos, establezca las opciones de configuración adecuadas
-en <code>production.rb</code> - <code>config.assets.css_compressor</code> para su CSS y
-<code>config.assets.js_compressor</code> para su JavaScript:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">css_compressor</span> <span class="o">=</span> <span class="ss">:yui</span>
-<span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">js_compressor</span> <span class="o">=</span> <span class="ss">:uglifier</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="config.assets.css_compressor = :yui
-config.assets.js_compressor = :uglifier
-">Copy</button>
-</div>
-<div class="note"><p>La gema <code>sass-rails</code> se usa automáticamente para la compresión CSS si está incluida
-en el <code>Gemfile</code> y no se establece la opción <code>config.assets.css_compressor</code>.</p></div><h4 id="main-features"><a class="anchorlink" href="#main-features">1.1 Main Features</a></h4><p>La primera característica de la tubería es concatenar activos, lo que puede reducir la
-número de solicitudes que realiza un navegador para representar una página web. Los navegadores web son
-limitado en el número de solicitudes que pueden realizar en paralelo, por lo que menos
-las solicitudes pueden significar una carga más rápida para su aplicación.</p><p>Sprockets concatena todos los archivos JavaScript en un archivo maestro <code>.js</code> y todos
-Archivos CSS en un archivo maestro <code>.css</code>. Como aprenderá más adelante en esta guía,
-Puede personalizar esta estrategia para agrupar archivos de la forma que desee. En producción,
-Rails inserta una huella digital SHA256 en cada nombre de archivo para que el archivo sea
-almacenado en caché por el navegador web. Puede invalidar la caché modificando esto
-huella digital, que ocurre automáticamente cada vez que cambia el contenido del archivo.</p><p>La segunda característica de la cartera de activos es la minificación o compresión de activos.
-Para los archivos CSS, esto se hace eliminando los espacios en blanco y los comentarios. Para JavaScript,
-Se pueden aplicar procesos más complejos. Puede elegir entre un conjunto de
-opciones o especifique las suyas propias.</p><p>La tercera característica de la canalización de activos es que permite codificar activos a través de un
-lenguaje de nivel superior, con precompilación hasta los activos reales. Soportado
-Los lenguajes incluyen Sass para CSS, CoffeeScript para JavaScript y ERB para ambos por
-defecto.</p><h4 id="what-is-fingerprinting-and-why-should-i-care-questionmark"><a class="anchorlink" href="#what-is-fingerprinting-and-why-should-i-care-questionmark">1.2 What is Fingerprinting and Why Should I Care?</a></h4><p>La toma de huellas dactilares es una técnica que hace que el nombre de un archivo dependa de la
-contenido del archivo. Cuando cambia el contenido del archivo, el nombre del archivo también se
-cambiado. Para el contenido que es estático o que se cambia con poca frecuencia, esto proporciona una
-una forma sencilla de saber si dos versiones de un archivo son idénticas, incluso en
-diferentes servidores o fechas de implementación.</p><p>Cuando un nombre de archivo es único y se basa en su contenido, los encabezados HTTP se pueden configurar como
-Fomentar las cachés en todas partes (ya sea en CDN, ISP, en equipos de red,
-o en navegadores web) para mantener su propia copia del contenido. Cuando el contenido es
-actualizado, la huella dactilar cambiará. Esto hará que los clientes remotos
-solicitar una nueva copia del contenido. Esto se conoce generalmente como <em>cache busting</em>.</p><p>La técnica que utiliza Sprockets para la toma de huellas dactilares es insertar un hash del
-contenido en el nombre, generalmente al final. Por ejemplo, un archivo CSS <code>global.css</code></p><div class="code_container">
+<p>NOTA: Esta guía se centra en el pipeline de activos predeterminado utilizando solo <code>sprockets</code> para CSS y <code>importmap-rails</code> para el procesamiento de JavaScript. La principal limitación de estos dos es que no hay soporte para transpilar, por lo que no puedes usar cosas como Babel, TypeScript, formato React JSX o Tailwind CSS. Te animamos a leer la <a href="#alternative-libraries">sección de Bibliotecas Alternativas</a> si necesitas transpilar tu JavaScript/CSS.</p><h2 id="características-principales"><a class="anchorlink" href="#características-principales"><span>2</span> Características Principales</a></h2><p>La primera característica del pipeline de activos es insertar una huella digital SHA256 en cada nombre de archivo para que el archivo sea cacheado por el navegador web y el CDN. Esta huella digital se actualiza automáticamente cuando cambias el contenido del archivo, lo que invalida el caché.</p><p>La segunda característica del pipeline de activos es usar <a href="https://github.com/WICG/import-maps">import maps</a> al servir archivos JavaScript. Esto te permite construir aplicaciones modernas utilizando bibliotecas JavaScript hechas para módulos ES (ESM) sin la necesidad de transpilar y empaquetar. A su vez, <strong>esto elimina la necesidad de Webpack, yarn, node o cualquier otra parte de la cadena de herramientas JavaScript</strong>.</p><p>La tercera característica del pipeline de activos es concatenar todos los archivos CSS en un archivo principal <code>.css</code>, que luego se minifica o comprime. Como aprenderás más adelante en esta guía, puedes personalizar esta estrategia para agrupar archivos de la manera que desees. En producción, Rails inserta una huella digital SHA256 en cada nombre de archivo para que el archivo sea cacheado por el navegador web. Puedes invalidar el caché alterando esta huella digital, lo que ocurre automáticamente cada vez que cambias el contenido del archivo.</p><p>La cuarta característica del pipeline de activos es que permite codificar activos a través de un lenguaje de nivel superior para CSS.</p><h3 id="¿qué-es-la-huella-digital-y-por-qué-debería-importarme-questionmark"><a class="anchorlink" href="#¿qué-es-la-huella-digital-y-por-qué-debería-importarme-questionmark"><span>2.1</span> ¿Qué es la Huella Digital y Por Qué Debería Importarme?</a></h3><p>La huella digital es una técnica que hace que el nombre de un archivo dependa del contenido del archivo. Cuando el contenido del archivo cambia, el nombre del archivo también cambia. Para contenido estático o que cambia con poca frecuencia, esto proporciona una manera fácil de saber si dos versiones de un archivo son idénticas, incluso a través de diferentes servidores o fechas de implementación.</p><p>Cuando un nombre de archivo es único y se basa en su contenido, se pueden establecer encabezados HTTP para alentar a los cachés en todas partes (ya sea en CDNs, ISPs, equipos de red o en navegadores web) a mantener su propia copia del contenido. Cuando el contenido se actualiza, la huella digital cambiará. Esto hará que los clientes remotos soliciten una nueva copia del contenido. Esto se conoce generalmente como <em>cache busting</em>.</p><p>La técnica que Sprockets utiliza para la huella digital es insertar un hash del contenido en el nombre, generalmente al final. Por ejemplo, un archivo CSS <code>global.css</code></p><div class="interstitial code">
 <pre><code class="highlight plaintext">global-908e25f4bf641868d8683022a5b62f54.css
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="global-908e25f4bf641868d8683022a5b62f54.css
 ">Copy</button>
 </div>
-<p>Esta es la estrategia adoptada por la cartera de activos de Rails.</p><p>La antigua estrategia de Rails era agregar una cadena de consulta basada en fecha a cada activo vinculado
-con un ayudante incorporado. En la fuente, el código generado se ve así:</p><div class="code_container">
-<pre><code class="highlight plaintext">/stylesheets/global.css?1309495796
+<p>Esta es la estrategia adoptada por el pipeline de activos de Rails.</p><p>La huella digital está habilitada por defecto tanto para los entornos de desarrollo como de producción. Puedes habilitarla o deshabilitarla en tu configuración a través de la opción <a href="configuring.html#config-assets-digest"><code>config.assets.digest</code></a>.</p><h3 id="¿qué-son-los-import-maps-y-por-qué-debería-importarme-questionmark"><a class="anchorlink" href="#¿qué-son-los-import-maps-y-por-qué-debería-importarme-questionmark"><span>2.2</span> ¿Qué son los Import Maps y Por Qué Debería Importarme?</a></h3><p>Los import maps te permiten importar módulos JavaScript utilizando nombres lógicos que se mapean a archivos versionados/digeridos, directamente desde el navegador. Así puedes construir aplicaciones JavaScript modernas utilizando bibliotecas JavaScript hechas para módulos ES (ESM) sin la necesidad de transpilar o empaquetar.</p><p>Con este enfoque, enviarás muchos archivos JavaScript pequeños en lugar de un archivo JavaScript grande. Gracias a HTTP/2, eso ya no conlleva una penalización de rendimiento material durante el transporte inicial, y de hecho ofrece beneficios sustanciales a largo plazo debido a mejores dinámicas de caché.</p><h2 id="cómo-usar-import-maps-como-pipeline-de-activos-de-javascript"><a class="anchorlink" href="#cómo-usar-import-maps-como-pipeline-de-activos-de-javascript"><span>3</span> Cómo usar Import Maps como Pipeline de Activos de JavaScript</a></h2><p>Los Import Maps son el procesador JavaScript predeterminado, la lógica de generación de import maps es manejada por la gema <a href="https://github.com/rails/importmap-rails"><code>importmap-rails</code></a>.</p><p>ADVERTENCIA: Los import maps se utilizan solo para archivos JavaScript y no se pueden usar para la entrega de CSS. Consulta la <a href="#how-to-use-sprockets">sección de Sprockets</a> para aprender sobre CSS.</p><p>Puedes encontrar instrucciones detalladas de uso en la página de inicio de la gema, pero es importante entender los conceptos básicos de <code>importmap-rails</code>.</p><h3 id="cómo-funciona"><a class="anchorlink" href="#cómo-funciona"><span>3.1</span> Cómo funciona</a></h3><p>Los import maps son esencialmente una sustitución de cadenas para lo que se conoce como "especificadores de módulo descalzos". Te permiten estandarizar los nombres de las importaciones de módulos JavaScript.</p><p>Toma por ejemplo tal definición de importación, no funcionará sin un import map:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="/stylesheets/global.css?1309495796
+<button class="clipboard-button" data-clipboard-text="import React from &quot;react&quot;
 ">Copy</button>
 </div>
-<p>La estrategia de la cadena de consulta tiene varias desventajas:</p>
-<ol>
-<li>
-<p>** No todos los cachés almacenarán en caché de manera confiable el contenido donde el nombre del archivo solo difiere por
-parámetros de consulta **</p>
-<p><a href="https://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/">Steve Souders recomienda</a>,
-"...avoiding a querystring for cacheable resources". Encontró que en este
-caso 5-20% de las solicitudes no se almacenarán en caché. Las cadenas de consulta en particular no
-funciona en absoluto con algunas CDN para la invalidación de caché.</p>
-</li>
-<li>
-<p><strong>El nombre del archivo puede cambiar entre nodos en entornos de varios servidores.</strong></p>
-<p>La cadena de consulta predeterminada en Rails 2.x se basa en la hora de modificación de
-Los archivos. Cuando los activos se implementan en un clúster, no hay garantía de que
-Las marcas de tiempo serán las mismas, lo que resultará en el uso de diferentes valores dependiendo
-en qué servidor maneja la solicitud.</p>
-</li>
-<li>
-<p><strong>Demasiada invalidación de caché</strong></p>
-<p>Cuando se implementan activos estáticos con cada nueva versión de código, el mtime
-(hora de la última modificación) de <em>todos</em> estos archivos cambia, lo que obliga a
-clientes para recuperarlos de nuevo, incluso cuando el contenido de esos activos no haya cambiado.</p>
-</li>
-</ol>
-<p>La toma de huellas dactilares soluciona estos problemas al evitar las cadenas de consulta y al garantizar
-que los nombres de los archivos sean coherentes en función de su contenido.</p><p>La toma de huellas dactilares está habilitada de forma predeterminada tanto para el desarrollo como para la producción
-Ambientes. Puede habilitarlo o deshabilitarlo en su configuración a través del
-Opción <code>config.assets.digest</code>.</p><p>Más lectura:</p>
+<p>Tendrías que definirlo así para que funcione:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">https://ga.jspm.io/npm:react@17.0.2/index.js</span><span class="dl">"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="import React from &quot;https://ga.jspm.io/npm:react@17.0.2/index.js&quot;
+">Copy</button>
+</div>
+<p>Aquí es donde entra el import map, definimos el nombre <code>react</code> para que esté fijado en la dirección <code>https://ga.jspm.io/npm:react@17.0.2/index.js</code>. Con tal información, nuestro navegador acepta la definición simplificada <code>import React from "react"</code>. Piensa en el import map como un alias para la dirección fuente de la biblioteca.</p><h3 id="uso"><a class="anchorlink" href="#uso"><span>3.2</span> Uso</a></h3><p>Con <code>importmap-rails</code> creas el archivo de configuración del import map fijando la ruta de la biblioteca a un nombre:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/importmap.rb</span>
+<span class="n">pin</span> <span class="s2">"application"</span>
+<span class="n">pin</span> <span class="s2">"react"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"https://ga.jspm.io/npm:react@17.0.2/index.js"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="pin &quot;application&quot;
+pin &quot;react&quot;, to: &quot;https://ga.jspm.io/npm:react@17.0.2/index.js&quot;
+">Copy</button>
+</div>
+<p>Todos los import maps configurados deben adjuntarse en el elemento <code>&lt;head&gt;</code> de tu aplicación agregando <code>&lt;%= javascript_importmap_tags %&gt;</code>. El <code>javascript_importmap_tags</code> genera un montón de scripts en el elemento <code>head</code>:</p>
 <ul>
-<li><a href="https://developers.google.com/speed/docs/insights/LeverageBrowserCaching">Optimize caching</a></li>
-<li><a href="http://www.stevesouders.com/blog/2008/08/23/revving-filenames-dont-use-querystring/">Revving Filenames: don't use querystring</a></li>
+<li>JSON con todos los import maps configurados:</li>
 </ul>
-<h3 id="how-to-use-the-asset-pipeline"><a class="anchorlink" href="#how-to-use-the-asset-pipeline">2 How to Use the Asset Pipeline</a></h3><p>En versiones anteriores de Rails, todos los activos se ubicaban en subdirectorios de
-<code>public</code> como <code>images</code>, <code>javascripts</code> y <code>stylesheets</code>. Con el activo
-pipeline, la ubicación preferida para estos activos es ahora la <code>app/assets</code>
-directorio. Los archivos de este directorio son servidos por el middleware Sprockets.</p><p>Los activos todavía se pueden colocar en la jerarquía "pública". Cualquier activo bajo "público"
-serán servidos como archivos estáticos por la aplicación o el servidor web cuando
-<code>config.public_file_server.enabled</code> se establece en verdadero. Deberías usar <code>app/assets</code> para
-archivos que deben someterse a un procesamiento previo antes de ser entregados.</p><p>En producción, Rails precompila estos archivos en <code>public/assets</code> de forma predeterminada. los
-Las copias precompiladas son luego servidas como activos estáticos por el servidor web. Los archivos
-en <code>app/assets</code> nunca se sirven directamente en producción.</p><h4 id="controller-specific-assets"><a class="anchorlink" href="#controller-specific-assets">2.1 Controller Specific Assets</a></h4><p>Cuando genera un andamio o un controlador, Rails también genera un
-Archivo de hoja de estilo en cascada (o archivo SCSS si <code>sass-rails</code> está en el<code>Gemfile</code>)
-para ese controlador. Además, al generar un andamio, Rails genera
-el archivo <code>scaffolds.css</code> (o<code>scaffolds.scss</code> si <code>sass-rails</code> está en el
-<code>Gemfile</code>.)</p><p>Por ejemplo, si genera un <code>ProjectsController</code>, Rails también agregará un nuevo
-archivo en <code>app/assets/stylesheets/projects.scss</code>. Por defecto, estos archivos serán
-listo para ser usado por su aplicación inmediatamente usando la directiva <code>require_tree</code>. Ver
-<a href="#manifest-files-and-directives">Manifest Files and Directives</a> para obtener más detalles.
-en require_tree.</p><p>También puede optar por incluir hojas de estilo específicas del controlador y archivos JavaScript
-solo en sus respectivos controladores utilizando lo siguiente:</p><p><code>&lt;%= javascript_include_tag params[:controller] %&gt;</code> or <code>&lt;%= stylesheet_link_tag
-params[:controller] %&gt;</code></p><p>Al hacer esto, asegúrese de no utilizar la directiva <code>require_tree</code>, ya que
-resultará en que sus activos se incluyan más de una vez.</p><p>ADVERTENCIA: cuando utilice la precompilación de activos, deberá asegurarse de que su
-Los activos del controlador se precompilarán al cargarlos por página. Por
-Los archivos predeterminados <code>.coffee</code> y <code>.scss</code> no serán precompilados por sí mismos. Ver
-<a href="#precompiling-assets">Precompiling Assets</a> para obtener más información sobre cómo
-trabajos de precompilación.</p><div class="note"><p>Debe tener un tiempo de ejecución compatible con ExecJS para poder utilizar CoffeeScript.
-Si está utilizando macOS o Windows, tiene un tiempo de ejecución de JavaScript instalado en
-su sistema operativo. Consulte la documentación de <a href="https://github.com/rails/execjs#readme">ExecJS</a> para conocer todos los tiempos de ejecución de JavaScript admitidos.</p></div><p>También puede deshabilitar la generación de archivos de activos específicos del controlador agregando el
-siguiendo a su configuración <code>config/application.rb</code>:</p><div class="code_container">
-<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">generators</span> <span class="k">do</span> <span class="o">|</span><span class="n">g</span><span class="o">|</span>
-    <span class="n">g</span><span class="p">.</span><span class="nf">assets</span> <span class="kp">false</span>
-  <span class="k">end</span>
+<div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"importmap"</span><span class="nt">&gt;</span>
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">imports</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">"</span><span class="s2">application</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">/assets/application-39f16dc3f3....js</span><span class="dl">"</span>
+    <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">https://ga.jspm.io/npm:react@17.0.2/index.js</span><span class="dl">"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="  config.generators do |g|
-    g.assets false
-  end
+<button class="clipboard-button" data-clipboard-text="<script type=&quot;importmap&quot;>
+{
+  &quot;imports&quot;: {
+    &quot;application&quot;: &quot;/assets/application-39f16dc3f3....js&quot;
+    &quot;react&quot;: &quot;https://ga.jspm.io/npm:react@17.0.2/index.js&quot;
+  }
+}
+</script>
 ">Copy</button>
 </div>
-<h4 id="asset-organization"><a class="anchorlink" href="#asset-organization">2.2 Asset Organization</a></h4><p>Los activos de canalización se pueden colocar dentro de una aplicación en una de estas tres ubicaciones:
-<code>app/assets</code>, <code>lib/assets</code> o <code>vendor/assets</code>.</p>
+
 <ul>
-<li><p><code>app/assets</code> es para activos que son propiedad de la aplicación, como personalizados
-imágenes, archivos JavaScript u hojas de estilo.</p></li>
-<li><p><code>lib/assets</code> es para el código de sus propias bibliotecas que realmente no encaja en el
-alcance de la aplicación o las bibliotecas que se comparten entre aplicaciones.</p></li>
-<li><p><code>vendor/assets</code> es para activos que son propiedad de entidades externas, como
-código para complementos de JavaScript y marcos CSS. Tenga en cuenta que un tercero
-código con referencias a otros archivos también procesados ​​por el activo Pipeline (imágenes,
-hojas de estilo, etc.), deberán reescribirse para usar ayudantes como <code>asset_path</code>.</p></li>
+<li>Punto de entrada para cargar JavaScript desde <code>app/javascript/application.js</code>:</li>
 </ul>
-<h5 id="search-paths"><a class="anchorlink" href="#search-paths">2.2.1 Search Paths</a></h5><p>Cuando se hace referencia a un archivo desde un manifiesto o un ayudante, Sprockets busca en el
-tres ubicaciones de activos predeterminadas para ello.</p><p>Las ubicaciones predeterminadas son: las <code>images</code>, <code>javascripts</code> and <code>stylesheets</code>
-directorios en la carpeta <code>app/assets</code>, pero estos subdirectorios
-no son especiales - se buscará cualquier ruta bajo <code>assets/*</code>.</p><p>Por ejemplo, estos archivos:</p><div class="code_container">
-<pre><code class="highlight plaintext">app/assets/javascripts/home.js
-lib/assets/javascripts/moovinator.js
-vendor/assets/javascripts/slider.js
-vendor/assets/somepackage/phonebox.js
+<div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"module"</span><span class="nt">&gt;</span><span class="k">import</span> <span class="dl">"</span><span class="s2">application</span><span class="dl">"</span><span class="nt">&lt;/script&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="app/assets/javascripts/home.js
-lib/assets/javascripts/moovinator.js
-vendor/assets/javascripts/slider.js
-vendor/assets/somepackage/phonebox.js
+<button class="clipboard-button" data-clipboard-text="<script type=&quot;module&quot;>import &quot;application&quot;</script>
 ">Copy</button>
 </div>
-<p>sería referenciado en un manifiesto como este:</p><div class="code_container">
-<pre><code class="highlight js"><span class="c1">//= require home</span>
-<span class="c1">//= require moovinator</span>
-<span class="c1">//= require slider</span>
-<span class="c1">//= require phonebox</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="//= require home
-//= require moovinator
-//= require slider
-//= require phonebox
+<p>NOTA: Antes de la versión 2.0.0, <code>importmap-rails</code> incluía <a href="https://github.com/guybedford/es-module-shims"><code>Es-module-shims</code></a> en la salida de <code>javascript_importmap_tags</code> como un polyfill para garantizar el soporte de import maps en navegadores antiguos. Sin embargo, con el soporte nativo para import maps en todos los navegadores principales, la versión 2.0.0 ha eliminado el shim incluido. Si deseas soportar navegadores heredados que carecen de soporte para import maps, inserta manualmente <code>Es-module-shims</code> antes de <code>javascript_importmap_tags</code>. Para más información, consulta el <a href="https://github.com/rails/importmap-rails?tab=readme-ov-file#supporting-legacy-browsers-such-as-safari-on-ios-15">README de importmap-rails</a>.</p><h3 id="usar-paquetes-npm-a-través-de-cdns-de-javascript"><a class="anchorlink" href="#usar-paquetes-npm-a-través-de-cdns-de-javascript"><span>3.3</span> Usar paquetes npm a través de CDNs de JavaScript</a></h3><p>Puedes usar el comando <code>bin/importmap</code> que se agrega como parte de la instalación de <code>importmap-rails</code> para fijar, desfijar o actualizar paquetes npm en tu import map. El binstub utiliza <a href="https://jspm.org/"><code>JSPM.org</code></a>.</p><p>Funciona así:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap pin react react-dom
+<span class="go">Pinning "react" to https://ga.jspm.io/npm:react@17.0.2/index.js
+Pinning "react-dom" to https://ga.jspm.io/npm:react-dom@17.0.2/index.js
+Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
+Pinning "scheduler" to https://ga.jspm.io/npm:scheduler@0.20.2/index.js
+
+bin/importmap json
+
+{
+  "imports": {
+    "application": "/assets/application-37f365cbecf1fa2810a8303f4b6571676fa1f9c56c248528bc14ddb857531b95.js",
+    "react": "https://ga.jspm.io/npm:react@17.0.2/index.js",
+    "react-dom": "https://ga.jspm.io/npm:react-dom@17.0.2/index.js",
+    "object-assign": "https://ga.jspm.io/npm:object-assign@4.1.1/index.js",
+    "scheduler": "https://ga.jspm.io/npm:scheduler@0.20.2/index.js"
+  }
+}
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap pin react react-dom
 ">Copy</button>
 </div>
-<p>También se puede acceder a los activos dentro de los subdirectorios.</p><div class="code_container">
-<pre><code class="highlight plaintext">app/assets/javascripts/sub/something.js
+<p>Como puedes ver, los dos paquetes react y react-dom se resuelven en un total de cuatro dependencias, cuando se resuelven a través del jspm por defecto.</p><p>Ahora puedes usar estos en tu punto de entrada <code>application.js</code> como lo harías con cualquier otro módulo:</p><div class="interstitial code">
+<pre><code class="highlight javascript"><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-dom</span><span class="dl">"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="app/assets/javascripts/sub/something.js
+<button class="clipboard-button" data-clipboard-text="import React from &quot;react&quot;
+import ReactDOM from &quot;react-dom&quot;
 ">Copy</button>
 </div>
-<p>se hace referencia como:
-<code>js
-//= require sub/something
-</code></p><p>Puede ver la ruta de búsqueda inspeccionando
-<code>Rails.application.config.assets.paths</code> en la consola de Rails.</p><p>Además de las rutas estándar <code>assets/*</code>, se pueden crear rutas adicionales (totalmente calificadas).
-agregado a la canalización en <code>config/initializers/assets.rb</code>. Por ejemplo:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">paths</span> <span class="o">&lt;&lt;</span> <span class="no">Rails</span><span class="p">.</span><span class="nf">root</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"lib"</span><span class="p">,</span> <span class="s2">"videoplayer"</span><span class="p">,</span> <span class="s2">"flash"</span><span class="p">)</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='Rails.application.config.assets.paths &lt;&lt; Rails.root.join("lib", "videoplayer", "flash")
-'>Copy</button>
-</div>
-<p>Las rutas se recorren en el orden en que aparecen en la ruta de búsqueda. Por defecto,
-esto significa que los archivos en <code>app/assets</code> tienen prioridad y se enmascararán
-rutas correspondientes en <code>lib</code> y <code>vendor</code>.</p><p>Es importante tener en cuenta que los archivos a los que desea hacer referencia fuera de un manifiesto deben
-se agregarán a la matriz de precompilación o no estarán disponibles en la producción
-ambiente.</p><h5 id="using-index-files"><a class="anchorlink" href="#using-index-files">2.2.2 Using Index Files</a></h5><p>Sprockets usa archivos llamados <code>index</code> (con las extensiones relevantes) para un especial
-propósito.</p><p>Por ejemplo, si tiene una biblioteca jQuery con muchos módulos, que se almacena en
-<code>lib/assets/javascripts/library_name</code>, el archivo <code>lib/assets/javascripts/library_name/index.js</code> sirve como
-el manifiesto de todos los archivos de esta biblioteca. Este archivo podría incluir una lista de
-todos los archivos requeridos en orden, o una simple directiva <code>require_tree</code>.</p><p>Se puede acceder a la biblioteca en su conjunto en el manifiesto de la aplicación así:</p><div class="code_container">
-<pre><code class="highlight js"><span class="c1">//= require library_name</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="//= require library_name
+<p>También puedes designar una versión específica para fijar:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap pin react@17.0.1
+<span class="go">Pinning "react" to https://ga.jspm.io/npm:react@17.0.1/index.js
+Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap pin react@17.0.1
 ">Copy</button>
 </div>
-<p>Esto simplifica el mantenimiento y mantiene las cosas limpias al permitir que el código relacionado
-agruparse antes de su inclusión en otro lugar.</p><h4 id="coding-links-to-assets"><a class="anchorlink" href="#coding-links-to-assets">2.3 Coding Links to Assets</a></h4><p>Sprockets no agrega ningún método nuevo para acceder a sus activos; aún usa el
-familiar <code>javascript_include_tag</code> y<code>stylesheet_link_tag</code>:</p><div class="code_container">
+<p>O incluso eliminar fijaciones:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap unpin react
+<span class="go">Unpinning "react"
+Unpinning "object-assign"
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap unpin react
+">Copy</button>
+</div>
+<p>Puedes controlar el entorno del paquete para paquetes con compilaciones separadas de "producción" (el valor predeterminado) y "desarrollo":</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap pin react <span class="nt">--env</span> development
+<span class="go">Pinning "react" to https://ga.jspm.io/npm:react@17.0.2/dev.index.js
+Pinning "object-assign" to https://ga.jspm.io/npm:object-assign@4.1.1/index.js
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap pin react --env development
+">Copy</button>
+</div>
+<p>También puedes elegir un proveedor de CDN alternativo y compatible al fijar, como <a href="https://unpkg.com/"><code>unpkg</code></a> o <a href="https://www.jsdelivr.com/"><code>jsdelivr</code></a> (<a href="https://jspm.org/"><code>jspm</code></a> es el predeterminado):</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>bin/importmap pin react <span class="nt">--from</span> jsdelivr
+<span class="go">Pinning "react" to https://cdn.jsdelivr.net/npm/react@17.0.2/index.js
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/importmap pin react --from jsdelivr
+">Copy</button>
+</div>
+<p>Recuerda, sin embargo, que si cambias una fijación de un proveedor a otro, es posible que debas limpiar las dependencias agregadas por el primer proveedor que no se utilizan por el segundo proveedor.</p><p>Ejecuta <code>bin/importmap</code> para ver todas las opciones.</p><p>Ten en cuenta que este comando es simplemente un envoltorio de conveniencia para resolver nombres de paquetes lógicos a URL de CDN. También puedes buscar las URL de CDN tú mismo y luego fijarlas. Por ejemplo, si quisieras usar Skypack para React, podrías simplemente agregar lo siguiente a <code>config/importmap.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">pin</span> <span class="s2">"react"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"https://cdn.skypack.dev/react"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="pin &quot;react&quot;, to: &quot;https://cdn.skypack.dev/react&quot;
+">Copy</button>
+</div>
+<h3 id="pre-carga-de-módulos-fijados"><a class="anchorlink" href="#pre-carga-de-módulos-fijados"><span>3.4</span> Pre-carga de módulos fijados</a></h3><p>Para evitar el efecto cascada donde el navegador tiene que cargar un archivo tras otro antes de poder llegar a la importación más anidada, importmap-rails soporta <a href="https://developers.google.com/web/updates/2017/12/modulepreload">enlaces modulepreload</a>. Los módulos fijados pueden ser precargados añadiendo <code>preload: true</code> a la fijación.</p><p>Es una buena idea precargar bibliotecas o frameworks que se utilizan en toda tu aplicación, ya que esto le dirá al navegador que los descargue antes.</p><p>Ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/importmap.rb</span>
+<span class="n">pin</span> <span class="s2">"@github/hotkey"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"https://ga.jspm.io/npm:@github/hotkey@1.4.4/dist/index.js"</span><span class="p">,</span> <span class="ss">preload: </span><span class="kp">true</span>
+<span class="n">pin</span> <span class="s2">"md5"</span><span class="p">,</span> <span class="ss">to: </span><span class="s2">"https://cdn.jsdelivr.net/npm/md5@2.3.0/md5.js"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="pin &quot;@github/hotkey&quot;, to: &quot;https://ga.jspm.io/npm:@github/hotkey@1.4.4/dist/index.js&quot;, preload: true
+pin &quot;md5&quot;, to: &quot;https://cdn.jsdelivr.net/npm/md5@2.3.0/md5.js&quot;
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight erb"><span class="c">&lt;%# app/views/layouts/application.html.erb %&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">javascript_importmap_tags</span> <span class="cp">%&gt;</span>
+
+<span class="c">&lt;%# incluirá el siguiente enlace antes de que se configure el importmap: %&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"modulepreload"</span> <span class="na">href=</span><span class="s">"https://ga.jspm.io/npm:@github/hotkey@1.4.4/dist/index.js"</span><span class="nt">&gt;</span>
+...
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= javascript_importmap_tags %>
+
+<%# incluirá el siguiente enlace antes de que se configure el importmap: %>
+<link rel=&quot;modulepreload&quot; href=&quot;https://ga.jspm.io/npm:@github/hotkey@1.4.4/dist/index.js&quot;>
+...
+">Copy</button>
+</div>
+<p>NOTA: Consulta el repositorio de <a href="https://github.com/rails/importmap-rails"><code>importmap-rails</code></a> para la documentación más actualizada.</p><h2 id="cómo-usar-sprockets"><a class="anchorlink" href="#cómo-usar-sprockets"><span>4</span> Cómo Usar Sprockets</a></h2><p>El enfoque ingenuo para exponer los activos de tu aplicación a la web sería almacenarlos en subdirectorios de la carpeta <code>public</code> como <code>images</code> y <code>stylesheets</code>. Hacerlo manualmente sería difícil, ya que la mayoría de las aplicaciones web modernas requieren que los activos se procesen de una manera específica, por ejemplo, comprimiendo y agregando huellas digitales a los activos.</p><p>Sprockets está diseñado para preprocesar automáticamente tus activos almacenados en los directorios configurados y, después del procesamiento, exponerlos en la carpeta <code>public/assets</code> con huellas digitales, compresión, generación de mapas de fuentes y otras características configurables.</p><p>Los activos aún pueden colocarse en la jerarquía <code>public</code>. Cualquier activo bajo <code>public</code> será servido como archivos estáticos por la aplicación o el servidor web cuando <a href="configuring.html#config-public-file-server-enabled"><code>config.public_file_server.enabled</code></a> esté configurado en true. Debes definir directivas <code>manifest.js</code> para archivos que deben someterse a algún preprocesamiento antes de ser servidos.</p><p>En producción, Rails precompila estos archivos en <code>public/assets</code> por defecto. Las copias precompiladas son luego servidas como activos estáticos por el servidor web. Los archivos en <code>app/assets</code> nunca se sirven directamente en producción.</p><h3 id="archivos-de-manifiesto-y-directivas"><a class="anchorlink" href="#archivos-de-manifiesto-y-directivas"><span>4.1</span> Archivos de Manifiesto y Directivas</a></h3><p>Al compilar activos con Sprockets, Sprockets necesita decidir qué objetivos de nivel superior compilar, generalmente <code>application.css</code> e imágenes. Los objetivos de nivel superior se definen en el archivo <code>manifest.js</code> de Sprockets, por defecto se ve así:</p><div class="interstitial code">
+<pre><code class="highlight js"><span class="c1">//= link_tree ../images</span>
+<span class="c1">//= link_directory ../stylesheets .css</span>
+<span class="c1">//= link_tree ../../javascript .js</span>
+<span class="c1">//= link_tree ../../../vendor/javascript .js</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="//= link_tree ../images
+//= link_directory ../stylesheets .css
+//= link_tree ../../javascript .js
+//= link_tree ../../../vendor/javascript .js
+">Copy</button>
+</div>
+<p>Contiene <em>directivas</em> - instrucciones que le dicen a Sprockets qué archivos requerir para construir un solo archivo CSS o JavaScript.</p><p>Esto está destinado a incluir el contenido de todos los archivos encontrados en el directorio <code>./app/assets/images</code> o cualquier subdirectorio, así como cualquier archivo reconocido como JS directamente en <code>./app/javascript</code> o <code>./vendor/javascript</code>.</p><p>Cargará cualquier CSS del directorio <code>./app/assets/stylesheets</code> (sin incluir subdirectorios). Suponiendo que tengas archivos <code>application.css</code> y <code>marketing.css</code> en la carpeta <code>./app/assets/stylesheets</code>, te permitirá cargar esas hojas de estilo con <code>&lt;%= stylesheet_link_tag "application" %&gt;</code> o <code>&lt;%= stylesheet_link_tag "marketing" %&gt;</code> desde tus vistas.</p><p>Podrías notar que nuestros archivos JavaScript no se cargan desde el directorio <code>assets</code> por defecto, es porque <code>./app/javascript</code> es el punto de entrada predeterminado para la gema <code>importmap-rails</code> y la carpeta <code>vendor</code> es el lugar donde se almacenarían los paquetes JS descargados.</p><p>En el <code>manifest.js</code> también podrías especificar la directiva <code>link</code> para cargar un archivo específico en lugar de todo el directorio. La directiva <code>link</code> requiere proporcionar una extensión de archivo explícita.</p><p>Sprockets carga los archivos especificados, los procesa si es necesario, los concatena en un solo archivo y luego los comprime (basado en el valor de <code>config.assets.css_compressor</code> o <code>config.assets.js_compressor</code>). La compresión reduce el tamaño del archivo, permitiendo que el navegador descargue los archivos más rápido.</p><h3 id="activos-específicos-del-controlador"><a class="anchorlink" href="#activos-específicos-del-controlador"><span>4.2</span> Activos Específicos del Controlador</a></h3><p>Cuando generas un scaffold o un controlador, Rails también genera un archivo de hoja de estilo en cascada para ese controlador. Además, al generar un scaffold, Rails genera el archivo <code>scaffolds.css</code>.</p><p>Por ejemplo, si generas un <code>ProjectsController</code>, Rails también agregará un nuevo archivo en <code>app/assets/stylesheets/projects.css</code>. Por defecto, estos archivos estarán listos para ser usados por tu aplicación inmediatamente usando la directiva <code>link_directory</code> en el archivo <code>manifest.js</code>.</p><p>También puedes optar por incluir archivos de hojas de estilo específicos del controlador solo en sus respectivos controladores usando lo siguiente:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="n">params</span><span class="p">[</span><span class="ss">:controller</span><span class="p">]</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= stylesheet_link_tag params[:controller] %>
+">Copy</button>
+</div>
+<p>Al hacer esto, asegúrate de no estar usando la directiva <code>require_tree</code> en tu <code>application.css</code>, ya que eso podría resultar en que tus activos específicos del controlador se incluyan más de una vez.</p><h3 id="organización-de-activos"><a class="anchorlink" href="#organización-de-activos"><span>4.3</span> Organización de Activos</a></h3><p>Los activos del pipeline pueden colocarse dentro de una aplicación en una de tres ubicaciones: <code>app/assets</code>, <code>lib/assets</code> o <code>vendor/assets</code>.</p>
+<ul>
+<li><p><code>app/assets</code> es para activos que son propiedad de la aplicación, como imágenes o hojas de estilo personalizadas.</p></li>
+<li><p><code>app/javascript</code> es para tu código JavaScript</p></li>
+<li><p><code>vendor/[assets|javascript]</code> es para activos que son propiedad de entidades externas, como frameworks CSS o bibliotecas JavaScript. Ten en cuenta que el código de terceros con referencias a otros archivos también procesados por el pipeline de activos (imágenes, hojas de estilo, etc.), necesitará ser reescrito para usar ayudantes como <code>asset_path</code>.</p></li>
+</ul>
+<p>Otras ubicaciones podrían configurarse en el archivo <code>manifest.js</code>, consulta la <a href="#manifest-files-and-directives">sección de Archivos de Manifiesto y Directivas</a>.</p><h4 id="rutas-de-búsqueda"><a class="anchorlink" href="#rutas-de-búsqueda"><span>4.3.1</span> Rutas de Búsqueda</a></h4><p>Cuando se hace referencia a un archivo desde un manifiesto o un ayudante, Sprockets busca en todas las ubicaciones especificadas en <code>manifest.js</code>. Puedes ver la ruta de búsqueda inspeccionando <a href="configuring.html#config-assets-paths"><code>Rails.application.config.assets.paths</code></a> en la consola de Rails.</p><h4 id="usar-archivos-índice-como-proxies-para-carpetas"><a class="anchorlink" href="#usar-archivos-índice-como-proxies-para-carpetas"><span>4.3.2</span> Usar Archivos Índice como Proxies para Carpetas</a></h4><p>Sprockets utiliza archivos llamados <code>index</code> (con las extensiones relevantes) para un propósito especial.</p><p>Por ejemplo, si tienes una biblioteca CSS con muchos módulos, que se almacena en <code>lib/assets/stylesheets/library_name</code>, el archivo <code>lib/assets/stylesheets/library_name/index.css</code> sirve como el manifiesto para todos los archivos en esta biblioteca. Este archivo podría incluir una lista de todos los archivos requeridos en orden, o una simple directiva <code>require_tree</code>.</p><p>También es algo similar a la forma en que un archivo en <code>public/library_name/index.html</code> puede ser alcanzado por una solicitud a <code>/library_name</code>. Esto significa que no puedes usar directamente un archivo índice.</p><p>La biblioteca como un todo puede ser accedida en los archivos <code>.css</code> así:</p><div class="interstitial code">
+<pre><code class="highlight css"><span class="c">/* ...
+*= require library_name
+*/</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="/* ...
+*= require library_name
+*/
+">Copy</button>
+</div>
+<p>Esto simplifica el mantenimiento y mantiene las cosas limpias al permitir que el código relacionado se agrupe antes de incluirse en otros lugares.</p><h3 id="codificación-de-enlaces-a-activos"><a class="anchorlink" href="#codificación-de-enlaces-a-activos"><span>4.4</span> Codificación de Enlaces a Activos</a></h3><p>Sprockets no agrega ningún método nuevo para acceder a tus activos: todavía usas el conocido <code>stylesheet_link_tag</code>:</p><div class="interstitial code">
 <pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media: </span><span class="s2">"all"</span> <span class="cp">%&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= stylesheet_link_tag "application", media: "all" %&gt;
-&lt;%= javascript_include_tag "application" %&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<%= stylesheet_link_tag &quot;application&quot;, media: &quot;all&quot; %>
+">Copy</button>
 </div>
-<p>Si usa la gema turbolinks, que se incluye por defecto en Rails, entonces
-incluir la opción 'data-turbolinks-track' que hace que turbolinks compruebe si
-un activo se ha actualizado y, si es así, lo carga en la página:</p><div class="code_container">
-<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">media: </span><span class="s2">"all"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="s2">"reload"</span> <span class="cp">%&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbolinks-track"</span> <span class="o">=&gt;</span> <span class="s2">"reload"</span> <span class="cp">%&gt;</span>
+<p>Si usas la gema <a href="https://github.com/hotwired/turbo-rails"><code>turbo-rails</code></a>, que está incluida por defecto en Rails, entonces incluye la opción <code>data-turbo-track</code> que hace que Turbo verifique si un activo ha sido actualizado y, si es así, lo carga en la página:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="s2">"data-turbo-track"</span><span class="p">:</span> <span class="s2">"reload"</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" =&gt; "reload" %&gt;
-&lt;%= javascript_include_tag "application", "data-turbolinks-track" =&gt; "reload" %&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<%= stylesheet_link_tag &quot;application&quot;, &quot;data-turbo-track&quot;: &quot;reload&quot; %>
+">Copy</button>
 </div>
-<p>En vistas normales, puede acceder a imágenes en el directorio <code>app/assets/images</code>
-Me gusta esto:</p><div class="code_container">
+<p>En vistas regulares puedes acceder a imágenes en el directorio <code>app/assets/images</code> así:</p><div class="interstitial code">
 <pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="s2">"rails.png"</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= image_tag "rails.png" %&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<%= image_tag &quot;rails.png&quot; %>
+">Copy</button>
 </div>
-<p>Siempre que la canalización esté habilitada dentro de su aplicación (y no deshabilitada
-en el contexto del entorno actual), este archivo es servido por Sprockets. Si un archivo
-existe en <code>public/assets/rails.png</code> y es servido por el servidor web.</p><p>Alternativamente, una solicitud de un archivo con un hash SHA256 como
-<code>public/assets/rails-f90d8a84c707a8dc923fca1ca1895ae8ed0a09237f6992015fef1e11be77c023.png</code>
-se trata de la misma manera. La forma en que se generan estos hashes se trata en el <a href="#in-production">En
-Producción</a> más adelante en esta guía.</p><p>Sprockets también buscará a través de las rutas especificadas en <code>config.assets.paths</code>,
-que incluye las rutas de aplicación estándar y cualquier ruta agregada por Rails
-motores.</p><p>Las imágenes también se pueden organizar en subdirectorios si es necesario, y luego
-se accede especificando el nombre del directorio en la etiqueta:</p><div class="code_container">
+<p>Siempre que el pipeline esté habilitado dentro de tu aplicación (y no deshabilitado en el contexto del entorno actual), este archivo es servido por Sprockets. Si existe un archivo en <code>public/assets/rails.png</code>, es servido por el servidor web.</p><p>Alternativamente, una solicitud para un archivo con un hash SHA256 como <code>public/assets/rails-f90d8a84c707a8dc923fca1ca1895ae8ed0a09237f6992015fef1e11be77c023.png</code> se trata de la misma manera. Cómo se generan estos hashes se cubre en la sección <a href="#in-production">En Producción</a> más adelante en esta guía.</p><p>Las imágenes también pueden organizarse en subdirectorios si es necesario, y luego pueden accederse especificando el nombre del directorio en la etiqueta:</p><div class="interstitial code">
 <pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">image_tag</span> <span class="s2">"icons/rails.png"</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= image_tag "icons/rails.png" %&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<%= image_tag &quot;icons/rails.png&quot; %>
+">Copy</button>
 </div>
-<div class="warning"><p>si está compilando previamente sus activos (consulte <a href="#in-production">En producción</a>
-a continuación), la vinculación a un activo que no existe generará una excepción en el
-página de llamada. Esto incluye vincular a una cadena en blanco. Como tal, tenga cuidado al usar
-<code>image_tag</code> y los demás ayudantes con datos proporcionados por el usuario.</p></div><h5 id="css-and-erb"><a class="anchorlink" href="#css-and-erb">2.3.1 CSS and ERB</a></h5><p>La cartera de activos evalúa automáticamente ERB. Esto significa que si agrega un
-extensión <code>erb</code> a ​​un recurso CSS (por ejemplo, <code>application.css.erb</code>), luego
-ayudantes como <code>asset_path</code> están disponibles en sus reglas CSS:</p><div class="code_container">
+<p>ADVERTENCIA: Si estás precompilando tus activos (ver <a href="#in-production">En Producción</a> a continuación), enlazar a un activo que no existe generará una excepción en la página que llama. Esto incluye enlazar a una cadena en blanco. Por lo tanto, ten cuidado al usar <code>image_tag</code> y los otros ayudantes con datos proporcionados por el usuario.</p><h4 id="css-y-erb"><a class="anchorlink" href="#css-y-erb"><span>4.4.1</span> CSS y ERB</a></h4><p>El pipeline de activos evalúa automáticamente ERB. Esto significa que si agregas una extensión <code>erb</code> a un activo CSS (por ejemplo, <code>application.css.erb</code>), entonces los ayudantes como <code>asset_path</code> están disponibles en tus reglas CSS:</p><div class="interstitial code">
 <pre><code class="highlight css"><span class="nc">.class</span> <span class="p">{</span> <span class="nl">background-image</span><span class="p">:</span> <span class="sx">url(&lt;%= asset_path 'image.png' %&gt;)</span> <span class="p">}</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text=".class { background-image: url(&lt;%= asset_path 'image.png' %&gt;) }
+<button class="clipboard-button" data-clipboard-text=".class { background-image: url(<%= asset_path 'image.png' %>) }
 ">Copy</button>
 </div>
-<p>Esto escribe la ruta al activo particular al que se hace referencia. En este ejemplo,
-Tendría sentido tener una imagen en una de las rutas de carga de activos, como
-<code>app/assets/images/image.png</code>, al que se hace referencia aquí. Si esta imagen es
-ya disponible en <code>public/assets</code> como un archivo de huellas digitales, entonces esa ruta es
-referenciado.</p><p>Si desea utilizar un <a href="https://en.wikipedia.org/wiki/Data_URI_scheme">URI de datos</a> -
-un método para incrustar los datos de la imagen directamente en el archivo CSS; puede usar
-el ayudante <code>asset_data_uri</code>.</p><div class="code_container">
+<p>Esto escribe la ruta al activo particular que se está haciendo referencia. En este ejemplo, tendría sentido tener una imagen en una de las rutas de carga de activos, como <code>app/assets/images/image.png</code>, que se referenciaría aquí. Si esta imagen ya está disponible en <code>public/assets</code> como un archivo con huella digital, entonces se hace referencia a esa ruta.</p><p>Si deseas usar un <a href="https://en.wikipedia.org/wiki/Data_URI_scheme">URI de datos</a>, un método para incrustar los datos de la imagen directamente en el archivo CSS, puedes usar el ayudante <code>asset_data_uri</code>.</p><div class="interstitial code">
 <pre><code class="highlight css"><span class="nf">#logo</span> <span class="p">{</span> <span class="nl">background</span><span class="p">:</span> <span class="sx">url(&lt;%= asset_data_uri 'logo.png' %&gt;)</span> <span class="p">}</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="#logo { background: url(&lt;%= asset_data_uri 'logo.png' %&gt;) }
+<button class="clipboard-button" data-clipboard-text="#logo { background: url(<%= asset_data_uri 'logo.png' %>) }
 ">Copy</button>
 </div>
-<p>Esto inserta un URI de datos con el formato correcto en la fuente CSS.</p><p>Tenga en cuenta que la etiqueta de cierre no puede ser del estilo <code>-%&gt;</code>.</p><h5 id="css-and-sass"><a class="anchorlink" href="#css-and-sass">2.3.2 CSS and Sass</a></h5><p>Al utilizar la canalización de activos, las rutas a los activos deben reescribirse y
-<code>sass-rails</code> proporciona ayudantes<code>-url</code> y <code>-path</code> (con guiones en Sass,
-subrayado en Ruby) para las siguientes clases de activos: imagen, fuente, video, audio,
-JavaScript y hoja de estilo.</p>
-<ul>
-<li>
-<code>image-url "rails.png")</code> devuelve <code>url(/assets/rails.png)</code>
-</li>
-<li>
-<code>image-path("rails.png")</code> devuelve <code>"/assets/rails.png "</code>
-</li>
-</ul>
-<p>La forma más genérica también se puede utilizar:</p>
-<ul>
-<li>
-<code>asset-url("rails.png")</code> devuelve <code>url(/assets/rails.png)</code>
-</li>
-<li>
-<code>asset-path("rails.png")</code> devuelve <code>"/assets/rails.png "</code>
-</li>
-</ul>
-<h5 id="javascript-coffeescript-and-erb"><a class="anchorlink" href="#javascript-coffeescript-and-erb">2.3.3 JavaScript/CoffeeScript and ERB</a></h5><p>Si agrega una extensión <code>erb</code> a ​​un activo de JavaScript, convirtiéndola en algo como
-<code>application.js.erb</code>, puede usar el ayudante<code>asset_path</code> en su
-Código JavaScript:</p><div class="code_container">
-<pre><code class="highlight js"><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#logo</span><span class="dl">'</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span> <span class="na">src</span><span class="p">:</span> <span class="dl">"</span><span class="s2">&lt;%= asset_path('logo.png') %&gt;</span><span class="dl">"</span> <span class="p">});</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="$('#logo').attr({ src: &quot;&lt;%= asset_path('logo.png') %&gt;&quot; });
-">Copy</button>
-</div>
-<p>Esto escribe la ruta al activo particular al que se hace referencia.</p><p>Del mismo modo, puede utilizar el ayudante <code>asset_path</code> en archivos CoffeeScript con<code>erb</code>
-extensión (por ejemplo, <code>application.coffee.erb</code>):</p><div class="code_container">
-<pre><code class="highlight js"><span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#logo</span><span class="dl">'</span><span class="p">).</span><span class="nx">attr</span> <span class="nx">src</span><span class="p">:</span> <span class="dl">"</span><span class="s2">&lt;%= asset_path('logo.png') %&gt;</span><span class="dl">"</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="$('#logo').attr src: &quot;&lt;%= asset_path('logo.png') %&gt;&quot;
-">Copy</button>
-</div>
-<h4 id="manifest-files-and-directives"><a class="anchorlink" href="#manifest-files-and-directives">2.4 Manifest Files and Directives</a></h4><p>Sprockets usa archivos de manifiesto para determinar qué activos incluir y servir.
-Estos archivos de manifiesto contienen <em>directives</em> - instrucciones que le dicen a Sprockets
-qué archivos necesitar para construir un solo archivo CSS o JavaScript. Con
-estas directivas, Sprockets carga los archivos especificados, los procesa si
-necesario, los concatena en un solo archivo y luego los comprime
-(basado en el valor de <code>Rails.application.config.assets.js_compressor</code>). Sirviendo
-un archivo en lugar de muchos, el tiempo de carga de las páginas se puede reducir considerablemente porque
-el navegador realiza menos solicitudes. La compresión también reduce el tamaño del archivo, lo que permite
-el navegador para descargarlos más rápido.</p><p>Por ejemplo, con un archivo <code>app/assets/javascripts/application.js</code> que contenga el
-siguientes líneas:</p><div class="code_container">
-<pre><code class="highlight js"><span class="c1">// ...</span>
-<span class="c1">//= require rails-ujs</span>
-<span class="c1">//= require turbolinks</span>
-<span class="c1">//= require_tree .</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="// ...
-//= require rails-ujs
-//= require turbolinks
-//= require_tree .
-">Copy</button>
-</div>
-<p>En los archivos JavaScript, las directivas Sprockets comienzan con <code>// =</code>. En el caso anterior,
-el archivo utiliza las directivas <code>require</code> y<code>require_tree</code>. El <code>require</code>
-La directiva se usa para decirle a Sprockets los archivos que desea requerir. Aquí estás
-requiriendo los archivos <code>rails-ujs.js</code> y<code>turbolinks.js</code> que están disponibles en alguna parte
-en la ruta de búsqueda de Sprockets. No es necesario que proporcione las extensiones de forma explícita.
-Sprockets asume que necesita un archivo <code>.js</code> cuando se hace desde dentro de un<code>.js</code>
-expediente.</p><p>La directiva <code>require_tree</code> le dice a Sprockets que incluya de forma recursiva <em>todos</em>
-Archivos JavaScript en el directorio especificado en la salida. Estos caminos deben ser
-especificado en relación con el archivo de manifiesto. También puede utilizar el
-Directiva <code>require_directory</code> que incluye todos los archivos JavaScript solo en el
-directorio especificado, sin recursividad.</p><p>Las directivas se procesan de arriba a abajo, pero el orden en el que se
-incluido por <code>require_tree</code> no está especificado. No debe confiar en ningún
-orden entre esos. Si necesita asegurarse de que algún JavaScript en particular termine
-encima de otro en el archivo concatenado, primero requiere el archivo de requisitos previos
-en el manifiesto. Tenga en cuenta que la familia de directivas <code>require</code> evita archivos
-de incluirse dos veces en la salida.</p><p>Rails también crea un archivo <code>app/assets / stylesheets / application.css</code> predeterminado
-que contiene estas líneas:</p><div class="code_container">
-<pre><code class="highlight css"><span class="c">/* ...
-*= require_self
-*= require_tree .
-*/</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="/* ...
-*= require_self
-*= require_tree .
-*/
-">Copy</button>
-</div>
-<p>Los rieles crean <code>app/assets/stylesheets/application.css</code> independientemente de si el
-La opción --skip-sprockets se usa al crear una nueva aplicación Rails. Esto es
-para que pueda agregar fácilmente la canalización de activos más adelante si lo desea.</p><p>Las directivas que funcionan en archivos JavaScript también funcionan en hojas de estilo
-(aunque obviamente incluye hojas de estilo en lugar de archivos JavaScript). los
-La directiva <code>require_tree</code> en un manifiesto CSS funciona de la misma manera que JavaScript
-uno, que requiere todas las hojas de estilo del directorio actual.</p><p>En este ejemplo, se utiliza <code>require_self</code>. Esto coloca el CSS contenido en el
-archivo (si lo hay) en la ubicación precisa de la llamada <code>require_self</code>.</p><p>NOTA. Si desea usar varios archivos Sass, generalmente debe usar la <a href="https://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html#import">regla <code>@import</code> rule</a>
-en lugar de estas directivas Sprockets. Cuando se utilizan directivas Sprockets, los archivos Sass existen dentro
-su propio alcance, haciendo que las variables o mixins solo estén disponibles dentro del documento en el que se definieron.</p><p>También puede hacer un globbing de archivos usando <code>@import "*"</code> y <code>@import "**/*"</code> para agregar el árbol completo, lo que equivale a cómo funciona <code>require_tree</code>. Consulte la <a href="https://github.com/rails/sass-rails#features">documentación de sass-rails</a> para obtener más información y advertencias importantes.</p><p>Puede tener tantos archivos de manifiesto como necesite. Por ejemplo, el <code>admin.css</code>
-y el manifiesto <code>admin.js</code> podría contener los archivos JS y CSS que se utilizan para
-sección de administración de una aplicación.</p><p>Se aplican las mismas observaciones sobre pedidos hechas anteriormente. En particular, puede especificar
-archivos individuales y se compilan en el orden especificado. Por ejemplo tu
-podría concatenar tres archivos CSS juntos de esta manera:</p><div class="code_container">
-<pre><code class="highlight js"><span class="cm">/* ...
-*= require reset
-*= require layout
-*= require chrome
-*/</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="/* ...
-*= require reset
-*= require layout
-*= require chrome
-*/
-">Copy</button>
-</div>
-<h4 id="preprocessing"><a class="anchorlink" href="#preprocessing">2.5 Preprocessing</a></h4><p>Las extensiones de archivo utilizadas en un activo determinan qué procesamiento previo se aplica.
-Cuando se genera un controlador o un andamio con el conjunto de gemas Rails predeterminado,
-El archivo SCSS se genera en lugar de un archivo CSS normal. El ejemplo usado antes
-era un controlador llamado "proyectos", que generaba un
-archivo <code>app/assets/stylesheets/projects.scss</code>.</p><p>En el modo de desarrollo, o si la canalización de activos está deshabilitada, cuando este archivo está
-solicitado es procesado por el procesador proporcionado por la gema <code>sass-rails</code> y
-luego se envía de vuelta al navegador como CSS. Cuando la canalización de activos está habilitada,
-El archivo está preprocesado y se coloca en el directorio <code>public/assets</code> para servirlo
-ya sea la aplicación Rails o el servidor web.</p><p>Se pueden solicitar capas adicionales de preprocesamiento agregando otras extensiones,
-donde cada extensión se procesa de derecha a izquierda. Estos deben ser
-utilizado en el orden en que se debe aplicar el procesamiento. Por ejemplo, una hoja de estilo
-llamado <code>app/assets/stylesheets/projects.scss.erb</code> se procesa primero como ERB,
-luego SCSS, y finalmente sirvió como CSS. Lo mismo se aplica a un archivo JavaScript:
-<code>app/assets/javascripts/projects.coffee.erb</code> se procesa como ERB, luego
-CoffeeScript y sirvió como JavaScript.</p><p>Tenga en cuenta que el orden de estos preprocesadores es importante. Por ejemplo, si
-usted llamó a su archivo JavaScript <code>app/assets/javascripts/projects.erb.coffee</code>
-luego se procesaría primero con el intérprete de CoffeeScript, que
-no entendería ERB y, por lo tanto, tendría problemas.</p><h3 id="in-development"><a class="anchorlink" href="#in-development">3 In Development</a></h3><p>En el modo de desarrollo, los activos se sirven como archivos separados en el orden en que se
-especificado en el archivo de manifiesto.</p><p>Este manifiesto app/assets/javascripts/application.js`:</p><div class="code_container">
-<pre><code class="highlight js"><span class="c1">//= require core</span>
-<span class="c1">//= require projects</span>
-<span class="c1">//= require tickets</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="//= require core
-//= require projects
-//= require tickets
-">Copy</button>
-</div>
-<p>generaría este HTML:</p><div class="code_container">
-<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/core.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/projects.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/tickets.js?body=1"</span><span class="nt">&gt;&lt;/script&gt;</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;script src="/assets/core.js?body=1"&gt;&lt;/script&gt;
-&lt;script src="/assets/projects.js?body=1"&gt;&lt;/script&gt;
-&lt;script src="/assets/tickets.js?body=1"&gt;&lt;/script&gt;
-'>Copy</button>
-</div>
-<p>Sprockets requiere el parámetro <code>body</code>.</p><h4 id="raise-an-error-when-an-asset-is-not-found"><a class="anchorlink" href="#raise-an-error-when-an-asset-is-not-found">3.1 Raise an Error When an Asset is Not Found</a></h4><p>Si está utilizando sprockets-rails&gt; = 3.2.0 puede configurar lo que sucede
-cuando se realiza una búsqueda de activos y no se encuentra nada. Si desactiva la "reserva de activos"
-entonces se generará un error cuando no se pueda encontrar un activo.</p><div class="code_container">
+<p>Esto inserta un URI de datos correctamente formateado en la fuente CSS.</p><p>Ten en cuenta que la etiqueta de cierre no puede ser del estilo <code>-%&gt;</code>.</p><h3 id="generar-un-error-cuando-un-activo-no-se-encuentra"><a class="anchorlink" href="#generar-un-error-cuando-un-activo-no-se-encuentra"><span>4.5</span> Generar un Error Cuando un Activo No se Encuentra</a></h3><p>Si estás usando sprockets-rails &gt;= 3.2.0, puedes configurar lo que sucede cuando se realiza una búsqueda de activos y no se encuentra nada. Si desactivas el "fallback de activos", se generará un error cuando no se pueda encontrar un activo.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">unknown_asset_fallback</span> <span class="o">=</span> <span class="kp">false</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.assets.unknown_asset_fallback = false
 ">Copy</button>
 </div>
-<p>Si la "reserva de activos" está habilitada, cuando no se pueda encontrar un activo, la ruta será
-salida en su lugar y no surgió ningún error. El comportamiento de reserva de activos está deshabilitado de forma predeterminada.</p><h4 id="turning-digests-off"><a class="anchorlink" href="#turning-digests-off">3.2 Turning Digests Off</a></h4><p>Puede desactivar los resúmenes actualizando <code>config/environment/development.rb</code> a
-incluir:</p><div class="code_container">
+<p>Si el "fallback de activos" está habilitado, entonces cuando no se pueda encontrar un activo, se imprimirá la ruta en su lugar y no se generará ningún error. El comportamiento del fallback de activos está deshabilitado por defecto.</p><h3 id="desactivar-huellas-digitales"><a class="anchorlink" href="#desactivar-huellas-digitales"><span>4.6</span> Desactivar Huellas Digitales</a></h3><p>Puedes desactivar las huellas digitales actualizando <code>config/environments/development.rb</code> para incluir:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">digest</span> <span class="o">=</span> <span class="kp">false</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.assets.digest = false
 ">Copy</button>
 </div>
-<p>Cuando esta opción es verdadera, se generarán resúmenes para las URL de los activos.</p><h4 id="turning-debugging-off"><a class="anchorlink" href="#turning-debugging-off">3.3 Turning Debugging Off</a></h4><p>Puede desactivar el modo de depuración actualizando <code>config/environment/development.rb</code> a incluir.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">debug</span> <span class="o">=</span> <span class="kp">false</span>
+<p>Cuando esta opción es verdadera, se generarán huellas digitales para las URLs de los activos.</p><h3 id="activar-mapas-de-fuentes"><a class="anchorlink" href="#activar-mapas-de-fuentes"><span>4.7</span> Activar Mapas de Fuentes</a></h3><p>Puedes activar los mapas de fuentes actualizando <code>config/environments/development.rb</code> para incluir:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">debug</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="config.assets.debug = false
+<button class="clipboard-button" data-clipboard-text="config.assets.debug = true
 ">Copy</button>
 </div>
-<p>Cuando el modo de depuración está desactivado, Sprockets concatena y ejecuta los
-preprocesadores en todos los archivos. Con el modo de depuración desactivado, el manifiesto anterior
-generar en su lugar:</p><div class="code_container">
-<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/application.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<p>Cuando el modo de depuración está activado, Sprockets generará un Mapa de Fuentes para cada activo. Esto te permite depurar cada archivo individualmente en las herramientas de desarrollo de tu navegador.</p><p>Los activos se compilan y almacenan en caché en la primera solicitud después de que el servidor se inicia. Sprockets establece un encabezado HTTP <code>must-revalidate</code> para reducir la sobrecarga de solicitudes en solicitudes posteriores: en estas, el navegador obtiene una respuesta 304 (No Modificado).</p><p>Si alguno de los archivos en el manifiesto cambia entre solicitudes, el servidor responde con un nuevo archivo compilado.</p><h2 id="en-producción"><a class="anchorlink" href="#en-producción"><span>5</span> En Producción</a></h2><p>En el entorno de producción, Sprockets utiliza el esquema de huellas digitales descrito anteriormente. Por defecto, Rails asume que los activos han sido precompilados y serán servidos como activos estáticos por tu servidor web.</p><p>Durante la fase de precompilación, se genera un SHA256 a partir del contenido de los archivos compilados y se inserta en los nombres de archivo a medida que se escriben en el disco. Estos nombres con huellas digitales son utilizados por los ayudantes de Rails en lugar del nombre del manifiesto.</p><p>Por ejemplo, esto:</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;script src="/assets/application.js"&gt;&lt;/script&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<%= stylesheet_link_tag &quot;application&quot; %>
+">Copy</button>
 </div>
-<p>Los activos se compilan y almacenan en caché en la primera solicitud después de que se inicia el servidor.
-Sprockets establece un encabezado HTTP <code>must-revalidate</code> Cache-Control para reducir la solicitud
-sobrecarga en solicitudes posteriores: en estas, el navegador obtiene un 304 (No modificado)
-respuesta.</p><p>Si alguno de los archivos del manifiesto ha cambiado entre solicitudes, el servidor
-responde con un nuevo archivo compilado.</p><p>El modo de depuración también se puede habilitar en los métodos auxiliares de Rails:</p><div class="code_container">
-<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">debug: </span><span class="kp">true</span> <span class="cp">%&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span><span class="p">,</span> <span class="ss">debug: </span><span class="kp">true</span> <span class="cp">%&gt;</span>
+<p>genera algo como esto:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"/assets/application-4dd5b109ee3439da54f5bdfd78a80473.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="nt">/&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= stylesheet_link_tag "application", debug: true %&gt;
-&lt;%= javascript_include_tag "application", debug: true %&gt;
-'>Copy</button>
+<button class="clipboard-button" data-clipboard-text="<link href=&quot;/assets/application-4dd5b109ee3439da54f5bdfd78a80473.css&quot; rel=&quot;stylesheet&quot; />
+">Copy</button>
 </div>
-<p>La opción <code>:debug</code> es redundante si el modo de depuración ya está activado.</p><p>También puede habilitar la compresión en el modo de desarrollo como una verificación de cordura, y
-deshabilítelo bajo demanda según sea necesario para la depuración.</p><h3 id="in-production"><a class="anchorlink" href="#in-production">4 In Production</a></h3><p>En el entorno de producción, Sprockets utiliza el esquema de huellas dactilares descrito
-encima. De forma predeterminada, Rails asume que los activos se han compilado previamente y se
-servido como activos estáticos por su servidor web.</p><p>Durante la fase de precompilación, se genera un SHA256 a partir del contenido del
-archivos compilados e insertados en los nombres de archivo a medida que se escriben en el disco.
-Los ayudantes de Rails utilizan estos nombres con huellas digitales en lugar del manifiesto.
-nombre.</p><p>Por ejemplo esto:</p><div class="code_container">
-<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span>
-<span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">"application"</span> <span class="cp">%&gt;</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;%= javascript_include_tag "application" %&gt;
-&lt;%= stylesheet_link_tag "application" %&gt;
-'>Copy</button>
-</div>
-<p>generates something like this:</p><div class="code_container">
-<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/assets/application-908e25f4bf641868d8683022a5b62f54.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"/assets/application-4dd5b109ee3439da54f5bdfd78a80473.css"</span> <span class="na">media=</span><span class="s">"screen"</span>
-<span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="nt">/&gt;</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='&lt;script src="/assets/application-908e25f4bf641868d8683022a5b62f54.js"&gt;&lt;/script&gt;
-&lt;link href="/assets/application-4dd5b109ee3439da54f5bdfd78a80473.css" media="screen"
-rel="stylesheet" /&gt;
-'>Copy</button>
-</div>
-<p>NOTA: con Asset Pipeline, las opciones <code>:cache</code> y <code>:concat</code> no se utilizan
-ya, elimine estas opciones de la etiqueta <code>javascript_include_tag</code> y
-<code>stylesheet_link_tag</code>.</p><p>El comportamiento de las huellas digitales está controlado por el <code>config.assets.digest</code>
-opción de inicialización (que por defecto es "true").</p><div class="note"><p>En circunstancias normales, la opción predeterminada <code>config.assets.digest</code>
-no debe cambiarse. Si no hay resúmenes en los nombres de archivo y el futuro lejano
-Los encabezados están configurados, los clientes remotos nunca sabrán recuperar los archivos cuando su
-cambios de contenido.</p></div><h4 id="precompiling-assets"><a class="anchorlink" href="#precompiling-assets">4.1 Precompiling Assets</a></h4><p>Rails viene con un comando para compilar los manifiestos de activos y otros
-archivos en la tubería.</p><p>Los activos compilados se escriben en la ubicación especificada en <code>config.assets.prefix</code>.
-Por defecto, este es el directorio <code>/assets</code>.</p><p>Puede llamar a este comando en el servidor durante la implementación para crear compilado
-versiones de sus activos directamente en el servidor. Consulte la siguiente sección para
-información sobre la compilación local.</p><p>El comando es:</p><div class="code_container">
+<p>El comportamiento de las huellas digitales está controlado por la opción de inicialización <a href="configuring.html#config-assets-digest"><code>config.assets.digest</code></a> (que por defecto es <code>true</code>).</p><p>NOTA: En circunstancias normales, la opción predeterminada <code>config.assets.digest</code> no debería cambiarse. Si no hay huellas digitales en los nombres de archivo, y se establecen encabezados de futuro lejano, los clientes remotos nunca sabrán que deben volver a buscar los archivos cuando su contenido cambie.</p><h3 id="precompilación-de-activos"><a class="anchorlink" href="#precompilación-de-activos"><span>5.1</span> Precompilación de Activos</a></h3><p>Rails viene con un comando para compilar los manifiestos de activos y otros archivos en el pipeline.</p><p>Los activos compilados se escriben en la ubicación especificada en <a href="configuring.html#config-assets-prefix"><code>config.assets.prefix</code></a>. Por defecto, este es el directorio <code>/assets</code>.</p><p>Puedes llamar a este comando en el servidor durante la implementación para crear versiones compiladas de tus activos directamente en el servidor. Consulta la siguiente sección para obtener información sobre la compilación local.</p><p>El comando es:</p><div class="interstitial code">
 <pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nb">rails </span>assets:precompile
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="RAILS_ENV=production rails assets:precompile
 ">Copy</button>
 </div>
-<p>Esto vincula la carpeta especificada en <code>config.assets.prefix</code> a <code>shared/assets</code>.
-Si ya usa esta carpeta compartida, deberá escribir su propia implementación
-mando.</p><p>Es importante que esta carpeta se comparta entre implementaciones para que de forma remota
-Las páginas almacenadas en caché que hacen referencia a los activos compilados antiguos aún funcionan durante la vida de
-la página en caché.</p><p>El comparador predeterminado para compilar archivos incluye <code>application.js</code>,
-<code>application.css</code> y todos los archivos que no sean JS / CSS (esto incluirá todos los activos de imagen
-automáticamente) de las carpetas <code>app/assets</code>, incluidas tus gemas:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="p">[</span> <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">filename</span><span class="p">,</span> <span class="n">path</span><span class="o">|</span> <span class="n">path</span> <span class="o">=~</span> <span class="sr">/app\/assets/</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="sx">%w(.js .css)</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="no">File</span><span class="p">.</span><span class="nf">extname</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="p">},</span>
-<span class="sr">/application.(css|js)$/</span> <span class="p">]</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="[ Proc.new { |filename, path| path =~ /app\/assets/ &amp;&amp; !%w(.js .css).include?(File.extname(filename)) },
-/application.(css|js)$/ ]
+<p>Esto enlaza la carpeta especificada en <code>config.assets.prefix</code> a <code>shared/assets</code>. Si ya usas esta carpeta compartida, necesitarás escribir tu propio comando de implementación.</p><p>Es importante que esta carpeta sea compartida entre implementaciones para que las páginas en caché remotamente que hacen referencia a los activos compilados antiguos aún funcionen durante la vida útil de la página en caché.</p><p>NOTA: Siempre especifica un nombre de archivo compilado esperado que termine con <code>.js</code> o <code>.css</code>.</p><p>El comando también genera un <code>.sprockets-manifest-randomhex.json</code> (donde <code>randomhex</code> es una cadena hexadecimal aleatoria de 16 bytes) que contiene una lista con todos tus activos y sus respectivas huellas digitales. Esto es utilizado por los métodos de ayuda de Rails para evitar devolver las solicitudes de mapeo a Sprockets. Un archivo de manifiesto típico se ve así:</p><div class="interstitial code">
+<pre><code class="highlight json"><span class="p">{</span><span class="nl">"files"</span><span class="p">:{</span><span class="nl">"application-&lt;fingerprint&gt;.js"</span><span class="p">:{</span><span class="nl">"logical_path"</span><span class="p">:</span><span class="s2">"application.js"</span><span class="p">,</span><span class="nl">"mtime"</span><span class="p">:</span><span class="s2">"2016-12-23T20:12:03-05:00"</span><span class="p">,</span><span class="nl">"size"</span><span class="p">:</span><span class="mi">412383</span><span class="p">,</span><span class="w">
+</span><span class="nl">"digest"</span><span class="p">:</span><span class="s2">"&lt;fingerprint&gt;"</span><span class="p">,</span><span class="nl">"integrity"</span><span class="p">:</span><span class="s2">"sha256-&lt;random-string&gt;"</span><span class="p">}},</span><span class="w">
+</span><span class="nl">"assets"</span><span class="p">:{</span><span class="nl">"application.js"</span><span class="p">:</span><span class="s2">"application-&lt;fingerprint&gt;.js"</span><span class="p">}}</span><span class="w">
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="{&quot;files&quot;:{&quot;application-<fingerprint>.js&quot;:{&quot;logical_path&quot;:&quot;application.js&quot;,&quot;mtime&quot;:&quot;2016-12-23T20:12:03-05:00&quot;,&quot;size&quot;:412383,
+&quot;digest&quot;:&quot;<fingerprint>&quot;,&quot;integrity&quot;:&quot;sha256-<random-string>&quot;}},
+&quot;assets&quot;:{&quot;application.js&quot;:&quot;application-<fingerprint>.js&quot;}}
 ">Copy</button>
 </div>
-<div class="note"><p>El comparador (y otros miembros de la matriz de precompilación; ver más abajo) es
-aplicado a los nombres de archivos compilados finales. Esto significa cualquier cosa que compile
-Se excluye JS/CSS, así como los archivos JS/CSS sin procesar; por ejemplo, ".coffee" y
-Los archivos <code>.scss</code> ** no ** se incluyen automáticamente ya que se compilan en JS / CSS.</p></div><p>Si tiene otros manifiestos u hojas de estilo individuales y archivos JavaScript para
-include, puede agregarlos a la matriz <code>precompile</code> en <code>config/initializers/assets.rb</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">precompile</span> <span class="o">+=</span> <span class="sx">%w( admin.js admin.css )</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="Rails.application.config.assets.precompile += %w( admin.js admin.css )
-">Copy</button>
-</div>
-<div class="note"><p>Especifique siempre un nombre de archivo compilado esperado que termine con <code>.js</code> o <code>.css</code>,
-incluso si desea agregar archivos Sass o CoffeeScript a la matriz de precompilación.</p></div><p>El comando también genera un <code>.sprockets-manifest-randomhex.json</code> (donde <code>randomhex</code> es
-una cadena hexadecimal aleatoria de 16 bytes) que contiene una lista con todos sus activos y sus respectivos
-huellas dactilares. Esto lo utilizan los métodos auxiliares de Rails para evitar
-mapeo de solicitudes de nuevo a Sprockets. Un archivo de manifiesto típico se ve así:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="p">{</span><span class="s2">"files"</span><span class="p">:{</span><span class="s2">"application-aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b.js"</span><span class="p">:{</span><span class="s2">"logical_path"</span><span class="ss">:"application.js"</span><span class="p">,</span><span class="s2">"mtime"</span><span class="ss">:"2016-12-23T20:12:03-05:00"</span><span class="p">,</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">412383</span><span class="p">,</span>
-<span class="s2">"digest"</span><span class="ss">:"aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b"</span><span class="p">,</span><span class="s2">"integrity"</span><span class="ss">:"sha256-ruS+cfEogDeueLmX3ziDMu39JGRxtTPc7aqPn+FWRCs="</span><span class="p">},</span>
-<span class="s2">"application-86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18.css"</span><span class="p">:{</span><span class="s2">"logical_path"</span><span class="ss">:"application.css"</span><span class="p">,</span><span class="s2">"mtime"</span><span class="ss">:"2016-12-23T19:12:20-05:00"</span><span class="p">,</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">2994</span><span class="p">,</span>
-<span class="s2">"digest"</span><span class="ss">:"86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18"</span><span class="p">,</span><span class="s2">"integrity"</span><span class="ss">:"sha256-hqKStQcHk8N+LA5fOfc7s4dkTq6tp/lub8BAoCixbBg="</span><span class="p">},</span>
-<span class="s2">"favicon-8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda.ico"</span><span class="p">:{</span><span class="s2">"logical_path"</span><span class="ss">:"favicon.ico"</span><span class="p">,</span><span class="s2">"mtime"</span><span class="ss">:"2016-12-23T20:11:00-05:00"</span><span class="p">,</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">8629</span><span class="p">,</span>
-<span class="s2">"digest"</span><span class="ss">:"8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda"</span><span class="p">,</span><span class="s2">"integrity"</span><span class="ss">:"sha256-jSOHuNTTLOzZP6OQDfDp/4nQGqzYT1DngMF8n2s9Dto="</span><span class="p">},</span>
-<span class="s2">"my_image-f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493.png"</span><span class="p">:{</span><span class="s2">"logical_path"</span><span class="ss">:"my_image.png"</span><span class="p">,</span><span class="s2">"mtime"</span><span class="ss">:"2016-12-23T20:10:54-05:00"</span><span class="p">,</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">23414</span><span class="p">,</span>
-<span class="s2">"digest"</span><span class="ss">:"f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493"</span><span class="p">,</span><span class="s2">"integrity"</span><span class="ss">:"sha256-9AKBVv1+ygNYTV8vwEcN8eDbxzaequY4sv8DP5iOxJM="</span><span class="p">}},</span>
-<span class="s2">"assets"</span><span class="p">:{</span><span class="s2">"application.js"</span><span class="ss">:"application-aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b.js"</span><span class="p">,</span>
-<span class="s2">"application.css"</span><span class="ss">:"application-86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18.css"</span><span class="p">,</span>
-<span class="s2">"favicon.ico"</span><span class="ss">:"favicon-8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda.ico"</span><span class="p">,</span>
-<span class="s2">"my_image.png"</span><span class="ss">:"my_image-f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493.png"</span><span class="p">}}</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text='{"files":{"application-aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b.js":{"logical_path":"application.js","mtime":"2016-12-23T20:12:03-05:00","size":412383,
-"digest":"aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b","integrity":"sha256-ruS+cfEogDeueLmX3ziDMu39JGRxtTPc7aqPn+FWRCs="},
-"application-86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18.css":{"logical_path":"application.css","mtime":"2016-12-23T19:12:20-05:00","size":2994,
-"digest":"86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18","integrity":"sha256-hqKStQcHk8N+LA5fOfc7s4dkTq6tp/lub8BAoCixbBg="},
-"favicon-8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda.ico":{"logical_path":"favicon.ico","mtime":"2016-12-23T20:11:00-05:00","size":8629,
-"digest":"8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda","integrity":"sha256-jSOHuNTTLOzZP6OQDfDp/4nQGqzYT1DngMF8n2s9Dto="},
-"my_image-f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493.png":{"logical_path":"my_image.png","mtime":"2016-12-23T20:10:54-05:00","size":23414,
-"digest":"f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493","integrity":"sha256-9AKBVv1+ygNYTV8vwEcN8eDbxzaequY4sv8DP5iOxJM="}},
-"assets":{"application.js":"application-aee4be71f1288037ae78b997df388332edfd246471b533dcedaa8f9fe156442b.js",
-"application.css":"application-86a292b5070793c37e2c0e5f39f73bb387644eaeada7f96e6fc040a028b16c18.css",
-"favicon.ico":"favicon-8d2387b8d4d32cecd93fa3900df0e9ff89d01aacd84f50e780c17c9f6b3d0eda.ico",
-"my_image.png":"my_image-f4028156fd7eca03584d5f2fc0470df1e0dbc7369eaae638b2ff033f988ec493.png"}}
-'>Copy</button>
-</div>
-<p>La ubicación predeterminada para el manifiesto es la raíz de la ubicación especificada en
-<code>config.assets.prefix</code> ('/ assets' por defecto).</p><div class="note"><p>Si faltan archivos precompilados en producción, obtendrá un
-<code>Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError</code>
-excepción que indica el nombre de los archivos que faltan.</p></div><h5 id="far-future-expires-header"><a class="anchorlink" href="#far-future-expires-header">4.1.1 Far-future Expires Header</a></h5><p>Los activos precompilados existen en el sistema de archivos y su sitio web los proporciona directamente.
-servidor. No tienen encabezados de futuro lejano de forma predeterminada, por lo que para obtener el beneficio de
-huellas digitales, tendrá que actualizar la configuración de su servidor para agregar esos
-encabezados.</p><p>Para Apache:</p><div class="code_container">
-<pre><code class="highlight apache"><span class="c"># The Expires* directives requires the Apache module</span>
-<span class="c"># `mod_expires` to be enabled.</span>
+<p>En tu aplicación, habrá más archivos y activos listados en el manifiesto, <code>&lt;fingerprint&gt;</code> y <code>&lt;random-string&gt;</code> también se generarán.</p><p>La ubicación predeterminada para el manifiesto es la raíz de la ubicación especificada en <code>config.assets.prefix</code> ('/assets' por defecto).</p><p>NOTA: Si faltan archivos precompilados en producción, recibirás una excepción <code>Sprockets::Helpers::RailsHelper::AssetPaths::AssetNotPrecompiledError</code> que indica el nombre del archivo(s) faltante(s).</p><h4 id="encabezado-expires-de-futuro-lejano"><a class="anchorlink" href="#encabezado-expires-de-futuro-lejano"><span>5.1.1</span> Encabezado Expires de Futuro Lejano</a></h4><p>Los activos precompilados existen en el sistema de archivos y son servidos directamente por tu servidor web. No tienen encabezados de futuro lejano por defecto, por lo que para obtener el beneficio de las huellas digitales, tendrás que actualizar la configuración de tu servidor para agregar esos encabezados.</p><p>Para Apache:</p><div class="interstitial code">
+<pre><code class="highlight apache"><span class="c"># Las directivas Expires* requieren que el módulo Apache</span>
+<span class="c"># `mod_expires` esté habilitado.</span>
 <span class="p">&lt;</span><span class="nl">Location</span><span class="sr"> /assets/</span><span class="p">&gt;
-</span>  <span class="c"># Use of ETag is discouraged when Last-Modified is present</span>
+</span>  <span class="c"># El uso de ETag no se recomienda cuando Last-Modified está presente</span>
   <span class="nc">Header</span> <span class="ss">unset</span> ETag
   <span class="nc">FileETag</span> <span class="ss">None</span>
-  <span class="c"># RFC says only cache for 1 year</span>
+  <span class="c"># RFC dice que solo se debe almacenar en caché durante 1 año</span>
   <span class="nc">ExpiresActive</span> <span class="ss">On</span>
   <span class="nc">ExpiresDefault</span> "access plus 1 year"
 <span class="p">&lt;/</span><span class="nl">Location</span><span class="p">&gt;
 </span></code></pre>
-<button class="clipboard-button" data-clipboard-text='# The Expires* directives requires the Apache module
-# `mod_expires` to be enabled.
-&lt;Location /assets/&gt;
-  # Use of ETag is discouraged when Last-Modified is present
+<button class="clipboard-button" data-clipboard-text="# Las directivas Expires* requieren que el módulo Apache
+# `mod_expires` esté habilitado.
+<Location /assets/>
+  # El uso de ETag no se recomienda cuando Last-Modified está presente
   Header unset ETag
   FileETag None
-  # RFC says only cache for 1 year
+  # RFC dice que solo se debe almacenar en caché durante 1 año
   ExpiresActive On
-  ExpiresDefault "access plus 1 year"
-&lt;/Location&gt;
-'>Copy</button>
+  ExpiresDefault &quot;access plus 1 year&quot;
+</Location>
+">Copy</button>
 </div>
-<p>Para NGINX:</p><div class="code_container">
+<p>Para NGINX:</p><div class="interstitial code">
 <pre><code class="highlight nginx"><span class="k">location</span> <span class="p">~</span> <span class="sr">^/assets/</span> <span class="p">{</span>
   <span class="kn">expires</span> <span class="s">1y</span><span class="p">;</span>
   <span class="kn">add_header</span> <span class="s">Cache-Control</span> <span class="s">public</span><span class="p">;</span>
@@ -842,160 +570,68 @@ encabezados.</p><p>Para Apache:</p><div class="code_container">
   <span class="kn">add_header</span> <span class="s">ETag</span> <span class="s">""</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='location ~ ^/assets/ {
+<button class="clipboard-button" data-clipboard-text="location ~ ^/assets/ {
   expires 1y;
   add_header Cache-Control public;
 
-  add_header ETag "";
+  add_header ETag &quot;&quot;;
 }
-'>Copy</button>
+">Copy</button>
 </div>
-<h4 id="local-precompilation"><a class="anchorlink" href="#local-precompilation">4.2 Local Precompilation</a></h4><p>A veces, es posible que no desee o no pueda compilar activos en la producción
-servidor. Por ejemplo, es posible que tenga acceso de escritura limitado a su producción
-sistema de archivos, o puede planear implementar con frecuencia sin realizar ningún cambio en
-sus activos.</p><p>En tales casos, puede precompilar activos <em>localmente</em>, es decir, agregar un
-conjunto de activos compilados y listos para producción en su repositorio de código fuente antes
-empujando a la producción. De esta manera, no es necesario precompilarlos por separado.
-en el servidor de producción en cada implementación.</p><p>Como arriba, puede realizar este paso usando</p><div class="code_container">
+<h3 id="precompilación-local"><a class="anchorlink" href="#precompilación-local"><span>5.2</span> Precompilación Local</a></h3><p>A veces, es posible que no desees o no puedas compilar activos en el servidor de producción. Por ejemplo, es posible que tengas acceso limitado de escritura a tu sistema de archivos de producción, o que planees implementar con frecuencia sin hacer ningún cambio en tus activos.</p><p>En tales casos, puedes precompilar activos <em>localmente</em>, es decir, agregar un conjunto final de activos compilados y listos para producción a tu repositorio de código fuente antes de enviarlos a producción. De esta manera, no necesitan ser precompilados por separado en el servidor de producción en cada implementación.</p><p>Como se mencionó anteriormente, puedes realizar este paso usando</p><div class="interstitial code">
 <pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nv">RAILS_ENV</span><span class="o">=</span>production <span class="nb">rails </span>assets:precompile
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="RAILS_ENV=production rails assets:precompile
 ">Copy</button>
 </div>
-<p>Tenga en cuenta las siguientes advertencias:</p>
+<p>Ten en cuenta las siguientes advertencias:</p>
 <ul>
-<li>Si los activos precompilados están disponibles, se servirán, incluso si no
-coinciden con los activos originales (sin compilar), incluso en el desarrollo
-servidor._</li>
-</ul>
-<p>  Para garantizar que el servidor de desarrollo siempre compile activos sobre la marcha (y
-  así siempre refleja el estado más reciente del código), el desarrollo
-  entorno _ debe configurarse para mantener los activos precompilados en un entorno diferente
-  ubicación que la producción. De lo contrario, cualquier activo precompilado para su uso en
-  producción aplastará las solicitudes de ellos en el desarrollo (es decir,
-  los cambios que realice en los activos no se reflejarán en el navegador).</p><p>  Puede hacer esto agregando la siguiente línea a
-  <code>config/environment/development.rb</code>:</p><div class="code_container">
-<pre><code class="highlight ruby">  <span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">prefix</span> <span class="o">=</span> <span class="s2">"/dev-assets"</span>
+<li><p>Si los activos precompilados están disponibles, se servirán, incluso si ya no coinciden con los activos originales (no compilados), <em>incluso en el servidor de desarrollo.</em></p><p>Para asegurarte de que el servidor de desarrollo siempre compile activos sobre la marcha (y por lo tanto siempre refleje el estado más reciente del código), el entorno de desarrollo <em>debe configurarse para mantener los activos precompilados en una ubicación diferente a la de producción.</em> De lo contrario, cualquier activo precompilado para su uso en producción sobrescribirá las solicitudes de los mismos en desarrollo (<em>es decir</em>, los cambios que realices en los activos no se reflejarán en el navegador).</p><p>Puedes hacer esto agregando la siguiente línea a <code>config/environments/development.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">prefix</span> <span class="o">=</span> <span class="s2">"/dev-assets"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='  config.assets.prefix = "/dev-assets"
-'>Copy</button>
-</div>
-
-<ul>
-<li>La tarea de precompilación de activos en su herramienta de implementación (<em>por ejemplo,</em> Capistrano) debería
-estar discapacitado.</li>
-<li>Todos los compresores o minificadores necesarios deben estar disponibles en su desarrollo
-sistema.</li>
+<button class="clipboard-button" data-clipboard-text="config.assets.prefix = &quot;/dev-assets&quot;
+">Copy</button>
+</div></li>
+<li><p>La tarea de precompilación de activos en tu herramienta de implementación (<em>por ejemplo</em>, Capistrano) debe deshabilitarse.</p></li>
+<li><p>Cualquier compresor o minificador necesario debe estar disponible en tu sistema de desarrollo.</p></li>
 </ul>
-<h4 id="live-compilation"><a class="anchorlink" href="#live-compilation">4.3 Live Compilation</a></h4><p>En algunas circunstancias, es posible que desee utilizar la compilación en vivo. En este modo todos
-Las solicitudes de activos en la tubería son manejadas directamente por Sprockets.</p><p>Para habilitar este conjunto de opciones:</p><div class="code_container">
+<p>También puedes establecer <code>ENV["SECRET_KEY_BASE_DUMMY"]</code> para activar el uso de una <code>secret_key_base</code> generada aleatoriamente que se almacena en un archivo temporal. Esto es útil cuando se precompilan activos para producción como parte de un paso de construcción que de otro modo no necesitaría acceso a los secretos de producción.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nv">SECRET_KEY_BASE_DUMMY</span><span class="o">=</span>1 <span class="nb">bundle exec rails </span>assets:precompile
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+">Copy</button>
+</div>
+<h3 id="compilación-en-vivo"><a class="anchorlink" href="#compilación-en-vivo"><span>5.3</span> Compilación en Vivo</a></h3><p>En algunas circunstancias, es posible que desees usar la compilación en vivo. En este modo, todas las solicitudes de activos en el pipeline son manejadas directamente por Sprockets.</p><p>Para habilitar esta opción, establece:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">compile</span> <span class="o">=</span> <span class="kp">true</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.assets.compile = true
 ">Copy</button>
 </div>
-<p>En la primera solicitud, los activos se compilan y almacenan en caché como se describe en <a href="#assets-cache-store">Activos
-Cache Store</a> y los nombres de manifiesto utilizados en los ayudantes.
-se modifican para incluir el hash SHA256.</p><p>Sprockets también establece el encabezado HTTP <code>Cache-Control</code> en <code>max-age=31536000</code>. Esta
-señala todos los cachés entre su servidor y el navegador del cliente que este contenido
-(el archivo servido) se puede almacenar en caché durante 1 año. El efecto de esto es reducir la
-número de solicitudes de este activo desde su servidor; el activo tiene buenas posibilidades
-de estar en el caché del navegador local o en algún caché intermedio.</p><p>Este modo usa más memoria, funciona peor que el predeterminado y no
-recomendado.</p><p>Si está implementando una aplicación de producción en un sistema sin ningún
-tiempos de ejecución de JavaScript preexistentes, es posible que desee agregar uno a su <code>Gemfile</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">group</span> <span class="ss">:production</span> <span class="k">do</span>
-  <span class="n">gem</span> <span class="s1">'mini_racer'</span>
-<span class="k">end</span>
+<p>En la primera solicitud, los activos se compilan y almacenan en caché como se describe en <a href="#assets-cache-store">Almacenamiento en Caché de Activos</a>, y los nombres de manifiesto utilizados en los ayudantes se alteran para incluir el hash SHA256.</p><p>Sprockets también establece el encabezado HTTP <code>Cache-Control</code> en <code>max-age=31536000</code>. Esto señala a todos los cachés entre tu servidor y el navegador del cliente que este contenido (el archivo servido) puede almacenarse en caché durante 1 año. El efecto de esto es reducir el número de solicitudes para este activo desde tu servidor; el activo tiene una buena oportunidad de estar en el caché local del navegador o en algún caché intermedio.</p><p>Este modo utiliza más memoria, funciona peor que el predeterminado y no se recomienda.</p><h3 id="cdns"><a class="anchorlink" href="#cdns"><span>5.4</span> CDNs</a></h3><p>CDN significa <a href="https://es.wikipedia.org/wiki/Red_de_entrega_de_contenidos">Red de Entrega de Contenidos</a>, están diseñadas principalmente para almacenar en caché activos en todo el mundo para que cuando un navegador solicite el activo, haya una copia en caché geográficamente cercana a ese navegador. Si estás sirviendo activos directamente desde tu servidor Rails en producción, la mejor práctica es usar un CDN frente a tu aplicación.</p><p>Un patrón común para usar un CDN es establecer tu aplicación de producción como el servidor de "origen". Esto significa que cuando un navegador solicita un activo del CDN y hay un fallo de caché, lo obtendrá de tu servidor sobre la marcha y luego lo almacenará en caché. Por ejemplo, si estás ejecutando una aplicación Rails en <code>example.com</code> y tienes un CDN configurado en <code>mi-subdominio-cdn.fictional-cdn.com</code>, entonces cuando se realiza una solicitud a <code>mi-subdominio-cdn.fictional-cdn.com/assets/smile.png</code>, el CDN consultará tu servidor una vez en <code>example.com/assets/smile.png</code> y almacenará la solicitud en caché. La próxima solicitud al CDN que llegue a la misma URL utilizará la copia en caché. Cuando el CDN puede servir un activo directamente, la solicitud nunca toca tu servidor Rails. Dado que los activos de un CDN están geográficamente más cerca del navegador, la solicitud es más rápida, y dado que tu servidor no necesita dedicar tiempo a servir activos, puede centrarse en servir el código de la aplicación lo más rápido posible.</p><h4 id="configurar-un-cdn-para-servir-activos-estáticos"><a class="anchorlink" href="#configurar-un-cdn-para-servir-activos-estáticos"><span>5.4.1</span> Configurar un CDN para Servir Activos Estáticos</a></h4><p>Para configurar tu CDN, debes tener tu aplicación ejecutándose en producción en Internet en una URL públicamente disponible, por ejemplo, <code>example.com</code>. Luego, deberás registrarte en un servicio CDN de un proveedor de alojamiento en la nube. Cuando hagas esto, debes configurar el "origen" del CDN para que apunte de regreso a tu sitio web <code>example.com</code>. Consulta la documentación de tu proveedor para obtener información sobre cómo configurar el servidor de origen.</p><p>El CDN que aprovisionaste debería darte un subdominio personalizado para tu aplicación, como <code>mi-subdominio-cdn.fictional-cdn.com</code> (ten en cuenta que fictional-cdn.com no es un proveedor de CDN válido en el momento de escribir esto). Ahora que has configurado tu servidor CDN, necesitas decirle a los navegadores que usen tu CDN para obtener activos en lugar de tu servidor Rails directamente. Puedes hacer esto configurando Rails para establecer tu CDN como el host de activos en lugar de usar una ruta relativa. Para establecer tu host de activos en Rails, necesitas configurar <a href="configuring.html#config-asset-host"><code>config.asset_host</code></a> en <code>config/environments/production.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">=</span> <span class="s1">'mi-subdominio-cdn.fictional-cdn.com'</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="group :production do
-  gem 'mini_racer'
-end
+<button class="clipboard-button" data-clipboard-text="config.asset_host = 'mi-subdominio-cdn.fictional-cdn.com'
 ">Copy</button>
 </div>
-<h4 id="cdns"><a class="anchorlink" href="#cdns">4.4 CDNs</a></h4><p>CDN son las siglas de <a href="https://en.wikipedia.org/wiki/Content_delivery_network">Content Delivery
-Network</a>, son
-diseñado principalmente para almacenar en caché activos en todo el mundo para que cuando un navegador
-solicita el activo, una copia en caché estará geográficamente cerca de ese navegador.
-Si está sirviendo activos directamente desde su servidor Rails en producción, el
-La mejor práctica es utilizar un CDN delante de su aplicación.</p><p>Un patrón común para usar una CDN es configurar su aplicación de producción como el
-servidor "origen". Esto significa que cuando un navegador solicita un activo de la CDN y
-hay una falta de caché, tomará el archivo de su servidor sobre la marcha y
-luego almacenarlo en caché. Por ejemplo, si está ejecutando una aplicación Rails en
-<code>example.com</code> y tener un CDN configurado en <code>mycdnsubdomain.fictional-cdn.com</code>,
-luego, cuando se realiza una solicitud a <code>mycdnsubdomain.fictional-
-cdn.com/assets/smile.png</code>, el CDN consultará su servidor una vez en
-<code>example.com/assets/smile.png</code> y almacenar en caché la solicitud. La siguiente solicitud al
-La CDN que ingresa a la misma URL llegará a la copia en caché. Cuando el CDN puede
-sirva un activo directamente, la solicitud nunca toca su servidor Rails. Desde el
-los activos de una CDN están geográficamente más cerca del navegador, la solicitud es
-más rápido, y dado que su servidor no necesita perder tiempo sirviendo activos, puede
-céntrese en servir el código de la aplicación lo más rápido posible.</p><h5 id="set-up-a-cdn-to-serve-static-assets"><a class="anchorlink" href="#set-up-a-cdn-to-serve-static-assets">4.4.1 Set up a CDN to Serve Static Assets</a></h5><p>Para configurar su CDN, debe tener su aplicación ejecutándose en producción en
-Internet en una URL disponible públicamente, por ejemplo, <code>example.com</code>. próximo
-deberá suscribirse a un servicio CDN de un proveedor de alojamiento en la nube. Cuando usted
-Para ello, debe configurar el "origen" de la CDN para que apunte a su
-sitio web <code>example.com</code>, consulte con su proveedor la documentación sobre la configuración del
-servidor de origen.</p><p>La CDN que aprovisionó debería proporcionarle un subdominio personalizado para su aplicación
-como <code>mycdnsubdomain.fictional-cdn.com</code> (tenga en cuenta que fictional-cdn.com no es un
-proveedor de CDN válido en el momento de escribir este artículo). Ahora que has configurado
-su servidor CDN, debe decirle a los navegadores que usen su CDN para obtener activos
-en lugar de su servidor Rails directamente. Puede hacer esto configurando Rails para
-establezca su CDN como el host de activos en lugar de utilizar una ruta relativa. Para configurar tu
-host de activos en Rails, debe configurar <code>config.action_controller.asset_host</code> en
-<code>config/environment/production.rb</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">action_controller</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">=</span> <span class="s1">'mycdnsubdomain.fictional-cdn.com'</span>
+<p>NOTA: Solo necesitas proporcionar el "host", este es el subdominio y el dominio raíz, no necesitas especificar un protocolo o "esquema" como <code>http://</code> o <code>https://</code>. Cuando se solicita una página web, el protocolo en el enlace a tu activo que se genera coincidirá con cómo se accede a la página web por defecto.</p><p>También puedes establecer este valor a través de una <a href="https://es.wikipedia.org/wiki/Variable_de_entorno">variable de entorno</a> para facilitar la ejecución de una copia de ensayo de tu sitio:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">[</span><span class="s1">'CDN_HOST'</span><span class="p">]</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="config.action_controller.asset_host = 'mycdnsubdomain.fictional-cdn.com'
+<button class="clipboard-button" data-clipboard-text="config.asset_host = ENV['CDN_HOST']
 ">Copy</button>
 </div>
-<div class="note"><p>Solo necesita proporcionar el "host", este es el subdominio y la raíz
-dominio, no es necesario especificar un protocolo o "esquema" como <code>http://</code> o
-<code>https://</code>. Cuando se solicita una página web, el protocolo en el enlace a su activo
-que se genera coincidirá con la forma en que se accede a la página web de forma predeterminada.</p></div><p>También puede establecer este valor a través de un <a href="https://en.wikipedia.org/wiki/Environment_variable">entorno
-variable</a> para ejecutar una
-preparar una copia de su sitio más fácilmente:</p><div class="code_container">
-<pre><code class="highlight plaintext">config.action_controller.asset_host = ENV['CDN_HOST']
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="config.action_controller.asset_host = ENV['CDN_HOST']
-">Copy</button>
-</div>
-<div class="note"><p>Debería configurar <code>CDN_HOST</code> en su servidor en <code>mycdnsubdomain
-.fictional-cdn.com</code> para que esto funcione.</p></div><p>Una vez que haya configurado su servidor y su CDN cuando atienda una página web que
-tiene un activo:</p><div class="code_container">
+<p>NOTA: Necesitarías establecer <code>CDN_HOST</code> en tu servidor a <code>mi-subdominio-cdn.fictional-cdn.com</code> para que esto funcione.</p><p>Una vez que hayas configurado tu servidor y tu CDN, las rutas de los activos desde los ayudantes como:</p><div class="interstitial code">
 <pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">asset_path</span><span class="p">(</span><span class="s1">'smile.png'</span><span class="p">)</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="&lt;%= asset_path('smile.png') %&gt;
+<button class="clipboard-button" data-clipboard-text="<%= asset_path('smile.png') %>
 ">Copy</button>
 </div>
-<p>En lugar de devolver una ruta como <code>/ assets / smile.png</code> (los resúmenes se omiten
-para mayor legibilidad). La URL generada tendrá la ruta completa a su CDN.</p><div class="code_container">
-<pre><code class="highlight plaintext">http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
+<p>Se representarán como URL completas de CDN como <code>http://mi-subdominio-cdn.fictional-cdn.com/assets/smile.png</code> (huella digital omitida para mayor claridad).</p><p>Si el CDN tiene una copia de <code>smile.png</code>, la servirá al navegador, y tu servidor ni siquiera sabrá que se solicitó. Si el CDN no tiene una copia, intentará encontrarla en el "origen" <code>example.com/assets/smile.png</code>, y luego la almacenará para uso futuro.</p><p>Si deseas servir solo algunos activos desde tu CDN, puedes usar la opción personalizada <code>:host</code> en tu ayudante de activos, que sobrescribe el valor establecido en <a href="configuring.html#config-action-controller-asset-host"><code>config.action_controller.asset_host</code></a>.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">asset_path</span> <span class="s1">'image.png'</span><span class="p">,</span> <span class="ss">host: </span><span class="s1">'mi-subdominio-cdn.fictional-cdn.com'</span> <span class="cp">%&gt;</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
+<button class="clipboard-button" data-clipboard-text="<%= asset_path 'image.png', host: 'mi-subdominio-cdn.fictional-cdn.com' %>
 ">Copy</button>
 </div>
-<p>Si el CDN tiene una copia de <code>smile.png</code>, la servirá al navegador y a su
-el servidor ni siquiera sabe que se solicitó. Si el CDN no tiene una copia
-intentará encontrarlo en el "origen" <code>example.com/assets/smile.png</code> y luego almacenar
-para uso futuro.</p><p>Si desea servir solo algunos activos de su CDN, puede usar <code>:host</code> personalizado
-opción su asistente de activos, que sobrescribe el valor establecido en
-<code>config.action_controller.asset_host</code>.</p><div class="code_container">
-<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">asset_path</span> <span class="s1">'image.png'</span><span class="p">,</span> <span class="ss">host: </span><span class="s1">'mycdnsubdomain.fictional-cdn.com'</span> <span class="cp">%&gt;</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="&lt;%= asset_path 'image.png', host: 'mycdnsubdomain.fictional-cdn.com' %&gt;
-">Copy</button>
-</div>
-<h5 id="customize-cdn-caching-behavior"><a class="anchorlink" href="#customize-cdn-caching-behavior">4.4.2 Customize CDN Caching Behavior</a></h5><p>Una CDN funciona almacenando en caché el contenido. Si el CDN tiene contenido obsoleto o incorrecto, entonces es
-perjudicando en lugar de ayudar a su aplicación. El propósito de esta sección es
-describir el comportamiento general de almacenamiento en caché de la mayoría de las CDN, su proveedor específico puede
-comportarse de manera ligeramente diferente.</p><h6 id="cdn-request-caching"><a class="anchorlink" href="#cdn-request-caching">4.4.2.1 CDN Request Caching</a></h6><p>Si bien una CDN se describe como buena para almacenar en caché activos, en realidad almacena en caché el
-solicitud completa. Esto incluye el cuerpo del activo y los encabezados. los
-el más importante es <code>Cache-Control</code> que le dice a la CDN (y a los navegadores web)
-cómo almacenar en caché el contenido. Esto significa que si alguien solicita un activo que no
-no existe <code>/assets/i-dont-exist.png</code> y su aplicación Rails devuelve un 404,
-entonces su CDN probablemente almacenará en caché la página 404 si un encabezado <code>Cache-Control</code> válido
-está presente.</p><h6 id="cdn-header-debugging"><a class="anchorlink" href="#cdn-header-debugging">4.4.2.2 CDN Header Debugging</a></h6><p>Una forma de verificar que los encabezados estén almacenados en caché correctamente en su CDN es usando <a href="https://explainshell.com/explain?cmd=curl+-I+http%3A%2F%2Fwww.example.com">curl</a>. Tú
-puede solicitar los encabezados tanto de su servidor como de su CDN para verificar que sean
-lo mismo:</p><div class="code_container">
+<h4 id="personalizar-el-comportamiento-de-caché-del-cdn"><a class="anchorlink" href="#personalizar-el-comportamiento-de-caché-del-cdn"><span>5.4.2</span> Personalizar el Comportamiento de Caché del CDN</a></h4><p>Un CDN funciona almacenando contenido en caché. Si el CDN tiene contenido obsoleto o incorrecto, entonces está perjudicando en lugar de ayudar a tu aplicación. El propósito de esta sección es describir el comportamiento general de caché de la mayoría de los CDNs. Tu proveedor específico puede comportarse de manera ligeramente diferente.</p><h5 id="caché-de-solicitudes-del-cdn"><a class="anchorlink" href="#caché-de-solicitudes-del-cdn"><span>5.4.2.1</span> Caché de Solicitudes del CDN</a></h5><p>Mientras que un CDN se describe como bueno para almacenar activos en caché, en realidad almacena en caché toda la solicitud. Esto incluye el cuerpo del activo, así como cualquier encabezado. El más importante es <code>Cache-Control</code>, que le dice al CDN (y a los navegadores web) cómo almacenar en caché los contenidos. Esto significa que si alguien solicita un activo que no existe, como <code>/assets/i-dont-exist.png</code>, y tu aplicación Rails devuelve un 404, entonces tu CDN probablemente almacenará en caché la página 404 si hay un encabezado <code>Cache-Control</code> válido presente.</p><h5 id="depuración-de-encabezados-del-cdn"><a class="anchorlink" href="#depuración-de-encabezados-del-cdn"><span>5.4.2.2</span> Depuración de Encabezados del CDN</a></h5><p>Una forma de comprobar que los encabezados se almacenan correctamente en caché en tu CDN es utilizando <a href="https://explainshell.com/explain?cmd=curl+-I+http%3A%2F%2Fwww.example.com">curl</a>. Puedes solicitar los encabezados tanto de tu servidor como de tu CDN para verificar que sean los mismos:</p><div class="interstitial code">
 <pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-I</span> http://www.example/assets/application-
 <span class="go">d0e099e021c95eb0de3615fd1d8c4d83.css
 HTTP/1.1 200 OK
@@ -1011,8 +647,8 @@ Via: 1.1 vegur
 <button class="clipboard-button" data-clipboard-text="curl -I http://www.example/assets/application-
 ">Copy</button>
 </div>
-<p>Frente a la copia CDN.</p><div class="code_container">
-<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-I</span> http://mycdnsubdomain.fictional-cdn.com/application-
+<p>Versus la copia del CDN:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span>curl <span class="nt">-I</span> http://mi-subdominio-cdn.fictional-cdn.com/application-
 <span class="go">d0e099e021c95eb0de3615fd1d8c4d83.css
 HTTP/1.1 200 OK Server: Cowboy Last-
 Modified: Thu, 08 May 2014 01:24:14 GMT Content-Type: text/css
@@ -1032,93 +668,50 @@ X-Cache-Hits:
 68
 X-Timer: S1408912125.211638212,VS0,VE0
 </span></code></pre>
-<button class="clipboard-button" data-clipboard-text="curl -I http://mycdnsubdomain.fictional-cdn.com/application-
+<button class="clipboard-button" data-clipboard-text="curl -I http://mi-subdominio-cdn.fictional-cdn.com/application-
 ">Copy</button>
 </div>
-<p>Consulte la documentación de su CDN para obtener información adicional que puedan proporcionar
-como <code>X-Cache</code> o para cualquier encabezado adicional que puedan agregar.</p><h6 id="cdns-and-the-cache-control-header"><a class="anchorlink" href="#cdns-and-the-cache-control-header">4.4.2.3 CDNs and the Cache-Control Header</a></h6><p>El <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9">encabezado de control de caché</a> es un W3C
-especificación que describe cómo se puede almacenar en caché una solicitud. Cuando no se utiliza CDN,
-El navegador utilizará esta información para almacenar en caché el contenido. Esto es muy útil para
-activos que no se modifican para que un navegador no necesite volver a descargar un
-CSS o JavaScript del sitio web en cada solicitud. Generalmente queremos nuestro servidor Rails
-para decirle a nuestra CDN (y navegador) que el activo es "público", es decir, cualquier caché
-puede almacenar la solicitud. Además, comúnmente queremos establecer <code>max-age</code>, que es cuánto tiempo
-el caché almacenará el objeto antes de invalidar el caché. La <code>max-age</code>
-El valor se establece en segundos con un valor máximo posible de <code>31536000</code>, que es uno.
-año. Puede hacer esto en su aplicación Rails configurando</p><div class="code_container">
-<pre><code class="highlight plaintext">config.public_file_server.headers = {
-  'Cache-Control' =&gt; 'public, max-age=31536000'
-}
+<p>Consulta la documentación de tu CDN para obtener información adicional que puedan proporcionar, como <code>X-Cache</code> o para cualquier encabezado adicional que puedan agregar.</p><h5 id="cdns-y-el-encabezado-cache-control"><a class="anchorlink" href="#cdns-y-el-encabezado-cache-control"><span>5.4.2.3</span> CDNs y el Encabezado Cache-Control</a></h5><p>El encabezado <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control"><code>Cache-Control</code></a> describe cómo se puede almacenar en caché una solicitud. Cuando no se utiliza un CDN, un navegador utilizará esta información para almacenar contenidos en caché. Esto es muy útil para los activos que no se modifican, de modo que un navegador no necesita volver a descargar el CSS o JavaScript de un sitio web en cada solicitud. Generalmente queremos que nuestro servidor Rails le diga a nuestro CDN (y al navegador) que el activo es "public". Eso significa que cualquier caché puede almacenar la solicitud. También queremos comúnmente establecer <code>max-age</code>, que es cuánto tiempo el caché almacenará el objeto antes de invalidar el caché. El valor de <code>max-age</code> se establece en segundos con un valor máximo posible de <code>31536000</code>, que es un año. Puedes hacer esto en tu aplicación Rails configurando</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">public_file_server</span><span class="p">.</span><span class="nf">headers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'Cache-Control'</span> <span class="o">=&gt;</span> <span class="s1">'public, max-age=31536000'</span>
+<span class="p">}</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.public_file_server.headers = {
-  'Cache-Control' =&gt; 'public, max-age=31536000'
+  'Cache-Control' => 'public, max-age=31536000'
 }
 ">Copy</button>
 </div>
-<p>Ahora, cuando su aplicación sirva a un activo en producción, la CDN almacenará el
-activo por hasta un año. Dado que la mayoría de las CDN también almacenan en caché los encabezados de la solicitud, esto
-<code>Cache-Control</code> se transmitirá a todos los navegadores futuros que busquen este activo,
-el navegador sabe que puede almacenar este activo durante mucho tiempo antes
-necesitando volver a solicitarlo.</p><h6 id="cdns-and-url-based-cache-invalidation"><a class="anchorlink" href="#cdns-and-url-based-cache-invalidation">4.4.2.4 CDNs and URL based Cache Invalidation</a></h6><p>La mayoría de las CDN almacenan en caché el contenido de un activo en función de la URL completa. Esto significa
-que una solicitud para</p><div class="code_container">
-<pre><code class="highlight plaintext">http://mycdnsubdomain.fictional-cdn.com/assets/smile-123.png
+<p>Ahora, cuando tu aplicación sirva un activo en producción, el CDN almacenará el activo hasta por un año. Dado que la mayoría de los CDNs también almacenan en caché los encabezados de la solicitud, este <code>Cache-Control</code> se pasará a todos los navegadores futuros que busquen este activo. El navegador luego sabe que puede almacenar este activo por un tiempo muy largo antes de necesitar volver a solicitarlo.</p><h5 id="cdns-e-invalidación-de-caché-basada-en-url"><a class="anchorlink" href="#cdns-e-invalidación-de-caché-basada-en-url"><span>5.4.2.4</span> CDNs e Invalidación de Caché Basada en URL</a></h5><p>La mayoría de los CDNs almacenarán en caché el contenido de un activo basado en la URL completa. Esto significa que una solicitud a</p><div class="interstitial code">
+<pre><code class="highlight plaintext">http://mi-subdominio-cdn.fictional-cdn.com/assets/smile-123.png
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="http://mycdnsubdomain.fictional-cdn.com/assets/smile-123.png
+<button class="clipboard-button" data-clipboard-text="http://mi-subdominio-cdn.fictional-cdn.com/assets/smile-123.png
 ">Copy</button>
 </div>
-<p>Será un caché completamente diferente al</p><div class="code_container">
-<pre><code class="highlight plaintext">http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
+<p>Será un caché completamente diferente de</p><div class="interstitial code">
+<pre><code class="highlight plaintext">http://mi-subdominio-cdn.fictional-cdn.com/assets/smile.png
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="http://mycdnsubdomain.fictional-cdn.com/assets/smile.png
+<button class="clipboard-button" data-clipboard-text="http://mi-subdominio-cdn.fictional-cdn.com/assets/smile.png
 ">Copy</button>
 </div>
-<p>Si desea establecer un <code>max-age</code> en un futuro lejano en su <code>Cache-Control</code> (y lo hace),
-luego asegúrese de que cuando cambie sus activos, su caché esté invalidado. por
-ejemplo al cambiar la cara sonriente en una imagen de amarillo a azul, desea
-todos los visitantes de su sitio para obtener la nueva cara azul. Cuando utilice un CDN con el
-La canalización de activos de Rails <code>config.assets.digest</code> se establece en true de forma predeterminada para que
-cada activo tendrá un nombre de archivo diferente cuando se cambie. De esta manera tu
-no tiene que invalidar nunca manualmente ningún elemento en su caché. Usando un
-en su lugar, con un nombre de activo único diferente, sus usuarios obtienen el activo más reciente.</p><h3 id="customizing-the-pipeline"><a class="anchorlink" href="#customizing-the-pipeline">5 Customizing the Pipeline</a></h3><h4 id="css-compression"><a class="anchorlink" href="#css-compression">5.1 CSS Compression</a></h4><p>Una de las opciones para comprimir CSS es YUI. El <a href="https://yui.github.io/yuicompressor/css.html">YUI CSS
-compresor</a> proporciona
-minificación.</p><p>La siguiente línea habilita la compresión YUI y requiere el <code>yui-compressor</code>
-gem.</p><div class="code_container">
+<p>Si deseas establecer un <code>max-age</code> de futuro lejano en tu <code>Cache-Control</code> (y lo deseas), entonces asegúrate de que cuando cambies tus activos, tu caché se invalide. Por ejemplo, al cambiar la cara sonriente en una imagen de amarilla a azul, deseas que todos los visitantes de tu sitio obtengan la nueva cara azul. Cuando usas un CDN con el pipeline de activos de Rails, <code>config.assets.digest</code> está configurado en true por defecto para que cada activo tenga un nombre de archivo diferente cuando se cambia. De esta manera, nunca tienes que invalidar manualmente ningún elemento en tu caché. Al usar un nombre de activo único diferente, tus usuarios obtienen el último activo.</p><h2 id="personalizando-el-pipeline"><a class="anchorlink" href="#personalizando-el-pipeline"><span>6</span> Personalizando el Pipeline</a></h2><h3 id="compresión-de-css"><a class="anchorlink" href="#compresión-de-css"><span>6.1</span> Compresión de CSS</a></h3><p>Una de las opciones para comprimir CSS es YUI. El <a href="https://yui.github.io/yuicompressor/css.html">compresor de CSS de YUI</a> proporciona minificación.</p><p>La siguiente línea habilita la compresión de YUI y requiere la gema <code>yui-compressor</code>.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">css_compressor</span> <span class="o">=</span> <span class="ss">:yui</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.assets.css_compressor = :yui
 ">Copy</button>
 </div>
-<p>La otra opción para comprimir CSS si tiene instalada la gema sass-rails es</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">css_compressor</span> <span class="o">=</span> <span class="ss">:sass</span>
+<h3 id="compresión-de-javascript"><a class="anchorlink" href="#compresión-de-javascript"><span>6.2</span> Compresión de JavaScript</a></h3><p>Las opciones posibles para la compresión de JavaScript son <code>:terser</code>, <code>:closure</code> y <code>:yui</code>. Estas requieren el uso de las gemas <code>terser</code>, <code>closure-compiler</code> o <code>yui-compressor</code>, respectivamente.</p><p>Toma la gema <code>terser</code>, por ejemplo. Esta gema envuelve <a href="https://github.com/terser/terser">Terser</a> (escrito para Node.js) en Ruby. Comprime tu código eliminando espacios en blanco y comentarios, acortando nombres de variables locales y realizando otras micro-optimizaciones como cambiar declaraciones <code>if</code> y <code>else</code> a operadores ternarios donde sea posible.</p><p>La siguiente línea invoca <code>terser</code> para la compresión de JavaScript.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">js_compressor</span> <span class="o">=</span> <span class="ss">:terser</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="config.assets.css_compressor = :sass
+<button class="clipboard-button" data-clipboard-text="config.assets.js_compressor = :terser
 ">Copy</button>
 </div>
-<h4 id="javascript-compression"><a class="anchorlink" href="#javascript-compression">5.2 JavaScript Compression</a></h4><p>Las posibles opciones para la compresión de JavaScript son <code>:closure</code>, <code>:uglifier</code> y
-<code>:yui</code>. Estos requieren el uso del <code>closure-compiler</code>, <code>uglifier</code> o gemas 
-<code>yui-compressor</code>, respectivamente.</p><p>Tome la gema <code>uglifier</code>, por ejemplo.
-Esta joya envuelve <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a> (escrito para
-NodeJS) en Ruby. Comprime su código eliminando espacios en blanco y comentarios,
-acortando los nombres de las variables locales y realizando otras microoptimizaciones como
-como cambiar las declaraciones <code>if</code> y <code>else</code> a operadores ternarios cuando sea posible.</p><p>La siguiente línea invoca <code>uglifier</code> para la compresión de JavaScript.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">js_compressor</span> <span class="o">=</span> <span class="ss">:uglifier</span>
+<p>NOTA: Necesitarás un runtime compatible con <a href="https://github.com/rails/execjs#readme">ExecJS</a> para usar <code>terser</code>. Si estás usando macOS o Windows, tienes un runtime JavaScript instalado en tu sistema operativo.</p><p>NOTA: La compresión de JavaScript también funcionará para tus archivos JavaScript cuando estés cargando tus activos a través de las gemas <code>importmap-rails</code> o <code>jsbundling-rails</code>.</p><h3 id="comprimir-tus-activos-con-gzip"><a class="anchorlink" href="#comprimir-tus-activos-con-gzip"><span>6.3</span> Comprimir tus activos con GZIP</a></h3><p>Por defecto, se generará una versión comprimida con GZIP de los activos compilados, junto con la versión no comprimida de los activos. Los activos comprimidos con GZIP ayudan a reducir la transmisión de datos por la red. Puedes configurar esto estableciendo el indicador <code>gzip</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">gzip</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1"># desactivar la generación de activos comprimidos con GZIP</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text="config.assets.js_compressor = :uglifier
+<button class="clipboard-button" data-clipboard-text="config.assets.gzip = false # desactivar la generación de activos comprimidos con GZIP
 ">Copy</button>
 </div>
-<div class="note"><p>Necesitará un <a href="https://github.com/rails/execjs#readme">ExecJS</a>
-tiempo de ejecución admitido para usar <code>uglifier</code>. Si está utilizando macOS o
-Windows tiene un tiempo de ejecución de JavaScript instalado en su sistema operativo.</p></div><h4 id="gzipping-your-assets"><a class="anchorlink" href="#gzipping-your-assets">5.3 GZipping your assets</a></h4><p>De forma predeterminada, se generará la versión comprimida con gzip de los activos compilados, junto con
-la versión sin gzip de los activos. Los activos comprimidos con Gzip ayudan a reducir la transmisión
-de datos a través del cable. Puede configurar esto estableciendo el indicador <code>gzip</code>.</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">gzip</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1"># disable gzipped assets generation</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="config.assets.gzip = false # disable gzipped assets generation
-">Copy</button>
-</div>
-<p>Consulte la documentación de su servidor web para obtener instrucciones sobre cómo entregar activos comprimidos con gzip.</p><h4 id="using-your-own-compressor"><a class="anchorlink" href="#using-your-own-compressor">5.4 Using Your Own Compressor</a></h4><p>The compressor config settings for CSS and JavaScript also take any object.
-This object must have a <code>compress</code> method that takes a string as the sole
-argument and it must return a string.</p><div class="code_container">
+<p>Consulta la documentación de tu servidor web para obtener instrucciones sobre cómo servir activos comprimidos con GZIP.</p><h3 id="usar-tu-propio-compresor"><a class="anchorlink" href="#usar-tu-propio-compresor"><span>6.4</span> Usar tu Propio Compresor</a></h3><p>Las configuraciones de compresor para CSS y JavaScript también aceptan cualquier objeto. Este objeto debe tener un método <code>compress</code> que tome una cadena como único argumento y debe devolver una cadena.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Transformer</span>
   <span class="k">def</span> <span class="nf">compress</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
     <span class="n">do_something_returning_a_string</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
@@ -1132,44 +725,32 @@ argument and it must return a string.</p><div class="code_container">
 end
 ">Copy</button>
 </div>
-<p>Para habilitar esto, pase un nuevo objeto a la opción de configuración en <code>application.rb</code>:</p><div class="code_container">
+<p>Para habilitar esto, pasa un nuevo objeto a la opción de configuración en <code>application.rb</code>:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">css_compressor</span> <span class="o">=</span> <span class="no">Transformer</span><span class="p">.</span><span class="nf">new</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="config.assets.css_compressor = Transformer.new
 ">Copy</button>
 </div>
-<h4 id="changing-the-assets-path"><a class="anchorlink" href="#changing-the-assets-path">5.5 Changing the <em>assets</em> Path</a></h4><p>La ruta pública que usa Sprockets por defecto es <code>/assets</code>.</p><p>Esto se puede cambiar a otra cosa:</p><div class="code_container">
+<h3 id="cambiar-la-ruta-de-assets"><a class="anchorlink" href="#cambiar-la-ruta-de-assets"><span>6.5</span> Cambiar la Ruta de <em>assets</em></a></h3><p>La ruta pública que Sprockets utiliza por defecto es <code>/assets</code>.</p><p>Esto puede cambiarse a otra cosa:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">prefix</span> <span class="o">=</span> <span class="s2">"/some_other_path"</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='config.assets.prefix = "/some_other_path"
-'>Copy</button>
-</div>
-<p>Esta es una opción útil si está actualizando un proyecto anterior que no usó el
-canalización de activos y ya usa esta ruta o desea usar esta ruta para
-un nuevo recurso.</p><h4 id="x-sendfile-headers"><a class="anchorlink" href="#x-sendfile-headers">5.6 X-Sendfile Headers</a></h4><p>El encabezado X-Sendfile es una directiva para que el servidor web ignore la respuesta
-desde la aplicación y, en su lugar, sirve un archivo especificado desde el disco. Esta opción
-está desactivado de forma predeterminada, pero se puede habilitar si su servidor lo admite. Cuando está habilitado,
-esto transfiere la responsabilidad de servir el archivo al servidor web, que es
-Más rápido. Eche un vistazo a <a href="https://edgeapi.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a>
-sobre cómo utilizar esta función.</p><p>Apache y NGINX admiten esta opción, que se puede habilitar en
-<code>config/environments/production.rb</code>:</p><div class="code_container">
-<pre><code class="highlight ruby"><span class="c1"># config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache</span>
-<span class="c1"># config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX</span>
-</code></pre>
-<button class="clipboard-button" data-clipboard-text="# config.action_dispatch.x_sendfile_header = &quot;X-Sendfile&quot; # for Apache
-# config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+<button class="clipboard-button" data-clipboard-text="config.assets.prefix = &quot;/some_other_path&quot;
 ">Copy</button>
 </div>
-<div class="warning"><p>si está actualizando una aplicación existente y tiene la intención de utilizar esta
-opción, tenga cuidado de pegar esta opción de configuración solo en <code>production.rb</code>
-y cualquier otro entorno que defina con comportamiento de producción (no
-<code>application.rb</code>).</p></div><div class="info"><p>Para obtener más detalles, consulte los documentos de su servidor web de producción:</p></div>
+<p>Esta es una opción útil si estás actualizando un proyecto antiguo que no usaba el pipeline de activos y ya utiliza esta ruta o deseas usar esta ruta para un nuevo recurso.</p><h3 id="encabezados-x-sendfile"><a class="anchorlink" href="#encabezados-x-sendfile"><span>6.6</span> Encabezados X-Sendfile</a></h3><p>El encabezado X-Sendfile es una directiva para el servidor web para ignorar la respuesta de la aplicación y en su lugar servir un archivo específico desde el disco. Esta opción está desactivada por defecto, pero puede habilitarse si tu servidor la admite. Cuando está habilitada, esto pasa la responsabilidad de servir el archivo al servidor web, lo cual es más rápido. Echa un vistazo a <a href="https://edgeapi.rubyonrails.org/classes/ActionController/DataStreaming.html#method-i-send_file">send_file</a> para saber cómo usar esta función.</p><p>Apache y NGINX admiten esta opción, que puede habilitarse en <code>config/environments/production.rb</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config.action_dispatch.x_sendfile_header = "X-Sendfile" # para Apache</span>
+<span class="c1"># config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # para NGINX</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="# config.action_dispatch.x_sendfile_header = &quot;X-Sendfile&quot; # para Apache
+# config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # para NGINX
+">Copy</button>
+</div>
+<p>ADVERTENCIA: Si estás actualizando una aplicación existente y planeas usar esta opción, ten cuidado de pegar esta opción de configuración solo en <code>production.rb</code> y en cualquier otro entorno que definas con comportamiento de producción (no en <code>application.rb</code>).</p><p>CONSEJO: Para obtener más detalles, consulta la documentación de tu servidor web de producción:</p>
 <ul>
 <li><a href="https://tn123.org/mod_xsendfile/">Apache</a></li>
 <li><a href="https://www.nginx.com/resources/wiki/start/topics/examples/xsendfile/">NGINX</a></li>
 </ul>
-<h3 id="assets-cache-store"><a class="anchorlink" href="#assets-cache-store">6 Assets Cache Store</a></h3><p>De forma predeterminada, Sprockets almacena en caché los activos en <code>tmp/cache/assets</code> en desarrollo
-y entornos de producción. Esto se puede cambiar de la siguiente manera:</p><div class="code_container">
+<h2 id="almacenamiento-en-caché-de-activos"><a class="anchorlink" href="#almacenamiento-en-caché-de-activos"><span>7</span> Almacenamiento en Caché de Activos</a></h2><p>Por defecto, Sprockets almacena en caché los activos en <code>tmp/cache/assets</code> en los entornos de desarrollo y producción. Esto puede cambiarse de la siguiente manera:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
   <span class="n">env</span><span class="p">.</span><span class="nf">cache</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Cache</span><span class="p">.</span><span class="nf">lookup_store</span><span class="p">(</span><span class="ss">:memory_store</span><span class="p">,</span>
                                                 <span class="p">{</span> <span class="ss">size: </span><span class="mi">32</span><span class="p">.</span><span class="nf">megabytes</span> <span class="p">})</span>
@@ -1181,7 +762,7 @@ y entornos de producción. Esto se puede cambiar de la siguiente manera:</p><div
 end
 ">Copy</button>
 </div>
-<p>Para deshabilitar el almacén de caché de activos:</p><div class="code_container">
+<p>Para desactivar el almacenamiento en caché de activos:</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">assets</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">env</span><span class="o">|</span>
   <span class="n">env</span><span class="p">.</span><span class="nf">cache</span> <span class="o">=</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Cache</span><span class="p">.</span><span class="nf">lookup_store</span><span class="p">(</span><span class="ss">:null_store</span><span class="p">)</span>
 <span class="k">end</span>
@@ -1191,60 +772,63 @@ end
 end
 ">Copy</button>
 </div>
-<h3 id="adding-assets-to-your-gems"><a class="anchorlink" href="#adding-assets-to-your-gems">7 Adding Assets to Your Gems</a></h3><p>Los activos también pueden provenir de fuentes externas en forma de gemas.</p><p>Un buen ejemplo de esto es la gema <code>jquery-rails</code>.
-Esta gema contiene una clase de motor que hereda de <code>Rails :: Engine</code>.
-Al hacer esto, se informa a Rails que el directorio para este
-gema puede contener activos y os directorios  <code>app/assets</code>, <code>lib/assets</code> y
-<code>vendor/assets</code> de este motor se agregan a la ruta de búsqueda de
-Sprockets.</p><h3 id="making-your-library-or-gem-a-pre-processor"><a class="anchorlink" href="#making-your-library-or-gem-a-pre-processor">8 Making Your Library or Gem a Pre-Processor</a></h3><p>Sprockets utiliza procesadores, transformadores, compresores y exportadores para extender
-Funcionalidad de Sprockets. Mira esto
-<a href="https://github.com/rails/sprockets/blob/master/guides/extending_sprockets.md">Sprockets extensibles</a>
-aprender más. Aquí registramos un preprocesador para agregar un comentario al final
-de archivos de texto/css (<code>.css</code>).</p><div class="code_container">
+<h2 id="agregar-activos-a-tus-gemas"><a class="anchorlink" href="#agregar-activos-a-tus-gemas"><span>8</span> Agregar Activos a tus Gemas</a></h2><p>Los activos también pueden provenir de fuentes externas en forma de gemas.</p><p>Un buen ejemplo de esto es la gema <code>jquery-rails</code>. Esta gema contiene una clase de motor que hereda de <code>Rails::Engine</code>. Al hacer esto, Rails es informado de que el directorio para esta gema puede contener activos y los directorios <code>app/assets</code>, <code>lib/assets</code> y <code>vendor/assets</code> de este motor se agregan a la ruta de búsqueda de Sprockets.</p><h2 id="hacer-que-tu-biblioteca-o-gema-sea-un-preprocesador"><a class="anchorlink" href="#hacer-que-tu-biblioteca-o-gema-sea-un-preprocesador"><span>9</span> Hacer que tu Biblioteca o Gema sea un Preprocesador</a></h2><p>Sprockets utiliza Procesadores, Transformadores, Compresores y Exportadores para extender la funcionalidad de Sprockets. Echa un vistazo a <a href="https://github.com/rails/sprockets/blob/main/guides/extending_sprockets.md">Extending Sprockets</a> para aprender más. Aquí registramos un preprocesador para agregar un comentario al final de los archivos text/css (<code>.css</code>).</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="k">module</span> <span class="nn">AddComment</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">input</span><span class="p">)</span>
-    <span class="p">{</span> <span class="ss">data: </span><span class="n">input</span><span class="p">[</span><span class="ss">:data</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"/* Hello From my sprockets extension */"</span> <span class="p">}</span>
+    <span class="p">{</span> <span class="ss">data: </span><span class="n">input</span><span class="p">[</span><span class="ss">:data</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"/* Hola desde mi extensión de sprockets */"</span> <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </code></pre>
-<button class="clipboard-button" data-clipboard-text='module AddComment
+<button class="clipboard-button" data-clipboard-text="module AddComment
   def self.call(input)
-    { data: input[:data] + "/* Hello From my sprockets extension */" }
+    { data: input[:data] + &quot;/* Hola desde mi extensión de sprockets */&quot; }
   end
 end
-'>Copy</button>
+">Copy</button>
 </div>
-<p>Ahora que tiene un módulo que modifica los datos de entrada, es hora de registrarse
-como un preprocesador para su tipo de mime.</p><div class="code_container">
+<p>Ahora que tienes un módulo que modifica los datos de entrada, es hora de registrarlo como un preprocesador para tu tipo MIME.</p><div class="interstitial code">
 <pre><code class="highlight ruby"><span class="no">Sprockets</span><span class="p">.</span><span class="nf">register_preprocessor</span> <span class="s1">'text/css'</span><span class="p">,</span> <span class="no">AddComment</span>
 </code></pre>
 <button class="clipboard-button" data-clipboard-text="Sprockets.register_preprocessor 'text/css', AddComment
 ">Copy</button>
 </div>
-
-
-        <h3>Comentarios Sobre el Contenido</h3>
+<h2 id="bibliotecas-alternativas"><a class="anchorlink" href="#bibliotecas-alternativas"><span>10</span> Bibliotecas Alternativas</a></h2><p>A lo largo de los años, ha habido múltiples enfoques predeterminados para manejar los activos. La web evolucionó y comenzamos a ver más y más aplicaciones pesadas en JavaScript. En The Rails Doctrine creemos que <a href="https://rubyonrails.org/doctrine#omakase">The Menu Is Omakase</a>, por lo que nos centramos en la configuración predeterminada: <strong>Sprockets con Import Maps</strong>.</p><p>Somos conscientes de que no hay soluciones de talla única para todos los diversos frameworks/extensiones de JavaScript y CSS disponibles. Hay otras bibliotecas de empaquetado en el ecosistema de Rails que deberían empoderarte en los casos donde la configuración predeterminada no es suficiente.</p><h3 id="jsbundling-rails"><a class="anchorlink" href="#jsbundling-rails"><span>10.1</span> jsbundling-rails</a></h3><p><a href="https://github.com/rails/jsbundling-rails"><code>jsbundling-rails</code></a> es una alternativa dependiente del tiempo de ejecución de JavaScript a la forma de <code>importmap-rails</code> de empaquetar JS con <a href="https://bun.sh">Bun</a>, <a href="https://esbuild.github.io/">esbuild</a>, <a href="https://rollupjs.org/">rollup.js</a> o <a href="https://webpack.js.org/">Webpack</a>.</p><p>La gema proporciona una tarea de construcción en <code>package.json</code> para observar cambios y generar automáticamente la salida en desarrollo. Para producción, engancha automáticamente la tarea <code>javascript:build</code> en la tarea <code>assets:precompile</code> para asegurarse de que todas tus dependencias de paquetes se hayan instalado y que el JavaScript se haya construido para todos los puntos de entrada.</p><p><strong>¿Cuándo usar en lugar de <code>importmap-rails</code>?</strong> Si tu código JavaScript depende de la transpilation, por lo que si estás usando <a href="https://babeljs.io/">Babel</a>, <a href="https://www.typescriptlang.org/">TypeScript</a> o el formato React JSX, entonces <code>jsbundling-rails</code> es la forma correcta de proceder.</p><h3 id="webpacker-shakapacker"><a class="anchorlink" href="#webpacker-shakapacker"><span>10.2</span> Webpacker/Shakapacker</a></h3><p><a href="https://github.com/rails/webpacker"><code>Webpacker</code></a> fue el preprocesador y empaquetador de JavaScript predeterminado para Rails 5 y 6. Ahora ha sido retirado. Un sucesor llamado <a href="https://github.com/shakacode/shakapacker"><code>shakapacker</code></a> existe, pero no es mantenido por el equipo o proyecto de Rails.</p><p>A diferencia de otras bibliotecas en esta lista, <code>webpacker</code>/<code>shakapacker</code> es completamente independiente de Sprockets y podría procesar tanto archivos JavaScript como CSS.</p><p>NOTA: Lee el documento <a href="https://github.com/rails/jsbundling-rails/blob/main/docs/comparison_with_webpacker.md">Comparison with Webpacker</a> para entender las diferencias entre <code>jsbundling-rails</code> y <code>webpacker</code>/<code>shakapacker</code>.</p><h3 id="cssbundling-rails"><a class="anchorlink" href="#cssbundling-rails"><span>10.3</span> cssbundling-rails</a></h3><p><a href="https://github.com/rails/cssbundling-rails"><code>cssbundling-rails</code></a> permite empaquetar y procesar tu CSS usando <a href="https://tailwindcss.com/">Tailwind CSS</a>, <a href="https://getbootstrap.com/">Bootstrap</a>, <a href="https://bulma.io/">Bulma</a>, <a href="https://postcss.org/">PostCSS</a> o <a href="https://sass-lang.com/">Dart Sass</a>, y luego entrega el CSS a través del pipeline de activos.</p><p>Funciona de manera similar a <code>jsbundling-rails</code>, por lo que agrega la dependencia de Node.js a tu aplicación con el proceso <code>yarn build:css --watch</code> para regenerar tus hojas de estilo en desarrollo y engancha en la tarea <code>assets:precompile</code> en producción.</p><p><strong>¿Cuál es la diferencia con Sprockets?</strong> Sprockets por sí solo no puede transpilar el Sass en CSS, se requiere Node.js para generar los archivos <code>.css</code> a partir de tus archivos <code>.sass</code>. Una vez que los archivos <code>.css</code> se generan, entonces Sprockets puede entregarlos a tus clientes.</p><p>NOTA: <code>cssbundling-rails</code> depende de Node para procesar el CSS. Las gemas <code>dartsass-rails</code> y <code>tailwindcss-rails</code> usan versiones independientes de Tailwind CSS y Dart Sass, lo que significa que no hay dependencia de Node. Si estás usando <code>importmap-rails</code> para manejar tus JavaScripts y <code>dartsass-rails</code> o <code>tailwindcss-rails</code> para CSS, podrías evitar completamente la dependencia de Node, lo que resulta en una solución menos compleja.</p><h3 id="dartsass-rails"><a class="anchorlink" href="#dartsass-rails"><span>10.4</span> dartsass-rails</a></h3><p>Si deseas usar <a href="https://sass-lang.com/">Sass</a> en tu aplicación, <a href="https://github.com/rails/dartsass-rails"><code>dartsass-rails</code></a> viene como un reemplazo para la gema <code>sassc-rails</code> heredada. <code>dartsass-rails</code> utiliza la implementación de Dart Sass en favor de <a href="https://sass-lang.com/blog/libsass-is-deprecated">LibSass</a> que fue deprecada en 2020 y utilizada por <code>sassc-rails</code>.</p><p>A diferencia de <code>sassc-rails</code>, la nueva gema no está directamente integrada con Sprockets. Consulta la <a href="https://github.com/rails/dartsass-rails">página de inicio de la gema</a> para obtener instrucciones de instalación/migración.</p><p>ADVERTENCIA: La popular gema <code>sassc-rails</code> no se mantiene desde 2019.</p><h3 id="tailwindcss-rails"><a class="anchorlink" href="#tailwindcss-rails"><span>10.5</span> tailwindcss-rails</a></h3><p><a href="https://github.com/rails/tailwindcss-rails"><code>tailwindcss-rails</code></a> es una gema envolvente para <a href="https://tailwindcss.com/blog/standalone-cli">la versión ejecutable independiente</a> del framework Tailwind CSS v3. Se utiliza para nuevas aplicaciones cuando se proporciona <code>--css tailwind</code> al comando <code>rails new</code>. Proporciona un proceso <code>watch</code> para generar automáticamente la salida de Tailwind en desarrollo. Para producción, se engancha en la tarea <code>assets:precompile</code>.</p>
+        <hr>
+        <h3>Comentarios</h3>
         <p>
-          Las guías de rieles se administran y publican en latinadeveloper/railsguides.es en GitHub.
+          Se te anima a ayudar a mejorar la calidad de esta guía.
         </p>
         <p>
-          Si lee esta guía y encuentra algún texto o código incorrecto que le interese, no dude en enviar una solicitud de extracción en el repositorio anterior.
-
-          Consulte el archivo README en GitHub para saber cómo enviar una solicitud de extracción.
-          Please contribute if you see any typos or factual errors.
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
         </p>
-
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
       </div>
     </div>
-  </div>
+  </main>
 
   <hr class="hide" />
-  <div id="footer">
+  <footer id="page_footer">
     <div class="wrapper">
-      <p>This work is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International</a> License</p>
-<p>"Rails", "Ruby on Rails", and the Rails logo are trademarks of David Heinemeier Hansson. All rights reserved.</p>
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
 
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
     </div>
-  </div>
+  </footer>
 </body>
 </html>

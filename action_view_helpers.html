@@ -1,0 +1,1089 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Helpers de Action View — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Helpers de Action View — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Helpers de Action ViewDespués de leer esta guía, sabrás: Cómo dar formato a fechas, cadenas y números. Cómo trabajar con texto y etiquetas. Cómo enlazar imágenes, videos, hojas de estilo, etc. Cómo trabajar con feeds Atom y JavaScript en las vistas. Cómo almacenar en caché, capturar, depurar y sanitizar contenido." />
+  <meta property="og:description" content="NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN https://guides.rubyonrails.org.Helpers de Action ViewDespués de leer esta guía, sabrás: Cómo dar formato a fechas, cadenas y números. Cómo trabajar con texto y etiquetas. Cómo enlazar imágenes, videos, hojas de estilo, etc. Cómo trabajar con feeds Atom y JavaScript en las vistas. Cómo almacenar en caché, capturar, depurar y sanitizar contenido." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEAS ESTE ARCHIVO EN GITHUB, LAS GUÍAS SE PUBLICAN EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Helpers de Action View</h1><p>Después de leer esta guía, sabrás:</p>
+<ul>
+<li>Cómo dar formato a fechas, cadenas y números.</li>
+<li>Cómo trabajar con texto y etiquetas.</li>
+<li>Cómo enlazar imágenes, videos, hojas de estilo, etc.</li>
+<li>Cómo trabajar con feeds Atom y JavaScript en las vistas.</li>
+<li>Cómo almacenar en caché, capturar, depurar y sanitizar contenido.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#formato">Formato</a>
+
+<ul>
+<li><a href="#fechas">Fechas</a></li>
+<li><a href="#números">Números</a></li>
+<li><a href="#texto">Texto</a></li>
+</ul></li>
+<li><a href="#formularios">Formularios</a></li>
+<li><a href="#navegación">Navegación</a>
+
+<ul>
+<li><a href="#button-to">button_to</a></li>
+<li><a href="#current-page-questionmark">current_page?</a></li>
+<li><a href="#link-to">link_to</a></li>
+<li><a href="#mail-to">mail_to</a></li>
+<li><a href="#url-for">url_for</a></li>
+</ul></li>
+<li><a href="#sanitización">Sanitización</a>
+
+<ul>
+<li><a href="#sanitize">sanitize</a></li>
+<li><a href="#sanitize-css">sanitize_css</a></li>
+<li><a href="#strip-links">strip_links</a></li>
+<li><a href="#strip-tags">strip_tags</a></li>
+</ul></li>
+<li><a href="#activos">Activos</a>
+
+<ul>
+<li><a href="#audio-tag">audio_tag</a></li>
+<li><a href="#auto-discovery-link-tag">auto_discovery_link_tag</a></li>
+<li><a href="#favicon-link-tag">favicon_link_tag</a></li>
+<li><a href="#image-tag">image_tag</a></li>
+<li><a href="#javascript-include-tag">javascript_include_tag</a></li>
+<li><a href="#picture-tag">picture_tag</a></li>
+<li><a href="#preload-link-tag">preload_link_tag</a></li>
+<li><a href="#stylesheet-link-tag">stylesheet_link_tag</a></li>
+<li><a href="#video-tag">video_tag</a></li>
+</ul></li>
+<li><a href="#javascript">JavaScript</a>
+
+<ul>
+<li><a href="#escape-javascript">escape_javascript</a></li>
+<li><a href="#javascript-tag">javascript_tag</a></li>
+</ul></li>
+<li><a href="#etiquetas-alternativas">Etiquetas Alternativas</a>
+
+<ul>
+<li><a href="#tag">tag</a></li>
+<li><a href="#token-list">token_list</a></li>
+</ul></li>
+<li><a href="#captura-de-bloques">Captura de Bloques</a>
+
+<ul>
+<li><a href="#capture">capture</a></li>
+<li><a href="#content-for">content_for</a></li>
+</ul></li>
+<li><a href="#rendimiento">Rendimiento</a>
+
+<ul>
+<li><a href="#benchmark">benchmark</a></li>
+<li><a href="#cache">cache</a></li>
+</ul></li>
+<li><a href="#misceláneo">Misceláneo</a>
+
+<ul>
+<li><a href="#atom-feed">atom_feed</a></li>
+<li><a href="#debug">debug</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <p>Lo siguiente describe <strong>algunos de los helpers más comúnmente utilizados</strong> disponibles en Action View. Sirve como un buen punto de partida, pero también se recomienda revisar la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers.html">Documentación API completa</a>, ya que cubre todos los helpers con más detalle.</p><h2 id="formato"><a class="anchorlink" href="#formato"><span>1</span> Formato</a></h2><h3 id="fechas"><a class="anchorlink" href="#fechas"><span>1.1</span> Fechas</a></h3><p>Estos helpers facilitan la visualización de elementos de fecha y/o hora en formas contextuales legibles por humanos.</p><h4 id="distance-of-time-in-words"><a class="anchorlink" href="#distance-of-time-in-words"><span>1.1.1</span> distance_of_time_in_words</a></h4><p>Informa la distancia aproximada en tiempo entre dos objetos <code>Time</code> o <code>Date</code> o enteros como segundos. Establece <code>include_seconds</code> en verdadero si quieres aproximaciones más detalladas.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">distance_of_time_in_words</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">,</span> <span class="mi">15</span><span class="p">.</span><span class="nf">seconds</span><span class="p">.</span><span class="nf">from_now</span><span class="p">)</span>
+<span class="c1"># =&gt; menos de un minuto</span>
+<span class="n">distance_of_time_in_words</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">current</span><span class="p">,</span> <span class="mi">15</span><span class="p">.</span><span class="nf">seconds</span><span class="p">.</span><span class="nf">from_now</span><span class="p">,</span> <span class="ss">include_seconds: </span><span class="kp">true</span><span class="p">)</span>
+<span class="c1"># =&gt; menos de 20 segundos</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="distance_of_time_in_words(Time.current, 15.seconds.from_now)
+# => menos de un minuto
+distance_of_time_in_words(Time.current, 15.seconds.from_now, include_seconds: true)
+# => menos de 20 segundos
+">Copy</button>
+</div>
+<p>NOTA: Usamos <code>Time.current</code> en lugar de <code>Time.now</code> porque devuelve la hora actual basada en la zona horaria establecida en Rails, mientras que <code>Time.now</code> devuelve un objeto Time basado en la zona horaria del servidor.</p><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-distance_of_time_in_words">Documentación API de <code>distance_of_time_in_words</code></a> para más información.</p><h4 id="time-ago-in-words"><a class="anchorlink" href="#time-ago-in-words"><span>1.1.2</span> time_ago_in_words</a></h4><p>Informa la distancia aproximada en tiempo entre un objeto <code>Time</code> o <code>Date</code>, o un entero en segundos, y <code>Time.current</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">time_ago_in_words</span><span class="p">(</span><span class="mi">3</span><span class="p">.</span><span class="nf">minutes</span><span class="p">.</span><span class="nf">from_now</span><span class="p">)</span> <span class="c1"># =&gt; 3 minutos</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="time_ago_in_words(3.minutes.from_now) # => 3 minutos
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/DateHelper.html#method-i-time_ago_in_words">Documentación API de <code>time_ago_in_words</code></a> para más información.</p><h3 id="números"><a class="anchorlink" href="#números"><span>1.2</span> Números</a></h3><p>Un conjunto de métodos para convertir números en cadenas formateadas. Se proporcionan métodos para números de teléfono, moneda, porcentaje, precisión, notación posicional y tamaño de archivo.</p><h4 id="number-to-currency"><a class="anchorlink" href="#number-to-currency"><span>1.2.1</span> number_to_currency</a></h4><p>Formatea un número en una cadena de moneda (por ejemplo, $13.65).</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_to_currency</span><span class="p">(</span><span class="mf">1234567890.50</span><span class="p">)</span> <span class="c1"># =&gt; $1,234,567,890.50</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_to_currency(1234567890.50) # => $1,234,567,890.50
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_to_currency">Documentación API de <code>number_to_currency</code></a> para más información.</p><h4 id="number-to-human"><a class="anchorlink" href="#number-to-human"><span>1.2.2</span> number_to_human</a></h4><p>Imprime de manera bonita (formatea y aproxima) un número para que sea más legible por los usuarios; útil para números que pueden llegar a ser muy grandes.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_to_human</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>    <span class="c1"># =&gt; 1.23 Mil</span>
+<span class="n">number_to_human</span><span class="p">(</span><span class="mi">1234567</span><span class="p">)</span> <span class="c1"># =&gt; 1.23 Millón</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_to_human(1234)    # => 1.23 Mil
+number_to_human(1234567) # => 1.23 Millón
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_to_human">Documentación API de <code>number_to_human</code></a> para más información.</p><h4 id="number-to-human-size"><a class="anchorlink" href="#number-to-human-size"><span>1.2.3</span> number_to_human_size</a></h4><p>Formatea los bytes en tamaño en una representación más comprensible; útil para informar tamaños de archivo a los usuarios.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_to_human_size</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>    <span class="c1"># =&gt; 1.21 KB</span>
+<span class="n">number_to_human_size</span><span class="p">(</span><span class="mi">1234567</span><span class="p">)</span> <span class="c1"># =&gt; 1.18 MB</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_to_human_size(1234)    # => 1.21 KB
+number_to_human_size(1234567) # => 1.18 MB
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_to_human_size">Documentación API de <code>number_to_human_size</code></a> para más información.</p><h4 id="number-to-percentage"><a class="anchorlink" href="#number-to-percentage"><span>1.2.4</span> number_to_percentage</a></h4><p>Formatea un número como una cadena de porcentaje.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_to_percentage</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">0</span><span class="p">)</span> <span class="c1"># =&gt; 100%</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_to_percentage(100, precision: 0) # => 100%
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_to_percentage">Documentación API de <code>number_to_percentage</code></a> para más información.</p><h4 id="number-to-phone"><a class="anchorlink" href="#number-to-phone"><span>1.2.5</span> number_to_phone</a></h4><p>Formatea un número en un número de teléfono (EE.UU. por defecto).</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_to_phone</span><span class="p">(</span><span class="mi">1235551234</span><span class="p">)</span> <span class="c1"># =&gt; 123-555-1234</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_to_phone(1235551234) # => 123-555-1234
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_to_phone">Documentación API de <code>number_to_phone</code></a> para más información.</p><h4 id="number-with-delimiter"><a class="anchorlink" href="#number-with-delimiter"><span>1.2.6</span> number_with_delimiter</a></h4><p>Formatea un número con miles agrupados usando un delimitador.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_with_delimiter</span><span class="p">(</span><span class="mi">12345678</span><span class="p">)</span> <span class="c1"># =&gt; 12,345,678</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_with_delimiter(12345678) # => 12,345,678
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_delimiter">Documentación API de <code>number_with_delimiter</code></a> para más información.</p><h4 id="number-with-precision"><a class="anchorlink" href="#number-with-precision"><span>1.2.7</span> number_with_precision</a></h4><p>Formatea un número con el nivel de <code>precision</code> especificado, que por defecto es 3.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">number_with_precision</span><span class="p">(</span><span class="mf">111.2345</span><span class="p">)</span>               <span class="c1"># =&gt; 111.235</span>
+<span class="n">number_with_precision</span><span class="p">(</span><span class="mf">111.2345</span><span class="p">,</span> <span class="ss">precision: </span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt; 111.23</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="number_with_precision(111.2345)               # => 111.235
+number_with_precision(111.2345, precision: 2) # => 111.23
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/NumberHelper.html#method-i-number_with_precision">Documentación API de <code>number_with_precision</code></a> para más información.</p><h3 id="texto"><a class="anchorlink" href="#texto"><span>1.3</span> Texto</a></h3><p>Un conjunto de métodos para filtrar, formatear y transformar cadenas.</p><h4 id="excerpt"><a class="anchorlink" href="#excerpt"><span>1.3.1</span> excerpt</a></h4><p>Dado un <code>texto</code> y una <code>frase</code>, <code>excerpt</code> busca y extrae la primera ocurrencia de la <code>frase</code>, más el texto circundante solicitado determinado por un <code>radio</code>. Se antepone/añade un marcador de omisión si el inicio/fin del resultado no coincide con el inicio/fin del texto.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">excerpt</span><span class="p">(</span><span class="s2">"Esta es una mañana muy hermosa"</span><span class="p">,</span> <span class="s2">"muy"</span><span class="p">,</span> <span class="ss">separator: </span><span class="s2">" "</span><span class="p">,</span> <span class="ss">radius: </span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># =&gt; ...una muy hermosa...</span>
+
+<span class="n">excerpt</span><span class="p">(</span><span class="s2">"Esto es también un ejemplo"</span><span class="p">,</span> <span class="s2">"un"</span><span class="p">,</span> <span class="ss">radius: </span><span class="mi">8</span><span class="p">,</span> <span class="ss">omission: </span><span class="s2">"&lt;cortar&gt; "</span><span class="p">)</span>
+<span class="c1">#=&gt; &lt;cortar&gt; es también un ejemplo</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="excerpt(&quot;Esta es una mañana muy hermosa&quot;, &quot;muy&quot;, separator: &quot; &quot;, radius: 1)
+# => ...una muy hermosa...
+
+excerpt(&quot;Esto es también un ejemplo&quot;, &quot;un&quot;, radius: 8, omission: &quot;<cortar> &quot;)
+#=> <cortar> es también un ejemplo
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-excerpt">Documentación API de <code>excerpt</code></a> para más información.</p><h4 id="pluralize"><a class="anchorlink" href="#pluralize"><span>1.3.2</span> pluralize</a></h4><p>Devuelve la forma singular o plural de una palabra basada en el valor de un número.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">pluralize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"persona"</span><span class="p">)</span> <span class="c1"># =&gt; 1 persona</span>
+<span class="n">pluralize</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"persona"</span><span class="p">)</span> <span class="c1"># =&gt; 2 personas</span>
+<span class="n">pluralize</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">"persona"</span><span class="p">,</span> <span class="ss">plural: </span><span class="s2">"usuarios"</span><span class="p">)</span> <span class="c1"># =&gt; 3 usuarios</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="pluralize(1, &quot;persona&quot;) # => 1 persona
+pluralize(2, &quot;persona&quot;) # => 2 personas
+pluralize(3, &quot;persona&quot;, plural: &quot;usuarios&quot;) # => 3 usuarios
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-pluralize">Documentación API de <code>pluralize</code></a> para más información.</p><h4 id="truncate"><a class="anchorlink" href="#truncate"><span>1.3.3</span> truncate</a></h4><p>Trunca un <code>texto</code> dado a una <code>longitud</code> dada. Si el texto es truncado, un marcador de omisión será añadido al resultado para una longitud total que no exceda <code>longitud</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">truncate</span><span class="p">(</span><span class="s2">"Érase una vez en un mundo muy lejano"</span><span class="p">)</span>
+<span class="c1"># =&gt; "Érase una vez en un mundo..."</span>
+
+<span class="n">truncate</span><span class="p">(</span><span class="s2">"Érase una vez en un mundo muy lejano"</span><span class="p">,</span> <span class="ss">length: </span><span class="mi">17</span><span class="p">)</span>
+<span class="c1"># =&gt; "Érase una vez en..."</span>
+
+<span class="n">truncate</span><span class="p">(</span><span class="s2">"uno-dos-tres-cuatro-cinco"</span><span class="p">,</span> <span class="ss">length: </span><span class="mi">20</span><span class="p">,</span> <span class="ss">separator: </span><span class="s2">"-"</span><span class="p">)</span>
+<span class="c1"># =&gt; "uno-dos-tres..."</span>
+
+<span class="n">truncate</span><span class="p">(</span><span class="s2">"Y encontraron que muchas personas estaban durmiendo mejor."</span><span class="p">,</span> <span class="ss">length: </span><span class="mi">25</span><span class="p">,</span> <span class="ss">omission: </span><span class="s2">"... (continuado)"</span><span class="p">)</span>
+<span class="c1"># =&gt; "Y encontraron... (continuado)"</span>
+
+<span class="n">truncate</span><span class="p">(</span><span class="s2">"&lt;p&gt;Érase una vez en un mundo muy lejano&lt;/p&gt;"</span><span class="p">,</span> <span class="ss">escape: </span><span class="kp">false</span><span class="p">)</span>
+<span class="c1"># =&gt; "&lt;p&gt;Érase una vez en un mu..."</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="truncate(&quot;Érase una vez en un mundo muy lejano&quot;)
+# => &quot;Érase una vez en un mundo...&quot;
+
+truncate(&quot;Érase una vez en un mundo muy lejano&quot;, length: 17)
+# => &quot;Érase una vez en...&quot;
+
+truncate(&quot;uno-dos-tres-cuatro-cinco&quot;, length: 20, separator: &quot;-&quot;)
+# => &quot;uno-dos-tres...&quot;
+
+truncate(&quot;Y encontraron que muchas personas estaban durmiendo mejor.&quot;, length: 25, omission: &quot;... (continuado)&quot;)
+# => &quot;Y encontraron... (continuado)&quot;
+
+truncate(&quot;<p>Érase una vez en un mundo muy lejano</p>&quot;, escape: false)
+# => &quot;<p>Érase una vez en un mu...&quot;
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-truncate">Documentación API de <code>truncate</code></a> para más información.</p><h4 id="word-wrap"><a class="anchorlink" href="#word-wrap"><span>1.3.4</span> word_wrap</a></h4><p>Envuelve el texto en líneas no más largas que <code>line_width</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">word_wrap</span><span class="p">(</span><span class="s2">"Érase una vez"</span><span class="p">,</span> <span class="ss">line_width: </span><span class="mi">8</span><span class="p">)</span>
+<span class="c1"># =&gt; "Érase\nuna vez\nen"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="word_wrap(&quot;Érase una vez&quot;, line_width: 8)
+# => &quot;Érase\nuna vez\nen&quot;
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TextHelper.html#method-i-word_wrap">Documentación API de <code>word_wrap</code></a> para más información.</p><h2 id="formularios"><a class="anchorlink" href="#formularios"><span>2</span> Formularios</a></h2><p>Los helpers de formularios simplifican el trabajo con modelos en comparación con el uso de elementos HTML estándar solos. Ofrecen una gama de métodos adaptados para generar formularios basados en tus modelos. Algunos métodos corresponden a un tipo específico de entrada, como campos de texto, campos de contraseña, menús desplegables select, y más. Cuando se envía un formulario, las entradas dentro del formulario se agrupan en el objeto params y se envían de vuelta al controlador.</p><p>Puedes aprender más sobre los helpers de formularios en la <a href="form_helpers.html">Guía de Helpers de Formularios de Action View</a>.</p><h2 id="navegación"><a class="anchorlink" href="#navegación"><span>3</span> Navegación</a></h2><p>Un conjunto de métodos para construir enlaces y URLs que dependen del subsistema de enrutamiento.</p><h3 id="button-to"><a class="anchorlink" href="#button-to"><span>3.1</span> button_to</a></h3><p>Genera un formulario que se envía a la URL pasada. El formulario tiene un botón de envío con el valor del <code>nombre</code>.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">button_to</span> <span class="s2">"Iniciar sesión"</span><span class="p">,</span> <span class="n">sign_in_path</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= button_to &quot;Iniciar sesión&quot;, sign_in_path %>
+">Copy</button>
+</div>
+<p>generaría el siguiente HTML:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">"post"</span> <span class="na">action=</span><span class="s">"/sessions"</span> <span class="na">class=</span><span class="s">"button_to"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Iniciar sesión"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<form method=&quot;post&quot; action=&quot;/sessions&quot; class=&quot;button_to&quot;>
+  <input type=&quot;submit&quot; value=&quot;Iniciar sesión&quot; />
+</form>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-button_to">Documentación API de <code>button_to</code></a> para más información.</p><h3 id="current-page-questionmark"><a class="anchorlink" href="#current-page-questionmark"><span>3.2</span> current_page?</a></h3><p>Devuelve verdadero si la URL de la solicitud actual coincide con las <code>opciones</code> dadas.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_page?</span><span class="p">(</span><span class="ss">controller: </span><span class="s1">'profiles'</span><span class="p">,</span> <span class="ss">action: </span><span class="s1">'show'</span><span class="p">)</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>Actualmente en la página del perfil<span class="nt">&lt;/strong&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% if current_page?(controller: 'profiles', action: 'show') %>
+  <strong>Actualmente en la página del perfil</strong>
+<% end %>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-current_page-3F">Documentación API de <code>current_page?</code></a> para más información.</p><h3 id="link-to"><a class="anchorlink" href="#link-to"><span>3.3</span> link_to</a></h3><p>Enlaza a una URL derivada de <code>url_for</code> bajo el capó. Es comúnmente utilizado para crear enlaces para recursos RESTful, especialmente cuando se pasan modelos como argumentos a <code>link_to</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">link_to</span> <span class="s2">"Perfil"</span><span class="p">,</span> <span class="vi">@profile</span>
+<span class="c1"># =&gt; &lt;a href="/profiles/1"&gt;Perfil&lt;/a&gt;</span>
+
+<span class="n">link_to</span> <span class="s2">"Libro"</span><span class="p">,</span> <span class="vi">@book</span> <span class="c1"># dado una clave primaria compuesta [:author_id, :id]</span>
+<span class="c1"># =&gt; &lt;a href="/books/2_1"&gt;Libro&lt;/a&gt;</span>
+
+<span class="n">link_to</span> <span class="s2">"Perfiles"</span><span class="p">,</span> <span class="n">profiles_path</span>
+<span class="c1"># =&gt; &lt;a href="/profiles"&gt;Perfiles&lt;/a&gt;</span>
+
+<span class="n">link_to</span> <span class="kp">nil</span><span class="p">,</span> <span class="s2">"https://example.com"</span>
+<span class="c1"># =&gt; &lt;a href="https://www.example.com"&gt;https://www.example.com&lt;/a&gt;</span>
+
+<span class="n">link_to</span> <span class="s2">"Artículos"</span><span class="p">,</span> <span class="n">articles_path</span><span class="p">,</span> <span class="ss">id: </span><span class="s2">"articles"</span><span class="p">,</span> <span class="ss">class: </span><span class="s2">"article__container"</span>
+<span class="c1"># =&gt; &lt;a href="/articles" class="article__container" id="articles"&gt;Artículos&lt;/a&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="link_to &quot;Perfil&quot;, @profile
+# => <a href=&quot;/profiles/1&quot;>Perfil</a>
+
+link_to &quot;Libro&quot;, @book # dado una clave primaria compuesta [:author_id, :id]
+# => <a href=&quot;/books/2_1&quot;>Libro</a>
+
+link_to &quot;Perfiles&quot;, profiles_path
+# => <a href=&quot;/profiles&quot;>Perfiles</a>
+
+link_to nil, &quot;https://example.com&quot;
+# => <a href=&quot;https://www.example.com&quot;>https://www.example.com</a>
+
+link_to &quot;Artículos&quot;, articles_path, id: &quot;articles&quot;, class: &quot;article__container&quot;
+# => <a href=&quot;/articles&quot; class=&quot;article__container&quot; id=&quot;articles&quot;>Artículos</a>
+">Copy</button>
+</div>
+<p>Puedes usar un bloque si tu objetivo de enlace no cabe en el parámetro de nombre.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="vi">@profile</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;strong&gt;</span><span class="cp">&lt;%=</span> <span class="vi">@profile</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span><span class="nt">&lt;/strong&gt;</span> -- <span class="nt">&lt;span&gt;</span>¡Échale un vistazo!<span class="nt">&lt;/span&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= link_to @profile do %>
+  <strong><%= @profile.name %></strong> -- <span>¡Échale un vistazo!</span>
+<% end %>
+">Copy</button>
+</div>
+<p>Generaría el siguiente HTML:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"/profiles/1"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;strong&gt;</span>David<span class="nt">&lt;/strong&gt;</span> -- <span class="nt">&lt;span&gt;</span>¡Échale un vistazo!<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/a&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<a href=&quot;/profiles/1&quot;>
+  <strong>David</strong> -- <span>¡Échale un vistazo!</span>
+</a>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-link_to">Documentación API de <code>link_to</code></a> para más información.</p><h3 id="mail-to"><a class="anchorlink" href="#mail-to"><span>3.4</span> mail_to</a></h3><p>Genera una etiqueta de enlace <code>mailto</code> a la dirección de correo electrónico especificada. También puedes especificar el texto del enlace, opciones HTML adicionales, y si deseas codificar la dirección de correo electrónico.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">mail_to</span> <span class="s2">"john_doe@gmail.com"</span>
+<span class="c1"># =&gt; &lt;a href="mailto:john_doe@gmail.com"&gt;john_doe@gmail.com&lt;/a&gt;</span>
+
+<span class="n">mail_to</span> <span class="s2">"me@john_doe.com"</span><span class="p">,</span> <span class="ss">cc: </span><span class="s2">"me@jane_doe.com"</span><span class="p">,</span>
+        <span class="ss">subject: </span><span class="s2">"Este es un correo electrónico de ejemplo"</span>
+<span class="c1"># =&gt; &lt;a href="mailto:"me@john_doe.com?cc=me@jane_doe.com&amp;subject=Este%20es%20un%20correo%20electrónico%20de%20ejemplo"&gt;"me@john_doe.com&lt;/a&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="mail_to &quot;john_doe@gmail.com&quot;
+# => <a href=&quot;mailto:john_doe@gmail.com&quot;>john_doe@gmail.com</a>
+
+mail_to &quot;me@john_doe.com&quot;, cc: &quot;me@jane_doe.com&quot;,
+        subject: &quot;Este es un correo electrónico de ejemplo&quot;
+# => <a href=&quot;mailto:&quot;me@john_doe.com?cc=me@jane_doe.com&amp;subject=Este%20es%20un%20correo%20electrónico%20de%20ejemplo&quot;>&quot;me@john_doe.com</a>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/UrlHelper.html#method-i-mail_to">Documentación API de <code>mail_to</code></a> para más información.</p><h3 id="url-for"><a class="anchorlink" href="#url-for"><span>3.5</span> url_for</a></h3><p>Devuelve la URL para el conjunto de <code>opciones</code> proporcionadas.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">url_for</span> <span class="vi">@profile</span>
+<span class="c1"># =&gt; /profiles/1</span>
+
+<span class="n">url_for</span> <span class="p">[</span> <span class="vi">@hotel</span><span class="p">,</span> <span class="vi">@booking</span><span class="p">,</span> <span class="ss">page: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">line: </span><span class="mi">3</span> <span class="p">]</span>
+<span class="c1"># =&gt; /hotels/1/bookings/1?line=3&amp;page=2</span>
+
+<span class="n">url_for</span> <span class="vi">@post</span> <span class="c1"># dado una clave primaria compuesta [:blog_id, :id]</span>
+<span class="c1"># =&gt; /posts/1_2</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="url_for @profile
+# => /profiles/1
+
+url_for [ @hotel, @booking, page: 2, line: 3 ]
+# => /hotels/1/bookings/1?line=3&amp;page=2
+
+url_for @post # dado una clave primaria compuesta [:blog_id, :id]
+# => /posts/1_2
+">Copy</button>
+</div>
+<h2 id="sanitización"><a class="anchorlink" href="#sanitización"><span>4</span> Sanitización</a></h2><p>Un conjunto de métodos para limpiar texto de elementos HTML no deseados. Los helpers son particularmente útiles para ayudar a asegurar que solo HTML/CSS seguro y válido se renderice. También puede ser útil para prevenir ataques XSS escapando o eliminando contenido potencialmente malicioso de la entrada del usuario antes de renderizarlo en tus vistas.</p><p>Esta funcionalidad es impulsada internamente por la gema <a href="https://github.com/rails/rails-html-sanitizer">rails-html-sanitizer</a>.</p><h3 id="sanitize"><a class="anchorlink" href="#sanitize"><span>4.1</span> sanitize</a></h3><p>El método <code>sanitize</code> codificará en HTML todas las etiquetas y eliminará todos los atributos que no estén específicamente permitidos.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">sanitize</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">body</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="sanitize @article.body
+">Copy</button>
+</div>
+<p>Si se pasan las opciones <code>:attributes</code> o <code>:tags</code>, solo los atributos y etiquetas mencionados están permitidos y nada más.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">sanitize</span> <span class="vi">@article</span><span class="p">.</span><span class="nf">body</span><span class="p">,</span> <span class="ss">tags: </span><span class="sx">%w(table tr td)</span><span class="p">,</span> <span class="ss">attributes: </span><span class="sx">%w(id class style)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="sanitize @article.body, tags: %w(table tr td), attributes: %w(id class style)
+">Copy</button>
+</div>
+<p>Para cambiar los valores predeterminados para múltiples usos, por ejemplo, agregando etiquetas de tabla al predeterminado:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/application.rb</span>
+<span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">action_view</span><span class="p">.</span><span class="nf">sanitized_allowed_tags</span> <span class="o">=</span> <span class="sx">%w(table tr td)</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Application < Rails::Application
+  config.action_view.sanitized_allowed_tags = %w(table tr td)
+end
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize">Documentación API de <code>sanitize</code></a> para más información.</p><h3 id="sanitize-css"><a class="anchorlink" href="#sanitize-css"><span>4.2</span> sanitize_css</a></h3><p>Sanitiza un bloque de código CSS, especialmente cuando encuentra un atributo de estilo en contenido HTML. <code>sanitize_css</code> es particularmente útil cuando se trata de contenido generado por el usuario o contenido dinámico que incluye atributos de estilo.</p><p>El método <code>sanitize_css</code> a continuación eliminará los estilos que no están permitidos.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">sanitize_css</span><span class="p">(</span><span class="s2">"background-color: red; color: white; font-size: 16px;"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="sanitize_css(&quot;background-color: red; color: white; font-size: 16px;&quot;)
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize_css">Documentación API de <code>sanitize_css</code></a> para más información.</p><h3 id="strip-links"><a class="anchorlink" href="#strip-links"><span>4.3</span> strip_links</a></h3><p>Elimina todas las etiquetas de enlace del texto dejando solo el texto del enlace.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">strip_links</span><span class="p">(</span><span class="s2">"&lt;a href='https://rubyonrails.org'&gt;Ruby on Rails&lt;/a&gt;"</span><span class="p">)</span>
+<span class="c1"># =&gt; Ruby on Rails</span>
+
+<span class="n">strip_links</span><span class="p">(</span><span class="s2">"correos a &lt;a href='mailto:me@email.com'&gt;me@email.com&lt;/a&gt;."</span><span class="p">)</span>
+<span class="c1"># =&gt; correos a me@email.com.</span>
+
+<span class="n">strip_links</span><span class="p">(</span><span class="s2">"Blog: &lt;a href='http://myblog.com/'&gt;Visitar&lt;/a&gt;."</span><span class="p">)</span>
+<span class="c1"># =&gt; Blog: Visitar.</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="strip_links(&quot;<a href='https://rubyonrails.org'>Ruby on Rails</a>&quot;)
+# => Ruby on Rails
+
+strip_links(&quot;correos a <a href='mailto:me@email.com'>me@email.com</a>.&quot;)
+# => correos a me@email.com.
+
+strip_links(&quot;Blog: <a href='http://myblog.com/'>Visitar</a>.&quot;)
+# => Blog: Visitar.
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-strip_links">Documentación API de <code>strip_links</code></a> para más información.</p><h3 id="strip-tags"><a class="anchorlink" href="#strip-tags"><span>4.4</span> strip_tags</a></h3><p>Elimina todas las etiquetas HTML del HTML, incluyendo comentarios y caracteres especiales.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">strip_tags</span><span class="p">(</span><span class="s2">"Elimina &lt;i&gt;estas&lt;/i&gt; etiquetas!"</span><span class="p">)</span>
+<span class="c1"># =&gt; Elimina estas etiquetas!</span>
+
+<span class="n">strip_tags</span><span class="p">(</span><span class="s2">"&lt;b&gt;Negrita&lt;/b&gt; ya no más! &lt;a href='more.html'&gt;Ver más&lt;/a&gt;"</span><span class="p">)</span>
+<span class="c1"># =&gt; Negrita ya no más! Ver más</span>
+
+<span class="n">strip_links</span><span class="p">(</span><span class="s1">'&lt;&lt;a href="https://example.org"&gt;link malformado &amp; link&lt;/a&gt;'</span><span class="p">)</span>
+<span class="c1"># =&gt; &amp;lt;link malformado &amp;amp; link</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="strip_tags(&quot;Elimina <i>estas</i> etiquetas!&quot;)
+# => Elimina estas etiquetas!
+
+strip_tags(&quot;<b>Negrita</b> ya no más! <a href='more.html'>Ver más</a>&quot;)
+# => Negrita ya no más! Ver más
+
+strip_links('<<a href=&quot;https://example.org&quot;>link malformado &amp; link</a>')
+# => &amp;lt;link malformado &amp;amp; link
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-strip_tags">Documentación API de <code>strip_tags</code></a> para más información.</p><h2 id="activos"><a class="anchorlink" href="#activos"><span>5</span> Activos</a></h2><p>Un conjunto de métodos para generar HTML que enlaza vistas a activos como imágenes, archivos JavaScript, hojas de estilo y feeds.</p><p>Por defecto, Rails enlaza a estos activos en el host actual en la carpeta pública, pero puedes dirigir a Rails a enlazar a activos desde un servidor de activos dedicado configurando <a href="configuring.html#config-asset-host"><code>config.asset_host</code></a> en la configuración de la aplicación, típicamente en <code>config/environments/production.rb</code>.</p><p>Por ejemplo, digamos que tu host de activos es <code>assets.example.com</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">asset_host</span> <span class="o">=</span> <span class="s2">"assets.example.com"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.asset_host = &quot;assets.example.com&quot;
+">Copy</button>
+</div>
+<p>entonces la URL correspondiente para un <code>image_tag</code> sería:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">image_tag</span><span class="p">(</span><span class="s2">"rails.png"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;img src="//assets.example.com/images/rails.png" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="image_tag(&quot;rails.png&quot;)
+# => <img src=&quot;//assets.example.com/images/rails.png&quot; />
+">Copy</button>
+</div>
+<h3 id="audio-tag"><a class="anchorlink" href="#audio-tag"><span>5.1</span> audio_tag</a></h3><p>Genera una etiqueta de audio HTML con fuente(s), ya sea como una sola etiqueta para una fuente de cadena o etiquetas de fuente anidadas dentro de un array para múltiples fuentes. Las <code>fuentes</code> pueden ser rutas completas, archivos en tu directorio de audios públicos, o <a href="active_storage_overview.html">adjuntos de Active Storage</a>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">audio_tag</span><span class="p">(</span><span class="s2">"sound"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;audio src="/audios/sound"&gt;&lt;/audio&gt;</span>
+
+<span class="n">audio_tag</span><span class="p">(</span><span class="s2">"sound.wav"</span><span class="p">,</span> <span class="s2">"sound.mid"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;audio&gt;&lt;source src="/audios/sound.wav" /&gt;&lt;source src="/audios/sound.mid" /&gt;&lt;/audio&gt;</span>
+
+<span class="n">audio_tag</span><span class="p">(</span><span class="s2">"sound"</span><span class="p">,</span> <span class="ss">controls: </span><span class="kp">true</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;audio controls="controls" src="/audios/sound"&gt;&lt;/audio&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="audio_tag(&quot;sound&quot;)
+# => <audio src=&quot;/audios/sound&quot;></audio>
+
+audio_tag(&quot;sound.wav&quot;, &quot;sound.mid&quot;)
+# => <audio><source src=&quot;/audios/sound.wav&quot; /><source src=&quot;/audios/sound.mid&quot; /></audio>
+
+audio_tag(&quot;sound&quot;, controls: true)
+# => <audio controls=&quot;controls&quot; src=&quot;/audios/sound&quot;></audio>
+">Copy</button>
+</div>
+<div class="interstitial info"><p>Internamente, <code>audio_tag</code> usa <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetUrlHelper.html#method-i-audio_path"><code>audio_path</code> de los AssetUrlHelpers</a> para construir la ruta del audio.</p></div><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-audio_tag">Documentación API de <code>audio_tag</code></a> para más información.</p><h3 id="auto-discovery-link-tag"><a class="anchorlink" href="#auto-discovery-link-tag"><span>5.2</span> auto_discovery_link_tag</a></h3><p>Devuelve una etiqueta de enlace que los navegadores y lectores de feeds pueden usar para auto-detectar un feed RSS, Atom, o JSON.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">auto_discovery_link_tag</span><span class="p">(</span><span class="ss">:rss</span><span class="p">,</span> <span class="s2">"http://www.example.com/feed.rss"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">title: </span><span class="s2">"RSS Feed"</span> <span class="p">})</span>
+<span class="c1"># =&gt; &lt;link rel="alternate" type="application/rss+xml" title="RSS Feed" href="http://www.example.com/feed.rss" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="auto_discovery_link_tag(:rss, &quot;http://www.example.com/feed.rss&quot;, { title: &quot;RSS Feed&quot; })
+# => <link rel=&quot;alternate&quot; type=&quot;application/rss+xml&quot; title=&quot;RSS Feed&quot; href=&quot;http://www.example.com/feed.rss&quot; />
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-auto_discovery_link_tag">Documentación API de <code>auto_discovery_link_tag</code></a> para más información.</p><h3 id="favicon-link-tag"><a class="anchorlink" href="#favicon-link-tag"><span>5.3</span> favicon_link_tag</a></h3><p>Devuelve una etiqueta de enlace para un favicon gestionado por el pipeline de activos. La <code>fuente</code> puede ser una ruta completa o un archivo que exista en tu directorio de activos.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">favicon_link_tag</span>
+<span class="c1"># =&gt; &lt;link href="/assets/favicon.ico" rel="icon" type="image/x-icon" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="favicon_link_tag
+# => <link href=&quot;/assets/favicon.ico&quot; rel=&quot;icon&quot; type=&quot;image/x-icon&quot; />
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-favicon_link_tag">Documentación API de <code>favicon_link_tag</code></a> para más información.</p><h3 id="image-tag"><a class="anchorlink" href="#image-tag"><span>5.4</span> image_tag</a></h3><p>Devuelve una etiqueta de imagen HTML para la fuente. La <code>fuente</code> puede ser una ruta completa o un archivo que exista en tu directorio <code>app/assets/images</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">image_tag</span><span class="p">(</span><span class="s2">"icon.png"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;img src="/assets/icon.png" /&gt;</span>
+
+<span class="n">image_tag</span><span class="p">(</span><span class="s2">"icon.png"</span><span class="p">,</span> <span class="ss">size: </span><span class="s2">"16x10"</span><span class="p">,</span> <span class="ss">alt: </span><span class="s2">"Editar Artículo"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;img src="/assets/icon.png" width="16" height="10" alt="Editar Artículo" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="image_tag(&quot;icon.png&quot;)
+# => <img src=&quot;/assets/icon.png&quot; />
+
+image_tag(&quot;icon.png&quot;, size: &quot;16x10&quot;, alt: &quot;Editar Artículo&quot;)
+# => <img src=&quot;/assets/icon.png&quot; width=&quot;16&quot; height=&quot;10&quot; alt=&quot;Editar Artículo&quot; />
+">Copy</button>
+</div>
+<div class="interstitial info"><p>Internamente, <code>image_tag</code> usa <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetUrlHelper.html#method-i-image_path"><code>image_path</code> de los AssetUrlHelpers</a> para construir la ruta de la imagen.</p></div><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-image_tag">Documentación API de <code>image_tag</code></a> para más información.</p><h3 id="javascript-include-tag"><a class="anchorlink" href="#javascript-include-tag"><span>5.5</span> javascript_include_tag</a></h3><p>Devuelve una etiqueta de script HTML para cada una de las fuentes proporcionadas. Puedes pasar el nombre del archivo (la extensión <code>.js</code> es opcional) de archivos JavaScript que existen en tu directorio <code>app/assets/javascripts</code> para su inclusión en la página actual, o puedes pasar la ruta completa relativa a tu raíz de documentos.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">javascript_include_tag</span><span class="p">(</span><span class="s2">"common"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;script src="/assets/common.js"&gt;&lt;/script&gt;</span>
+
+<span class="n">javascript_include_tag</span><span class="p">(</span><span class="s2">"common"</span><span class="p">,</span> <span class="ss">async: </span><span class="kp">true</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;script src="/assets/common.js" async="async"&gt;&lt;/script&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="javascript_include_tag(&quot;common&quot;)
+# => <script src=&quot;/assets/common.js&quot;></script>
+
+javascript_include_tag(&quot;common&quot;, async: true)
+# => <script src=&quot;/assets/common.js&quot; async=&quot;async&quot;></script>
+">Copy</button>
+</div>
+<p>Algunos de los atributos más comunes son <code>async</code> y <code>defer</code>, donde <code>async</code> permitirá que el script se cargue en paralelo para ser analizado y evaluado tan pronto como sea posible, y <code>defer</code> indicará que el script está destinado a ejecutarse después de que el documento haya sido analizado.</p><div class="interstitial info"><p>Internamente, <code>javascript_include_tag</code> usa <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetUrlHelper.html#method-i-javascript_path"><code>javascript_path</code> de los AssetUrlHelpers</a> para construir la ruta del script.</p></div><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-javascript_include_tag">Documentación API de <code>javascript_include_tag</code></a> para más información.</p><h3 id="picture-tag"><a class="anchorlink" href="#picture-tag"><span>5.6</span> picture_tag</a></h3><p>Devuelve una etiqueta de imagen HTML para la fuente. Admite pasar una Cadena, un Array, o un Bloque.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">picture_tag</span><span class="p">(</span><span class="s2">"icon.webp"</span><span class="p">,</span> <span class="s2">"icon.png"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="picture_tag(&quot;icon.webp&quot;, &quot;icon.png&quot;)
+">Copy</button>
+</div>
+<p>Esto genera el siguiente HTML:</p><div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;picture&gt;</span>
+  <span class="nt">&lt;source</span> <span class="na">srcset=</span><span class="s">"/assets/icon.webp"</span> <span class="na">type=</span><span class="s">"image/webp"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;source</span> <span class="na">srcset=</span><span class="s">"/assets/icon.png"</span> <span class="na">type=</span><span class="s">"image/png"</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/assets/icon.png"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/picture&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<picture>
+  <source srcset=&quot;/assets/icon.webp&quot; type=&quot;image/webp&quot; />
+  <source srcset=&quot;/assets/icon.png&quot; type=&quot;image/png&quot; />
+  <img src=&quot;/assets/icon.png&quot; />
+</picture>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-picture_tag">Documentación API de <code>picture_tag</code></a> para más información.</p><h3 id="preload-link-tag"><a class="anchorlink" href="#preload-link-tag"><span>5.7</span> preload_link_tag</a></h3><p>Devuelve una etiqueta de enlace que los navegadores pueden usar para precargar la fuente. La fuente puede ser la ruta de un recurso gestionado por el pipeline de activos, una ruta completa, o un URI.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">preload_link_tag</span><span class="p">(</span><span class="s2">"application.css"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;link rel="preload" href="/assets/application.css" as="style" type="text/css" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="preload_link_tag(&quot;application.css&quot;)
+# => <link rel=&quot;preload&quot; href=&quot;/assets/application.css&quot; as=&quot;style&quot; type=&quot;text/css&quot; />
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-preload_link_tag">Documentación API de <code>preload_link_tag</code></a> para más información.</p><h3 id="stylesheet-link-tag"><a class="anchorlink" href="#stylesheet-link-tag"><span>5.8</span> stylesheet_link_tag</a></h3><p>Devuelve una etiqueta de enlace de hoja de estilo para las fuentes especificadas como argumentos. Si no especificas una extensión, <code>.css</code> se añadirá automáticamente.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">stylesheet_link_tag</span><span class="p">(</span><span class="s2">"application"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;link href="/assets/application.css" rel="stylesheet" /&gt;</span>
+
+<span class="n">stylesheet_link_tag</span><span class="p">(</span><span class="s2">"application"</span><span class="p">,</span> <span class="ss">media: </span><span class="s2">"all"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;link href="/assets/application.css" media="all" rel="stylesheet" /&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="stylesheet_link_tag(&quot;application&quot;)
+# => <link href=&quot;/assets/application.css&quot; rel=&quot;stylesheet&quot; />
+
+stylesheet_link_tag(&quot;application&quot;, media: &quot;all&quot;)
+# => <link href=&quot;/assets/application.css&quot; media=&quot;all&quot; rel=&quot;stylesheet&quot; />
+">Copy</button>
+</div>
+<p><code>media</code> se usa para especificar el tipo de medio para el enlace. Los tipos de medios más comunes son <code>all</code>, <code>screen</code>, <code>print</code>, y <code>speech</code>.</p><div class="interstitial info"><p>Internamente, <code>stylesheet_link_tag</code> usa <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetUrlHelper.html#method-i-stylesheet_path"><code>stylesheet_path</code> de los AssetUrlHelpers</a> para construir la ruta de la hoja de estilo.</p></div><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-stylesheet_link_tag">Documentación API de <code>stylesheet_link_tag</code></a> para más información.</p><h3 id="video-tag"><a class="anchorlink" href="#video-tag"><span>5.9</span> video_tag</a></h3><p>Genera una etiqueta de video HTML con fuente(s), ya sea como una sola etiqueta para una fuente de cadena o etiquetas de fuente anidadas dentro de un array para múltiples fuentes. Las <code>fuentes</code> pueden ser rutas completas, archivos en tu directorio de videos públicos, o adjuntos de Active Storage.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">video_tag</span><span class="p">(</span><span class="s2">"trailer"</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;video src="/videos/trailer"&gt;&lt;/video&gt;</span>
+
+<span class="n">video_tag</span><span class="p">([</span><span class="s2">"trailer.ogg"</span><span class="p">,</span> <span class="s2">"trailer.flv"</span><span class="p">])</span>
+<span class="c1"># =&gt; &lt;video&gt;&lt;source src="/videos/trailer.ogg" /&gt;&lt;source src="/videos/trailer.flv" /&gt;&lt;/video&gt;</span>
+
+<span class="n">video_tag</span><span class="p">(</span><span class="s2">"trailer"</span><span class="p">,</span> <span class="ss">controls: </span><span class="kp">true</span><span class="p">)</span>
+<span class="c1"># =&gt; &lt;video controls="controls" src="/videos/trailer"&gt;&lt;/video&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="video_tag(&quot;trailer&quot;)
+# => <video src=&quot;/videos/trailer&quot;></video>
+
+video_tag([&quot;trailer.ogg&quot;, &quot;trailer.flv&quot;])
+# => <video><source src=&quot;/videos/trailer.ogg&quot; /><source src=&quot;/videos/trailer.flv&quot; /></video>
+
+video_tag(&quot;trailer&quot;, controls: true)
+# => <video controls=&quot;controls&quot; src=&quot;/videos/trailer&quot;></video>
+">Copy</button>
+</div>
+<div class="interstitial info"><p>Internamente, <code>video_tag</code> usa <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetUrlHelper.html#method-i-video_path"><code>video_path</code> de los AssetUrlHelpers</a> para construir la ruta del video.</p></div><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AssetTagHelper.html#method-i-video_tag">Documentación API de <code>video_tag</code></a> para más información.</p><h2 id="javascript"><a class="anchorlink" href="#javascript"><span>6</span> JavaScript</a></h2><p>Un conjunto de métodos para trabajar con JavaScript en tus vistas.</p><h3 id="escape-javascript"><a class="anchorlink" href="#escape-javascript"><span>6.1</span> escape_javascript</a></h3><p>Escapa retornos de carro y comillas simples y dobles para segmentos de JavaScript. Utilizarías este método para tomar una cadena de texto y asegurarte de que no contenga caracteres inválidos cuando el navegador intente analizarla.</p><p>Por ejemplo, si tienes un parcial con un saludo que contiene comillas dobles, puedes escapar el saludo para usarlo en un alerta de JavaScript.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="c">&lt;%# app/views/users/greeting.html.rb %&gt;</span>
+Mi nombre es <span class="cp">&lt;%=</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">name</span> <span class="cp">%&gt;</span>, y estoy aquí para decir "¡Bienvenido a nuestro sitio web!"
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Mi nombre es <%= current_user.name %>, y estoy aquí para decir &quot;¡Bienvenido a nuestro sitio web!&quot;
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="cp">&lt;%=</span> <span class="n">escape_javascript</span> <span class="n">render</span><span class="p">(</span><span class="s1">'users/greeting'</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="dl">"</span><span class="p">;</span>
+  <span class="nf">alert</span><span class="p">(</span><span class="s2">`Hola, </span><span class="p">${</span><span class="nx">greeting</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<script>
+  var greeting = &quot;<%= escape_javascript render('users/greeting') %>&quot;;
+  alert(`Hola, ${greeting}`);
+</script>
+">Copy</button>
+</div>
+<p>Esto escapará las comillas correctamente y mostrará el saludo en un cuadro de alerta.</p><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/JavaScriptHelper.html#method-i-escape_javascript">Documentación API de <code>escape_javascript</code></a> para más información.</p><h3 id="javascript-tag"><a class="anchorlink" href="#javascript-tag"><span>6.2</span> javascript_tag</a></h3><p>Devuelve una etiqueta de JavaScript envolviendo el código proporcionado. Puedes pasar un hash de opciones para controlar el comportamiento de la etiqueta <code>&lt;script&gt;</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">javascript_tag</span><span class="p">(</span><span class="s2">"alert('Todo está bien')"</span><span class="p">,</span> <span class="ss">type: </span><span class="s2">"application/javascript"</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="javascript_tag(&quot;alert('Todo está bien')&quot;, type: &quot;application/javascript&quot;)
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"application/javascript"</span><span class="nt">&gt;</span>
+<span class="c1">//</span><span class="o">&lt;!</span><span class="p">[</span><span class="nx">CDATA</span><span class="p">[</span>
+<span class="nf">alert</span><span class="p">(</span><span class="dl">'</span><span class="s1">Todo está bien</span><span class="dl">'</span><span class="p">)</span>
+<span class="c1">//]]&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<script type=&quot;application/javascript&quot;>
+//<![CDATA[
+alert('Todo está bien')
+//]]>
+</script>
+">Copy</button>
+</div>
+<p>En lugar de pasar el contenido como un argumento, también puedes usar un bloque.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%=</span> <span class="n">javascript_tag</span> <span class="ss">type: </span><span class="s2">"application/javascript"</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  alert("¡Bienvenido a mi aplicación!")
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<%= javascript_tag type: &quot;application/javascript&quot; do %>
+  alert(&quot;¡Bienvenido a mi aplicación!&quot;)
+<% end %>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/JavaScriptHelper.html#method-i-javascript_tag">Documentación API de <code>javascript_tag</code></a> para más información.</p><h2 id="etiquetas-alternativas"><a class="anchorlink" href="#etiquetas-alternativas"><span>7</span> Etiquetas Alternativas</a></h2><p>Un conjunto de métodos para generar etiquetas HTML programáticamente.</p><h3 id="tag"><a class="anchorlink" href="#tag"><span>7.1</span> tag</a></h3><p>Genera una etiqueta HTML independiente con el <code>nombre</code> y <code>opciones</code> dados.</p><p>Cada etiqueta se puede construir con:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">tag</span><span class="p">.</span><span class="nf">some_tag_name</span><span class="p">(</span><span class="n">optional</span> <span class="n">content</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="tag.some_tag_name(optional content, options)
+">Copy</button>
+</div>
+<p>donde el nombre de la etiqueta puede ser, por ejemplo, <code>br</code>, <code>div</code>, <code>section</code>, <code>article</code>, o cualquier etiqueta realmente.</p><p>Por ejemplo, aquí hay algunos usos comunes:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">tag</span><span class="p">.</span><span class="nf">h1</span> <span class="s2">"Todos los títulos se ajustan para imprimir"</span>
+<span class="c1"># =&gt; &lt;h1&gt;Todos los títulos se ajustan para imprimir&lt;/h1&gt;</span>
+
+<span class="n">tag</span><span class="p">.</span><span class="nf">div</span> <span class="s2">"¡Hola, mundo!"</span>
+<span class="c1"># =&gt; &lt;div&gt;¡Hola, mundo!&lt;/div&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="tag.h1 &quot;Todos los títulos se ajustan para imprimir&quot;
+# => <h1>Todos los títulos se ajustan para imprimir</h1>
+
+tag.div &quot;¡Hola, mundo!&quot;
+# => <div>¡Hola, mundo!</div>
+">Copy</button>
+</div>
+<p>Además, puedes pasar opciones para agregar atributos a la etiqueta generada.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">tag</span><span class="p">.</span><span class="nf">section</span> <span class="ss">class: </span><span class="sx">%w( gatitos cachorros )</span>
+<span class="c1"># =&gt; &lt;section class="gatitos cachorros"&gt;&lt;/section&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="tag.section class: %w( gatitos cachorros )
+# => <section class=&quot;gatitos cachorros&quot;></section>
+">Copy</button>
+</div>
+<p>Además, los atributos HTML <code>data-*</code> se pueden pasar al helper <code>tag</code> usando la opción <code>data</code>, con un hash que contiene pares clave-valor de subatributos. Los subatributos se convierten en atributos <code>data-*</code> que se convierten a guiones para funcionar bien con JavaScript.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">tag</span><span class="p">.</span><span class="nf">div</span> <span class="ss">data: </span><span class="p">{</span> <span class="ss">user_id: </span><span class="mi">123</span> <span class="p">}</span>
+<span class="c1"># =&gt; &lt;div data-user-id="123"&gt;&lt;/div&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="tag.div data: { user_id: 123 }
+# => <div data-user-id=&quot;123&quot;></div>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/TagHelper.html#method-i-tag">Documentación API de <code>tag</code></a> para más información.</p><h3 id="token-list"><a class="anchorlink" href="#token-list"><span>7.2</span> token_list</a></h3><p>Devuelve una cadena de tokens construida a partir de los argumentos proporcionados. Este método también se alias como <code>class_names</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">token_list</span><span class="p">(</span><span class="s2">"gatos"</span><span class="p">,</span> <span class="s2">"perros"</span><span class="p">)</span>
+<span class="c1"># =&gt; "gatos perros"</span>
+
+<span class="n">token_list</span><span class="p">(</span><span class="kp">nil</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"foo"</span><span class="p">,</span> <span class="p">{</span> <span class="ss">bar: </span><span class="kp">true</span> <span class="p">})</span>
+<span class="c1"># =&gt; "123 foo bar"</span>
+
+<span class="n">m</span><span class="err">ó</span><span class="n">vil</span><span class="p">,</span> <span class="n">alineaci</span><span class="err">ó</span><span class="n">n</span> <span class="o">=</span> <span class="kp">true</span><span class="p">,</span> <span class="s2">"centro"</span>
+<span class="n">token_list</span><span class="p">(</span><span class="s2">"flex items-</span><span class="si">#{</span><span class="n">alineaci</span><span class="err">ó</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"flex-col"</span><span class="p">:</span> <span class="n">m</span><span class="err">ó</span><span class="n">vil</span><span class="p">)</span>
+<span class="c1"># =&gt; "flex items-centro flex-col"</span>
+<span class="n">class_names</span><span class="p">(</span><span class="s2">"flex items-</span><span class="si">#{</span><span class="n">alineaci</span><span class="err">ó</span><span class="n">n</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"flex-col"</span><span class="p">:</span> <span class="n">m</span><span class="err">ó</span><span class="n">vil</span><span class="p">)</span> <span class="c1"># usando el alias</span>
+<span class="c1"># =&gt; "flex items-centro flex-col"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="token_list(&quot;gatos&quot;, &quot;perros&quot;)
+# => &quot;gatos perros&quot;
+
+token_list(nil, false, 123, &quot;&quot;, &quot;foo&quot;, { bar: true })
+# => &quot;123 foo bar&quot;
+
+móvil, alineación = true, &quot;centro&quot;
+token_list(&quot;flex items-#{alineación}&quot;, &quot;flex-col&quot;: móvil)
+# => &quot;flex items-centro flex-col&quot;
+class_names(&quot;flex items-#{alineación}&quot;, &quot;flex-col&quot;: móvil) # usando el alias
+# => &quot;flex items-centro flex-col&quot;
+">Copy</button>
+</div>
+<h2 id="captura-de-bloques"><a class="anchorlink" href="#captura-de-bloques"><span>8</span> Captura de Bloques</a></h2><p>Un conjunto de métodos para permitirte extraer el marcado generado que se puede usar en otras partes de un archivo de plantilla o diseño.</p><p>Proporciona un método para capturar bloques en variables a través de <code>capture</code>, y una forma de capturar un bloque de marcado para usar en un diseño a través de <code>content_for</code>.</p><h3 id="capture"><a class="anchorlink" href="#capture"><span>8.1</span> capture</a></h3><p>El método <code>capture</code> te permite extraer parte de una plantilla en una variable.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@greeting</span> <span class="o">=</span> <span class="n">capture</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;p&gt;</span>¡Bienvenido! La fecha y hora es <span class="cp">&lt;%=</span> <span class="no">Time</span><span class="p">.</span><span class="nf">current</span> <span class="cp">%&gt;</span><span class="nt">&lt;/p&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% @greeting = capture do %>
+  <p>¡Bienvenido! La fecha y hora es <%= Time.current %></p>
+<% end %>
+">Copy</button>
+</div>
+<p>Luego puedes usar esta variable en cualquier parte de tus plantillas, diseños o helpers.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>¡Bienvenido!<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="vi">@greeting</span> <span class="cp">%&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<html>
+  <head>
+    <title>¡Bienvenido!</title>
+  </head>
+  <body>
+    <%= @greeting %>
+  </body>
+</html>
+">Copy</button>
+</div>
+<p>El retorno de capture es la cadena generada por el bloque.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="vi">@greeting</span>
+<span class="c1"># =&gt; "¡Bienvenido a mi nueva página web brillante! La fecha y hora es 2018-09-06 11:09:16 -0500"</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="@greeting
+# => &quot;¡Bienvenido a mi nueva página web brillante! La fecha y hora es 2018-09-06 11:09:16 -0500&quot;
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-capture">Documentación API de <code>capture</code></a> para más información.</p><h3 id="content-for"><a class="anchorlink" href="#content-for"><span>8.2</span> content_for</a></h3><p>Llamar a <code>content_for</code> almacena un bloque de marcado en un identificador para su uso posterior. Puedes hacer llamadas subsiguientes al contenido almacenado en otras plantillas, módulos de helpers o el diseño pasando el identificador como un argumento a <code>yield</code>.</p><p>Un caso de uso común es establecer el título de una página en un bloque <code>content_for</code>.</p><p>Defines un bloque <code>content_for</code> en la vista de la página especial, y luego lo <code>yield</code> dentro del diseño. Para otras páginas, donde no se utiliza el bloque <code>content_for</code>, permanece vacío, lo que resulta en que no se rinda nada.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="c">&lt;%# app/views/users/special_page.html.erb %&gt;</span>
+<span class="cp">&lt;%</span> <span class="n">content_for</span><span class="p">(</span><span class="ss">:html_title</span><span class="p">)</span> <span class="p">{</span> <span class="s2">"Título de Página Especial"</span> <span class="p">}</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% content_for(:html_title) { &quot;Título de Página Especial&quot; } %>
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight erb"><span class="c">&lt;%# app/views/layouts/application.html.erb %&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="cp">&lt;%=</span> <span class="n">content_for?</span><span class="p">(</span><span class="ss">:html_title</span><span class="p">)</span> <span class="p">?</span> <span class="k">yield</span><span class="p">(</span><span class="ss">:html_title</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"Título Predeterminado"</span> <span class="cp">%&gt;</span><span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<html>
+  <head>
+    <title><%= content_for?(:html_title) ? yield(:html_title) : &quot;Título Predeterminado&quot; %></title>
+  </head>
+</html>
+">Copy</button>
+</div>
+<p>Notarás que en el ejemplo anterior, usamos el método predicado <code>content_for?</code> para renderizar condicionalmente un título. Este método verifica si se ha capturado algún contenido usando <code>content_for</code>, lo que te permite ajustar partes de tu diseño basado en el contenido dentro de tus vistas.</p><p>Además, puedes emplear <code>content_for</code> dentro de un módulo de helper.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># app/helpers/title_helper.rb</span>
+<span class="k">module</span> <span class="nn">TitleHelper</span>
+  <span class="k">def</span> <span class="nf">html_title</span>
+    <span class="n">content_for</span><span class="p">(</span><span class="ss">:html_title</span><span class="p">)</span> <span class="o">||</span> <span class="s2">"Título Predeterminado"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="module TitleHelper
+  def html_title
+    content_for(:html_title) || &quot;Título Predeterminado&quot;
+  end
+end
+">Copy</button>
+</div>
+<p>Ahora, puedes llamar a <code>html_title</code> en tu diseño para recuperar el contenido almacenado en el bloque <code>content_for</code>. Si se establece un bloque <code>content_for</code> en la página que se está renderizando, como en el caso de la <code>special_page</code>, mostrará el título. De lo contrario, mostrará el texto predeterminado "Título Predeterminado".</p><p>ADVERTENCIA: <code>content_for</code> se ignora en cachés. Así que no deberías usarlo para elementos que serán almacenados en caché de fragmentos.</p><p>NOTA: Puedes estar pensando cuál es la diferencia entre <code>capture</code> y <code>content_for</code>? <br><br>
+<code>capture</code> se usa para capturar un bloque de marcado en una variable, mientras que <code>content_for</code> se usa para almacenar un bloque de marcado en un identificador para su uso posterior. Internamente, <code>content_for</code> realmente llama a <code>capture</code>. Sin embargo, la diferencia clave radica en su comportamiento cuando se invocan múltiples veces.<br><br>
+<code>content_for</code> se puede llamar repetidamente, concatenando los bloques que recibe para un identificador específico en el orden en que se proporcionan. Cada llamada subsiguiente simplemente se suma a lo que ya está almacenado. En contraste, <code>capture</code> solo devuelve el contenido del bloque, sin llevar un registro de ninguna invocación anterior.</p><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/CaptureHelper.html#method-i-content_for">Documentación API de <code>content_for</code></a> para más información.</p><h2 id="rendimiento"><a class="anchorlink" href="#rendimiento"><span>9</span> Rendimiento</a></h2><h3 id="benchmark"><a class="anchorlink" href="#benchmark"><span>9.1</span> benchmark</a></h3><p>Envuelve un bloque <code>benchmark</code> alrededor de operaciones costosas o posibles cuellos de botella para obtener una lectura de tiempo para la operación.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">benchmark</span> <span class="s2">"Procesar archivos de datos"</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">expensive_files_operation</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% benchmark &quot;Procesar archivos de datos&quot; do %>
+  <%= expensive_files_operation %>
+<% end %>
+">Copy</button>
+</div>
+<p>Esto añadiría algo como <code>Procesar archivos de datos (0.34523)</code> al registro, que luego puedes usar para comparar tiempos al optimizar tu código.</p><p>NOTA: Este helper es parte de Active Support, y también está disponible en controladores, helpers, modelos, etc.</p><p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActiveSupport/Benchmarkable.html#method-i-benchmark">Documentación API de <code>benchmark</code></a> para más información.</p><h3 id="cache"><a class="anchorlink" href="#cache"><span>9.2</span> cache</a></h3><p>Puedes almacenar en caché fragmentos de una vista en lugar de una acción o página completa. Esta técnica es útil para almacenar en caché piezas como menús, listas de temas de noticias, fragmentos HTML estáticos, y así sucesivamente. Permite que un fragmento de lógica de vista se envuelva en un bloque de caché y se sirva desde la tienda de caché cuando llegue la próxima solicitud.</p><p>El método <code>cache</code> toma un bloque que contiene el contenido que deseas almacenar en caché.</p><p>Por ejemplo, podrías almacenar en caché el pie de página de tu diseño de aplicación envolviéndolo en un bloque <code>cache</code>.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">"application/footer"</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% cache do %>
+  <%= render &quot;application/footer&quot; %>
+<% end %>
+">Copy</button>
+</div>
+<p>También podrías almacenar en caché basado en instancias de modelo, por ejemplo, puedes almacenar en caché cada artículo en una página pasando el objeto <code>article</code> al método <code>cache</code>. Esto almacenaría en caché cada artículo por separado.</p><div class="interstitial code">
+<pre><code class="highlight erb"><span class="cp">&lt;%</span> <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="n">cache</span> <span class="n">article</span> <span class="k">do</span> <span class="cp">%&gt;</span>
+    <span class="cp">&lt;%=</span> <span class="n">render</span> <span class="n">article</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<% @articles.each do |article| %>
+  <% cache article do %>
+    <%= render article %>
+  <% end %>
+<% end %>
+">Copy</button>
+</div>
+<p>Cuando tu aplicación recibe su primera solicitud a esta página, Rails escribirá una nueva entrada de caché con una clave única. Una clave se ve algo así:</p><div class="interstitial code">
+<pre><code class="highlight irb"><span class="go">views/articles/index:bea67108094918eeba32cd4a6f786301/articles/1
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="">Copy</button>
+</div>
+<p>Consulta <a href="caching_with_rails.html#fragment-caching"><code>Fragment Caching</code></a> y la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/CacheHelper.html#method-i-cache">Documentación API de <code>cache</code></a> para más información.</p><h2 id="misceláneo"><a class="anchorlink" href="#misceláneo"><span>10</span> Misceláneo</a></h2><h3 id="atom-feed"><a class="anchorlink" href="#atom-feed"><span>10.1</span> atom_feed</a></h3><p>Los Feeds Atom son formatos de archivo basados en XML utilizados para sindicar contenido y pueden ser utilizados por usuarios en lectores de feeds para navegar contenido o por motores de búsqueda para ayudar a descubrir información adicional sobre tu sitio.</p><p>Este helper facilita la construcción de un feed Atom, y se utiliza principalmente en plantillas Builder para crear XML. Aquí hay un ejemplo completo de uso:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># config/routes.rb</span>
+<span class="n">resources</span> <span class="ss">:articles</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="resources :articles
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># app/controllers/articles_controller.rb</span>
+<span class="k">def</span> <span class="nf">index</span>
+  <span class="vi">@articles</span> <span class="o">=</span> <span class="no">Article</span><span class="p">.</span><span class="nf">all</span>
+
+  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">html</span>
+    <span class="nb">format</span><span class="p">.</span><span class="nf">atom</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="def index
+  @articles = Article.all
+
+  respond_to do |format|
+    format.html
+    format.atom
+  end
+end
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight ruby"><span class="c1"># app/views/articles/index.atom.builder</span>
+<span class="n">atom_feed</span> <span class="k">do</span> <span class="o">|</span><span class="n">feed</span><span class="o">|</span>
+  <span class="n">feed</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="s2">"Índice de Artículos"</span><span class="p">)</span>
+  <span class="n">feed</span><span class="p">.</span><span class="nf">updated</span><span class="p">(</span><span class="vi">@articles</span><span class="p">.</span><span class="nf">first</span><span class="p">.</span><span class="nf">created_at</span><span class="p">)</span>
+
+  <span class="vi">@articles</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">article</span><span class="o">|</span>
+    <span class="n">feed</span><span class="p">.</span><span class="nf">entry</span><span class="p">(</span><span class="n">article</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span>
+      <span class="n">entry</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="n">article</span><span class="p">.</span><span class="nf">title</span><span class="p">)</span>
+      <span class="n">entry</span><span class="p">.</span><span class="nf">content</span><span class="p">(</span><span class="n">article</span><span class="p">.</span><span class="nf">body</span><span class="p">,</span> <span class="ss">type: </span><span class="s2">"html"</span><span class="p">)</span>
+
+      <span class="n">entry</span><span class="p">.</span><span class="nf">author</span> <span class="k">do</span> <span class="o">|</span><span class="n">author</span><span class="o">|</span>
+        <span class="n">author</span><span class="p">.</span><span class="nf">name</span><span class="p">(</span><span class="n">article</span><span class="p">.</span><span class="nf">author_name</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="atom_feed do |feed|
+  feed.title(&quot;Índice de Artículos&quot;)
+  feed.updated(@articles.first.created_at)
+
+  @articles.each do |article|
+    feed.entry(article) do |entry|
+      entry.title(article.title)
+      entry.content(article.body, type: &quot;html&quot;)
+
+      entry.author do |author|
+        author.name(article.author_name)
+      end
+    end
+  end
+end
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/AtomFeedHelper.html#method-i-atom_feed">Documentación API de <code>atom_feed</code></a> para más información.</p><h3 id="debug"><a class="anchorlink" href="#debug"><span>10.2</span> debug</a></h3><p>Devuelve una representación YAML de un objeto envuelto con una etiqueta <code>pre</code>. Esto crea una forma muy legible de inspeccionar un objeto.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">my_hash</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"first"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"second"</span> <span class="o">=&gt;</span> <span class="s2">"two"</span><span class="p">,</span> <span class="s2">"third"</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="p">}</span>
+<span class="n">debug</span><span class="p">(</span><span class="n">my_hash</span><span class="p">)</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="my_hash = { &quot;first&quot; => 1, &quot;second&quot; => &quot;two&quot;, &quot;third&quot; => [1, 2, 3] }
+debug(my_hash)
+">Copy</button>
+</div>
+<div class="interstitial code">
+<pre><code class="highlight html"><span class="nt">&lt;pre</span> <span class="na">class=</span><span class="s">"debug_dump"</span><span class="nt">&gt;</span>---
+first: 1
+second: two
+third:
+- 1
+- 2
+- 3
+<span class="nt">&lt;/pre&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="<pre class=&quot;debug_dump&quot;>---
+first: 1
+second: two
+third:
+- 1
+- 2
+- 3
+</pre>
+">Copy</button>
+</div>
+<p>Consulta la <a href="https://edgeapi.rubyonrails.org/classes/ActionView/Helpers/DebugHelper.html#method-i-debug">Documentación API de <code>debug</code></a> para más información.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>

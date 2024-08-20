@@ -1,0 +1,859 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Múltiples Bases de Datos con Active Record — Ruby on Rails Guides</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style-v2.css" data-turbo-track="reload">
+  <link rel="stylesheet" type="text/css" href="stylesheets/print-v2.css" media="print">
+  <link rel="stylesheet" type="text/css" href="stylesheets/highlight-v2.css" data-turbo-track="reload">
+
+  <link rel="icon" href="images/favicon.ico" sizes="any">
+
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <script src="javascripts/@hotwired--turbo.js" data-turbo-track="reload"></script>
+  <script src="javascripts/clipboard.js" data-turbo-track="reload"></script>
+  <script src="javascripts/guides.js" data-turbo-track="reload"></script>
+
+  <meta property="og:title" content="Múltiples Bases de Datos con Active Record — Ruby on Rails Guides" />
+  <meta name="description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Múltiples Bases de Datos con Active RecordEsta guía cubre el uso de múltiples bases de datos con tu aplicación Rails.Después de leer esta guía sabrás: Cómo configurar tu aplicación para múltiples bases de datos. Cómo funciona el cambio automático de conexión. Cómo usar la fragmentación horizontal para múltiples bases de datos. Qué características son compatibles y cuáles están en progreso." />
+  <meta property="og:description" content="NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN https://guides.rubyonrails.org.Múltiples Bases de Datos con Active RecordEsta guía cubre el uso de múltiples bases de datos con tu aplicación Rails.Después de leer esta guía sabrás: Cómo configurar tu aplicación para múltiples bases de datos. Cómo funciona el cambio automático de conexión. Cómo usar la fragmentación horizontal para múltiples bases de datos. Qué características son compatibles y cuáles están en progreso." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Ruby on Rails Guides" />
+  <meta property="og:image" content="https://avatars.githubusercontent.com/u/4223" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+
+  <meta name="theme-color" content="#C81418">
+</head>
+
+<body class="guide">
+  <nav id="topNav" aria-label="Secondary">
+    <div class="wrapper">
+      <strong class="more-info-label">Más en <a href="https://rubyonrails.org/">rubyonrails.org:</a> </strong>
+      <span class="red-button more-info-button">
+        Más Ruby on Rails
+      </span>
+      <ul class="more-info-links s-hidden">
+        <li class="more-info"><a href="https://rubyonrails.org/blog">Blog</a></li>
+        <li class="more-info"><a href="https://guides.rubyonrails.org/">Guías</a></li>
+        <li class="more-info"><a href="https://api.rubyonrails.org/">API</a></li>
+        <li class="more-info"><a href="https://discuss.rubyonrails.org/">Foro</a></li>
+        <li class="more-info"><a href="https://github.com/rails/rails">Contribuir en GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <header id="page_header">
+    <div class="wrapper clearfix">
+      <nav id="feature_nav">
+        <div class="header-logo">
+          <a href="index.html" title="Regresar a la página principal de Guías para Edge">Guías</a>
+          <span id="version_switcher">
+            Versión:
+            <select class="guides-version">
+              <option value="https://edgeguides.rubyonrails.org/" selected>Edge</option>
+                <option value="https://guides.rubyonrails.org/v7.2/">7.2</option>
+                <option value="https://guides.rubyonrails.org/v7.1/">7.1</option>
+                <option value="https://guides.rubyonrails.org/v7.0/">7.0</option>
+                <option value="https://guides.rubyonrails.org/v6.1/">6.1</option>
+                <option value="https://guides.rubyonrails.org/v6.0/">6.0</option>
+                <option value="https://guides.rubyonrails.org/v5.2/">5.2</option>
+                <option value="https://guides.rubyonrails.org/v5.1/">5.1</option>
+                <option value="https://guides.rubyonrails.org/v5.0/">5.0</option>
+                <option value="https://guides.rubyonrails.org/v4.2/">4.2</option>
+                <option value="https://guides.rubyonrails.org/v4.1/">4.1</option>
+                <option value="https://guides.rubyonrails.org/v4.0/">4.0</option>
+                <option value="https://guides.rubyonrails.org/v3.2/">3.2</option>
+                <option value="https://guides.rubyonrails.org/v3.1/">3.1</option>
+                <option value="https://guides.rubyonrails.org/v3.0/">3.0</option>
+                <option value="https://guides.rubyonrails.org/v2.3/">2.3</option>
+            </select>
+          </span>
+        </div>
+        <ul class="nav">
+          <li><a class="nav-item" id="home_nav" href="https://rubyonrails.org/">Inicio</a></li>
+          <li class="guides-index guides-index-large">
+            <a href="index.html" id="guidesMenu" class="guides-index-item nav-item">Índice de Guías</a>
+            <div id="guides" class="clearfix" style="display: none;">
+              <hr />
+              <dl class="guides-section-container">
+                  <div class="guides-section">
+                    <dt>Comienza Aquí</dt>
+                    <dd><a href="getting_started.html">Primeros Pasos con Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Modelos</dt>
+                    <dd><a href="active_record_basics.html">Conceptos Básicos de Active Record</a></dd>
+                    <dd><a href="active_record_migrations.html">Migraciones de Active Record</a></dd>
+                    <dd><a href="active_record_validations.html">Validaciones de Active Record</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Vistas</dt>
+                    <dd><a href="action_view_overview.html">Resumen de Action View</a></dd>
+                    <dd><a href="layouts_and_rendering.html">Diseños y Renderizado en Rails</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Controladores</dt>
+                    <dd><a href="action_controller_overview.html">Resumen de Action Controller</a></dd>
+                    <dd><a href="routing.html">Enrutamiento en Rails desde el Exterior</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Otros Componentes</dt>
+                    <dd><a href="active_support_core_extensions.html">Extensiones Básicas de Active Support</a></dd>
+                    <dd><a href="action_mailer_basics.html">Conceptos Básicos de Action Mailer</a></dd>
+                    <dd><a href="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</a></dd>
+                    <dd><a href="action_text_overview.html">Resumen de Action Text</a></dd>
+                    <dd><a href="active_job_basics.html">Conceptos Básicos de Active Job</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Políticas</dt>
+                    <dd><a href="maintenance_policy.html">Política de Mantenimiento</a></dd>
+                  </div>
+                  <div class="guides-section">
+                    <dt>Notas de Lanzamiento</dt>
+                    <dd><a href="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</a></dd>
+                    <dd><a href="7_2_release_notes.html">Versión 7.2 - ?</a></dd>
+                    <dd><a href="7_1_release_notes.html">Versión 7.1 - Octubre 2023</a></dd>
+                    <dd><a href="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</a></dd>
+                    <dd><a href="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</a></dd>
+                  </div>
+              </dl>
+            </div>
+          </li>
+          <li><a class="nav-item" href="contributing_to_ruby_on_rails.html">Contribuir</a></li>
+          <li class="guides-index guides-index-small">
+            <select class="guides-index-item nav-item">
+              <option value="index.html">Índice de Guías</option>
+                <optgroup label="Comienza Aquí">
+                    <option value="getting_started.html">Primeros Pasos con Rails</option>
+                </optgroup>
+                <optgroup label="Modelos">
+                    <option value="active_record_basics.html">Conceptos Básicos de Active Record</option>
+                    <option value="active_record_migrations.html">Migraciones de Active Record</option>
+                    <option value="active_record_validations.html">Validaciones de Active Record</option>
+                </optgroup>
+                <optgroup label="Vistas">
+                    <option value="action_view_overview.html">Resumen de Action View</option>
+                    <option value="layouts_and_rendering.html">Diseños y Renderizado en Rails</option>
+                </optgroup>
+                <optgroup label="Controladores">
+                    <option value="action_controller_overview.html">Resumen de Action Controller</option>
+                    <option value="routing.html">Enrutamiento en Rails desde el Exterior</option>
+                </optgroup>
+                <optgroup label="Otros Componentes">
+                    <option value="active_support_core_extensions.html">Extensiones Básicas de Active Support</option>
+                    <option value="action_mailer_basics.html">Conceptos Básicos de Action Mailer</option>
+                    <option value="action_mailbox_basics.html">Conceptos Básicos de Action Mailbox</option>
+                    <option value="action_text_overview.html">Resumen de Action Text</option>
+                    <option value="active_job_basics.html">Conceptos Básicos de Active Job</option>
+                </optgroup>
+                <optgroup label="Políticas">
+                    <option value="maintenance_policy.html">Política de Mantenimiento</option>
+                </optgroup>
+                <optgroup label="Notas de Lanzamiento">
+                    <option value="upgrading_ruby_on_rails.html">Actualizando Ruby on Rails</option>
+                    <option value="7_2_release_notes.html">Versión 7.2 - ?</option>
+                    <option value="7_1_release_notes.html">Versión 7.1 - Octubre 2023</option>
+                    <option value="7_0_release_notes.html">Versión 7.0 - Diciembre 2021</option>
+                    <option value="6_1_release_notes.html">Versión 6.1 - Diciembre 2020</option>
+                </optgroup>
+            </select>
+          </li>
+      </ul>
+      </nav>
+    </div>
+  </header>
+  <hr class="hide" />
+
+  <section id="feature">
+    <div class="wrapper">
+      <p><strong>NO LEA ESTE ARCHIVO EN GITHUB, LAS GUÍAS ESTÁN PUBLICADAS EN <a href="https://guides.rubyonrails.org">https://guides.rubyonrails.org</a>.</strong></p><h1>Múltiples Bases de Datos con Active Record</h1><p>Esta guía cubre el uso de múltiples bases de datos con tu aplicación Rails.</p><p>Después de leer esta guía sabrás:</p>
+<ul>
+<li>Cómo configurar tu aplicación para múltiples bases de datos.</li>
+<li>Cómo funciona el cambio automático de conexión.</li>
+<li>Cómo usar la fragmentación horizontal para múltiples bases de datos.</li>
+<li>Qué características son compatibles y cuáles están en progreso.</li>
+</ul>
+
+
+                <nav id="subCol">
+            <h3 class="chapter">
+              <picture>
+                <!-- Using the `source`  HTML tag to set the dark theme image -->
+                <source
+                  srcset="images/icon_book-close-bookmark-1-wht.svg"
+                  media="(prefers-color-scheme: dark)"
+                />
+                <img src="images/icon_book-close-bookmark-1.svg" alt="Chapter Icon" />
+              </picture>
+              Chapters
+            </h3>
+            <ol class="chapters">
+<li><a href="#configurando-tu-aplicación">Configurando tu Aplicación</a></li>
+<li><a href="#conectarse-a-bases-de-datos-sin-gestionar-esquemas-y-migraciones">Conectarse a Bases de Datos sin Gestionar Esquemas y Migraciones</a></li>
+<li><a href="#generadores-y-migraciones">Generadores y Migraciones</a></li>
+<li><a href="#activando-el-cambio-automático-de-roles">Activando el Cambio Automático de Roles</a></li>
+<li><a href="#usando-el-cambio-manual-de-conexión">Usando el Cambio Manual de Conexión</a></li>
+<li><a href="#fragmentación-horizontal">Fragmentación Horizontal</a></li>
+<li><a href="#activando-el-cambio-automático-de-fragmentos">Activando el Cambio Automático de Fragmentos</a></li>
+<li><a href="#cambio-granular-de-conexión-a-la-base-de-datos">Cambio Granular de Conexión a la Base de Datos</a>
+
+<ul>
+<li><a href="#manejo-de-asociaciones-con-uniones-entre-bases-de-datos">Manejo de Asociaciones con Uniones entre Bases de Datos</a></li>
+<li><a href="#caché-de-esquema">Caché de Esquema</a></li>
+</ul></li>
+<li><a href="#advertencias">Advertencias</a>
+
+<ul>
+<li><a href="#balanceo-de-carga-de-réplicas">Balanceo de Carga de Réplicas</a></li>
+</ul></li>
+</ol>
+
+          </nav>
+
+
+      <hr>
+    </div>
+  </section>
+
+  <main id="container">
+    <div class="wrapper">
+      <div id="mainCol">
+        <p>A medida que una aplicación crece en popularidad y uso, necesitarás escalar la aplicación para apoyar a tus nuevos usuarios y sus datos. Una forma en la que tu aplicación puede necesitar escalar es a nivel de base de datos. Rails admite el uso de múltiples bases de datos, por lo que no tienes que almacenar todos tus datos en un solo lugar.</p><p>En este momento se admiten las siguientes características:</p>
+<ul>
+<li>Múltiples bases de datos de escritura y una réplica para cada una</li>
+<li>Cambio automático de conexión para el modelo con el que estás trabajando</li>
+<li>Cambio automático entre la base de datos de escritura y la réplica dependiendo del verbo HTTP y escrituras recientes</li>
+<li>Tareas de Rails para crear, eliminar, migrar e interactuar con las múltiples bases de datos</li>
+</ul>
+<p>Las siguientes características no están (todavía) soportadas:</p>
+<ul>
+<li>Balanceo de carga de réplicas</li>
+</ul>
+<h2 id="configurando-tu-aplicación"><a class="anchorlink" href="#configurando-tu-aplicación"><span>1</span> Configurando tu Aplicación</a></h2><p>Aunque Rails intenta hacer la mayor parte del trabajo por ti, todavía hay algunos pasos que deberás seguir para preparar tu aplicación para múltiples bases de datos.</p><p>Supongamos que tenemos una aplicación con una sola base de datos de escritura, y necesitamos agregar una nueva base de datos para algunas tablas nuevas que estamos agregando. El nombre de la nueva base de datos será "animals".</p><p><code>config/database.yml</code> se ve así:</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_database</span>
+  <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">root</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV['ROOT_PASSWORD'] %&gt;</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
+  database: my_primary_database
+  adapter: mysql2
+  username: root
+  password: <%= ENV['ROOT_PASSWORD'] %>
+">Copy</button>
+</div>
+<p>Agreguemos una segunda base de datos llamada "animals" y réplicas para ambas bases de datos también. Para hacer esto, necesitamos cambiar nuestro <code>config/database.yml</code> de una configuración de 2 niveles a una de 3 niveles.</p><p>Si se proporciona una clave de configuración <code>primary</code>, se usará como la configuración "predeterminada". Si no hay una configuración llamada <code>primary</code>, Rails usará la primera configuración como predeterminada para cada entorno. Las configuraciones predeterminadas usarán los nombres de archivo predeterminados de Rails. Por ejemplo, las configuraciones primarias usarán <code>db/schema.rb</code> para el archivo de esquema, mientras que todas las otras entradas usarán <code>db/[CONFIGURATION_NAMESPACE]_schema.rb</code> para el nombre del archivo.</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">primary</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_database</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">root</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV['ROOT_PASSWORD'] %&gt;</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">primary_replica</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_database</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">root_readonly</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV['ROOT_READONLY_PASSWORD'] %&gt;</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">replica</span><span class="pi">:</span> <span class="kc">true</span>
+  <span class="na">animals</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_animals_database</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">animals_root</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV['ANIMALS_ROOT_PASSWORD'] %&gt;</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">migrations_paths</span><span class="pi">:</span> <span class="s">db/animals_migrate</span>
+  <span class="na">animals_replica</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_animals_database</span>
+    <span class="na">username</span><span class="pi">:</span> <span class="s">animals_readonly</span>
+    <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV['ANIMALS_READONLY_PASSWORD'] %&gt;</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">replica</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
+  primary:
+    database: my_primary_database
+    username: root
+    password: <%= ENV['ROOT_PASSWORD'] %>
+    adapter: mysql2
+  primary_replica:
+    database: my_primary_database
+    username: root_readonly
+    password: <%= ENV['ROOT_READONLY_PASSWORD'] %>
+    adapter: mysql2
+    replica: true
+  animals:
+    database: my_animals_database
+    username: animals_root
+    password: <%= ENV['ANIMALS_ROOT_PASSWORD'] %>
+    adapter: mysql2
+    migrations_paths: db/animals_migrate
+  animals_replica:
+    database: my_animals_database
+    username: animals_readonly
+    password: <%= ENV['ANIMALS_READONLY_PASSWORD'] %>
+    adapter: mysql2
+    replica: true
+">Copy</button>
+</div>
+<p>Cuando se usan múltiples bases de datos, hay algunas configuraciones importantes.</p><p>Primero, el nombre de la base de datos para <code>primary</code> y <code>primary_replica</code> debe ser el mismo porque contienen los mismos datos. Esto también es válido para <code>animals</code> y <code>animals_replica</code>.</p><p>Segundo, el nombre de usuario para los escritores y las réplicas debe ser diferente, y los permisos de la base de datos del usuario de la réplica deben estar configurados para solo lectura y no escritura.</p><p>Cuando se usa una base de datos réplica, necesitas agregar una entrada <code>replica: true</code> a la réplica en <code>config/database.yml</code>. Esto se debe a que Rails de otro modo no tiene forma de saber cuál es una réplica y cuál es el escritor. Rails no ejecutará ciertas tareas, como migraciones, contra réplicas.</p><p>Finalmente, para nuevas bases de datos de escritura, necesitas establecer la clave <code>migrations_paths</code> en el directorio donde almacenarás las migraciones para esa base de datos. Veremos más sobre <code>migrations_paths</code> más adelante en esta guía.</p><p>También puedes configurar el archivo de volcado de esquema configurando <code>schema_dump</code> a un nombre de archivo de esquema personalizado o omitiendo completamente el volcado de esquema configurando <code>schema_dump: false</code>.</p><p>Ahora que tenemos una nueva base de datos, configuremos el modelo de conexión.</p><p>La réplica de la base de datos primaria puede configurarse en <code>ApplicationRecord</code> de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationRecord</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">abstract_class</span> <span class="o">=</span> <span class="kp">true</span>
+
+  <span class="n">connects_to</span> <span class="ss">database: </span><span class="p">{</span> <span class="ss">writing: :primary</span><span class="p">,</span> <span class="ss">reading: :primary_replica</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
+
+  connects_to database: { writing: :primary, reading: :primary_replica }
+end
+">Copy</button>
+</div>
+<p>Si usas una clase con un nombre diferente para tu registro de aplicación, necesitas establecer <code>primary_abstract_class</code> en su lugar, para que Rails sepa con qué clase <code>ActiveRecord::Base</code> debe compartir una conexión.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">PrimaryApplicationRecord</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">primary_abstract_class</span>
+
+  <span class="n">connects_to</span> <span class="ss">database: </span><span class="p">{</span> <span class="ss">writing: :primary</span><span class="p">,</span> <span class="ss">reading: :primary_replica</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class PrimaryApplicationRecord < ActiveRecord::Base
+  primary_abstract_class
+
+  connects_to database: { writing: :primary, reading: :primary_replica }
+end
+">Copy</button>
+</div>
+<p>En ese caso, las clases que se conectan a <code>primary</code>/<code>primary_replica</code> pueden heredar de tu clase abstracta primaria como lo hacen las aplicaciones estándar de Rails con <code>ApplicationRecord</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">PrimaryApplicationRecord</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Person < PrimaryApplicationRecord
+end
+">Copy</button>
+</div>
+<p>Por otro lado, necesitamos configurar nuestros modelos persistidos en la base de datos "animals":</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AnimalsRecord</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">abstract_class</span> <span class="o">=</span> <span class="kp">true</span>
+
+  <span class="n">connects_to</span> <span class="ss">database: </span><span class="p">{</span> <span class="ss">writing: :animals</span><span class="p">,</span> <span class="ss">reading: :animals_replica</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AnimalsRecord < ApplicationRecord
+  self.abstract_class = true
+
+  connects_to database: { writing: :animals, reading: :animals_replica }
+end
+">Copy</button>
+</div>
+<p>Esos modelos deben heredar de esa clase abstracta común:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Car</span> <span class="o">&lt;</span> <span class="no">AnimalsRecord</span>
+  <span class="c1"># Habla automáticamente con la base de datos animals.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Car < AnimalsRecord
+  # Habla automáticamente con la base de datos animals.
+end
+">Copy</button>
+</div>
+<p>Por defecto, Rails espera que los roles de la base de datos sean <code>writing</code> y <code>reading</code> para la primaria y la réplica respectivamente. Si tienes un sistema heredado, es posible que ya tengas roles configurados que no quieras cambiar. En ese caso, puedes establecer un nuevo nombre de rol en la configuración de tu aplicación.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">writing_role</span> <span class="o">=</span> <span class="ss">:default</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">reading_role</span> <span class="o">=</span> <span class="ss">:readonly</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.writing_role = :default
+config.active_record.reading_role = :readonly
+">Copy</button>
+</div>
+<p>Es importante conectarse a tu base de datos en un solo modelo y luego heredar de ese modelo para las tablas en lugar de conectar múltiples modelos individuales a la misma base de datos. Los clientes de bases de datos tienen un límite en el número de conexiones abiertas que puede haber, y si haces esto, multiplicará el número de conexiones que tienes ya que Rails usa el nombre de la clase del modelo para el nombre de especificación de la conexión.</p><p>Ahora que tenemos el <code>config/database.yml</code> y el nuevo modelo configurado, es hora de crear las bases de datos. Rails viene con todos los comandos que necesitas para usar múltiples bases de datos.</p><p>Puedes ejecutar <code>bin/rails --help</code> para ver todos los comandos que puedes ejecutar. Deberías ver lo siguiente:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails</span> <span class="nt">--help</span>
+<span class="c">...
+</span><span class="gp">db:create                          #</span><span class="w"> </span>Crea la base de datos desde DATABASE_URL o config/database.yml para el ...
+<span class="gp">db:create:animals                  #</span><span class="w"> </span>Crea la base de datos animals para el entorno actual
+<span class="gp">db:create:primary                  #</span><span class="w"> </span>Crea la base de datos primary para el entorno actual
+<span class="gp">db:drop                            #</span><span class="w"> </span>Elimina la base de datos desde DATABASE_URL o config/database.yml para el cu...
+<span class="gp">db:drop:animals                    #</span><span class="w"> </span>Elimina la base de datos animals para el entorno actual
+<span class="gp">db:drop:primary                    #</span><span class="w"> </span>Elimina la base de datos primary para el entorno actual
+<span class="gp">db:migrate                         #</span><span class="w"> </span>Migra la base de datos <span class="o">(</span>opciones: <span class="nv">VERSION</span><span class="o">=</span>x, <span class="nv">VERBOSE</span><span class="o">=</span><span class="nb">false</span>, <span class="nv">SCOPE</span><span class="o">=</span>blog<span class="o">)</span>
+<span class="gp">db:migrate:animals                 #</span><span class="w"> </span>Migra la base de datos animals para el entorno actual
+<span class="gp">db:migrate:primary                 #</span><span class="w"> </span>Migra la base de datos primary para el entorno actual
+<span class="gp">db:migrate:status                  #</span><span class="w"> </span>Muestra el estado de las migraciones
+<span class="gp">db:migrate:status:animals          #</span><span class="w"> </span>Muestra el estado de las migraciones para la base de datos animals
+<span class="gp">db:migrate:status:primary          #</span><span class="w"> </span>Muestra el estado de las migraciones para la base de datos primary
+<span class="gp">db:reset                           #</span><span class="w"> </span>Elimina y recrea todas las bases de datos desde su esquema para el entorno actual y carga las semillas
+<span class="gp">db:reset:animals                   #</span><span class="w"> </span>Elimina y recrea la base de datos animals desde su esquema para el entorno actual y carga las semillas
+<span class="gp">db:reset:primary                   #</span><span class="w"> </span>Elimina y recrea la base de datos primary desde su esquema para el entorno actual y carga las semillas
+<span class="gp">db:rollback                        #</span><span class="w"> </span>Retrocede el esquema a la versión anterior <span class="o">(</span>especifica pasos con <span class="nv">STEP</span><span class="o">=</span>n<span class="o">)</span>
+<span class="gp">db:rollback:animals                #</span><span class="w"> </span>Retrocede la base de datos animals para el entorno actual <span class="o">(</span>especifica pasos con <span class="nv">STEP</span><span class="o">=</span>n<span class="o">)</span>
+<span class="gp">db:rollback:primary                #</span><span class="w"> </span>Retrocede la base de datos primary para el entorno actual <span class="o">(</span>especifica pasos con <span class="nv">STEP</span><span class="o">=</span>n<span class="o">)</span>
+<span class="gp">db:schema:dump                     #</span><span class="w"> </span>Crea un archivo de esquema de base de datos <span class="o">(</span>ya sea db/schema.rb o db/structure.sql  ...
+<span class="gp">db:schema:dump:animals             #</span><span class="w"> </span>Crea un archivo de esquema de base de datos <span class="o">(</span>ya sea db/schema.rb o db/structure.sql  ...
+<span class="gp">db:schema:dump:primary             #</span><span class="w"> </span>Crea un archivo db/schema.rb que es portátil contra cualquier BD admitida  ...
+<span class="gp">db:schema:load                     #</span><span class="w"> </span>Carga un archivo de esquema de base de datos <span class="o">(</span>ya sea db/schema.rb o db/structure.sql  ...
+<span class="gp">db:schema:load:animals             #</span><span class="w"> </span>Carga un archivo de esquema de base de datos <span class="o">(</span>ya sea db/schema.rb o db/structure.sql  ...
+<span class="gp">db:schema:load:primary             #</span><span class="w"> </span>Carga un archivo de esquema de base de datos <span class="o">(</span>ya sea db/schema.rb o db/structure.sql  ...
+<span class="gp">db:setup                           #</span><span class="w"> </span>Crea todas las bases de datos, carga todos los esquemas e inicializa con los datos de semillas <span class="o">(</span>usa db:reset para también eliminar todas las bases de datos primero<span class="o">)</span>
+<span class="gp">db:setup:animals                   #</span><span class="w"> </span>Crea la base de datos animals, carga el esquema e inicializa con los datos de semillas <span class="o">(</span>usa db:reset:animals para también eliminar la base de datos primero<span class="o">)</span>
+<span class="gp">db:setup:primary                   #</span><span class="w"> </span>Crea la base de datos primary, carga el esquema e inicializa con los datos de semillas <span class="o">(</span>usa db:reset:primary para también eliminar la base de datos primero<span class="o">)</span>
+<span class="c">...
+</span></code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails --help
+">Copy</button>
+</div>
+<p>Ejecutar un comando como <code>bin/rails db:create</code> creará tanto las bases de datos primary como animals. Ten en cuenta que no hay un comando para crear los usuarios de la base de datos, y deberás hacer eso manualmente para apoyar a los usuarios de solo lectura para tus réplicas. Si deseas crear solo la base de datos animals, puedes ejecutar <code>bin/rails db:create:animals</code>.</p><h2 id="conectarse-a-bases-de-datos-sin-gestionar-esquemas-y-migraciones"><a class="anchorlink" href="#conectarse-a-bases-de-datos-sin-gestionar-esquemas-y-migraciones"><span>2</span> Conectarse a Bases de Datos sin Gestionar Esquemas y Migraciones</a></h2><p>Si deseas conectarte a una base de datos externa sin ninguna tarea de gestión de bases de datos, como gestión de esquemas, migraciones, semillas, etc., puedes configurar la opción de configuración por base de datos <code>database_tasks: false</code>. Por defecto está configurado en true.</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">primary</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_database</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">animals</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_animals_database</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">database_tasks</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
+  primary:
+    database: my_database
+    adapter: mysql2
+  animals:
+    database: my_animals_database
+    adapter: mysql2
+    database_tasks: false
+">Copy</button>
+</div>
+<h2 id="generadores-y-migraciones"><a class="anchorlink" href="#generadores-y-migraciones"><span>3</span> Generadores y Migraciones</a></h2><p>Las migraciones para múltiples bases de datos deben vivir en sus propias carpetas con el prefijo del nombre de la clave de la base de datos en la configuración.</p><p>También necesitas establecer <code>migrations_paths</code> en las configuraciones de la base de datos para decirle a Rails dónde encontrar las migraciones.</p><p>Por ejemplo, la base de datos <code>animals</code> buscaría migraciones en el directorio <code>db/animals_migrate</code> y <code>primary</code> buscaría en <code>db/migrate</code>. Los generadores de Rails ahora toman una opción <code>--database</code> para que el archivo se genere en el directorio correcto. El comando se puede ejecutar de la siguiente manera:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate migration CreateDogs name:string <span class="nt">--database</span> animals
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate migration CreateDogs name:string --database animals
+">Copy</button>
+</div>
+<p>Si estás usando generadores de Rails, los generadores de scaffold y modelo crearán la clase abstracta por ti. Simplemente pasa la clave de la base de datos a la línea de comando.</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold Dog name:string <span class="nt">--database</span> animals
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold Dog name:string --database animals
+">Copy</button>
+</div>
+<p>Se creará una clase con el nombre camelizado de la base de datos y <code>Record</code>. En este ejemplo, la base de datos es "animals", por lo que terminamos con <code>AnimalsRecord</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">AnimalsRecord</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">abstract_class</span> <span class="o">=</span> <span class="kp">true</span>
+
+  <span class="n">connects_to</span> <span class="ss">database: </span><span class="p">{</span> <span class="ss">writing: :animals</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class AnimalsRecord < ApplicationRecord
+  self.abstract_class = true
+
+  connects_to database: { writing: :animals }
+end
+">Copy</button>
+</div>
+<p>El modelo generado heredará automáticamente de <code>AnimalsRecord</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">AnimalsRecord</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Dog < AnimalsRecord
+end
+">Copy</button>
+</div>
+<p>NOTA: Dado que Rails no sabe qué base de datos es la réplica de tu escritor, necesitarás agregar esto a la clase abstracta después de que hayas terminado.</p><p>Rails solo generará <code>AnimalsRecord</code> una vez. No será sobrescrito por nuevos scaffolds ni eliminado si el scaffold es eliminado.</p><p>Si ya tienes una clase abstracta y su nombre difiere de <code>AnimalsRecord</code>, puedes pasar la opción <code>--parent</code> para indicar que deseas una clase abstracta diferente:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>generate scaffold Dog name:string <span class="nt">--database</span> animals <span class="nt">--parent</span> Animals::Record
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails generate scaffold Dog name:string --database animals --parent Animals::Record
+">Copy</button>
+</div>
+<p>Esto omitirá la generación de <code>AnimalsRecord</code> ya que has indicado a Rails que deseas usar una clase padre diferente.</p><h2 id="activando-el-cambio-automático-de-roles"><a class="anchorlink" href="#activando-el-cambio-automático-de-roles"><span>4</span> Activando el Cambio Automático de Roles</a></h2><p>Finalmente, para usar la réplica de solo lectura en tu aplicación, necesitarás activar el middleware para el cambio automático.</p><p>El cambio automático permite que la aplicación cambie del escritor a la réplica o de la réplica al escritor según el verbo HTTP y si hubo una escritura reciente por parte del usuario que realiza la solicitud.</p><p>Si la aplicación recibe una solicitud POST, PUT, DELETE o PATCH, la aplicación escribirá automáticamente en la base de datos del escritor. Si la solicitud no es uno de esos métodos, pero la aplicación realizó recientemente una escritura, también se usará la base de datos del escritor. Todas las demás solicitudes usarán la base de datos de la réplica.</p><p>Para activar el middleware de cambio automático de conexión, puedes ejecutar el generador de intercambio automático:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>g active_record:multi_db
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails g active_record:multi_db
+">Copy</button>
+</div>
+<p>Y luego descomentar las siguientes líneas:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_selector</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">delay: </span><span class="mi">2</span><span class="p">.</span><span class="nf">seconds</span> <span class="p">}</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_resolver</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Middleware</span><span class="o">::</span><span class="no">DatabaseSelector</span><span class="o">::</span><span class="no">Resolver</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_resolver_context</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Middleware</span><span class="o">::</span><span class="no">DatabaseSelector</span><span class="o">::</span><span class="no">Resolver</span><span class="o">::</span><span class="no">Session</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.configure do
+  config.active_record.database_selector = { delay: 2.seconds }
+  config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+  config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+end
+">Copy</button>
+</div>
+<p>Rails garantiza "leer tu propia escritura" y enviará tu solicitud GET o HEAD al escritor si está dentro de la ventana de <code>delay</code>. Por defecto, el retraso se establece en 2 segundos. Deberías cambiar esto según tu infraestructura de base de datos. Rails no garantiza "leer una escritura reciente" para otros usuarios dentro de la ventana de retraso y enviará solicitudes GET y HEAD a las réplicas a menos que hayan escrito recientemente.</p><p>El cambio automático de conexión en Rails es relativamente primitivo y deliberadamente no hace mucho. El objetivo es un sistema que demuestre cómo hacer el cambio automático de conexión que sea lo suficientemente flexible como para ser personalizable por los desarrolladores de aplicaciones.</p><p>La configuración en Rails te permite cambiar fácilmente cómo se realiza el cambio y en qué parámetros se basa. Supongamos que deseas usar una cookie en lugar de una sesión para decidir cuándo cambiar las conexiones. Puedes escribir tu propia clase:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">MyCookieResolver</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Middleware</span><span class="o">::</span><span class="no">DatabaseSelector</span><span class="o">::</span><span class="no">Resolver</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">call</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">new</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="nf">cookies</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span>
+    <span class="vi">@cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+  <span class="k">end</span>
+
+  <span class="nb">attr_reader</span> <span class="ss">:cookies</span>
+
+  <span class="k">def</span> <span class="nf">last_write_timestamp</span>
+    <span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">convert_timestamp_to_time</span><span class="p">(</span><span class="n">cookies</span><span class="p">[</span><span class="ss">:last_write</span><span class="p">])</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update_last_write_timestamp</span>
+    <span class="n">cookies</span><span class="p">[</span><span class="ss">:last_write</span><span class="p">]</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">class</span><span class="p">.</span><span class="nf">convert_time_to_timestamp</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class MyCookieResolver < ActiveRecord::Middleware::DatabaseSelector::Resolver
+  def self.call(request)
+    new(request.cookies)
+  end
+
+  def initialize(cookies)
+    @cookies = cookies
+  end
+
+  attr_reader :cookies
+
+  def last_write_timestamp
+    self.class.convert_timestamp_to_time(cookies[:last_write])
+  end
+
+  def update_last_write_timestamp
+    cookies[:last_write] = self.class.convert_time_to_timestamp(Time.now)
+  end
+
+  def save(response)
+  end
+end
+">Copy</button>
+</div>
+<p>Y luego pasarla al middleware:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_selector</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">delay: </span><span class="mi">2</span><span class="p">.</span><span class="nf">seconds</span> <span class="p">}</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_resolver</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Middleware</span><span class="o">::</span><span class="no">DatabaseSelector</span><span class="o">::</span><span class="no">Resolver</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">database_resolver_context</span> <span class="o">=</span> <span class="no">MyCookieResolver</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.database_selector = { delay: 2.seconds }
+config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+config.active_record.database_resolver_context = MyCookieResolver
+">Copy</button>
+</div>
+<h2 id="usando-el-cambio-manual-de-conexión"><a class="anchorlink" href="#usando-el-cambio-manual-de-conexión"><span>5</span> Usando el Cambio Manual de Conexión</a></h2><p>Hay algunos casos en los que es posible que desees que tu aplicación se conecte a un escritor o a una réplica y el cambio automático de conexión no sea adecuado. Por ejemplo, puedes saber que para una solicitud en particular siempre deseas enviar la solicitud a una réplica, incluso cuando estás en una ruta de solicitud POST.</p><p>Para hacer esto, Rails proporciona un método <code>connected_to</code> que cambiará a la conexión que necesitas.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># Todo el código en este bloque estará conectado al rol de lectura.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Base.connected_to(role: :reading) do
+  # Todo el código en este bloque estará conectado al rol de lectura.
+end
+">Copy</button>
+</div>
+<p>El "rol" en la llamada <code>connected_to</code> busca las conexiones que están conectadas en ese controlador de conexión (o rol). El controlador de conexión <code>reading</code> mantendrá todas las conexiones que se conectaron a través de <code>connects_to</code> con el nombre de rol de <code>reading</code>.</p><p>Ten en cuenta que <code>connected_to</code> con un rol buscará una conexión existente y cambiará usando el nombre de especificación de conexión. Esto significa que si pasas un rol desconocido como <code>connected_to(role: :nonexistent)</code>, obtendrás un error que dice <code>ActiveRecord::ConnectionNotEstablished (No connection pool for 'ActiveRecord::Base' found for the 'nonexistent' role.)</code></p><p>Si deseas que Rails garantice que cualquier consulta realizada sea de solo lectura, pasa <code>prevent_writes: true</code>. Esto solo previene que las consultas que parecen escrituras se envíen a la base de datos. También debes configurar tu base de datos réplica para que funcione en modo de solo lectura.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">,</span> <span class="ss">prevent_writes: </span><span class="kp">true</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># Rails verificará cada consulta para asegurarse de que sea una consulta de lectura.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Base.connected_to(role: :reading, prevent_writes: true) do
+  # Rails verificará cada consulta para asegurarse de que sea una consulta de lectura.
+end
+">Copy</button>
+</div>
+<h2 id="fragmentación-horizontal"><a class="anchorlink" href="#fragmentación-horizontal"><span>6</span> Fragmentación Horizontal</a></h2><p>La fragmentación horizontal es cuando divides tu base de datos para reducir el número de filas en cada servidor de base de datos, pero mantienes el mismo esquema en "fragmentos". Esto se llama comúnmente fragmentación "multi-tenant".</p><p>La API para soportar la fragmentación horizontal en Rails es similar a la API de múltiples bases de datos / fragmentación vertical que ha existido desde Rails 6.0.</p><p>Los fragmentos se declaran en la configuración de tres niveles de esta manera:</p><div class="interstitial code">
+<pre><code class="highlight yaml"><span class="na">production</span><span class="pi">:</span>
+  <span class="na">primary</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_database</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+  <span class="na">primary_replica</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_database</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">replica</span><span class="pi">:</span> <span class="kc">true</span>
+  <span class="na">primary_shard_one</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_shard_one</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">migrations_paths</span><span class="pi">:</span> <span class="s">db/migrate_shards</span>
+  <span class="na">primary_shard_one_replica</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_shard_one</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">replica</span><span class="pi">:</span> <span class="kc">true</span>
+  <span class="na">primary_shard_two</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_shard_two</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">migrations_paths</span><span class="pi">:</span> <span class="s">db/migrate_shards</span>
+  <span class="na">primary_shard_two_replica</span><span class="pi">:</span>
+    <span class="na">database</span><span class="pi">:</span> <span class="s">my_primary_shard_two</span>
+    <span class="na">adapter</span><span class="pi">:</span> <span class="s">mysql2</span>
+    <span class="na">replica</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="production:
+  primary:
+    database: my_primary_database
+    adapter: mysql2
+  primary_replica:
+    database: my_primary_database
+    adapter: mysql2
+    replica: true
+  primary_shard_one:
+    database: my_primary_shard_one
+    adapter: mysql2
+    migrations_paths: db/migrate_shards
+  primary_shard_one_replica:
+    database: my_primary_shard_one
+    adapter: mysql2
+    replica: true
+  primary_shard_two:
+    database: my_primary_shard_two
+    adapter: mysql2
+    migrations_paths: db/migrate_shards
+  primary_shard_two_replica:
+    database: my_primary_shard_two
+    adapter: mysql2
+    replica: true
+">Copy</button>
+</div>
+<p>Los modelos se conectan con la API <code>connects_to</code> a través de la clave <code>shards</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">ApplicationRecord</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">primary_abstract_class</span>
+
+  <span class="n">connects_to</span> <span class="ss">database: </span><span class="p">{</span> <span class="ss">writing: :primary</span><span class="p">,</span> <span class="ss">reading: :primary_replica</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">ShardRecord</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="nb">self</span><span class="p">.</span><span class="nf">abstract_class</span> <span class="o">=</span> <span class="kp">true</span>
+
+  <span class="n">connects_to</span> <span class="ss">shards: </span><span class="p">{</span>
+    <span class="ss">shard_one: </span><span class="p">{</span> <span class="ss">writing: :primary_shard_one</span><span class="p">,</span> <span class="ss">reading: :primary_shard_one_replica</span> <span class="p">},</span>
+    <span class="ss">shard_two: </span><span class="p">{</span> <span class="ss">writing: :primary_shard_two</span><span class="p">,</span> <span class="ss">reading: :primary_shard_two_replica</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class ApplicationRecord < ActiveRecord::Base
+  primary_abstract_class
+
+  connects_to database: { writing: :primary, reading: :primary_replica }
+end
+
+class ShardRecord < ApplicationRecord
+  self.abstract_class = true
+
+  connects_to shards: {
+    shard_one: { writing: :primary_shard_one, reading: :primary_shard_one_replica },
+    shard_two: { writing: :primary_shard_two, reading: :primary_shard_two_replica }
+  }
+end
+">Copy</button>
+</div>
+<p>Si estás usando fragmentos, asegúrate de que tanto <code>migrations_paths</code> como <code>schema_dump</code> permanezcan sin cambios para todos los fragmentos. Al generar una migración, puedes pasar la opción <code>--database</code> y usar uno de los nombres de fragmento. Dado que todos establecen la misma ruta, no importa cuál elijas.</p><div class="interstitial code">
+<pre><code class="highlight plaintext">$ bin/rails g scaffold Dog name:string --database primary_shard_one
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="$ bin/rails g scaffold Dog name:string --database primary_shard_one
+">Copy</button>
+</div>
+<p>Luego, los modelos pueden cambiar de fragmento manualmente a través de la API <code>connected_to</code>. Si usas fragmentación, se deben pasar tanto un <code>role</code> como un <code>shard</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :writing</span><span class="p">,</span> <span class="ss">shard: :default</span><span class="p">)</span> <span class="k">do</span>
+  <span class="vi">@id</span> <span class="o">=</span> <span class="no">Person</span><span class="p">.</span><span class="nf">create!</span> <span class="c1"># Crea un registro en el fragmento llamado ":default"</span>
+<span class="k">end</span>
+
+<span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :writing</span><span class="p">,</span> <span class="ss">shard: :shard_one</span><span class="p">)</span> <span class="k">do</span>
+  <span class="no">Person</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="vi">@id</span><span class="p">)</span> <span class="c1"># No puede encontrar el registro, no existe porque fue creado</span>
+                   <span class="c1"># en el fragmento llamado ":default".</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Base.connected_to(role: :writing, shard: :default) do
+  @id = Person.create! # Crea un registro en el fragmento llamado &quot;:default&quot;
+end
+
+ActiveRecord::Base.connected_to(role: :writing, shard: :shard_one) do
+  Person.find(@id) # No puede encontrar el registro, no existe porque fue creado
+                   # en el fragmento llamado &quot;:default&quot;.
+end
+">Copy</button>
+</div>
+<p>La API de fragmentación horizontal también soporta réplicas de lectura. Puedes cambiar el rol y el fragmento con la API <code>connected_to</code>.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">,</span> <span class="ss">shard: :shard_one</span><span class="p">)</span> <span class="k">do</span>
+  <span class="no">Person</span><span class="p">.</span><span class="nf">first</span> <span class="c1"># Busca el registro desde la réplica de lectura del fragmento uno.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ActiveRecord::Base.connected_to(role: :reading, shard: :shard_one) do
+  Person.first # Busca el registro desde la réplica de lectura del fragmento uno.
+end
+">Copy</button>
+</div>
+<h2 id="activando-el-cambio-automático-de-fragmentos"><a class="anchorlink" href="#activando-el-cambio-automático-de-fragmentos"><span>7</span> Activando el Cambio Automático de Fragmentos</a></h2><p>Las aplicaciones pueden cambiar automáticamente de fragmento por solicitud usando el middleware proporcionado.</p><p>El middleware <code>ShardSelector</code> proporciona un marco para cambiar automáticamente de fragmento. Rails proporciona un marco básico para determinar a qué fragmento cambiar y permite que las aplicaciones escriban estrategias personalizadas para cambiar si es necesario.</p><p><code>ShardSelector</code> toma un conjunto de opciones (actualmente solo se admite <code>lock</code>) que pueden ser usadas por el middleware para alterar el comportamiento. <code>lock</code> es true por defecto y prohibirá que la solicitud cambie de fragmento una vez dentro del bloque. Si <code>lock</code> es false, se permitirá el cambio de fragmento. Para la fragmentación basada en inquilinos, <code>lock</code> siempre debe ser true para evitar que el código de la aplicación cambie erróneamente entre inquilinos.</p><p>El mismo generador que el selector de bases de datos puede usarse para generar el archivo para el cambio automático de fragmento:</p><div class="interstitial code">
+<pre><code class="highlight console"><span class="gp">$</span><span class="w"> </span><span class="nb">bin/rails </span>g active_record:multi_db
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="bin/rails g active_record:multi_db
+">Copy</button>
+</div>
+<p>Luego, en el <code>config/initializers/multi_db.rb</code> generado, descomenta lo siguiente:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">shard_selector</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">lock: </span><span class="kp">true</span> <span class="p">}</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">shard_resolver</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span> <span class="no">Tenant</span><span class="p">.</span><span class="nf">find_by!</span><span class="p">(</span><span class="ss">host: </span><span class="n">request</span><span class="p">.</span><span class="nf">host</span><span class="p">).</span><span class="nf">shard</span> <span class="p">}</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="Rails.application.configure do
+  config.active_record.shard_selector = { lock: true }
+  config.active_record.shard_resolver = ->(request) { Tenant.find_by!(host: request.host).shard }
+end
+">Copy</button>
+</div>
+<p>Las aplicaciones deben proporcionar el código para el resolver ya que depende de modelos específicos de la aplicación. Un ejemplo de resolver se vería así:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="n">config</span><span class="p">.</span><span class="nf">active_record</span><span class="p">.</span><span class="nf">shard_resolver</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">request</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">subdomain</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">subdomain</span>
+  <span class="n">tenant</span> <span class="o">=</span> <span class="no">Tenant</span><span class="p">.</span><span class="nf">find_by_subdomain!</span><span class="p">(</span><span class="n">subdomain</span><span class="p">)</span>
+  <span class="n">tenant</span><span class="p">.</span><span class="nf">shard</span>
+<span class="p">}</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="config.active_record.shard_resolver = ->(request) {
+  subdomain = request.subdomain
+  tenant = Tenant.find_by_subdomain!(subdomain)
+  tenant.shard
+}
+">Copy</button>
+</div>
+<h2 id="cambio-granular-de-conexión-a-la-base-de-datos"><a class="anchorlink" href="#cambio-granular-de-conexión-a-la-base-de-datos"><span>8</span> Cambio Granular de Conexión a la Base de Datos</a></h2><p>A partir de Rails 6.1, es posible cambiar conexiones para una base de datos en lugar de todas las bases de datos globalmente.</p><p>Con el cambio granular de conexión a la base de datos, cualquier clase de conexión abstracta podrá cambiar conexiones sin afectar a otras conexiones. Esto es útil para cambiar tus consultas de <code>AnimalsRecord</code> para leer desde la réplica mientras aseguras que tus consultas de <code>ApplicationRecord</code> vayan a la primaria.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">AnimalsRecord</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">)</span> <span class="k">do</span>
+  <span class="no">Dog</span><span class="p">.</span><span class="nf">first</span> <span class="c1"># Lee desde animals_replica.</span>
+  <span class="no">Person</span><span class="p">.</span><span class="nf">first</span>  <span class="c1"># Lee desde primary.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="AnimalsRecord.connected_to(role: :reading) do
+  Dog.first # Lee desde animals_replica.
+  Person.first  # Lee desde primary.
+end
+">Copy</button>
+</div>
+<p>También es posible cambiar conexiones granularmente para fragmentos.</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">AnimalsRecord</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">,</span> <span class="ss">shard: :shard_one</span><span class="p">)</span> <span class="k">do</span>
+  <span class="c1"># Leerá desde shard_one_replica. Si no existe una conexión para shard_one_replica,</span>
+  <span class="c1"># se levantará un error de ConnectionNotEstablished.</span>
+  <span class="no">Dog</span><span class="p">.</span><span class="nf">first</span>
+
+  <span class="c1"># Leerá desde el escritor primary.</span>
+  <span class="no">Person</span><span class="p">.</span><span class="nf">first</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="AnimalsRecord.connected_to(role: :reading, shard: :shard_one) do
+  # Leerá desde shard_one_replica. Si no existe una conexión para shard_one_replica,
+  # se levantará un error de ConnectionNotEstablished.
+  Dog.first
+
+  # Leerá desde el escritor primary.
+  Person.first
+end
+">Copy</button>
+</div>
+<p>Para cambiar solo el clúster de base de datos primario usa <code>ApplicationRecord</code>:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="no">ApplicationRecord</span><span class="p">.</span><span class="nf">connected_to</span><span class="p">(</span><span class="ss">role: :reading</span><span class="p">,</span> <span class="ss">shard: :shard_one</span><span class="p">)</span> <span class="k">do</span>
+  <span class="no">Person</span><span class="p">.</span><span class="nf">first</span> <span class="c1"># Lee desde primary_shard_one_replica.</span>
+  <span class="no">Dog</span><span class="p">.</span><span class="nf">first</span> <span class="c1"># Lee desde animals_primary.</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="ApplicationRecord.connected_to(role: :reading, shard: :shard_one) do
+  Person.first # Lee desde primary_shard_one_replica.
+  Dog.first # Lee desde animals_primary.
+end
+">Copy</button>
+</div>
+<p><code>ActiveRecord::Base.connected_to</code> mantiene la capacidad de cambiar conexiones globalmente.</p><h3 id="manejo-de-asociaciones-con-uniones-entre-bases-de-datos"><a class="anchorlink" href="#manejo-de-asociaciones-con-uniones-entre-bases-de-datos"><span>8.1</span> Manejo de Asociaciones con Uniones entre Bases de Datos</a></h3><p>A partir de Rails 7.0+, Active Record tiene una opción para manejar asociaciones que realizarían una unión entre múltiples bases de datos. Si tienes una asociación has many through o has one through que deseas deshabilitar la unión y realizar 2 o más consultas, pasa la opción <code>disable_joins: true</code>.</p><p>Por ejemplo:</p><div class="interstitial code">
+<pre><code class="highlight ruby"><span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">AnimalsRecord</span>
+  <span class="n">has_many</span> <span class="ss">:treats</span><span class="p">,</span> <span class="ss">through: :humans</span><span class="p">,</span> <span class="ss">disable_joins: </span><span class="kp">true</span>
+  <span class="n">has_many</span> <span class="ss">:humans</span>
+
+  <span class="n">has_one</span> <span class="ss">:home</span>
+  <span class="n">has_one</span> <span class="ss">:yard</span><span class="p">,</span> <span class="ss">through: :home</span><span class="p">,</span> <span class="ss">disable_joins: </span><span class="kp">true</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Home</span>
+  <span class="n">belongs_to</span> <span class="ss">:dog</span>
+  <span class="n">has_one</span> <span class="ss">:yard</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Yard</span>
+  <span class="n">belongs_to</span> <span class="ss">:home</span>
+<span class="k">end</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="class Dog < AnimalsRecord
+  has_many :treats, through: :humans, disable_joins: true
+  has_many :humans
+
+  has_one :home
+  has_one :yard, through: :home, disable_joins: true
+end
+
+class Home
+  belongs_to :dog
+  has_one :yard
+end
+
+class Yard
+  belongs_to :home
+end
+">Copy</button>
+</div>
+<p>Anteriormente, llamar a <code>@dog.treats</code> sin <code>disable_joins</code> o <code>@dog.yard</code> sin <code>disable_joins</code> levantaría un error porque las bases de datos no pueden manejar uniones entre clústeres. Con la opción <code>disable_joins</code>, Rails generará múltiples consultas select para evitar intentar unir entre clústeres. Para la asociación anterior, <code>@dog.treats</code> generaría el siguiente SQL:</p><div class="interstitial code">
+<pre><code class="highlight sql"><span class="k">SELECT</span> <span class="nv">"humans"</span><span class="p">.</span><span class="nv">"id"</span> <span class="k">FROM</span> <span class="nv">"humans"</span> <span class="k">WHERE</span> <span class="nv">"humans"</span><span class="p">.</span><span class="nv">"dog_id"</span> <span class="o">=</span> <span class="o">?</span>  <span class="p">[[</span><span class="nv">"dog_id"</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="k">SELECT</span> <span class="nv">"treats"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"treats"</span> <span class="k">WHERE</span> <span class="nv">"treats"</span><span class="p">.</span><span class="nv">"human_id"</span> <span class="k">IN</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">)</span>  <span class="p">[[</span><span class="nv">"human_id"</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="nv">"human_id"</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="nv">"human_id"</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="SELECT &quot;humans&quot;.&quot;id&quot; FROM &quot;humans&quot; WHERE &quot;humans&quot;.&quot;dog_id&quot; = ?  [[&quot;dog_id&quot;, 1]]
+SELECT &quot;treats&quot;.* FROM &quot;treats&quot; WHERE &quot;treats&quot;.&quot;human_id&quot; IN (?, ?, ?)  [[&quot;human_id&quot;, 1], [&quot;human_id&quot;, 2], [&quot;human_id&quot;, 3]]
+">Copy</button>
+</div>
+<p>Mientras que <code>@dog.yard</code> generaría el siguiente SQL:</p><div class="interstitial code">
+<pre><code class="highlight sql"><span class="k">SELECT</span> <span class="nv">"home"</span><span class="p">.</span><span class="nv">"id"</span> <span class="k">FROM</span> <span class="nv">"homes"</span> <span class="k">WHERE</span> <span class="nv">"homes"</span><span class="p">.</span><span class="nv">"dog_id"</span> <span class="o">=</span> <span class="o">?</span> <span class="p">[[</span><span class="nv">"dog_id"</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+<span class="k">SELECT</span> <span class="nv">"yards"</span><span class="p">.</span><span class="o">*</span> <span class="k">FROM</span> <span class="nv">"yards"</span> <span class="k">WHERE</span> <span class="nv">"yards"</span><span class="p">.</span><span class="nv">"home_id"</span> <span class="o">=</span> <span class="o">?</span> <span class="p">[[</span><span class="nv">"home_id"</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</code></pre>
+<button class="clipboard-button" data-clipboard-text="SELECT &quot;home&quot;.&quot;id&quot; FROM &quot;homes&quot; WHERE &quot;homes&quot;.&quot;dog_id&quot; = ? [[&quot;dog_id&quot;, 1]]
+SELECT &quot;yards&quot;.* FROM &quot;yards&quot; WHERE &quot;yards&quot;.&quot;home_id&quot; = ? [[&quot;home_id&quot;, 1]]
+">Copy</button>
+</div>
+<p>Hay algunas cosas importantes a tener en cuenta con esta opción:</p>
+<ol>
+<li>Puede haber implicaciones de rendimiento ya que ahora se realizarán dos o más consultas (dependiendo de la asociación) en lugar de una unión. Si el select para <code>humans</code> devolviera un alto número de IDs, el select para <code>treats</code> podría enviar demasiados IDs.</li>
+<li>Dado que ya no estamos realizando uniones, una consulta con un orden o límite ahora se ordena en memoria ya que el orden de una tabla no puede aplicarse a otra tabla.</li>
+<li>Esta configuración debe agregarse a todas las asociaciones donde desees que se deshabiliten las uniones. Rails no puede adivinar esto por ti porque la carga de asociaciones es perezosa, para cargar <code>treats</code> en <code>@dog.treats</code>, Rails ya necesita saber qué SQL debe generarse.</li>
+</ol>
+<h3 id="caché-de-esquema"><a class="anchorlink" href="#caché-de-esquema"><span>8.2</span> Caché de Esquema</a></h3><p>Si deseas cargar una caché de esquema para cada base de datos, debes establecer <code>schema_cache_path</code> en cada configuración de base de datos y establecer <code>config.active_record.lazily_load_schema_cache = true</code> en tu configuración de aplicación. Ten en cuenta que esto cargará la caché de manera perezosa cuando se establezcan las conexiones de la base de datos.</p><h2 id="advertencias"><a class="anchorlink" href="#advertencias"><span>9</span> Advertencias</a></h2><h3 id="balanceo-de-carga-de-réplicas"><a class="anchorlink" href="#balanceo-de-carga-de-réplicas"><span>9.1</span> Balanceo de Carga de Réplicas</a></h3><p>Rails no soporta el balanceo de carga automático de réplicas. Esto es muy dependiente de tu infraestructura. Podríamos implementar un balanceo de carga básico y primitivo en el futuro, pero para una aplicación a escala, esto debería ser algo que tu aplicación maneje fuera de Rails.</p>
+        <hr>
+        <h3>Comentarios</h3>
+        <p>
+          Se te anima a ayudar a mejorar la calidad de esta guía.
+        </p>
+        <p>
+          Por favor contribuye si ves algún error tipográfico o errores fácticos.
+          Para comenzar, puedes leer nuestra sección de <a href="https://edgeguides.rubyonrails.org/contributing_to_ruby_on_rails.html#contributing-to-the-rails-documentation">contribuciones a la documentación</a>.
+        </p>
+        <p>
+          También puedes encontrar contenido incompleto o cosas que no están actualizadas.
+          Por favor agrega cualquier documentación faltante para main. Asegúrate de revisar
+          <a href="https://edgeguides.rubyonrails.org">Guías Edge</a> primero para verificar
+          si los problemas ya están resueltos o no en la rama principal.
+          Revisa las <a href="ruby_on_rails_guides_guidelines.html">Guías de Ruby on Rails</a>
+          para estilo y convenciones.
+        </p>
+        <p>
+          Si por alguna razón detectas algo que corregir pero no puedes hacerlo tú mismo, por favor
+          <a href="https://github.com/rails/rails/issues">abre un issue</a>.
+        </p>
+        <p>Y por último, pero no menos importante, cualquier tipo de discusión sobre la
+          documentación de Ruby on Rails es muy bienvenida en el <a href="https://discuss.rubyonrails.org/c/rubyonrails-docs">Foro oficial de Ruby on Rails</a>.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <hr class="hide" />
+  <footer id="page_footer">
+    <div class="wrapper">
+      <p>Este trabajo está bajo una <a href="https://creativecommons.org/licenses/by-sa/4.0/">Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional</a></p>
+<p>"Rails", "Ruby on Rails" y el logotipo de Rails son marcas registradas de David Heinemeier Hansson. Todos los derechos reservados.</p>
+
+<p>  Esta traducción fue generada por openAi e <a href="http://latinadeveloper.com/">Isis Harris.</a></p>
+    </div>
+  </footer>
+</body>
+</html>
